@@ -1,5 +1,5 @@
 {
-    "name": "glade",
+    "name": "PlayerInput",
     "maps": [
         {
             "name": "Player",
@@ -27,6 +27,24 @@
                     "name": "Fire",
                     "type": "Button",
                     "id": "32afbf48-3351-4578-baa6-48cca674ec43",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DzDamagePlayer",
+                    "type": "Button",
+                    "id": "173ccf8d-3b4b-43cb-b72a-0ffe52476632",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DzHealPlayer",
+                    "type": "Button",
+                    "id": "f3c15fc9-700a-4a9d-9fb6-68eb471add4a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -251,6 +269,28 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7f3096da-4deb-496d-8674-054b54835a49",
+                    "path": "<Keyboard>/n",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "DzDamagePlayer",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8b241427-6ba1-4cfc-9fa8-23560b063c0f",
+                    "path": "<Keyboard>/m",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "DzHealPlayer",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
