@@ -5,8 +5,8 @@ using UnityEngine.InputSystem;
 
 public class dzPlayerController : MonoBehaviour
 {
-    public float currHP;
-    public float maxHP = 100f;
+    public float currentHp;
+    public float maxHp = 100f;
     public HealthBarController myHpBar;
 
     public float damage;
@@ -14,39 +14,30 @@ public class dzPlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currHP = maxHP;
-        myHpBar.InitHp(maxHP);
+        myHpBar.InitHp(maxHp);
+        currentHp = myHpBar.CurrentHp;
     }
 
-    // Uses the 'Fire' action to the InputActions asset.
-    // It's mapped to the left mouse button.
-    private void OnFire()
+    // Uses the 'DzDamagePlayer' action added to the InputActions asset.
+    // Mapped to the 'N' key.
+    private void OnDzDamagePlayer()
     {
         DamagePlayer();
     }
 
-    // Update is called once per frame
-    void Update()
+    // Uses the 'DzHealPlayer' action added to the InputActions asset.
+    // Mapped to the 'M' key.
+    private void OnDzHealPlayer()
     {
-        // NOTE: This is the OLD method for reading user inputs.
-        // Doesn't need the Input System.
-        if (Input.GetKeyDown(KeyCode.N)) // -> 'N' key
-        {
-            DamagePlayer();
-        }
-
-        if (Input.GetKeyDown(KeyCode.M)) // -> 'M' key
-        {
-            HealPlayer();
-        }
+        HealPlayer();
     }
 
     private void DamagePlayer()
     {
-        currHP = Mathf.Max((currHP - damage), 0f);
-        myHpBar.SetHp(currHP);
+        myHpBar.ApplyDamage(damage);
+        currentHp = myHpBar.CurrentHp;
 
-        if (0 < currHP)
+        if (0 < currentHp)
         {
             Debug.Log("I'm taking damage here!");
         }
@@ -58,10 +49,10 @@ public class dzPlayerController : MonoBehaviour
 
     private void HealPlayer()
     {
-        currHP = Mathf.Min((currHP + damage), maxHP);
-        myHpBar.SetHp(currHP);
+        myHpBar.ApplyHeal(damage);
+        currentHp = myHpBar.CurrentHp;
 
-        if (currHP < maxHP)
+        if (currentHp < maxHp)
         {
             Debug.Log("Thanks for the potion!");
         }
@@ -69,5 +60,23 @@ public class dzPlayerController : MonoBehaviour
         {
             Debug.Log("I'm at full health!");
         }
+    }
+
+    // Update is called once per frame [unused for now]
+    void Update()
+    {
+        // NOTE: This is the OLD method for reading user inputs. Doesn't need
+        // the Input System.
+        // Keeping it here for reference.
+
+        //if (Input.GetKeyDown(KeyCode.N)) // -> 'N' key
+        //{
+        //    DamagePlayer();
+        //}
+
+        //if (Input.GetKeyDown(KeyCode.M)) // -> 'M' key
+        //{
+        //    HealPlayer();
+        //}
     }
 }
