@@ -20,10 +20,18 @@ public class Sword : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Enemy" && IsSwinging)
+        if (IsSwinging && other.tag == "Enemy")
         {
-            Debug.Log("Collision!");
-            other.gameObject.SetActive(false);
+            //other.gameObject.SetActive(false);
+            other.gameObject.GetComponent<Rigidbody>().AddForce(25f, 25f, 25f, ForceMode.Impulse);
+        }
+    } 
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag != "Enemy") // I guess we'll need a collection of tags to interact with
+        {
+            Physics.IgnoreCollision(collision.gameObject.GetComponent<Collider>(), GetComponent<Collider>());
         }
     }
 }
