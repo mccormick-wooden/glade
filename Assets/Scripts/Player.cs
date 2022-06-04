@@ -49,7 +49,7 @@ public class Player : MonoBehaviour
     private bool IsAnimStateJumpSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("JumpSlash");
 
     [SerializeField]
-    public TextMeshProUGUI GameMessage = null;
+    private TextMeshProUGUI GameMessage = null;
 
     [SerializeField]
     private Transform groundCheckTransform = null;
