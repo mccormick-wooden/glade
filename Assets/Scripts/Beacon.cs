@@ -41,7 +41,7 @@ public class Beacon : MonoBehaviour
         // The Beacons probably want to react to any kind of "damage" - but this is hacky and specific to the Sword object.
         if (other.name == "Sword") {
             Sword sword = other.gameObject.GetComponent(typeof(Sword)) as Sword;
-            if (sword != null && sword.isSwinging) {
+            if (sword != null && sword.IsSwinging) {
                 Debug.Log("Beacon deactivated due to Sword swing hit.");
                 gameObject.SetActive(false);
             }
