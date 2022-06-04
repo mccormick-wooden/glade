@@ -286,7 +286,12 @@ public class Player : MonoBehaviour
             }
 
         }
-        else if (doSlash)
+        else
+        {
+            animator.SetBool("DoBlock", false);
+        }
+
+        if (doSlash && !doBlock)
         {
             doSlash = false;
 
