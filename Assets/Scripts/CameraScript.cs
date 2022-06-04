@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CameraScript : MonoBehaviour
 {
-    public Player player;
-    public GameObject playerGameObject;
-    public GameObject objectToLookAt;
-    float cameraRotationHorizontalAngle = 0f;
-    float cameraRotationVerticalAngle = 0f;
+    public Player Player;
+    public GameObject PlayerGameObject;
+    public GameObject ObjectToLookAt;
+    private float cameraRotationHorizontalAngle = 0f;
+    private float cameraRotationVerticalAngle = 0f;
 
     /*PlayerControls controls;
     Vector2 look;*/
@@ -35,7 +35,7 @@ public class CameraScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = playerGameObject.GetComponent<Player>();
+        Player = PlayerGameObject.GetComponent<Player>();
         cameraRotationHorizontalAngle = 0f;
         cameraRotationVerticalAngle = 0f;
     }
@@ -66,13 +66,13 @@ public class CameraScript : MonoBehaviour
     {
         Transform smoothedTransform = transform;
 
-        Vector3 position = playerGameObject.transform.position;
+        Vector3 position = PlayerGameObject.transform.position;
         //Vector3 forward = playerGameObject.transform.forward;
 
         //float angle = Mathf.Deg2Rad * player.RotationAngle + cameraRotationAngle;
         //cameraRotationAngle += player.cameraAngleChange / 100f;
         //cameraRotationHorizontalAngle = player.cameraHorizontalAngleChange;
-        float horizontalAngle = Mathf.Deg2Rad * player.RotationAngle;// + (Mathf.Deg2Rad * cameraRotationHorizontalAngle * 90);
+        float horizontalAngle = Mathf.Deg2Rad * Player.RotationAngle;// + (Mathf.Deg2Rad * cameraRotationHorizontalAngle * 90);
 
         //cameraRotationVerticalAngle = player.cameraVerticalAngleChange;
         //float verticalAngle = /*Mathf.Deg2Rad * player.RotationAngle +*/ (Mathf.Deg2Rad * cameraRotationVerticalAngle * 90);
@@ -87,7 +87,6 @@ public class CameraScript : MonoBehaviour
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, 0.0125f);
 
         transform.position = smoothedPosition;
-        transform.LookAt(objectToLookAt.transform.position);// + (5 * objectToLookAt.transform.forward));
-
+        transform.LookAt(ObjectToLookAt.transform.position);// + (5 * objectToLookAt.transform.forward));
     }
 }
