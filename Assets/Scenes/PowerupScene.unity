@@ -15976,8 +15976,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6b4bab8e0eaabf4eb31a9b0d601d8a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameMessage: {fileID: 1776425408}
-  gameMessageTimer: 0
 --- !u!1001 &1568688041
 PrefabInstance:
   m_ObjectHideFlags: 0
