@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Sword : MonoBehaviour
 {
-    public bool isSwinging { get; set; }
+    public bool IsSwinging { get; set; }
 
     // Start is called before the first frame update
     void Start()
     {
-        isSwinging = false;
+        IsSwinging = false;
     }
 
     // Update is called once per frame
@@ -20,7 +20,7 @@ public class Sword : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Enemy" && isSwinging)
+        if (other.tag == "Enemy" && IsSwinging)
         {
             Debug.Log("Collision!");
             other.gameObject.SetActive(false);

@@ -5,8 +5,14 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    // Public
+    public float CameraHorizontalAngleChange { get; private set; }
+    public float CameraVerticalAngleChange { get; private set; }
+    public Transform PlayerTransform => transform;
+    public float RotationAngle => rotationAngle;
+
     // Controls related stuff
-    CharacterPlayerControls controls;
+    private CharacterPlayerControls controls;
     private float verticalInput;
     private float horizontalInput;
 
@@ -14,38 +20,31 @@ public class Player : MonoBehaviour
     private bool jumping;
     private bool isGrounded;
     private float rotationAngle;
+    private Sword sword;
+    private bool doBlock;
+    private bool doSlash;
+    private int swordSlashState = 0;
+    private int numberOfFramesSinceLastSwing = 0;
 
     // Components of the player GameObject we reference
-    Rigidbody rigidBody;
-    Animator animator;
-
+    private Rigidbody rigidBody;
+    private Animator animator;
 
     // Camera related stuff
     //   - capture camera inputs here because we already have the controls
-    Transform objectToLookAt;
-    public float cameraHorizontalAngleChange { get; private set; }
-    public float cameraVerticalAngleChange { get; private set; }
- 
+    private Transform objectToLookAt;
 
+    [SerializeField] 
+    private Transform groundCheckTransform = null;
 
-    public Transform playerTransform { get { return transform; } }
-    public float RotationAngle { get { return rotationAngle; } }
-
-    [SerializeField] private Transform groundCheckTransform = null;
-    [SerializeField] private LayerMask foo;
+    [SerializeField] 
+    private LayerMask foo;
 
     /*Vector2 move;
     Vector2 rotate;*/
 
-    bool doSlash;
-    int swordSlashState = 0;
-    Sword sword;
-
-    bool doBlock;
-
-    int numberOfFramesSinceLastSwing = 0;
-
-    [SerializeField] private GameObject prefab;
+    [SerializeField]
+    private GameObject prefab;
 
     private void Awake()
     {
@@ -101,8 +100,6 @@ public class Player : MonoBehaviour
         controls.Gameplay.Disable();
     }
 
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -114,8 +111,8 @@ public class Player : MonoBehaviour
         swordSlashState = 0;
         doBlock = false;
        
-        cameraHorizontalAngleChange = 0f;
-        cameraVerticalAngleChange = 0f;
+        CameraHorizontalAngleChange = 0f;
+        CameraVerticalAngleChange = 0f;
     }
 
     void CalculateCameraPosition()
@@ -126,12 +123,10 @@ public class Player : MonoBehaviour
         rotationAngle = Vector3.SignedAngle(new Vector3(0, 0, 1), transform.forward, new Vector3(0,1,0));
     }
 
-
     void UpdateAnimations()
     {
         
     }
-
 
     void CheckInputs()
     {
@@ -183,7 +178,6 @@ public class Player : MonoBehaviour
         CalculateCameraPosition();
     }
 
-    
     /*
      * private void OnAnimatorMove()
     {
@@ -197,7 +191,6 @@ public class Player : MonoBehaviour
         //rigidBody.MoveRotation(newRootRotation);
     }
     */
-    
 
     private void FixedUpdate()
     {
@@ -261,7 +254,7 @@ public class Player : MonoBehaviour
             {
                 // set this here because we may have circumvented
                 // the normal way around this.
-                sword.isSwinging = false;
+                sword.IsSwinging = false;
             }
 
         }
@@ -273,21 +266,21 @@ public class Player : MonoBehaviour
             {
                 numberOfFramesSinceLastSwing = 0;
                 //swordSlashState = 1;
-                sword.isSwinging = true;
+                sword.IsSwinging = true;
                 animator.SetBool("DoAttack", true);
             }
             else if (animState.IsName("SwordSlash"))
             {
                 numberOfFramesSinceLastSwing = 0;
                 //swordSlashState = 2;
-                sword.isSwinging = true;
+                sword.IsSwinging = true;
                 animator.SetBool("DoBackslash", true);
             }
             else if (animState.IsName("SwordBackSlash"))
             {
                 numberOfFramesSinceLastSwing = 0;
                 //swordSlashState = 2;
-                sword.isSwinging = true;
+                sword.IsSwinging = true;
                 animator.SetBool("DoJumpSlash", true);
             }
 
@@ -296,32 +289,27 @@ public class Player : MonoBehaviour
         {
             if (animState.IsName("MovementTree"))
             {
-                sword.isSwinging = false;
+                sword.IsSwinging = false;
             }
             // || animState.IsName("SwordSlash") || animState.IsName("SwordBackSlash"))
             else if (animState.IsName("SwordSlash"))
             {
                 // clear this so it can be picked up later
                 animator.SetBool("DoAttack", false);
-                sword.isSwinging = true;
+                sword.IsSwinging = true;
             }
             else if (animState.IsName("SwordBackSlash"))
             {
                 animator.SetBool("DoBackslash", false);
-                sword.isSwinging = true;
+                sword.IsSwinging = true;
             }
             else if (animState.IsName("JumpSlash"))
             {
                 animator.SetBool("DoJumpSlash", false);
-                sword.isSwinging = true;
+                sword.IsSwinging = true;
             }
 
         }
-
-
-
-
-
     }
 
     /*

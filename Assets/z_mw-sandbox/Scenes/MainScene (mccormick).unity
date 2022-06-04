@@ -19988,9 +19988,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff7b9f8cf8dfccc4ebca1d0961efb0c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 2015677265}
-  playerGameObject: {fileID: 2015677260}
-  objectToLookAt: {fileID: 2015677260}
+  Player: {fileID: 2015677265}
+  PlayerGameObject: {fileID: 2015677260}
+  ObjectToLookAt: {fileID: 2015677260}
 --- !u!1001 &1992091638
 PrefabInstance:
   m_ObjectHideFlags: 0
