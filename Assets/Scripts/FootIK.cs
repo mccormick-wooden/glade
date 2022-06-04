@@ -12,7 +12,7 @@ public class FootIK : MonoBehaviour
     [Range(0f, 1f)]
     public float WeightRotationLeft = 0f;
 
-    Animator anim;
+    private Animator anim;
     [Tooltip("Offset for Foot position")]
     public Vector3 offsetFoot;
     [Tooltip("Layer where foot can adjust to surface")]
@@ -30,7 +30,7 @@ public class FootIK : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    RaycastHit hit;
+    private RaycastHit hit;
 
     void OnAnimatorIK(int _layerIndex)
     {

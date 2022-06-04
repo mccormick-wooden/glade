@@ -1,51 +1,62 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    // Public
+    public float CameraHorizontalAngleChange { get; private set; }
+    public float CameraVerticalAngleChange { get; private set; }
+    public Transform PlayerTransform => transform;
+    public float RotationAngle => rotationAngle;
+
     // Controls related stuff
-    CharacterPlayerControls controls;
+    private CharacterPlayerControls controls;
     private float verticalInput;
     private float horizontalInput;
 
     // Action related stuff
-    private bool jumping;
-    private bool isGrounded;
     private float rotationAngle;
 
-    // Components of the player GameObject we reference
-    Rigidbody rigidBody;
-    Animator animator;
+    // Jumping
+    private bool isJumping;
+    private bool isGrounded;
 
+    // Attack & Defense
+    private bool doBlock;
+    private bool doSlash;
+    private Sword sword;
+    private int slashLungeFrameCtr = 0;
+    public int slashLungeFrameLen = 15;
+    public float slashLungeTransformMultiplier = 3.5f;
+
+    private int swordSlashState = 0;
+    private int numberOfFramesSinceLastSwing = 0;
+
+    // Components of the player GameObject we reference
+    private Rigidbody rigidBody;
+    private Animator animator;
 
     // Camera related stuff
     //   - capture camera inputs here because we already have the controls
-    Transform objectToLookAt;
-    public float cameraHorizontalAngleChange { get; private set; }
-    public float cameraVerticalAngleChange { get; private set; }
- 
+    private Transform objectToLookAt;
+
+    // Helpers
+    private bool ShouldLunge => sword.IsSwinging && slashLungeFrameCtr < slashLungeFrameLen;
+    private bool IsAnimStateSwordSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("SwordSlash");
+    private bool IsAnimStateSwordBackSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("SwordBackSlash");
+    private bool IsAnimStateJumpSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("JumpSlash");
 
 
-    public Transform playerTransform { get { return transform; } }
-    public float RotationAngle { get { return rotationAngle; } }
+    [SerializeField] 
+    private Transform groundCheckTransform = null;
 
-    [SerializeField] private Transform groundCheckTransform = null;
-    [SerializeField] private LayerMask foo;
+    [SerializeField] 
+    private LayerMask foo;
 
     /*Vector2 move;
     Vector2 rotate;*/
 
-    bool doSlash;
-    int swordSlashState = 0;
-    Sword sword;
-
-    bool doBlock;
-
-    int numberOfFramesSinceLastSwing = 0;
-
-    [SerializeField] private GameObject prefab;
+    [SerializeField]
+    private GameObject prefab;
 
     private void Awake()
     {
@@ -79,6 +90,10 @@ public class Player : MonoBehaviour
         controls.Gameplay.Slash.performed += ctx =>
             {
                 doSlash = true;
+
+                // This is a horrible place for this.
+                // Need to figure out a way to make it so this is only reset once per slash animation
+                slashLungeFrameCtr = 0; 
             };
         controls.Gameplay.Shield.performed += ctx =>
             {
@@ -101,21 +116,19 @@ public class Player : MonoBehaviour
         controls.Gameplay.Disable();
     }
 
-
-
     // Start is called before the first frame update
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
 
         isGrounded = true;
-        jumping = false;
+        isJumping = false;
         doSlash = false;
         swordSlashState = 0;
         doBlock = false;
        
-        cameraHorizontalAngleChange = 0f;
-        cameraVerticalAngleChange = 0f;
+        CameraHorizontalAngleChange = 0f;
+        CameraVerticalAngleChange = 0f;
     }
 
     void CalculateCameraPosition()
@@ -126,18 +139,28 @@ public class Player : MonoBehaviour
         rotationAngle = Vector3.SignedAngle(new Vector3(0, 0, 1), transform.forward, new Vector3(0,1,0));
     }
 
-
     void UpdateAnimations()
     {
         
     }
 
-
-    void CheckInputs()
+    void ApplyTransforms()
     {
-        rigidBody.MovePosition(rigidBody.position + this.transform.forward * verticalInput * Time.deltaTime * 10);
-        rigidBody.MoveRotation(rigidBody.rotation * Quaternion.AngleAxis(horizontalInput * Time.deltaTime * 100, Vector3.up));
+        var transformForward = transform.forward;
 
+        transformForward = ShouldLunge ? 
+            transform.forward * slashLungeTransformMultiplier : 
+            transformForward;
+                                            // The final jump animation should lunge differently, not sure how
+        transformForward = !ShouldLunge && (IsAnimStateSwordSlash || IsAnimStateSwordBackSlash) ?
+            transform.forward * 0 :
+            transformForward;
+
+        if (ShouldLunge) slashLungeFrameCtr++;
+
+        rigidBody.MovePosition(rigidBody.position + transformForward * verticalInput * Time.deltaTime * 10);
+        rigidBody.MoveRotation(rigidBody.rotation * Quaternion.AngleAxis(horizontalInput * Time.deltaTime * 100, Vector3.up));
+        
         //animator.SetFloat("TurningSpeed", horizontalInput);
         //animator.SetFloat("Speed", verticalInput);
         //anim.SetBool("isFalling", !isGrounded);
@@ -177,13 +200,12 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckInputs();
+        ApplyTransforms();
         UpdateAnimations();
         DoPhysicsChecks();
         CalculateCameraPosition();
     }
 
-    
     /*
      * private void OnAnimatorMove()
     {
@@ -197,14 +219,13 @@ public class Player : MonoBehaviour
         //rigidBody.MoveRotation(newRootRotation);
     }
     */
-    
 
     private void FixedUpdate()
     {
-        if (jumping && isGrounded == true)
+        if (isJumping && isGrounded)
         {
             rigidBody.AddForce(Vector3.up * 5, ForceMode.VelocityChange);
-            jumping = false;
+            isJumping = false;
         }
 
         //float veritcalVelocity = rigidBody.velocity.y;
@@ -261,7 +282,7 @@ public class Player : MonoBehaviour
             {
                 // set this here because we may have circumvented
                 // the normal way around this.
-                sword.isSwinging = false;
+                sword.IsSwinging = false;
             }
 
         }
@@ -273,21 +294,21 @@ public class Player : MonoBehaviour
             {
                 numberOfFramesSinceLastSwing = 0;
                 //swordSlashState = 1;
-                sword.isSwinging = true;
+                sword.IsSwinging = true;
                 animator.SetBool("DoAttack", true);
             }
-            else if (animState.IsName("SwordSlash"))
+            else if (IsAnimStateSwordSlash)
             {
                 numberOfFramesSinceLastSwing = 0;
                 //swordSlashState = 2;
-                sword.isSwinging = true;
+                sword.IsSwinging = true;
                 animator.SetBool("DoBackslash", true);
             }
-            else if (animState.IsName("SwordBackSlash"))
+            else if (IsAnimStateSwordBackSlash)
             {
                 numberOfFramesSinceLastSwing = 0;
                 //swordSlashState = 2;
-                sword.isSwinging = true;
+                sword.IsSwinging = true;
                 animator.SetBool("DoJumpSlash", true);
             }
 
@@ -296,32 +317,25 @@ public class Player : MonoBehaviour
         {
             if (animState.IsName("MovementTree"))
             {
-                sword.isSwinging = false;
+                sword.IsSwinging = false;
             }
-            // || animState.IsName("SwordSlash") || animState.IsName("SwordBackSlash"))
-            else if (animState.IsName("SwordSlash"))
+            else if (IsAnimStateSwordSlash)
             {
                 // clear this so it can be picked up later
                 animator.SetBool("DoAttack", false);
-                sword.isSwinging = true;
+                sword.IsSwinging = true;
             }
-            else if (animState.IsName("SwordBackSlash"))
+            else if (IsAnimStateSwordBackSlash)
             {
                 animator.SetBool("DoBackslash", false);
-                sword.isSwinging = true;
+                sword.IsSwinging = true;
             }
-            else if (animState.IsName("JumpSlash"))
+            else if (IsAnimStateJumpSlash)
             {
                 animator.SetBool("DoJumpSlash", false);
-                sword.isSwinging = true;
+                sword.IsSwinging = true;
             }
-
         }
-
-
-
-
-
     }
 
     /*
