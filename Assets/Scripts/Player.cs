@@ -363,7 +363,7 @@ public class Player : MonoBehaviour
     }
     private IEnumerator DestroyMessage(float waitTime)
     {
-        Debug.Log("Destroying message in " + waitTime.ToString() + " seconds...");
+        Debug.Log($"Destroying message in {waitTime.ToString()} seconds...");
         yield return new WaitForSeconds(waitTime);
 
         Debug.Log("Destroying message");
