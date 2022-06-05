@@ -39,7 +39,7 @@ jobs:
 ```yml
 name: Glade Build
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   buildForAllSupportedPlatforms:
