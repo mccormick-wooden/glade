@@ -7,11 +7,12 @@ TagManager:
   - Damageable
   - Enemy
   - Weapon
+  - Walkable
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Walkable
   - Water
   - UI
   - 
