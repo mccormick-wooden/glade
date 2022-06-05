@@ -111,7 +111,7 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                     ""name"": """",
                     ""id"": ""240698f4-0c44-413a-80ca-576e80132ed5"",
                     ""path"": ""<Gamepad>/leftShoulder"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Shield"",
