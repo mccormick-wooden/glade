@@ -20394,7 +20394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff7b9f8cf8dfccc4ebca1d0961efb0c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 2015677265}
+  player: {fileID: 0}
   PlayerGameObject: {fileID: 2015677260}
   ObjectToLookAt: {fileID: 2015677260}
 --- !u!1001 &1992091638
