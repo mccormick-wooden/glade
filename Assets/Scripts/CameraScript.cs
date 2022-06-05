@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraScript : MonoBehaviour
 {
-    public Player Player;
+    public Player player;
     public GameObject PlayerGameObject;
     public GameObject ObjectToLookAt;
     private float cameraRotationHorizontalAngle = 0f;
@@ -35,7 +35,7 @@ public class CameraScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Player = PlayerGameObject.GetComponent<Player>();
+        player = PlayerGameObject.GetComponent<Player>();
         cameraRotationHorizontalAngle = 0f;
         cameraRotationVerticalAngle = 0f;
     }
@@ -72,7 +72,7 @@ public class CameraScript : MonoBehaviour
         //float angle = Mathf.Deg2Rad * player.RotationAngle + cameraRotationAngle;
         //cameraRotationAngle += player.cameraAngleChange / 100f;
         //cameraRotationHorizontalAngle = player.cameraHorizontalAngleChange;
-        float horizontalAngle = Mathf.Deg2Rad * Player.RotationAngle;// + (Mathf.Deg2Rad * cameraRotationHorizontalAngle * 90);
+        float horizontalAngle = Mathf.Deg2Rad * player.RotationAngle;// + (Mathf.Deg2Rad * cameraRotationHorizontalAngle * 90);
 
         //cameraRotationVerticalAngle = player.cameraVerticalAngleChange;
         //float verticalAngle = /*Mathf.Deg2Rad * player.RotationAngle +*/ (Mathf.Deg2Rad * cameraRotationVerticalAngle * 90);
