@@ -4,10 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - AbilityPickup
   - Damageable
   - Enemy
+  - Walkable
   - Weapon
-  - AbilityPickup
   layers:
   - Default
   - TransparentFX
