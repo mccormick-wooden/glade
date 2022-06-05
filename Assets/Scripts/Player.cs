@@ -1,4 +1,6 @@
 using UnityEngine;
+using TMPro;
+using System.Collections;
 
 public class Player : MonoBehaviour
 {
@@ -27,6 +29,7 @@ public class Player : MonoBehaviour
     private int slashLungeFrameCtr = 0;
     public int slashLungeFrameLen = 15;
     public float slashLungeTransformMultiplier = 3.5f;
+    private bool hasSkill;
 
     private int swordSlashState = 0;
     private int numberOfFramesSinceLastSwing = 0;
@@ -45,11 +48,13 @@ public class Player : MonoBehaviour
     private bool IsAnimStateSwordBackSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("SwordBackSlash");
     private bool IsAnimStateJumpSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("JumpSlash");
 
+    [SerializeField]
+    private TextMeshProUGUI GameMessage = null;
 
-    [SerializeField] 
+    [SerializeField]
     private Transform groundCheckTransform = null;
 
-    [SerializeField] 
+    [SerializeField]
     private LayerMask foo;
 
     /*Vector2 move;
@@ -65,7 +70,7 @@ public class Player : MonoBehaviour
 
         controls = new CharacterPlayerControls();
 
-        controls.Gameplay.Move.performed += ctx => 
+        controls.Gameplay.Move.performed += ctx =>
             {
                 Vector2 leftStick = ctx.ReadValue<Vector2>();
                 //horizontalInput = move.x/4f; 
@@ -76,8 +81,8 @@ public class Player : MonoBehaviour
                 animator.SetFloat("Speed", verticalInput);
             };
 
-        controls.Gameplay.Rotate.performed += ctx => 
-            { 
+        controls.Gameplay.Rotate.performed += ctx =>
+            {
                 Vector2 rightStick = ctx.ReadValue<Vector2>();
                 horizontalInput = rightStick.x;
                 if (horizontalInput < 0.1 && horizontalInput > -0.1) horizontalInput = 0;
@@ -93,7 +98,7 @@ public class Player : MonoBehaviour
 
                 // This is a horrible place for this.
                 // Need to figure out a way to make it so this is only reset once per slash animation
-                slashLungeFrameCtr = 0; 
+                slashLungeFrameCtr = 0;
             };
         controls.Gameplay.Shield.performed += ctx =>
             {
@@ -126,7 +131,7 @@ public class Player : MonoBehaviour
         doSlash = false;
         swordSlashState = 0;
         doBlock = false;
-       
+
         CameraHorizontalAngleChange = 0f;
         CameraVerticalAngleChange = 0f;
     }
@@ -136,22 +141,22 @@ public class Player : MonoBehaviour
         // first, rotate the player model in place, without any translation
         //transform.Rotate(0, horizontalInput/4, 0);
 
-        rotationAngle = Vector3.SignedAngle(new Vector3(0, 0, 1), transform.forward, new Vector3(0,1,0));
+        rotationAngle = Vector3.SignedAngle(new Vector3(0, 0, 1), transform.forward, new Vector3(0, 1, 0));
     }
 
     void UpdateAnimations()
     {
-        
+
     }
 
     void ApplyTransforms()
     {
         var transformForward = transform.forward;
 
-        transformForward = ShouldLunge ? 
-            transform.forward * slashLungeTransformMultiplier : 
+        transformForward = ShouldLunge ?
+            transform.forward * slashLungeTransformMultiplier :
             transformForward;
-                                            // The final jump animation should lunge differently, not sure how
+        // The final jump animation should lunge differently, not sure how
         transformForward = !ShouldLunge && (IsAnimStateSwordSlash || IsAnimStateSwordBackSlash) ?
             transform.forward * 0 :
             transformForward;
@@ -160,7 +165,7 @@ public class Player : MonoBehaviour
 
         rigidBody.MovePosition(rigidBody.position + transformForward * verticalInput * Time.deltaTime * 10);
         rigidBody.MoveRotation(rigidBody.rotation * Quaternion.AngleAxis(horizontalInput * Time.deltaTime * 100, Vector3.up));
-        
+
         //animator.SetFloat("TurningSpeed", horizontalInput);
         //animator.SetFloat("Speed", verticalInput);
         //anim.SetBool("isFalling", !isGrounded);
@@ -269,7 +274,7 @@ public class Player : MonoBehaviour
 
 
         var animState = animator.GetCurrentAnimatorStateInfo(0);
-        
+
         // give block priority - get rid of doSlash
         if (doBlock)
         {
@@ -343,12 +348,34 @@ public class Player : MonoBehaviour
         }
     }
 
-    /*
-    private void OnTriggerEnter(Collider other)
+    private void ShowMessage(string message, uint timeout = 3)
     {
-        Debug.Log("Ontriggerenter");
+        GameMessage.SetText(message);
+
+        if (timeout > 0)
+        {
+            StartCoroutine(DestroyMessage(timeout));
+        }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("AbilityPickup"))
+        {
+            ShowMessage("You acquired a new ability!");
+            other.gameObject.SetActive(false);
+        }
+    }
+    private IEnumerator DestroyMessage(float waitTime)
+    {
+        Debug.Log($"Destroying message in {waitTime.ToString()} seconds...");
+        yield return new WaitForSeconds(waitTime);
+
+        Debug.Log("Destroying message");
+        GameMessage.SetText("");
+    }
+
+    /*
     private void OnTriggerExit(Collider other)
     {
         Debug.Log("Ontriggerexit");
