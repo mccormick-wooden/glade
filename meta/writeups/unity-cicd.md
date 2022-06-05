@@ -77,6 +77,6 @@ jobs:
 11. Build should now run!
 ---
 # References
-https://www.youtube.com/watch?v=JjKCy3H0A30
+https://www.youtube.com/watch?v=JjKCy3H0A30 (FYI, this guy forgets to acquire the ulf file and then never addresses what he did wrong -.-, so don't follow this end-to-end)
 https://game.ci/docs/github/activation
 https://game.ci/docs/github/builder
