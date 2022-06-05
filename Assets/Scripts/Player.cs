@@ -212,12 +212,12 @@ public class Player : MonoBehaviour
     }
 
     /*
-     * private void OnAnimatorMove()
+    private void OnAnimatorMove()
     {
         Vector3 newRootPosition;
         Quaternion newRootRotation;
 
-        newRootRotation = animator.rootRotation;
+        //newRootRotation = animator.rootRotation;
         newRootPosition = animator.rootPosition;
 
         rigidBody.MovePosition(newRootPosition);
@@ -291,7 +291,12 @@ public class Player : MonoBehaviour
             }
 
         }
-        else if (doSlash)
+        else
+        {
+            animator.SetBool("DoBlock", false);
+        }
+
+        if (doSlash && !doBlock)
         {
             doSlash = false;
 

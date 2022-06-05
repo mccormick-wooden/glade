@@ -139,7 +139,7 @@ namespace UnityStandardAssets.ImageEffects
             }
             else {
                 // capture full coc in alpha channel (fromTo is not read, but bound to detect screen flip)
-				fromTo.MarkRestoreExpected(); // only touching alpha channel, RT restore expected
+                fromTo.MarkRestoreExpected(); // only touching alpha channel, RT restore expected
                 Graphics.Blit (fromTo, fromTo, dofHdrMaterial,  0);
             }
         }

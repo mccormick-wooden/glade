@@ -26,7 +26,7 @@ namespace UnityStandardAssets.ImageEffects
         SerializedProperty noiseTexture;
         SerializedProperty filterMode;
 
-        void OnEnable () {
+        void OnEnable () {a
             serObj = new SerializedObject (target);
 
             intensityMultiplier = serObj.FindProperty("intensityMultiplier");
