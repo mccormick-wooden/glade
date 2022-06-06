@@ -1,23 +1,26 @@
+using Assets.Scripts.Abstract;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : BaseDamageable
 {
     private Animator animator;
     private Rigidbody rigidBody;
     public Transform Player;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
     }
 
-    void UpdateAnimations()
+    private void UpdateAnimations()
     {
     }
 
-    void ApplyTransforms()
+    private void ApplyTransforms()
     {
         transform.LookAt(Player);
 
@@ -25,9 +28,31 @@ public class Enemy : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
+    {
+        UpdateAnimations();
+    }
+
+    private void FixedUpdate()
     {
         ApplyTransforms();
-        UpdateAnimations();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (ShouldHandleCollisionAsAttack(other))
+            HandleAttack(other.GetComponent<BaseWeapon>());    
+    }
+
+    protected override void HandleAttack(BaseWeapon attackingWeapon)
+    {
+        // Some custom behavior...
+        base.HandleAttack(attackingWeapon); // then optionally, the base behavior
+    }
+
+    protected override void Die()
+    {
+        // Some custom behavior...
+        base.Die(); // then optionally, the base behavior
     }
 }
