@@ -32,16 +32,21 @@ public class Beacon : MonoBehaviour
         {
             newCount = increment ? ++newCount : --newCount;
             beaconCountText.text = string.Format("Beacons: {0}", newCount >= 0 ? newCount : 0);
-        } else {
+        }
+        else
+        {
             Debug.LogError("Could not parse int from beaconCountText", beaconCountText);
         }
     }
 
-    private void OnTriggerEnter(Collider other) {
+    private void OnTriggerEnter(Collider other)
+    {
         // The Beacons probably want to react to any kind of "damage" - but this is hacky and specific to the Sword object.
-        if (other.name == "Sword") {
+        if (other.name == "Sword")
+        {
             Sword sword = other.gameObject.GetComponent(typeof(Sword)) as Sword;
-            if (sword != null && sword.IsSwinging) {
+            if (sword != null && sword.IsSwinging)
+            {
                 Debug.Log("Beacon deactivated due to Sword swing hit.");
                 gameObject.SetActive(false);
             }
