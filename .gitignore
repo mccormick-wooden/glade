@@ -1,3 +1,7 @@
+# rider
+.config/
+.idea/
+
 # macOS
 .DS_Store
 .vscode
