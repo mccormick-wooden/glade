@@ -88,7 +88,7 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                 {
                     ""name"": """",
                     ""id"": ""356a846a-eed4-487c-9d82-baf9c9023d63"",
-                    ""path"": ""<Gamepad>/rightStick"",
+                    ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
