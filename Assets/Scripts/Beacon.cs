@@ -23,10 +23,8 @@ public class Beacon : BaseDamageable
 
     void SetBeaconCountText(bool increment)
     {
-        int newCount;
-
-        string oldCount = beaconCountText.text.Replace("Beacons: ", null);
-        if (int.TryParse(oldCount, out newCount))
+        var oldCount = beaconCountText.text.Replace("Beacons: ", null);
+        if (int.TryParse(oldCount, out var newCount))
         {
             newCount = increment ? ++newCount : --newCount;
             beaconCountText.text = string.Format("Beacons: {0}", newCount >= 0 ? newCount : 0);
@@ -47,5 +45,11 @@ public class Beacon : BaseDamageable
     {
         base.Start();
         IncrementBeaconCount();
+    }
+
+    protected override void Die()
+    {
+        Debug.Log("Beacon died");
+        base.Die();
     }
 }
