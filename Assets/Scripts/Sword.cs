@@ -1,35 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
+using Assets.Scripts.Abstract;
 using UnityEngine;
 
-public class Sword : MonoBehaviour
+public class Sword : BaseWeapon
 {
-    public bool IsSwinging { get; set; }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        IsSwinging = false;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (IsSwinging && other.tag == "Enemy")
-        {
-            //other.gameObject.SetActive(false);
-            other.gameObject.GetComponent<Rigidbody>().AddForce(25f, 25f, 25f, ForceMode.Impulse);
-        }
-    } 
+    private string[] validCollideTags = new string[] { "Enemy", "Damageable" }; // I'm wondering if beacons should have a different tag?
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag != "Enemy") // I guess we'll need a collection of tags to interact with
+        if (!validCollideTags.Contains(collision.gameObject.tag))
         {
             Physics.IgnoreCollision(collision.gameObject.GetComponent<Collider>(), GetComponent<Collider>());
         }

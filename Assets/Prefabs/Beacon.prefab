@@ -114,6 +114,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1500b4273cd44d4fbe8a6f895cd19a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentHp: 0
+  maxHp: 1
   beaconCountText: {fileID: 0}
 --- !u!54 &709416175968630621
 Rigidbody:

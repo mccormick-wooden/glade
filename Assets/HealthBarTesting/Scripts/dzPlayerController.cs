@@ -3,80 +3,84 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class dzPlayerController : MonoBehaviour
+namespace dz
 {
-    public float currentHp;
-    public float maxHp = 100f;
-    public HealthBarController myHpBar;
-
-    public float damage;
-
-    // Start is called before the first frame update
-    void Start()
+    public class dzPlayerController : MonoBehaviour
     {
-        myHpBar.InitHp(maxHp);
-        currentHp = myHpBar.CurrentHp;
-    }
+        public float currentHp;
+        public float maxHp = 100f;
+        public HealthBarController myHpBar;
 
-    // Uses the 'DzDamagePlayer' action added to the InputActions asset.
-    // Mapped to the 'N' key.
-    private void OnDzDamagePlayer()
-    {
-        DamagePlayer();
-    }
+        public float damage;
 
-    // Uses the 'DzHealPlayer' action added to the InputActions asset.
-    // Mapped to the 'M' key.
-    private void OnDzHealPlayer()
-    {
-        HealPlayer();
-    }
-
-    private void DamagePlayer()
-    {
-        myHpBar.ApplyDamage(damage);
-        currentHp = myHpBar.CurrentHp;
-
-        if (0 < currentHp)
+        // Start is called before the first frame update
+        void Start()
         {
-            Debug.Log("I'm taking damage here!");
+            myHpBar.InitHp(maxHp);
+            currentHp = myHpBar.CurrentHp;
         }
-        else
+
+        // Uses the 'DzDamagePlayer' action added to the InputActions asset.
+        // Mapped to the 'N' key.
+        private void OnDzDamagePlayer()
         {
-            Debug.Log("I'm dead!");
+            DamagePlayer();
         }
-    }
 
-    private void HealPlayer()
-    {
-        myHpBar.ApplyHeal(damage);
-        currentHp = myHpBar.CurrentHp;
-
-        if (currentHp < maxHp)
+        // Uses the 'DzHealPlayer' action added to the InputActions asset.
+        // Mapped to the 'M' key.
+        private void OnDzHealPlayer()
         {
-            Debug.Log("Thanks for the potion!");
+            HealPlayer();
         }
-        else
+
+        private void DamagePlayer()
         {
-            Debug.Log("I'm at full health!");
+            myHpBar.ApplyDamage(damage);
+            currentHp = myHpBar.CurrentHp;
+
+            if (0 < currentHp)
+            {
+                Debug.Log("I'm taking damage here!");
+            }
+            else
+            {
+                Debug.Log("I'm dead!");
+            }
         }
-    }
 
-    // Update is called once per frame [unused for now]
-    void Update()
-    {
-        // NOTE: This is the OLD method for reading user inputs. Doesn't need
-        // the Input System.
-        // Keeping it here for reference.
+        private void HealPlayer()
+        {
+            myHpBar.ApplyHeal(damage);
+            currentHp = myHpBar.CurrentHp;
 
-        //if (Input.GetKeyDown(KeyCode.N)) // -> 'N' key
-        //{
-        //    DamagePlayer();
-        //}
+            if (currentHp < maxHp)
+            {
+                Debug.Log("Thanks for the potion!");
+            }
+            else
+            {
+                Debug.Log("I'm at full health!");
+            }
+        }
 
-        //if (Input.GetKeyDown(KeyCode.M)) // -> 'M' key
-        //{
-        //    HealPlayer();
-        //}
+        // Update is called once per frame [unused for now]
+        void Update()
+        {
+            // NOTE: This is the OLD method for reading user inputs. Doesn't need
+            // the Input System.
+            // Keeping it here for reference.
+
+            //if (Input.GetKeyDown(KeyCode.N)) // -> 'N' key
+            //{
+            //    DamagePlayer();
+            //}
+
+            //if (Input.GetKeyDown(KeyCode.M)) // -> 'M' key
+            //{
+            //    HealPlayer();
+            //}
+        }
     }
 }
+
