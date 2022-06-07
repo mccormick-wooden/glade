@@ -5,6 +5,7 @@ using UnityEngine;
 public class Beacon : BaseDamageable
 {
     public TextMeshProUGUI beaconCountText;
+    public Boss boss;
 
     void DecrementBeaconCount()
     {
@@ -28,6 +29,12 @@ public class Beacon : BaseDamageable
         {
             newCount = increment ? ++newCount : --newCount;
             beaconCountText.text = string.Format("Beacons: {0}", newCount >= 0 ? newCount : 0);
+
+            // TODO: Move out of this behavior out into a Manager
+            if (boss.transform != null && newCount == 0)
+            {
+                boss.transform.gameObject.SetActive(true);
+            }
         }
         else
         {

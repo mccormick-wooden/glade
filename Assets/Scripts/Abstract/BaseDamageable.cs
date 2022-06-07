@@ -57,8 +57,13 @@ namespace Assets.Scripts.Abstract
 
         protected virtual bool ShouldHandleCollisionAsAttack(Collider other)
         {
-            var attackingWeapon = other.GetComponent<BaseWeapon>();
-            return attackingWeapon != null && attackingWeapon.InUse;
+            if (CurrentHp > 0)
+            {
+                var attackingWeapon = other.GetComponent<BaseWeapon>();
+                return attackingWeapon != null && attackingWeapon.InUse;
+            }
+
+            return false;
         }
 
         protected virtual void ApplyDamage(BaseWeapon attackingWeapon)
