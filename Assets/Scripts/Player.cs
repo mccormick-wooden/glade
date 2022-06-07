@@ -1,8 +1,9 @@
-using UnityEngine;
-using TMPro;
 using System.Collections;
+using Assets.Scripts.Abstract;
+using TMPro;
+using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : BaseDamageable
 {
     // Public
     public float CameraHorizontalAngleChange { get; private set; }
@@ -43,7 +44,7 @@ public class Player : MonoBehaviour
     private Transform objectToLookAt;
 
     // Helpers
-    private bool ShouldLunge => sword.IsSwinging && slashLungeFrameCtr < slashLungeFrameLen;
+    private bool ShouldLunge => sword.InUse && slashLungeFrameCtr < slashLungeFrameLen;
     private bool IsAnimStateSwordSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("SwordSlash");
     private bool IsAnimStateSwordBackSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("SwordBackSlash");
     private bool IsAnimStateJumpSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("JumpSlash");
@@ -111,19 +112,11 @@ public class Player : MonoBehaviour
 
     }
 
-    private void OnEnable()
-    {
-        controls.Gameplay.Enable();
-    }
-
-    private void OnDisable()
-    {
-        controls.Gameplay.Disable();
-    }
-
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
         rigidBody = GetComponent<Rigidbody>();
 
         isGrounded = true;
@@ -135,6 +128,18 @@ public class Player : MonoBehaviour
         CameraHorizontalAngleChange = 0f;
         CameraVerticalAngleChange = 0f;
     }
+
+    private void OnEnable()
+    {
+        controls.Gameplay.Enable();
+    }
+
+    private void OnDisable()
+    {
+        controls.Gameplay.Disable();
+    }
+
+
 
     void CalculateCameraPosition()
     {
@@ -287,7 +292,7 @@ public class Player : MonoBehaviour
             {
                 // set this here because we may have circumvented
                 // the normal way around this.
-                sword.IsSwinging = false;
+                sword.InUse = false;
             }
 
         }
@@ -304,21 +309,21 @@ public class Player : MonoBehaviour
             {
                 numberOfFramesSinceLastSwing = 0;
                 //swordSlashState = 1;
-                sword.IsSwinging = true;
+                sword.InUse = true;
                 animator.SetBool("DoAttack", true);
             }
             else if (IsAnimStateSwordSlash)
             {
                 numberOfFramesSinceLastSwing = 0;
                 //swordSlashState = 2;
-                sword.IsSwinging = true;
+                sword.InUse = true;
                 animator.SetBool("DoBackslash", true);
             }
             else if (IsAnimStateSwordBackSlash)
             {
                 numberOfFramesSinceLastSwing = 0;
                 //swordSlashState = 2;
-                sword.IsSwinging = true;
+                sword.InUse = true;
                 animator.SetBool("DoJumpSlash", true);
             }
 
@@ -327,23 +332,23 @@ public class Player : MonoBehaviour
         {
             if (animState.IsName("MovementTree"))
             {
-                sword.IsSwinging = false;
+                sword.InUse = false;
             }
             else if (IsAnimStateSwordSlash)
             {
                 // clear this so it can be picked up later
                 animator.SetBool("DoAttack", false);
-                sword.IsSwinging = true;
+                sword.InUse = true;
             }
             else if (IsAnimStateSwordBackSlash)
             {
                 animator.SetBool("DoBackslash", false);
-                sword.IsSwinging = true;
+                sword.InUse = true;
             }
             else if (IsAnimStateJumpSlash)
             {
                 animator.SetBool("DoJumpSlash", false);
-                sword.IsSwinging = true;
+                sword.InUse = true;
             }
         }
     }
@@ -364,6 +369,10 @@ public class Player : MonoBehaviour
         {
             ShowMessage("You acquired a new ability!");
             other.gameObject.SetActive(false);
+        }
+        else if (ShouldHandleCollisionAsAttack(other))
+        {
+            HandleAttack(other.GetComponent<BaseWeapon>());
         }
     }
     private IEnumerator DestroyMessage(float waitTime)
