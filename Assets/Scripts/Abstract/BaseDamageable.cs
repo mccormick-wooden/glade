@@ -33,9 +33,11 @@ namespace Assets.Scripts.Abstract
             if (healthBarController != null)
                 healthBarController.InitHealthBar(CurrentHp);
 
-            Debug.Log(healthBarController == null ? 
-                $"{gameObject.name} HP set to {CurrentHp}/{MaxHp}" : 
-                $"{gameObject.name} HP set to {CurrentHp}/{MaxHp} with health bar at {healthBarController.CurrentHp}/{healthBarController.MaxHp}");
+            Debug.Log(
+                healthBarController == null
+                    ? $"{gameObject.name} HP set to {CurrentHp}/{MaxHp}"
+                    : $"{gameObject.name} HP set to {CurrentHp}/{MaxHp} with health bar at {healthBarController.CurrentHp}/{healthBarController.MaxHp}"
+            );
         }
 
         /// <summary>
@@ -50,19 +52,26 @@ namespace Assets.Scripts.Abstract
                 healthBarController.CurrentHp = CurrentHp;
 
             if (CurrentHp == 0)
-                Die();      
+                Die();
         }
 
         protected virtual bool ShouldHandleCollisionAsAttack(Collider other)
         {
-            var attackingWeapon = other.GetComponent<BaseWeapon>();
-            return attackingWeapon != null && attackingWeapon.InUse;
+            if (CurrentHp > 0)
+            {
+                var attackingWeapon = other.GetComponent<BaseWeapon>();
+                return attackingWeapon != null && attackingWeapon.InUse;
+            }
+
+            return false;
         }
 
         protected virtual void ApplyDamage(BaseWeapon attackingWeapon)
         {
             var newHp = Mathf.Max(CurrentHp - attackingWeapon.AttackDamage, 0f);
-            Debug.Log($"Applying damage to {gameObject.name}: currentHp = {CurrentHp}, damage = {attackingWeapon.AttackDamage}, newHp = {newHp}");
+            Debug.Log(
+                $"Applying damage to {gameObject.name}: currentHp = {CurrentHp}, damage = {attackingWeapon.AttackDamage}, newHp = {newHp}"
+            );
             CurrentHp = newHp;
         }
 

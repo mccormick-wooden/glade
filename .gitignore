@@ -1,5 +1,10 @@
+# rider
+.config/
+.idea/
+
 # macOS
 .DS_Store
+.vscode
 
 # Assignment Write-Ups
 writeups/*.pdf
