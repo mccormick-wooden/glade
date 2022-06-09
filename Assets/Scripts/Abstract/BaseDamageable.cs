@@ -28,7 +28,7 @@ namespace Assets.Scripts.Abstract
 
         public bool HasHp => CurrentHp > 0;
 
-        public virtual bool IsDead { get; set; } = false;
+        public virtual bool IsDead { get; protected set; } = false;
 
         protected virtual void Start()
         {
