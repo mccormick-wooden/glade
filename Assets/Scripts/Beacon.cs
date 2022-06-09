@@ -1,11 +1,15 @@
-using Assets.Scripts.Abstract;
 using TMPro;
 using UnityEngine;
 
-public class Beacon : BaseDamageable
+public class Beacon : MonoBehaviour
 {
     public TextMeshProUGUI beaconCountText;
     public Boss boss;
+
+    private void Start()
+    {
+        IncrementBeaconCount();
+    }
 
     void DecrementBeaconCount()
     {
@@ -40,23 +44,5 @@ public class Beacon : BaseDamageable
         {
             Debug.LogError("Could not parse int from beaconCountText", beaconCountText);
         }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (ShouldHandleCollisionAsAttack(other))
-            HandleAttack(other.GetComponent<BaseWeapon>()); // entirely base behavior
-    }
-
-    protected override void Start()
-    {
-        base.Start();
-        IncrementBeaconCount();
-    }
-
-    protected override void Die()
-    {
-        Debug.Log("Beacon died");
-        base.Die();
     }
 }
