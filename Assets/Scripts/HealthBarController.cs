@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class HealthBarController : MonoBehaviour
 {
-    public bool SnapToMainCamera = true;
+    public bool AlwaysFaceMainCamera = true;
 
     private GameObject MainCamera = null;
 
@@ -19,7 +19,7 @@ public class HealthBarController : MonoBehaviour
 
     private void Update()
     {
-        if (SnapToMainCamera && MainCamera != null)
+        if (AlwaysFaceMainCamera && MainCamera != null)
         {
             transform.LookAt(MainCamera.transform.position);
         }
