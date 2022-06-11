@@ -2564,7 +2564,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9084432218350635572, guid: e857263a88f829e47819dbf3106db7ea, type: 3}
       propertyPath: m_Name
-      value: Floating Health Bar Canvas
+      value: Hovering Health Bar
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e857263a88f829e47819dbf3106db7ea, type: 3}

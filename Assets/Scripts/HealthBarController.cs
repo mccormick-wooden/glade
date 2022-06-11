@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class HealthBarController : MonoBehaviour
 {
-    public bool AlwaysFaceMainCamera = true;
-
     private GameObject MainCamera = null;
 
     [SerializeField]
@@ -15,14 +13,6 @@ public class HealthBarController : MonoBehaviour
     private void Awake()
     {
         MainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-    }
-
-    private void Update()
-    {
-        if (AlwaysFaceMainCamera && MainCamera != null)
-        {
-            transform.LookAt(MainCamera.transform.position);
-        }
     }
 
     public float MaxHp
