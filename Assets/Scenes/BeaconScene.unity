@@ -11033,11 +11033,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 442488, guid: ec78ebca7517fb745a45a931cb06d2bd, type: 3}
   m_PrefabInstance: {fileID: 1014494719}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1026240087 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -6874584590210671055, guid: a4837675e0934b24e8594980e2773da6, type: 3}
-  m_PrefabInstance: {fileID: 1925526814}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1027150345
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11103,11 +11098,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 429508, guid: 9c74caa742791864f9c678287121e6c9, type: 3}
   m_PrefabInstance: {fileID: 1027150345}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1041330072 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 608321761475470972, guid: a4837675e0934b24e8594980e2773da6, type: 3}
-  m_PrefabInstance: {fileID: 1925526814}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1044319345
 PrefabInstance:
@@ -22220,6 +22210,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &2015677263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015677260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c77328567789ab48b37d4ee1d2002f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 8
+  DistanceToGround: 0.1
+  player: {fileID: 2015677260}
 --- !u!4 &2015677264 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a4837675e0934b24e8594980e2773da6, type: 3}
@@ -22247,30 +22254,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   playerSpeedForce: 0
---- !u!114 &2015677266
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2015677260}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e8bfbd307976894fa80b2060b271785, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IkActive: 1
-  WeightPositionRight: 1
-  WeightRotationRight: 1
-  WeightPositionLeft: 1
-  WeightRotationLeft: 1
-  offsetFoot: {x: 0, y: 0, z: 0}
-  RayMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  DebugEnable: 1
-  FootRight: {fileID: 1041330072}
-  FootLeft: {fileID: 1026240087}
 --- !u!136 &2015677267
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -45,14 +45,14 @@ public class EnemySpawner : MonoBehaviour
             totalWeight += weight;
         }
 
-        Debug.Log(totalWeight);
+        //Debug.Log(totalWeight);
         return totalWeight;
     }
 
     void GenerateEnemies(float weight)
     {
         float r = UnityEngine.Random.Range(0.0f, 1.0f);
-        GameObject enemiesParent = GameObject.Find("Enemies");
+        GameObject enemiesParent = GameObject.Find("ParentEnemy");
 
         if (weight > r)
         {
@@ -95,13 +95,13 @@ public class EnemySpawner : MonoBehaviour
             g.transform.position += new Vector3(randomX, 0, randomZ);
 
             // move it up until we get to the ground 
-            float halfHeight = g.GetComponent<EnemyBase>().Height / 2f;
+            float halfHeight = g.GetComponent<BaseEnemy>().Height / 2f;
             g.transform.position += new Vector3(0, halfHeight, 0);
 
             float groundInterceptRayLength = halfHeight + 0.1f;
 
             int yPositionAttempts = 0;
-            const int maxYPositionAttempts = 100;
+            const int maxYPositionAttempts = 20;
             bool gotValidYPosition = false;
 
             // Try going up from our current position first

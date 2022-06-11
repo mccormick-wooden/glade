@@ -1,11 +1,15 @@
 using Assets.Scripts.Abstract;
 using UnityEngine;
 
-public class Enemy : BaseDamageable
+public class BaseEnemy : BaseDamageable
 {
     private Animator animator;
     private Rigidbody rigidBody;
+    public GameObject playerGameObject;
     public Transform Player;
+
+    // Height should be filled in by a specific subclass 
+    public float Height; 
 
     // Start is called before the first frame update
     protected override void Start()
@@ -14,6 +18,7 @@ public class Enemy : BaseDamageable
 
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
+        Player = GameObject.Find("Player").transform;
     }
 
     private void UpdateAnimations()
