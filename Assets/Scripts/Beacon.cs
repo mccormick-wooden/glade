@@ -1,12 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+using Assets.Scripts.Abstract;
+using TMPro;
 using UnityEngine;
 
-using TMPro;
-
-public class Beacon : MonoBehaviour
+public class Beacon : BaseDamageable
 {
     public TextMeshProUGUI beaconCountText;
+    public Boss boss;
 
     void DecrementBeaconCount()
     {
@@ -25,31 +24,39 @@ public class Beacon : MonoBehaviour
 
     void SetBeaconCountText(bool increment)
     {
-        int newCount;
-
-        string oldCount = beaconCountText.text.Replace("Beacons: ", null);
-        if (int.TryParse(oldCount, out newCount))
+        var oldCount = beaconCountText.text.Replace("Beacons: ", null);
+        if (int.TryParse(oldCount, out var newCount))
         {
             newCount = increment ? ++newCount : --newCount;
             beaconCountText.text = string.Format("Beacons: {0}", newCount >= 0 ? newCount : 0);
-        } else {
+
+            // TODO: Move out of this behavior out into a Manager
+            if (boss.transform != null && newCount == 0)
+            {
+                boss.transform.gameObject.SetActive(true);
+            }
+        }
+        else
+        {
             Debug.LogError("Could not parse int from beaconCountText", beaconCountText);
         }
     }
 
-    private void OnTriggerEnter(Collider other) {
-        // The Beacons probably want to react to any kind of "damage" - but this is hacky and specific to the Sword object.
-        if (other.name == "Sword") {
-            Sword sword = other.gameObject.GetComponent(typeof(Sword)) as Sword;
-            if (sword != null && sword.IsSwinging) {
-                Debug.Log("Beacon deactivated due to Sword swing hit.");
-                gameObject.SetActive(false);
-            }
-        }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (ShouldHandleCollisionAsAttack(other))
+            HandleAttack(other.GetComponent<BaseWeapon>()); // entirely base behavior
     }
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         IncrementBeaconCount();
+    }
+
+    protected override void Die()
+    {
+        Debug.Log("Beacon died");
+        base.Die();
     }
 }

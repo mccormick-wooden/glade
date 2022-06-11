@@ -3,36 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthBarController : MonoBehaviour
+namespace dz
 {
-    public Slider hpSlider;
-
-    public float MaxHp
+    public class HealthBarController : MonoBehaviour
     {
-        get => hpSlider.maxValue;
-        private set => hpSlider.maxValue = value;
-    }
+        public Slider hpSlider;
 
-    public float CurrentHp
-    {
-        get => hpSlider.value;
-        private set => hpSlider.value = value;
-    }
+        public float MaxHp
+        {
+            get => hpSlider.maxValue;
+            private set => hpSlider.maxValue = value;
+        }
 
-    // Initializes the HP value.
-    public void InitHp(float maxHp)
-    {
-        MaxHp = maxHp;
-        CurrentHp = maxHp;
-    }
+        public float CurrentHp
+        {
+            get => hpSlider.value;
+            private set => hpSlider.value = value;
+        }
 
-    public void ApplyHeal(float healBy)
-    {
-        CurrentHp = Mathf.Min(CurrentHp + healBy, MaxHp);
-    }
+        // Initializes the HP value.
+        public void InitHp(float maxHp)
+        {
+            MaxHp = maxHp;
+            CurrentHp = maxHp;
+        }
 
-    public void ApplyDamage(float damageBy)
-    {
-        CurrentHp = Mathf.Max(CurrentHp - damageBy, 0f);
+        public void ApplyHeal(float healBy)
+        {
+            CurrentHp = Mathf.Min(CurrentHp + healBy, MaxHp);
+        }
+
+        public void ApplyDamage(float damageBy)
+        {
+            CurrentHp = Mathf.Max(CurrentHp - damageBy, 0f);
+        }
     }
 }
+

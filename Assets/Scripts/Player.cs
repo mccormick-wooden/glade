@@ -1,9 +1,15 @@
+using System.Collections;
+using Assets.Scripts.Abstract;
+using TMPro;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : BaseDamageable
 {
-    
+    // Public
+    public float CameraHorizontalAngleChange { get; private set; }
+    public float CameraVerticalAngleChange { get; private set; }
     public Transform PlayerTransform => transform;
+    public float RotationAngle => rotationAngle;
 
     // Controls related stuff
     private CharacterPlayerControls controls;
@@ -24,19 +30,20 @@ public class Player : MonoBehaviour
     private int slashLungeFrameCtr = 0;
     public int slashLungeFrameLen = 15;
     public float slashLungeTransformMultiplier = 3.5f;
+    private bool hasSkill;
 
     // Components of the player GameObject we reference
     private Rigidbody rigidBody;
     private Animator animator;
 
-
+    [SerializeField]
+    private TextMeshProUGUI GameMessage = null;
 
     // Helpers
-    private bool ShouldLunge => sword.IsSwinging && slashLungeFrameCtr < slashLungeFrameLen;
+    private bool ShouldLunge => sword.InUse && slashLungeFrameCtr < slashLungeFrameLen;
     private bool IsAnimStateSwordSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("SwordSlash");
     private bool IsAnimStateSwordBackSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("SwordBackSlash");
     private bool IsAnimStateJumpSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("JumpSlash");
-
 
     // Stuff to help us know when we're in contact with the ground
     [SerializeField] 
@@ -104,6 +111,7 @@ public class Player : MonoBehaviour
         {
             doBlock = false;
         };
+
     }
 
     private void OnEnable()
@@ -144,7 +152,8 @@ public class Player : MonoBehaviour
         transformForward = ShouldLunge ? 
             transform.forward * slashLungeTransformMultiplier : 
             transformForward;
-                                            // The final jump animation should lunge differently, not sure how
+
+        // The final jump animation should lunge differently, not sure how
         transformForward = !ShouldLunge && (IsAnimStateSwordSlash || IsAnimStateSwordBackSlash) ?
             transform.forward * 0 :
             transformForward;
@@ -224,7 +233,8 @@ public class Player : MonoBehaviour
             {
                 // set this here because we may have circumvented
                 // the normal way around this.
-                sword.IsSwinging = false;
+
+                sword.InUse = false;
             }
 
         }
@@ -244,17 +254,18 @@ public class Player : MonoBehaviour
 
             if (animState.IsName("MovementTree"))
             {
-                sword.IsSwinging = true;
+                sword.InUse = true;
                 animator.SetBool("DoAttack", true);
             }
             else if (IsAnimStateSwordSlash)
             {
-                sword.IsSwinging = true;
+
+                sword.InUse = true;
                 animator.SetBool("DoBackslash", true);
             }
             else if (IsAnimStateSwordBackSlash)
             {
-                sword.IsSwinging = true;
+                sword.InUse = true;
                 animator.SetBool("DoJumpSlash", true);
             }
 
@@ -263,24 +274,63 @@ public class Player : MonoBehaviour
         {
             if (animState.IsName("MovementTree"))
             {
-                sword.IsSwinging = false;
+                sword.InUse = false;
             }
             else if (IsAnimStateSwordSlash)
             {
                 // clear this so it can be picked up later
                 animator.SetBool("DoAttack", false);
-                sword.IsSwinging = true;
+                sword.InUse = true;
             }
             else if (IsAnimStateSwordBackSlash)
             {
                 animator.SetBool("DoBackslash", false);
-                sword.IsSwinging = true;
+                sword.InUse = true;
             }
             else if (IsAnimStateJumpSlash)
             {
                 animator.SetBool("DoJumpSlash", false);
-                sword.IsSwinging = true;
+                sword.InUse = true;
             }
         }
     }
+
+    private void ShowMessage(string message, uint timeout = 3)
+    {
+        GameMessage.SetText(message);
+
+        if (timeout > 0)
+        {
+            StartCoroutine(DestroyMessage(timeout));
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("AbilityPickup"))
+        {
+            ShowMessage("You acquired a new ability!");
+            other.gameObject.SetActive(false);
+        }
+        else if (ShouldHandleCollisionAsAttack(other))
+        {
+            HandleAttack(other.GetComponent<BaseWeapon>());
+        }
+    }
+    private IEnumerator DestroyMessage(float waitTime)
+    {
+        Debug.Log($"Destroying message in {waitTime.ToString()} seconds...");
+        yield return new WaitForSeconds(waitTime);
+
+        Debug.Log("Destroying message");
+        GameMessage.SetText("");
+    }
+
+    /*
+    private void OnTriggerExit(Collider other)
+    {
+        Debug.Log("Ontriggerexit");
+        
+    }
+    */
 }
