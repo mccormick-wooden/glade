@@ -22,7 +22,6 @@ public class HealthBarController : MonoBehaviour
         if (AlwaysFaceMainCamera && MainCamera != null)
         {
             transform.LookAt(MainCamera.transform.position);
-            transform.Rotate(0, 180, 0);
         }
     }
 
