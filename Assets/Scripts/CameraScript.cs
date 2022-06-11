@@ -72,7 +72,7 @@ public class CameraScript : MonoBehaviour
         //float angle = Mathf.Deg2Rad * player.RotationAngle + cameraRotationAngle;
         //cameraRotationAngle += player.cameraAngleChange / 100f;
         //cameraRotationHorizontalAngle = player.cameraHorizontalAngleChange;
-        float horizontalAngle = Mathf.Deg2Rad * player.RotationAngle;// + (Mathf.Deg2Rad * cameraRotationHorizontalAngle * 90);
+        float horizontalAngle = Mathf.Deg2Rad;// * player.RotationAngle;// + (Mathf.Deg2Rad * cameraRotationHorizontalAngle * 90);
 
         //cameraRotationVerticalAngle = player.cameraVerticalAngleChange;
         //float verticalAngle = /*Mathf.Deg2Rad * player.RotationAngle +*/ (Mathf.Deg2Rad * cameraRotationVerticalAngle * 90);
