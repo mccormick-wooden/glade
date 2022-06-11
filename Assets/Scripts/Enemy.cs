@@ -1,17 +1,14 @@
-using Assets.Scripts.Abstract;
 using UnityEngine;
 
-public class Enemy : BaseDamageable
+public class Enemy : MonoBehaviour
 {
     private Animator animator;
     private Rigidbody rigidBody;
     public Transform Player;
 
     // Start is called before the first frame update
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
-
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
     }
@@ -36,23 +33,5 @@ public class Enemy : BaseDamageable
     private void FixedUpdate()
     {
         ApplyTransforms();
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (ShouldHandleCollisionAsAttack(other))
-            HandleAttack(other.GetComponent<BaseWeapon>());    
-    }
-
-    protected override void HandleAttack(BaseWeapon attackingWeapon)
-    {
-        // Some custom behavior...
-        base.HandleAttack(attackingWeapon); // then optionally, the base behavior
-    }
-
-    protected override void Die()
-    {
-        // Some custom behavior...
-        base.Die(); // then optionally, the base behavior
     }
 }

@@ -3110,10 +3110,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dfca9c3d88fb42aca4dfd179216a36c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player: {fileID: 2015677264}
+--- !u!114 &357865119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 357865114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89b4d0963ff204f44abc7aa7f7e641ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   healthBarController: {fileID: 0}
   currentHp: 0
   maxHp: 100
-  Player: {fileID: 2015677264}
+  applyDamageAnimTrigger: Take Damage
+  dieAnimTrigger: Die
 --- !u!1001 &358684377
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11787,6 +11801,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 2
+--- !u!114 &1119219184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119219182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa6005456495c7942bb108889492ce48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarController: {fileID: 0}
+  currentHp: 0
+  maxHp: 100
 --- !u!1001 &1122324699
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18361,7 +18390,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: enemy
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1661546443793391572, guid: da0b2891c4763354abee1fee9f39817b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: da0b2891c4763354abee1fee9f39817b, type: 3}
 --- !u!4 &1674638062 stripped
 Transform:
@@ -21685,7 +21715,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1991175353}
-  m_LocalRotation: {x: -0.114929475, y: 0.8782972, z: -0.2648858, w: -0.3810783}
+  m_LocalRotation: {x: -0.114929475, y: 0.87829727, z: -0.2648858, w: -0.38107833}
   m_LocalPosition: {x: 8.763437, y: 7.8199997, z: -35.032307}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -22237,6 +22267,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &2015677263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015677260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa6005456495c7942bb108889492ce48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarController: {fileID: 1187584825}
+  currentHp: 0
+  maxHp: 100
 --- !u!4 &2015677264 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a4837675e0934b24e8594980e2773da6, type: 3}
@@ -22254,9 +22299,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c28f83def5e8544a295a199c3817ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthBarController: {fileID: 1187584825}
-  currentHp: 0
-  maxHp: 100
   slashLungeFrameLen: 15
   slashLungeTransformMultiplier: 3.5
   GameMessage: {fileID: 739182607}
