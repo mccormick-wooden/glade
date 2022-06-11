@@ -14,17 +14,21 @@ namespace Assets.Scripts.Abstract
         [SerializeField]
         private float maxHp;
 
-        public virtual float CurrentHp
+        public float CurrentHp
         {
             get => currentHp;
             protected set => currentHp = value;
         }
 
-        public virtual float MaxHp
+        public float MaxHp
         {
             get => maxHp;
             protected set => maxHp = value;
         }
+
+        public bool HasHp => CurrentHp > 0;
+
+        public virtual bool IsDead { get; protected set; } = false;
 
         protected virtual void Start()
         {
@@ -40,30 +44,27 @@ namespace Assets.Scripts.Abstract
             );
         }
 
-        /// <summary>
-        /// This method should be directly called or overriden by derived implementations in collision handlers.
-        /// </summary>
-        /// <param name="damagingWeapon"></param>
-        protected virtual void HandleAttack(BaseWeapon attackingWeapon)
+        protected virtual void OnTriggerEnter(Collider other)
+        {
+            if (ShouldHandleCollisionAsAttack(other))
+                HandleAttack(other.GetComponent<BaseWeapon>());
+        }
+
+        protected void HandleAttack(BaseWeapon attackingWeapon)
         {
             ApplyDamage(attackingWeapon);
 
             if (healthBarController != null)
                 healthBarController.CurrentHp = CurrentHp;
 
-            if (CurrentHp == 0)
+            if (!HasHp)
                 Die();
         }
 
         protected virtual bool ShouldHandleCollisionAsAttack(Collider other)
         {
-            if (CurrentHp > 0)
-            {
-                var attackingWeapon = other.GetComponent<BaseWeapon>();
-                return attackingWeapon != null && attackingWeapon.InUse;
-            }
-
-            return false;
+            var attackingWeapon = other.GetComponent<BaseWeapon>();
+            return attackingWeapon != null && attackingWeapon.InUse && HasHp;
         }
 
         protected virtual void ApplyDamage(BaseWeapon attackingWeapon)
@@ -77,7 +78,8 @@ namespace Assets.Scripts.Abstract
 
         protected virtual void Die()
         {
-            gameObject.SetActive(false);
+            Debug.Log($"{gameObject.name} died.");
+            IsDead = true;
         }
     }
 }

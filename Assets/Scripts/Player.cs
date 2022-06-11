@@ -1,9 +1,8 @@
 using System.Collections;
-using Assets.Scripts.Abstract;
 using TMPro;
 using UnityEngine;
 
-public class Player : BaseDamageable
+public class Player : MonoBehaviour
 {
     // Public
     public float CameraHorizontalAngleChange { get; private set; }
@@ -113,10 +112,8 @@ public class Player : BaseDamageable
     }
 
     // Start is called before the first frame update
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
-
         rigidBody = GetComponent<Rigidbody>();
 
         isGrounded = true;
@@ -369,10 +366,6 @@ public class Player : BaseDamageable
         {
             ShowMessage("You acquired a new ability!");
             other.gameObject.SetActive(false);
-        }
-        else if (ShouldHandleCollisionAsAttack(other))
-        {
-            HandleAttack(other.GetComponent<BaseWeapon>());
         }
     }
     private IEnumerator DestroyMessage(float waitTime)

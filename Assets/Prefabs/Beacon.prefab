@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6414804153239900389}
   - component: {fileID: 3003831870003931672}
   - component: {fileID: 5011427615002609339}
+  - component: {fileID: -7260883968866331377}
   - component: {fileID: 709416175968630621}
   m_Layer: 0
   m_Name: Beacon
@@ -114,9 +115,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1500b4273cd44d4fbe8a6f895cd19a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHp: 0
-  maxHp: 1
   beaconCountText: {fileID: 0}
+  boss: {fileID: 0}
+--- !u!114 &-7260883968866331377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8392457230069742203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa6005456495c7942bb108889492ce48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarController: {fileID: 0}
+  currentHp: 0
+  maxHp: 2
 --- !u!54 &709416175968630621
 Rigidbody:
   m_ObjectHideFlags: 0
