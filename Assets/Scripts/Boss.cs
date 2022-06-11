@@ -1,21 +1,20 @@
-using System;
-using Assets.Scripts.Abstract;
+using Assets.Scripts.Damageable;
 using UnityEngine;
 
 // Blatantly copied from Enemy.cs - did not want to step over changes in Enemy.cs for other scenes
-public class Boss : BaseDamageable
+public class Boss : MonoBehaviour
 {
     private Animator animator;
     private Rigidbody rigidBody;
+    private AnimateDamageable damageManager;
     public Transform Player;
 
     // Start is called before the first frame update
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
-
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
+        damageManager = GetComponent<AnimateDamageable>();
     }
 
     protected virtual void UpdateAnimations() { }
@@ -65,31 +64,13 @@ public class Boss : BaseDamageable
     // Update is called once per frame
     private void Update()
     {
-        if (CurrentHp > 0)
+        if (damageManager.HasHp)
             UpdateAnimations();
     }
 
     private void FixedUpdate()
     {
-        if (CurrentHp > 0)
+        if (damageManager.HasHp)
             ApplyTransforms();
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (ShouldHandleCollisionAsAttack(other))
-            HandleAttack(other.GetComponent<BaseWeapon>());
-    }
-
-    protected override void HandleAttack(BaseWeapon attackingWeapon)
-    {
-        // TODO: Use booleans per professor?
-        animator.SetTrigger("Take Damage");
-        base.HandleAttack(attackingWeapon); // then optionally, the base behavior
-    }
-
-    protected override void Die()
-    {
-        animator.SetTrigger("Die");
     }
 }
