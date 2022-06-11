@@ -491,7 +491,7 @@ GameObject:
   m_Component:
   - component: {fileID: 588092550}
   m_Layer: 0
-  m_Name: Enemies
+  m_Name: ParentEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -658,9 +658,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c28f83def5e8544a295a199c3817ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthBarController: {fileID: 0}
-  currentHp: 0
-  maxHp: 0
   slashLungeFrameLen: 15
   slashLungeTransformMultiplier: 3.5
   GameMessage: {fileID: 0}
@@ -701,7 +698,6 @@ GameObject:
   - component: {fileID: 1318869330}
   - component: {fileID: 1318869329}
   - component: {fileID: 1318869328}
-  - component: {fileID: 1318869331}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -774,21 +770,6 @@ Transform:
   m_Father: {fileID: 954244467}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1318869331
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1318869327}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff7b9f8cf8dfccc4ebca1d0961efb0c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  PlayerGameObject: {fileID: 0}
-  ObjectToLookAt: {fileID: 0}
 --- !u!1 &1351920268
 GameObject:
   m_ObjectHideFlags: 0
