@@ -175,12 +175,62 @@ public class Player : MonoBehaviour
         }    
     }
 
+    public bool CheckGroundNear(
+        Vector3 charPos,
+        out bool isJumpable
+    )
+    {
+        const float MAX_JUMPABLE_ANGLE = 45f;
+        const float RAY_ORIGIN_OFFSET = 1f;
+        const float RAY_DEPTH = .1f;
+
+        bool ret = false;
+        bool _isJumpable = false;
+
+        float totalRayLen = RAY_ORIGIN_OFFSET + RAY_DEPTH;
+
+        Ray ray = new Ray(charPos + Vector3.up, Vector3.down);
+
+        Debug.DrawRay(charPos + Vector3.up * RAY_ORIGIN_OFFSET, Vector3.down, Color.red);
+
+        RaycastHit[] hits = Physics.RaycastAll(ray, totalRayLen, whatIsGround);
+        RaycastHit groundHit = new RaycastHit();
+
+        foreach (RaycastHit hit in hits)
+        {
+
+            if (hit.collider.gameObject.CompareTag("Walkable"))
+            {
+
+                ret = true;
+
+                groundHit = hit;
+
+                _isJumpable = Vector3.Angle(Vector3.up, hit.normal) < MAX_JUMPABLE_ANGLE;
+
+                break; //only need to find the ground once
+
+            }
+
+        }
+
+        isJumpable = _isJumpable;
+
+        return ret;
+    }
+
     void ApplyForcesAndDrag()
     {
         float halfHeight = capsuleCollider.height / 2f;
         Vector3 groundInterceptRayStart = transform.position + new Vector3(0, halfHeight, 0);
         float groundInterceptRayLength = halfHeight + 0.1f;
 
+        // just a dummy thing for now because we don't have jump
+
+        bool isJumpable = false;
+        isGrounded = CheckGroundNear(transform.position, out isJumpable);
+
+        /*
         if (Physics.Raycast(groundInterceptRayStart, Vector3.down, groundInterceptRayLength, whatIsGround))
         {
             isGrounded = true;
@@ -189,6 +239,7 @@ public class Player : MonoBehaviour
         {
             isGrounded = false;
         }
+        */
 
         if (isJumping && isGrounded)
         {

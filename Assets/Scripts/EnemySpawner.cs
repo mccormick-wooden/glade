@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EnemySpawner : MonoBehaviour
 {
+    // Let other things maybe turn this on and off (maybe terrain triggers)
     public bool spawnActive;
 
     public List<GameObject> beacons;
@@ -12,9 +14,12 @@ public class EnemySpawner : MonoBehaviour
     public List<GameObject> possibleEnemies;
 
     [SerializeField]
-    public LayerMask whatIsGround;
+    private GameObject enemyPrefab;
 
-    DateTime lastSpawnTime;
+    [SerializeField]
+    private LayerMask whatIsGround;
+
+    private DateTime lastSpawnTime;
     public float nominalSpawnTime;
 
     // Start is called before the first frame update
@@ -51,7 +56,7 @@ public class EnemySpawner : MonoBehaviour
 
     void GenerateEnemies(float weight)
     {
-        float r = UnityEngine.Random.Range(0.0f, 1.0f);
+        float r = Random.Range(0.0f, 1.0f);
         GameObject enemiesParent = GameObject.Find("ParentEnemy");
 
         if (weight > r)
@@ -82,21 +87,19 @@ public class EnemySpawner : MonoBehaviour
         // Move enemy to a random location that isn't inside anything
         g.transform.position = transform.position;
 
-        bool safeTransform = false;
+        const float MIN_X_OFFSET = 10;
+        const float MAX_X_OFFSET = 25;
 
-        const float minimumXOffset = 10;
-        const float maximumXOffset = 25;
-
-        const float minimumZOffset = 10;
-        const float maximumZOffset = 25;
+        const float MIN_Z_OFFSET = 10;
+        const float MAX_Z_OFFSET = 25;
 
         int attempts = 0;
         const int maxAttempts = 3;
 
-        while (safeTransform == false && attempts < maxAttempts)
+        while (attempts < maxAttempts)
         {
-            float randomX = UnityEngine.Random.Range(minimumXOffset, maximumXOffset) * ((UnityEngine.Random.Range(0f, 1f) >= 0.5) ? -1 : 1);
-            float randomZ = UnityEngine.Random.Range(minimumZOffset, maximumZOffset) * ((UnityEngine.Random.Range(0f, 1f) >= 0.5) ? -1 : 1);
+            float randomX = UnityEngine.Random.Range(MIN_X_OFFSET, MAX_X_OFFSET) * ((UnityEngine.Random.Range(0f, 1f) >= 0.5) ? -1 : 1);
+            float randomZ = UnityEngine.Random.Range(MIN_Z_OFFSET, MAX_Z_OFFSET) * ((UnityEngine.Random.Range(0f, 1f) >= 0.5) ? -1 : 1);
 
             g.transform.position += new Vector3(randomX, 0, randomZ);
 
@@ -123,9 +126,8 @@ public class EnemySpawner : MonoBehaviour
                 g.transform.position += new Vector3(0, 0.1f, 0);
             }
 
-            if (gotValidYPosition == true)
+            if (gotValidYPosition)
             {
-                safeTransform = true;
                 return true;
             }
 
@@ -145,7 +147,7 @@ public class EnemySpawner : MonoBehaviour
             }
 
             // if we still didn't get anything -
-            if (gotValidYPosition == false)
+            if (!gotValidYPosition)
             {
                 // failed to find a valid placement, 
                 // give up and start again
@@ -153,8 +155,6 @@ public class EnemySpawner : MonoBehaviour
             }
             else
             {
-                safeTransform = true;
-                //g.transform.position = newPosition;
                 return true;
             }
         }
