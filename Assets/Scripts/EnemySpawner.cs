@@ -9,7 +9,7 @@ public class EnemySpawner : MonoBehaviour
 
     public List<GameObject> beacons;
 
-    public GameObject enemyPrefab;
+    public List<GameObject> possibleEnemies;
 
     [SerializeField]
     public LayerMask whatIsGround;
@@ -58,7 +58,13 @@ public class EnemySpawner : MonoBehaviour
         {
             Debug.Log("Make a bad guy!");
 
+            
+            GameObject enemyPrefab = possibleEnemies[1];
             GameObject g = Instantiate(enemyPrefab, enemiesParent.transform);
+
+            //UnityEditor.PrefabUtility.SaveAsPrefabAsset(g, possibleEnemies[0]);
+
+            //g.transform.parent = enemiesParent.transform;
 
             if (!FindValidPlacement(g))
             {
