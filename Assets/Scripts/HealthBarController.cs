@@ -5,8 +5,15 @@ using UnityEngine.UI;
 
 public class HealthBarController : MonoBehaviour
 {
+    private GameObject MainCamera = null;
+
     [SerializeField]
     private Slider hpSlider;
+
+    private void Awake()
+    {
+        MainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+    }
 
     public float MaxHp
     {
