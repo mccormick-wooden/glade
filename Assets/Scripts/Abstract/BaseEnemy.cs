@@ -40,7 +40,6 @@ public class BaseEnemy : MonoBehaviour
     protected DateTime lastAttackTime;
     protected bool isAttacking;
 
-
     // Start is called before the first frame update
     protected virtual void Start()
     {
@@ -60,7 +59,6 @@ public class BaseEnemy : MonoBehaviour
         // This probably needs changed later
         // It may mess up animations, but good for now
         
-
         // Default move/attack flow 
         // Can be overriden as needed
         if (!isAttacking && Vector3.Magnitude(transform.position - Player.transform.position) < minDistanceFromPlayer)

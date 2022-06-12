@@ -1168,8 +1168,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBarController: {fileID: 0}
-  currentHp: 100
-  maxHp: 100
+  currentHp: 50
+  maxHp: 50
 --- !u!114 &9138424767231823314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1185,7 +1185,7 @@ MonoBehaviour:
   playerGameObject: {fileID: 0}
   Player: {fileID: 0}
   Height: 2
-  Speed: 5
+  Speed: 4
   minDistanceFromPlayer: 10
   maxDistanceFromPlayer: 25
   attackPushbackForce: 0
