@@ -9773,7 +9773,7 @@ GameObject:
   - component: {fileID: 908807469}
   m_Layer: 3
   m_Name: Main Terrain
-  m_TagString: Untagged
+  m_TagString: Walkable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -21942,9 +21942,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff7b9f8cf8dfccc4ebca1d0961efb0c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 2015677265}
-  PlayerGameObject: {fileID: 2015677260}
-  ObjectToLookAt: {fileID: 2015677260}
 --- !u!114 &1991175358
 MonoBehaviour:
   m_ObjectHideFlags: 0
