@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
     private TextMeshProUGUI GameMessage = null;
 
     // Helpers
-    private bool ShouldLunge => sword.InUse && slashLungeFrameCtr < slashLungeFrameLen;
+    private bool ShouldLunge => sword.InUse && slashLungeFrameCtr < slashLungeFrameLen && verticalInput > .1;
     private bool IsAnimStateSwordSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("SwordSlash");
     private bool IsAnimStateSwordBackSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("SwordBackSlash");
     private bool IsAnimStateJumpSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("JumpSlash");
@@ -157,7 +157,11 @@ public class Player : MonoBehaviour
             transform.forward * 0 :
             transformForward;
 
-        if (ShouldLunge) slashLungeFrameCtr++;    
+        if (ShouldLunge)
+        {
+            rigidBody.AddForce(transformForward * 250, ForceMode.Impulse);
+            slashLungeFrameCtr++;
+        }
         
         if (isGrounded)
         {
@@ -165,7 +169,7 @@ public class Player : MonoBehaviour
 
             if (!doBlock)
             {
-                rigidBody.AddForce(transformForward * verticalInput * playerSpeedForce, ForceMode.Force);
+               // rigidBody.AddForce(transformForward * verticalInput * playerSpeedForce, ForceMode.Force);
             }
 
         }

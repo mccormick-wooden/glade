@@ -21029,7 +21029,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 2e76dcdea158c8948bf755ca2b605574, type: 2}
     - target: {fileID: 5866666021909216657, guid: a4837675e0934b24e8594980e2773da6, type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4837675e0934b24e8594980e2773da6, type: 3}
@@ -21942,9 +21942,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff7b9f8cf8dfccc4ebca1d0961efb0c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 2015677265}
-  PlayerGameObject: {fileID: 2015677260}
-  ObjectToLookAt: {fileID: 2015677260}
 --- !u!114 &1991175358
 MonoBehaviour:
   m_ObjectHideFlags: 0
