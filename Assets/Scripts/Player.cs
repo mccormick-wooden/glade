@@ -144,7 +144,10 @@ public class Player : MonoBehaviour
 
     void ApplyTransforms()
     {
-        transform.Rotate(0, horizontalInput, 0);
+        if (!doBlock)
+        {
+            transform.Rotate(0, horizontalInput, 0);
+        }
 
         var transformForward = transform.forward;
 
