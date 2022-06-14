@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class DummySpinAttackEnemy : BaseEnemy
 {
-    float degreesSpun;
-    float degreesPerAttack;
-    float degreesPerSecond;
-
+    private float degreesSpun;
+    private float degreesPerAttack;
+    private float degreesPerSecond;
 
     // Start is called before the first frame update
     protected override void Start()

@@ -5,10 +5,10 @@ using UnityEngine;
 public class DummyRangedAttackEnemy : BaseEnemy
 {
     [SerializeField]
-    GameObject arrowPrefab;
+    private GameObject arrowPrefab;
 
     [SerializeField]
-    float arrowForce;
+    private float arrowForce;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -26,10 +26,6 @@ public class DummyRangedAttackEnemy : BaseEnemy
         if (isAttacking)
         {
             ShootArrow();
-        }
-        else
-        {
-
         }
     }
 
@@ -52,27 +48,5 @@ public class DummyRangedAttackEnemy : BaseEnemy
         Rigidbody rb = arrow.GetComponent<Rigidbody>();
         rb.AddForce(arrowForce * -v, ForceMode.Impulse);
         isAttacking = false;
-        
     }
-
-    /*
-    void SpinAttackStep()
-    {
-        // this enemy just spins to do an attack
-        // dumb simple example
-        if (isAttacking && degreesSpun > degreesPerAttack)
-        {
-            Debug.Log("Spun " + degreesSpun + ", attack done!");
-            isAttacking = false;
-            degreesSpun = 0.0f;
-        }
-        else
-        {
-            Debug.Log("Spinning: " + degreesSpun);
-            float amountToSpin = degreesPerSecond * Time.deltaTime;
-            degreesSpun += amountToSpin;
-            transform.Rotate(0, amountToSpin, 0);
-        }
-    }
-    */
 }

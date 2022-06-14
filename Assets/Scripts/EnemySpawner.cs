@@ -9,18 +9,19 @@ public class EnemySpawner : MonoBehaviour
     // Let other things maybe turn this on and off (maybe terrain triggers)
     public bool spawnActive;
 
-    public List<GameObject> beacons;
-
-    public List<GameObject> possibleEnemies;
+    [SerializeField]
+    private List<GameObject> beacons;
 
     [SerializeField]
-    private GameObject enemyPrefab;
+    private List<GameObject> possibleEnemies;
 
     [SerializeField]
     private LayerMask whatIsGround;
 
     private DateTime lastSpawnTime;
-    public float nominalSpawnTime;
+
+    [SerializeField]
+    private float nominalSpawnTime;
 
     // Start is called before the first frame update
     void Start()
