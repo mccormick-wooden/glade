@@ -53,11 +53,12 @@ public class WorldSpaceMovement : MonoBehaviour, WorldSpaceControls.IWorldSpaceA
 
     private void MoveCharacterControllerRoot()
     {
-        Vector3 inputDirection = new Vector3();
-        
+        var inputMagnitude = Mathf.Clamp01(move.magnitude);
+
         if (move == Vector2.zero)
         {
             animator.SetBool(AnimatorIsMovingParameter, false);
+            animator.SetFloat(AnimatorMovementParameter, 0f, 0.05f, Time.deltaTime);
             
             // Fix this to move with camera
             Vector3 down = Vector3.down * 9.8f;
@@ -65,6 +66,7 @@ public class WorldSpaceMovement : MonoBehaviour, WorldSpaceControls.IWorldSpaceA
             return;
         }
 
+        animator.SetFloat(AnimatorMovementParameter, inputMagnitude, 0.05f, Time.deltaTime);
         animator.SetBool(AnimatorIsMovingParameter, true);
         var movement = new Vector3(move.x, 0, move.y);
 
@@ -79,7 +81,6 @@ public class WorldSpaceMovement : MonoBehaviour, WorldSpaceControls.IWorldSpaceA
     private void MoveCharacterController()
     {
         var inputMagnitude = Mathf.Clamp01(move.magnitude);
-
         animator.SetFloat(AnimatorMovementParameter, inputMagnitude, 0.05f, Time.deltaTime);
         
         move.Normalize();
