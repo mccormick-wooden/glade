@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5011427615002609339}
   - component: {fileID: -7260883968866331377}
   - component: {fileID: 709416175968630621}
+  - component: {fileID: 4520001455218901118}
   m_Layer: 0
   m_Name: Beacon
   m_TagString: Damageable
@@ -148,6 +149,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4520001455218901118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8392457230069742203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2522f7c596415eb44b0aa664f3f157d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundEffect: {fileID: 0}
 --- !u!1001 &1448436406760338352
 PrefabInstance:
   m_ObjectHideFlags: 0

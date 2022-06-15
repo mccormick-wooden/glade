@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Beacon : MonoBehaviour
 {
+
+    // All this should move out to a manager class
     public TextMeshProUGUI beaconCountText;
     public Boss boss;
 

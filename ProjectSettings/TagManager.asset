@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Walkable
   - Weapon
+  - Environment
   layers:
   - Default
   - TransparentFX
