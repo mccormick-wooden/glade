@@ -67,8 +67,6 @@ public class Player : MonoBehaviour
         rigidBody.drag = 5;
         rigidBody.interpolation = RigidbodyInterpolation.Interpolate;
         rigidBody.collisionDetectionMode = CollisionDetectionMode.Continuous;
-
-        playerSpeedForce = 1250;
     }
 
 
@@ -162,7 +160,7 @@ public class Player : MonoBehaviour
 
         if (ShouldLunge)
         {
-            rigidBody.AddForce(transformForward * 250, ForceMode.Impulse);
+            rigidBody.AddForce(transformForward, ForceMode.Impulse);
             slashLungeFrameCtr++;
         }
         
@@ -172,7 +170,7 @@ public class Player : MonoBehaviour
 
             if (!doBlock)
             {
-               // rigidBody.AddForce(transformForward * verticalInput * playerSpeedForce, ForceMode.Force);
+                rigidBody.AddForce(transformForward * verticalInput * playerSpeedForce, ForceMode.Force);
             }
 
         }
@@ -206,8 +204,8 @@ public class Player : MonoBehaviour
         foreach (RaycastHit hit in hits)
         {
 
-            if (hit.collider.gameObject.CompareTag("Walkable"))
-            {
+            //if (hit.collider.gameObject.CompareTag("Walkable"))
+            //{
 
                 ret = true;
 
@@ -217,7 +215,7 @@ public class Player : MonoBehaviour
 
                 break; //only need to find the ground once
 
-            }
+            //}
 
         }
 
@@ -230,7 +228,7 @@ public class Player : MonoBehaviour
     {
         float halfHeight = capsuleCollider.height / 2f;
         Vector3 groundInterceptRayStart = transform.position + new Vector3(0, halfHeight, 0);
-        float groundInterceptRayLength = halfHeight + 0.1f;
+        float groundInterceptRayLength = halfHeight + 0.25f;
 
         // just a dummy thing for now because we don't have jump
 
@@ -247,6 +245,8 @@ public class Player : MonoBehaviour
             isGrounded = false;
         }
         */
+
+        Debug.Log("IsGrounded: " + isGrounded);
 
         if (isJumping && isGrounded)
         {
