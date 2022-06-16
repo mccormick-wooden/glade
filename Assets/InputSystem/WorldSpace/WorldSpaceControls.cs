@@ -86,7 +86,7 @@ public partial class @WorldSpaceControls : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/leftStick/left"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -97,7 +97,7 @@ public partial class @WorldSpaceControls : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/leftStick/right"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -105,7 +105,7 @@ public partial class @WorldSpaceControls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""2D Vector"",
                     ""id"": ""894a21c9-c61e-4668-ad9f-da20a4551f98"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
