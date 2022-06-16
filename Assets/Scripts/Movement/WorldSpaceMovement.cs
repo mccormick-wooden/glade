@@ -10,6 +10,7 @@ public class WorldSpaceMovement : MonoBehaviour, WorldSpaceControls.IWorldSpaceA
 {
     [SerializeField] private WorldSpaceControls worldSpaceControls;
     [SerializeField] private Animator animator;
+    [SerializeField] private LayerMask whatIsGround;
         
     public CharacterController controller;
     public Transform camera;
@@ -19,7 +20,10 @@ public class WorldSpaceMovement : MonoBehaviour, WorldSpaceControls.IWorldSpaceA
     private float turnSmoothVelocity;
     
     private bool useAnimator;
+    private Collider collider;
     private Vector2 move;
+
+    private float distanceToGround;
     
     private static readonly int AnimatorMovementParameter = Animator.StringToHash("Input");
     private static readonly int AnimatorIsMovingParameter = Animator.StringToHash("IsMoving");
@@ -31,9 +35,23 @@ public class WorldSpaceMovement : MonoBehaviour, WorldSpaceControls.IWorldSpaceA
             Debug.Log("Using root motion");
             useAnimator = true;
         }
-        
+
+        collider = GetComponent<Collider>();
+        if (collider == null)
+        {
+            Debug.Log("WorldSpaceMovement could not find collider");
+        }
+
         worldSpaceControls = new WorldSpaceControls();
         worldSpaceControls.WorldSpaceActionMap.SetCallbacks(this);
+    }
+
+    private void Start()
+    {
+        if (collider != null)
+        {
+            distanceToGround = collider.bounds.extents.y;
+        }
     }
 
     private void Update()
@@ -55,14 +73,14 @@ public class WorldSpaceMovement : MonoBehaviour, WorldSpaceControls.IWorldSpaceA
     {
         var inputMagnitude = Mathf.Clamp01(move.magnitude);
 
-        if (move == Vector2.zero)
+        if (move == Vector2.zero || !controller.isGrounded)
         {
             animator.SetBool(AnimatorIsMovingParameter, false);
             animator.SetFloat(AnimatorMovementParameter, 0f, 0.05f, Time.deltaTime);
             
             // Fix this to move with camera
-            Vector3 down = Vector3.down * 9.8f;
-            controller.Move(down * Time.deltaTime);
+            Vector3 gravity = new Vector3(0f, Physics.gravity.y, 0f);
+            controller.Move(gravity * Time.deltaTime);
             return;
         }
 
@@ -85,15 +103,13 @@ public class WorldSpaceMovement : MonoBehaviour, WorldSpaceControls.IWorldSpaceA
         
         move.Normalize();
         
-        
-        
-        if (move == Vector2.zero)
+        if (move == Vector2.zero) // || !CheckGroundNear(transform.position))
         {
             Vector3 down = Vector3.down * 9.8f;
             controller.Move(down * Time.deltaTime);
             return;
         }
-        
+
         var movement = new Vector3(move.x, 0, move.y);
 
         /* Make Relative to Camera */
@@ -107,7 +123,12 @@ public class WorldSpaceMovement : MonoBehaviour, WorldSpaceControls.IWorldSpaceA
         Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
 
         Vector3 player = moveDir.normalized * speed;
-        player.y = -9.8f;
+        
+        /*
+         * Scaling gravity so player falls faster
+         * Current IsGrounded 
+         */
+        player.y = Physics.gravity.y;
         
         controller.Move(player *  Time.deltaTime);
     }
