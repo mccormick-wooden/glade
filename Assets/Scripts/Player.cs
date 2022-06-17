@@ -128,9 +128,12 @@ public class Player : MonoBehaviour
         isJumping = false;
         doSlash = false;
         doBlock = false;
+
+        EventManager.TriggerEvent<PlayMusicEvent, int>(0);
+
     }
 
-    
+
     void GatherComponents()
     {
         animator = GetComponent<Animator>();
@@ -313,6 +316,7 @@ public class Player : MonoBehaviour
             {
                 sword.InUse = true;
                 animator.SetBool("DoAttack", true);
+                //EventManager.TriggerEvent<SwordSwingEvent, Vector3, float>(transform.position, 0);
             }
             else if (IsAnimStateSwordSlash)
             {
@@ -377,6 +381,21 @@ public class Player : MonoBehaviour
 
         Debug.Log("Destroying message");
         GameMessage.SetText("");
+    }
+
+    public void EmitFirstSwordSlash()
+    {
+        EventManager.TriggerEvent<SwordSwingEvent, Vector3, int>(transform.position, 0);
+    }
+
+    public void EmitSecondSwordSlash()
+    {
+        EventManager.TriggerEvent<SwordSwingEvent, Vector3, int>(transform.position, 1);
+    }
+
+    public void EmitThirdSwordSlash()
+    {
+        EventManager.TriggerEvent<SwordSwingEvent, Vector3, int>(transform.position, 2);
     }
 
     /*
