@@ -61,6 +61,11 @@ namespace DigitalRuby.PyroParticles
         {
             foreach (ParticleSystem p in gameObject.GetComponentsInChildren<ParticleSystem>())
             {
+                var projectile = GetComponent<FireProjectileScript>();
+                if (projectile != null)
+                {
+                    p.transform.localRotation = projectile.firedRotation;
+                }
                 if (ManualParticleSystems == null || ManualParticleSystems.Length == 0 ||
                     System.Array.IndexOf(ManualParticleSystems, p) < 0)
                 {
@@ -174,6 +179,8 @@ namespace DigitalRuby.PyroParticles
             }
             Stopping = true;
 
+            AudioSource.Stop();
+            
             // cleanup particle systems
             foreach (ParticleSystem p in gameObject.GetComponentsInChildren<ParticleSystem>())
             {

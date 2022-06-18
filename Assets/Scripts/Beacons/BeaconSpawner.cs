@@ -1,7 +1,10 @@
-﻿using System;
+﻿
+using System;
 using UnityEngine;
 using TMPro;
 using Unity.Collections;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 namespace Beacons
 {
@@ -15,24 +18,27 @@ namespace Beacons
             private set;
         }
         
-        [SerializeField] public GameObject beacon;
+        [SerializeField] public GameObject beaconToSpawn;
 
+        // The original value for this variable controls when the first beacon will drop.
         [SerializeField]
-        private float spawnTimer;
+        private float spawnTimerRemaining;
+        [SerializeField]
+        private float minSpawnWaitTime;
+        [SerializeField] private float maxSpawnWaitTime;
 
-        [SerializeField] private float maxConcurrentBeacons;
-
+        [SerializeField, ReadOnly] private int beaconCount;
+        [SerializeField, ReadOnly] private int beaconTotal;
+        [SerializeField] private float maxConcurrentBeacons; 
         [SerializeField] private float maxTotalBeacons;
         
+        // Provide a TMPro GUI object to output the current count
         [SerializeField]
         private TextMeshProUGUI beaconCountText;
         
-        [SerializeField, ReadOnly] private int beaconCount;
-        [SerializeField, ReadOnly] private int beaconTotal;
-
-
         private void Awake()
         {
+            // Enforced Singleton
             if (Instance != null && Instance != this)
             {
                 Destroy(this);
@@ -43,17 +49,29 @@ namespace Beacons
                 Instance = this;
             }
         }
-        
+
+        private void Update()
+        {
+            spawnTimerRemaining -= Time.deltaTime;
+
+            if (spawnTimerRemaining <= 0)
+            {
+                
+                Spawn();
+                spawnTimerRemaining = Random.Range(minSpawnWaitTime, maxSpawnWaitTime);
+            }
+        }
+
         public void Spawn()
         {
             if (!(beaconCount < maxConcurrentBeacons) || !(beaconTotal < maxTotalBeacons))  return;
 
             var transformRef = transform;
             IncrementBeaconCount();
-            Instantiate(beacon, transformRef.position, transformRef.rotation, transform);
+            Instantiate(beaconToSpawn, transformRef.position, transformRef.rotation, transform);
         }
 
-        public void OnBeaconDeath(Beacon deadBeacon)
+        public void OnBeaconDeath(CrashedBeacon deadBeacon)
         {
             Destroy(deadBeacon);
             DecrementBeaconCount();

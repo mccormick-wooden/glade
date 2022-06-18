@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2428498125740664942}
   - component: {fileID: 2860638167261607854}
   m_Layer: 0
-  m_Name: Beacon
+  m_Name: BeaconManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,8 +43,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1500b4273cd44d4fbe8a6f895cd19a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthBarController: {fileID: 0}
-  currentHp: 1
-  maxHp: 1
   fallingBeaconObject: {fileID: 141530, guid: 369eee557c4d41c479225bf744fa6a5f, type: 3}
   crashedBeaconObject: {fileID: 2775764871604184902, guid: 7c11c1d845754904a87e6ffef3ec1031, type: 3}

@@ -48,16 +48,37 @@ namespace DigitalRuby.PyroParticles
         [HideInInspector]
         public FireProjectileCollisionDelegate CollisionDelegate;
 
+        // Fields added by Glade
         private bool collided;
         public bool isCrashed;
+        public Quaternion firedRotation;
 
+        [SerializeField] private float offset1;
+        [SerializeField] private float offset2;
+        
         private IEnumerator SendCollisionAfterDelay()
         {
             yield return new WaitForSeconds(ProjectileColliderDelay);
 
-            Vector3 dir = ProjectileDirection * ProjectileColliderSpeed;
+            Quaternion rotation = Quaternion.Euler(0, -45, 0);
+            Vector3 dir = firedRotation * ProjectileDirection * ProjectileColliderSpeed;
             dir = ProjectileColliderObject.transform.rotation * dir;
             ProjectileColliderObject.GetComponent<Rigidbody>().velocity = dir;
+        }
+
+        private Quaternion GetRotationOffset()
+        {
+            // My goal here is to have the beacon fire down at random angles but still land in the terrain.
+            // Later I'd like to procedurally pick spots on the map for the beacon to go and then get the rotation from that spot's transform.
+            return Quaternion.AngleAxis(offset1, Vector3.up) * Quaternion.AngleAxis(offset2, Vector3.left);
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+            offset1 = Random.Range(-30.0f, 30.0f);
+            offset2 = Random.Range(-30.0f, 30.0f);
+            firedRotation = GetRotationOffset();
         }
 
         protected override void Start()

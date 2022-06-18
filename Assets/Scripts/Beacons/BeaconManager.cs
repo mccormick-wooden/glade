@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Beacons
 {
-    public class Beacon : BaseDamageable
+    public class BeaconManager : MonoBehaviour
     {
         public GameObject fallingBeaconObject;
         public GameObject crashedBeaconObject;
@@ -24,9 +24,8 @@ namespace Beacons
             if (fallingBeaconObject == null) Debug.LogError("Beacon does not have an object to represent fallingBeacon!");
         }
 
-        protected override void Start()
+        private void Start()
         {
-            base.Start();
             _isCrashed = false;
             _isBeaconSpawned = false;
 
@@ -34,10 +33,14 @@ namespace Beacons
             {
                 Debug.LogError("Could not find fallingBeaconObject");
             }
-            
-            fallingBeacon = Instantiate(fallingBeaconObject, transform.position, transform.rotation, transform);
-            beaconFall = GetComponentInChildren<FireProjectileScript>();
 
+            fallingBeacon = Instantiate(fallingBeaconObject, transform.position, transform.rotation, transform);
+            if (fallingBeacon == null)
+            {
+                Debug.LogError("Could not find fallingBeacon");
+            }
+            
+            beaconFall = GetComponentInChildren<FireProjectileScript>();
             if (beaconFall == null)
             {
                 Debug.LogError("Could not find component BeaconFall");
@@ -48,11 +51,6 @@ namespace Beacons
             if (fallingBeaconRigidBody == null)
             {
                 Debug.LogError("The falling beacon does not have a rigid body!");
-            }
-
-            if (fallingBeacon == null)
-            {
-                Debug.LogError("Could not find fallingBeacon");
             }
         }
 
@@ -65,12 +63,6 @@ namespace Beacons
             crashedBeacon = Instantiate(crashedBeaconObject, fallingBeaconRigidBody.transform.position, Quaternion.LookRotation(transform.position, Vector3.up), transform);
             _isCrashed = true;
             _isBeaconSpawned = true;
-        }
-
-        protected override void Die()
-        {
-            base.Die();
-            BeaconSpawner.Instance.OnBeaconDeath(this);
         }
     }
 }
