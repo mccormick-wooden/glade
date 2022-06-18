@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Interfaces;
 using UnityEngine;
+using System.Linq;
 
 namespace Assets.Scripts.Abstract
 {
@@ -64,7 +65,11 @@ namespace Assets.Scripts.Abstract
         protected virtual bool ShouldHandleCollisionAsAttack(Collider other)
         {
             var attackingWeapon = other.GetComponent<BaseWeapon>();
-            return attackingWeapon != null && attackingWeapon.InUse && HasHp;
+            if (attackingWeapon == null)
+                return false;
+
+            bool isWeaponTarget = attackingWeapon.TargetTags.Contains(transform.tag);
+            return attackingWeapon.InUse && HasHp && isWeaponTarget;
         }
 
         protected virtual void ApplyDamage(BaseWeapon attackingWeapon)

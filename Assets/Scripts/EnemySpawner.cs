@@ -13,13 +13,15 @@ public class EnemySpawner : MonoBehaviour
     private List<GameObject> beacons;
 
     [SerializeField]
-    private GameObject enemyPrefab;
+    private List<GameObject> possibleEnemies;
 
     [SerializeField]
     private LayerMask whatIsGround;
 
     private DateTime lastSpawnTime;
-    public float nominalSpawnTime;
+
+    [SerializeField]
+    private float nominalSpawnTime;
 
     // Start is called before the first frame update
     void Start()
@@ -67,7 +69,13 @@ public class EnemySpawner : MonoBehaviour
         {
             Debug.Log("Make a bad guy!");
 
+            
+            GameObject enemyPrefab = possibleEnemies[1];
             GameObject g = Instantiate(enemyPrefab, enemiesParent.transform);
+
+            //UnityEditor.PrefabUtility.SaveAsPrefabAsset(g, possibleEnemies[0]);
+
+            //g.transform.parent = enemiesParent.transform;
 
             if (!FindValidPlacement(g))
             {
