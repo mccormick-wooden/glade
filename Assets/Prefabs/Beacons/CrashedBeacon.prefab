@@ -102,10 +102,32 @@ PrefabInstance:
       propertyPath: m_Name
       value: Egg_Red
       objectReference: {fileID: 0}
+    - target: {fileID: 339889784731166791, guid: d68321a73cfd69b4aa0053a29ea9c617, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d68321a73cfd69b4aa0053a29ea9c617, type: 3}
+--- !u!1 &1821320354802833912 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 339889784731166791, guid: d68321a73cfd69b4aa0053a29ea9c617, type: 3}
+  m_PrefabInstance: {fileID: 2157548319131922879}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1821320354802533848 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 339889784730743911, guid: d68321a73cfd69b4aa0053a29ea9c617, type: 3}
   m_PrefabInstance: {fileID: 2157548319131922879}
   m_PrefabAsset: {fileID: 0}
+--- !u!135 &4344932152624613686
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1821320354802833912}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.1
+  m_Center: {x: 0, y: 1.2, z: 0}
