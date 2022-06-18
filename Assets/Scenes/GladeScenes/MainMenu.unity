@@ -616,7 +616,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a74ba5f04b11ba04099d06cc4b9ef4a2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d44ad8934c6dca348856eec97bcbaf10, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1382,9 +1382,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1596692886}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1520cff11b2591a46874f3363a5d218a, type: 3}
+  m_Script: {fileID: 11500000, guid: e13dfcd281af647489e118ae22f087aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneToLoad: BeaconScene
 --- !u!1 &1837325960
 GameObject:
   m_ObjectHideFlags: 0

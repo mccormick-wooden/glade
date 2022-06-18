@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MenuSceneLoader : MonoBehaviour
+public class SceneLoader : MonoBehaviour
 {
     // MonoBehaviour method documentation - https://docs.unity3d.com/ScriptReference/MonoBehaviour.html
 
