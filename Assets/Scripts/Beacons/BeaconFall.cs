@@ -1,15 +1,33 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using Unity.Collections;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-public class BeaconFall : MonoBehaviour
+namespace Beacons
 {
-    public AudioClip soundEffect;
-
-    public void Start()
+    public class BeaconFall : MonoBehaviour
     {
-        AudioSource.PlayClipAtPoint(soundEffect, transform.position);
-    }
+        public bool isCrashed;
+        private Collider fireboltCollider;
 
+        private void Awake()
+        {
+            isCrashed = false;
+            fireboltCollider = GetComponentInChildren<Collider>();
+        }
+
+        private void OnCrash()
+        {
+            Debug.Log("Beacon crashed into the Glade!");
+        }
+        
+        private void OnCollisionEnter(Collision other)
+        {
+            if (other.gameObject.layer != LayerMask.NameToLayer("Terrain")) return;
+            
+            isCrashed = true;
+            OnCrash();
+        }
+
+    }
 }

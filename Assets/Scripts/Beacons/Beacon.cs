@@ -1,50 +1,76 @@
-using TMPro;
+using System;
+using Assets.Scripts.Abstract;
+using DigitalRuby.PyroParticles;
 using UnityEngine;
 
-public class Beacon : MonoBehaviour
+namespace Beacons
 {
-
-    // All this should move out to a manager class
-    public TextMeshProUGUI beaconCountText;
-    public Boss boss;
-
-    private void Start()
+    public class Beacon : BaseDamageable
     {
-        IncrementBeaconCount();
-    }
+        public GameObject fallingBeaconObject;
+        public GameObject crashedBeaconObject;
 
-    void DecrementBeaconCount()
-    {
-        SetBeaconCountText(false);
-    }
+        private GameObject fallingBeacon;
+        private GameObject crashedBeacon;
 
-    void IncrementBeaconCount()
-    {
-        SetBeaconCountText(true);
-    }
+        private Rigidbody fallingBeaconRigidBody;
+        private FireProjectileScript beaconFall;
 
-    void OnDisable()
-    {
-        DecrementBeaconCount();
-    }
-
-    void SetBeaconCountText(bool increment)
-    {
-        var oldCount = beaconCountText.text.Replace("Beacons: ", null);
-        if (int.TryParse(oldCount, out var newCount))
+        private bool _isCrashed;
+        private bool _isBeaconSpawned;
+        
+        private void Awake()
         {
-            newCount = increment ? ++newCount : --newCount;
-            beaconCountText.text = string.Format("Beacons: {0}", newCount >= 0 ? newCount : 0);
+            if (fallingBeaconObject == null) Debug.LogError("Beacon does not have an object to represent fallingBeacon!");
+        }
 
-            // TODO: Move out of this behavior out into a Manager
-            if (boss.transform != null && newCount == 0)
+        protected override void Start()
+        {
+            base.Start();
+            _isCrashed = false;
+            _isBeaconSpawned = false;
+
+            if (fallingBeaconObject == null)
             {
-                boss.transform.gameObject.SetActive(true);
+                Debug.LogError("Could not find fallingBeaconObject");
+            }
+            
+            fallingBeacon = Instantiate(fallingBeaconObject, transform.position, transform.rotation, transform);
+            beaconFall = GetComponentInChildren<FireProjectileScript>();
+
+            if (beaconFall == null)
+            {
+                Debug.LogError("Could not find component BeaconFall");
+                _isCrashed = true;
+            }
+            
+            fallingBeaconRigidBody = fallingBeacon.GetComponentInChildren<Rigidbody>();
+            if (fallingBeaconRigidBody == null)
+            {
+                Debug.LogError("The falling beacon does not have a rigid body!");
+            }
+
+            if (fallingBeacon == null)
+            {
+                Debug.LogError("Could not find fallingBeacon");
             }
         }
-        else
+
+        private void LateUpdate()
         {
-            Debug.LogError("Could not parse int from beaconCountText", beaconCountText);
+            _isCrashed = beaconFall.isCrashed;
+
+            if (!_isCrashed || _isBeaconSpawned) return;
+            
+            crashedBeacon = Instantiate(crashedBeaconObject, fallingBeaconRigidBody.transform.position, Quaternion.LookRotation(transform.position, Vector3.up), transform);
+            _isCrashed = true;
+            _isBeaconSpawned = true;
+        }
+
+        protected override void Die()
+        {
+            base.Die();
+            BeaconSpawner.Instance.OnBeaconDeath(this);
         }
     }
 }
