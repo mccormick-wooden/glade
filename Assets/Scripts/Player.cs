@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
     private TextMeshProUGUI GameMessage = null;
 
     // Helpers
-    private bool ShouldLunge => sword.InUse && slashLungeFrameCtr < slashLungeFrameLen;
+    private bool ShouldLunge => sword.InUse && slashLungeFrameCtr < slashLungeFrameLen && verticalInput > .1;
     private bool IsAnimStateSwordSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("SwordSlash");
     private bool IsAnimStateSwordBackSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("SwordBackSlash");
     private bool IsAnimStateJumpSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("JumpSlash");
@@ -67,8 +67,6 @@ public class Player : MonoBehaviour
         rigidBody.drag = 5;
         rigidBody.interpolation = RigidbodyInterpolation.Interpolate;
         rigidBody.collisionDetectionMode = CollisionDetectionMode.Continuous;
-
-        playerSpeedForce = 1250;
     }
 
 
@@ -130,9 +128,12 @@ public class Player : MonoBehaviour
         isJumping = false;
         doSlash = false;
         doBlock = false;
+
+        EventManager.TriggerEvent<PlayMusicEvent, int>(0);
+
     }
 
-    
+
     void GatherComponents()
     {
         animator = GetComponent<Animator>();
@@ -144,7 +145,10 @@ public class Player : MonoBehaviour
 
     void ApplyTransforms()
     {
-        transform.Rotate(0, horizontalInput, 0);
+        if (!doBlock)
+        {
+            transform.Rotate(0, horizontalInput, 0);
+        }
 
         var transformForward = transform.forward;
 
@@ -157,7 +161,11 @@ public class Player : MonoBehaviour
             transform.forward * 0 :
             transformForward;
 
-        if (ShouldLunge) slashLungeFrameCtr++;    
+        if (ShouldLunge)
+        {
+            rigidBody.AddForce(transformForward, ForceMode.Impulse);
+            slashLungeFrameCtr++;
+        }
         
         if (isGrounded)
         {
@@ -199,8 +207,8 @@ public class Player : MonoBehaviour
         foreach (RaycastHit hit in hits)
         {
 
-            if (hit.collider.gameObject.CompareTag("Walkable"))
-            {
+            //if (hit.collider.gameObject.CompareTag("Walkable"))
+            //{
 
                 ret = true;
 
@@ -210,7 +218,7 @@ public class Player : MonoBehaviour
 
                 break; //only need to find the ground once
 
-            }
+            //}
 
         }
 
@@ -223,7 +231,7 @@ public class Player : MonoBehaviour
     {
         float halfHeight = capsuleCollider.height / 2f;
         Vector3 groundInterceptRayStart = transform.position + new Vector3(0, halfHeight, 0);
-        float groundInterceptRayLength = halfHeight + 0.1f;
+        float groundInterceptRayLength = halfHeight + 0.25f;
 
         // just a dummy thing for now because we don't have jump
 
@@ -240,6 +248,8 @@ public class Player : MonoBehaviour
             isGrounded = false;
         }
         */
+
+        Debug.Log("IsGrounded: " + isGrounded);
 
         if (isJumping && isGrounded)
         {
@@ -306,6 +316,7 @@ public class Player : MonoBehaviour
             {
                 sword.InUse = true;
                 animator.SetBool("DoAttack", true);
+                //EventManager.TriggerEvent<SwordSwingEvent, Vector3, float>(transform.position, 0);
             }
             else if (IsAnimStateSwordSlash)
             {
@@ -370,6 +381,21 @@ public class Player : MonoBehaviour
 
         Debug.Log("Destroying message");
         GameMessage.SetText("");
+    }
+
+    public void EmitFirstSwordSlash()
+    {
+        EventManager.TriggerEvent<SwordSwingEvent, Vector3, int>(transform.position, 0);
+    }
+
+    public void EmitSecondSwordSlash()
+    {
+        EventManager.TriggerEvent<SwordSwingEvent, Vector3, int>(transform.position, 1);
+    }
+
+    public void EmitThirdSwordSlash()
+    {
+        EventManager.TriggerEvent<SwordSwingEvent, Vector3, int>(transform.position, 2);
     }
 
     /*
