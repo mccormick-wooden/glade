@@ -19,6 +19,7 @@ public class NewGameManager : BaseSceneManager
         if (animationEventDispatcher == null)
         {
             animationEventDispatcher = GameObject.Find("CrawlText")?.GetComponent<AnimationEventDispatcher>();
+            // TODO: write crawl text?
         }
         else if (!subscribed)
         {
@@ -37,6 +38,6 @@ public class NewGameManager : BaseSceneManager
     {
         Debug.Log($"{GetType().Name} received AnimationComplete for {animation}!");
         if (animation.Equals("NewGameCrawl", StringComparison.OrdinalIgnoreCase))
-            GameManager.UpdateGameState(GameState.MainMenu);
+            GameManager.UpdateGameState(GameState.LevelOne);
     }
 }

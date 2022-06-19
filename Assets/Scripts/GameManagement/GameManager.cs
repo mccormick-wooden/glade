@@ -11,7 +11,7 @@ public enum GameState
     GameLost = 550,
 }
 
-public class GameManager : MonoBehaviour // TODO: create other managers, attach them to object, and inject self?
+public class GameManager : MonoBehaviour // TODO: create other managers, attach them to object, and inject self? 
 {
     private static GameManager instance;
 
@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour // TODO: create other managers, attach 
 
         DontDestroyOnLoad(gameObject);
 
-        // TODO - validations to ensure every scene and state is managed by only one object?
+        // TODO: validations to ensure every scene and state is managed by only one object? 
     }
 
     private void Start()
@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour // TODO: create other managers, attach 
 
     public static void UpdateGameState(GameState newState)
     {
-        switch (newState) // TODO: What do I even do here? just enforce valid state transitions?
+        switch (newState) // TODO: What do I even do here? just enforce valid state transitions? 
         {
             case GameState.MainMenu:
                 break;
