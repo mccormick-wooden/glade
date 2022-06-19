@@ -5,18 +5,19 @@ using UnityEngine;
 
 public class Arrow : BaseWeapon
 {
-    private string[] validCollideTags = new string[] { "Player" }; // I'm wondering if beacons should have a different tag?
+    private string[] validCollideTags = new string[] { "Player" };
     DateTime creationTime;
 
-    protected virtual void Start()
+    protected override void Start()
     {
+        base.Start();
         TargetTags = new string[] { "Player" };
         creationTime = DateTime.Now;
     }
 
     protected void Update()
     {
-        if (DateTime.Now > creationTime + TimeSpan.FromSeconds(2.5))
+        if (DateTime.Now > creationTime.AddSeconds(2.5))
         {
             Destroy(gameObject);
         }
