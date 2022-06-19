@@ -4,17 +4,18 @@ using UnityEngine;
 public enum GameState
 {
     Invalid = 0,
-    MainMenu = 1,
-    InGame = 2,
-    GameWon = 3,
-    GameLost = 4,
+    MainMenu = 10,
+    NewGame = 20,
+    LevelOne = 30,
+    GameWon = 40,
+    GameLost = 550,
 }
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour // TODO: create other managers, attach them to object, and inject self?
 {
     private static GameManager instance;
 
-    public GameState State { get; private set; }
+    public static GameState State { get; private set; }
 
     public static event Action<GameState> OnStateChanged;
 
@@ -29,6 +30,8 @@ public class GameManager : MonoBehaviour
         instance = this;
 
         DontDestroyOnLoad(gameObject);
+
+        // TODO - validations to ensure every scene and state is managed by only one object?
     }
 
     private void Start()
@@ -36,13 +39,15 @@ public class GameManager : MonoBehaviour
         UpdateGameState(GameState.MainMenu);
     }
 
-    public void UpdateGameState(GameState newState)
+    public static void UpdateGameState(GameState newState)
     {
-        switch (newState)
+        switch (newState) // TODO: What do I even do here? just enforce valid state transitions?
         {
             case GameState.MainMenu:
                 break;
-            case GameState.InGame:
+            case GameState.NewGame:
+                break;
+            case GameState.LevelOne:
                 break;
             case GameState.GameWon:
                 break;
