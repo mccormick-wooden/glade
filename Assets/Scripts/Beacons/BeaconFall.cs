@@ -1,6 +1,3 @@
-using System;
-using Unity.Collections;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace Beacons
@@ -20,11 +17,11 @@ namespace Beacons
         {
             Debug.Log("Beacon crashed into the Glade!");
         }
-        
+
         private void OnCollisionEnter(Collision other)
         {
             if (other.gameObject.layer != LayerMask.NameToLayer("Terrain")) return;
-            
+
             isCrashed = true;
             OnCrash();
         }
