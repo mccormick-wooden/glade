@@ -13,8 +13,6 @@ namespace Assets.Scripts.GameManagement
         [SerializeField] private GameObject uiCanvas = null;
         [SerializeField] private TMP_InputField inputField = null;
 
-        private float pausedTimeScale;
-
         private static DeveloperConsoleBehaviour instance;
 
         private DeveloperConsole developerConsole;
@@ -38,18 +36,10 @@ namespace Assets.Scripts.GameManagement
             if (!context.action.triggered)
                 return;
 
+            uiCanvas.SetActive(!uiCanvas.activeSelf);
+
             if (uiCanvas.activeSelf)
-            {
-                Time.timeScale = pausedTimeScale;
-                uiCanvas.SetActive(false);
-            }
-            else
-            {
-                pausedTimeScale = Time.timeScale;
-                Time.timeScale = 0;
-                uiCanvas.SetActive(true);
                 inputField.ActivateInputField();
-            }
         }
 
         public void ProcessCommand()
