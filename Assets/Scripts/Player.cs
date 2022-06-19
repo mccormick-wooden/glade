@@ -249,8 +249,6 @@ public class Player : MonoBehaviour
         }
         */
 
-        Debug.Log("IsGrounded: " + isGrounded);
-
         if (isJumping && isGrounded)
         {
             rigidBody.AddForce(Vector3.up * 5, ForceMode.VelocityChange);
