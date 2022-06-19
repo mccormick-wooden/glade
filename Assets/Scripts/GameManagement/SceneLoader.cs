@@ -3,20 +3,19 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    // MonoBehaviour method documentation - https://docs.unity3d.com/ScriptReference/MonoBehaviour.html
-
-    [SerializeField]
-    private string sceneToLoad;
-
-    public void LoadScene() 
-    {
-        LoadScene(sceneToLoad);
-    }
-
     public static void LoadScene(string sceneToLoad)
     {
         if (CanLoadScene(sceneToLoad))
+        {
             SceneManager.LoadScene(sceneToLoad);
+            if (TimeScaleToggle.IsTimePaused)
+                TimeScaleToggle.Toggle();
+        }
+    }
+
+    public static void ReloadCurrentScene()
+    {
+        LoadScene(GetCurrentSceneName());
     }
     
     public static bool CanLoadScene(string sceneToLoad)
@@ -35,5 +34,17 @@ public class SceneLoader : MonoBehaviour
         }
 
         return false;
+    }
+
+    public static string GetCurrentSceneName()
+    {
+        Scene scene = new Scene();
+        for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+        {
+            scene = SceneManager.GetSceneByBuildIndex(i);
+            if (scene.isLoaded)
+                break;
+        }
+        return scene.name;
     }
 }

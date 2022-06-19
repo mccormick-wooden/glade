@@ -199,7 +199,6 @@ GameObject:
   - component: {fileID: 2698955334946267289}
   - component: {fileID: 2382925262225372042}
   - component: {fileID: 1488154609961213022}
-  - component: {fileID: 2191068713869225478}
   m_Layer: 5
   m_Name: ExitGameButton
   m_TagString: Untagged
@@ -309,7 +308,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2191068713869225478}
+      - m_Target: {fileID: 6132447480910387541}
         m_TargetAssemblyTypeName: Quitter, Assembly-CSharp
         m_MethodName: QuitGame
         m_Mode: 1
@@ -321,18 +320,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &2191068713869225478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3628104470716154390}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1523b6267cb88f44e817692b0620c845, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3834316622255851335
 GameObject:
   m_ObjectHideFlags: 0
@@ -347,6 +334,8 @@ GameObject:
   - component: {fileID: 3834316622255851334}
   - component: {fileID: 32166884155137567}
   - component: {fileID: 6610345122254696225}
+  - component: {fileID: 8580911487470127166}
+  - component: {fileID: 6132447480910387541}
   m_Layer: 5
   m_Name: PauseMenuCanvas
   m_TagString: Untagged
@@ -459,6 +448,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b080f2e113b415244ac20eb10fa94d70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8580911487470127166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3834316622255851335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e13dfcd281af647489e118ae22f087aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6132447480910387541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3834316622255851335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1523b6267cb88f44e817692b0620c845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3834316622284860679
 GameObject:
   m_ObjectHideFlags: 0
@@ -471,7 +484,6 @@ GameObject:
   - component: {fileID: 3834316622284860683}
   - component: {fileID: 3834316622284860680}
   - component: {fileID: 3834316622284860681}
-  - component: {fileID: 3834316622284860682}
   m_Layer: 5
   m_Name: RestartButton
   m_TagString: Untagged
@@ -581,9 +593,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3834316622284860682}
+      - m_Target: {fileID: 8580911487470127166}
         m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadScene
+        m_MethodName: ReloadCurrentScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -593,19 +605,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &3834316622284860682
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3834316622284860679}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e13dfcd281af647489e118ae22f087aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneToLoad: TerrainScene
 --- !u!1 &3834316622424084508
 GameObject:
   m_ObjectHideFlags: 0
@@ -1001,7 +1000,6 @@ GameObject:
   - component: {fileID: 3834316623207453173}
   - component: {fileID: 3834316623207453170}
   - component: {fileID: 3834316623207453171}
-  - component: {fileID: 3834316623207453168}
   m_Layer: 5
   m_Name: MainMenuButton
   m_TagString: Untagged
@@ -1111,30 +1109,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3834316623207453168}
-        m_TargetAssemblyTypeName: Quitter, Assembly-CSharp
-        m_MethodName: QuitGame
-        m_Mode: 1
+      - m_Target: {fileID: 8580911487470127166}
+        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+        m_MethodName: LoadScene
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: MainMenu
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &3834316623207453168
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3834316623207453134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1523b6267cb88f44e817692b0620c845, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3834316623355264308
 GameObject:
   m_ObjectHideFlags: 0
@@ -1301,7 +1287,6 @@ GameObject:
   - component: {fileID: 6996369925951909427}
   - component: {fileID: 4009194695168508800}
   - component: {fileID: 5302017608304624795}
-  - component: {fileID: 5512313688387689556}
   m_Layer: 5
   m_Name: ResumeButton
   m_TagString: Untagged
@@ -1411,10 +1396,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5512313688387689556}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadScene
-        m_Mode: 1
+      - m_Target: {fileID: 6610345122254696225}
+        m_TargetAssemblyTypeName: PauseMenuManager, Assembly-CSharp
+        m_MethodName: SetPauseState
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1423,19 +1408,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &5512313688387689556
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5040220836810583420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e13dfcd281af647489e118ae22f087aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneToLoad: TerrainScene
 --- !u!1 &6000439079840729687
 GameObject:
   m_ObjectHideFlags: 0

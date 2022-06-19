@@ -1,5 +1,7 @@
+using System.Linq;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CanvasGroup))]
 public class PauseMenuManager : MonoBehaviour
@@ -8,6 +10,10 @@ public class PauseMenuManager : MonoBehaviour
 
     private Player player => FindObjectOfType<Player>();
     private CinemachineBrain playerCamera => FindObjectOfType<CinemachineBrain>();
+
+    private readonly string[] unPausableScenes = new string[] { "MainMenu" };
+
+    public bool IsPaused => canvasGroup.interactable;
 
     private void Awake()
     {
@@ -28,14 +34,31 @@ public class PauseMenuManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (IsPaused && InUnPauseableScene())
         {
-            TimeScaleToggle.Toggle();
-            canvasGroup.alpha = !canvasGroup.interactable ? 1 : 0;
-            canvasGroup.blocksRaycasts = !canvasGroup.interactable;
-            player.enabled = canvasGroup.interactable;
-            playerCamera.enabled = canvasGroup.interactable;
-            canvasGroup.interactable = !canvasGroup.interactable;
+            SetPauseState(false);
         }
+        else if (Input.GetKeyDown(KeyCode.Escape) && !InUnPauseableScene()) // TODO: Fix this input so that gamepad works
+        {
+            SetPauseState(!canvasGroup.interactable);
+        }
+    }
+
+    public void SetPauseState(bool areWePausing)
+    {
+        canvasGroup.alpha = areWePausing ? 1 : 0;
+        canvasGroup.blocksRaycasts = areWePausing;
+        canvasGroup.interactable = areWePausing;
+
+        if (player != null) player.enabled = !areWePausing;
+        if (playerCamera != null) playerCamera.enabled = !areWePausing;
+
+        if (areWePausing && !TimeScaleToggle.IsTimePaused || !areWePausing && TimeScaleToggle.IsTimePaused)
+            TimeScaleToggle.Toggle();
+    }
+
+    private bool InUnPauseableScene()
+    {
+        return unPausableScenes.Any(s => SceneManager.GetSceneByName(s).isLoaded); // todo: replace this with game mananager state check maybe?
     }
 }

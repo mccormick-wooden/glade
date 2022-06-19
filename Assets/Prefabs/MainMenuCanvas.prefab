@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 3834316622255851336}
   - component: {fileID: 3834316622255851337}
   - component: {fileID: 3834316622255851334}
+  - component: {fileID: 3406179801470056368}
+  - component: {fileID: 3636335349507436452}
   m_Layer: 5
   m_Name: MainMenuCanvas
   m_TagString: Untagged
@@ -100,6 +102,30 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &3406179801470056368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3834316622255851335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1523b6267cb88f44e817692b0620c845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3636335349507436452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3834316622255851335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e13dfcd281af647489e118ae22f087aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3834316622284860679
 GameObject:
   m_ObjectHideFlags: 0
@@ -112,7 +138,6 @@ GameObject:
   - component: {fileID: 3834316622284860683}
   - component: {fileID: 3834316622284860680}
   - component: {fileID: 3834316622284860681}
-  - component: {fileID: 3834316622284860682}
   m_Layer: 5
   m_Name: NewGameButton
   m_TagString: Untagged
@@ -222,31 +247,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3834316622284860682}
+      - m_Target: {fileID: 3636335349507436452}
         m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
         m_MethodName: LoadScene
-        m_Mode: 1
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: TerrainScene
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &3834316622284860682
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3834316622284860679}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e13dfcd281af647489e118ae22f087aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneToLoad: TerrainScene
 --- !u!1 &3834316622424084508
 GameObject:
   m_ObjectHideFlags: 0
@@ -640,7 +652,6 @@ GameObject:
   - component: {fileID: 3834316623207453173}
   - component: {fileID: 3834316623207453170}
   - component: {fileID: 3834316623207453171}
-  - component: {fileID: 3834316623207453168}
   m_Layer: 5
   m_Name: ExitGameButton
   m_TagString: Untagged
@@ -750,7 +761,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3834316623207453168}
+      - m_Target: {fileID: 3406179801470056368}
         m_TargetAssemblyTypeName: Quitter, Assembly-CSharp
         m_MethodName: QuitGame
         m_Mode: 1
@@ -762,18 +773,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &3834316623207453168
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3834316623207453134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1523b6267cb88f44e817692b0620c845, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3834316623355264308
 GameObject:
   m_ObjectHideFlags: 0
