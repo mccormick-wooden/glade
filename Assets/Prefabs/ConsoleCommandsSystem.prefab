@@ -635,10 +635,11 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 478346831625477335}
+        m_TargetAssemblyTypeName: Assets.Scripts.GameManagement.DeveloperConsoleBehaviour,
+          Assembly-CSharp
         m_MethodName: ProcessCommand
-        m_Mode: 0
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -705,7 +706,7 @@ GameObject:
   m_Component:
   - component: {fileID: 981976114766360839}
   - component: {fileID: 1685250646}
-  - component: {fileID: 5111015939947658454}
+  - component: {fileID: 478346831625477335}
   m_Layer: 5
   m_Name: ConsoleCommandsSystem
   m_TagString: Untagged
@@ -755,7 +756,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5111015939947658454}
+      - m_Target: {fileID: 478346831625477335}
         m_TargetAssemblyTypeName: Assets.Scripts.GameManagement.DeveloperConsoleBehaviour,
           Assembly-CSharp
         m_MethodName: Toggle
@@ -775,7 +776,7 @@ MonoBehaviour:
   m_DefaultActionMap: Developer
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &5111015939947658454
+--- !u!114 &478346831625477335
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -784,9 +785,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5808037607912292054}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3d47ddeb1505db4b81f4439dc63425d, type: 3}
+  m_Script: {fileID: 11500000, guid: a58139d898731dc4dbe2d2d923599b27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   prefix: /
+  commands:
+  - {fileID: 11400000, guid: f2fd436a5fe2aa6469b6cafb0b7a32bc, type: 2}
   uiCanvas: {fileID: 1005529010}
   inputField: {fileID: 1669160770}

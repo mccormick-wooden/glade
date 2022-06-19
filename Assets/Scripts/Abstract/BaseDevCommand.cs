@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public abstract class BaseConsoleCommand : ScriptableObject, IConsoleCommand
+public abstract class BaseDevCommand : ScriptableObject, IDevCommand
 {
     [SerializeField]
     private string commandWord = string.Empty;
 
     public string CommandWord => commandWord;
 
-    public abstract bool Process(string[] args);
+    public abstract IDevCommandResult Process(string[] args);
 }

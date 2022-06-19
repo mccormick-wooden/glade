@@ -7,7 +7,7 @@ namespace Assets.Scripts.GameManagement
     public class DeveloperConsoleBehaviour : MonoBehaviour
     {
         [SerializeField] private string prefix = string.Empty;
-        [SerializeField] private IConsoleCommand[] commands = new IConsoleCommand[0];
+        [SerializeField] private BaseDevCommand[] commands = new BaseDevCommand[0];
 
         [Header("UI")]
         [SerializeField] private GameObject uiCanvas = null;
@@ -52,9 +52,13 @@ namespace Assets.Scripts.GameManagement
             }
         }
 
-        public void ProcessCommand(string inputValue)
+        public void ProcessCommand()
         {
-            DeveloperConsole.ProcessCommand(inputValue);
+            var commandResult = DeveloperConsole.ProcessCommand(inputField.text);
+
+            if (!commandResult.WasSuccessful)
+                Debug.Log(commandResult.Response);
+
             inputField.text = string.Empty;
         }
     }

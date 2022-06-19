@@ -5,22 +5,22 @@ using System.Linq;
 public class DeveloperConsole
 {
     private readonly string _prefix;
-    private readonly IEnumerable<IConsoleCommand> _commands;
+    private readonly IEnumerable<IDevCommand> _commands;
 
-    public DeveloperConsole(string prefix, IEnumerable<IConsoleCommand> commands)
+    public DeveloperConsole(string prefix, IEnumerable<IDevCommand> commands)
     {
         _prefix = prefix;
         _commands = commands;
     }
 
-    public void ProcessCommand(string inputValue)
+    public IDevCommandResult ProcessCommand(string inputValue)
     {
         if (!IsValid(inputValue))
-            return;
+            return DevCommandResult.NotFound();
 
         (string commandInput, string[] args) = GetParsedInput(inputValue);
 
-        ExecuteCommand(commandInput, args);
+        return ExecuteCommand(commandInput, args);
     }
 
     private bool IsValid(string inputValue)
@@ -37,15 +37,16 @@ public class DeveloperConsole
         return (inputSplit[0], inputSplit.Skip(1).ToArray());
     }
 
-    public void ExecuteCommand(string commandInput, string[] args)
+    public IDevCommandResult ExecuteCommand(string commandInput, string[] args)
     {
-        foreach (IConsoleCommand command in _commands)
+        foreach (IDevCommand command in _commands)
         {
             if (commandInput.Equals(command.CommandWord, StringComparison.OrdinalIgnoreCase))
             {
-                command.Process(args);
-                break;
+                return command.Process(args);
             }
         }
+
+        return DevCommandResult.NotFound();
     }
 }
