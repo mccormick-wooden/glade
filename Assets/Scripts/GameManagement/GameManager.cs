@@ -52,9 +52,7 @@ public class GameManager : MonoBehaviour
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, "This state is unimplemented");
         }
 
-        State = newState;
-
-        OnStateChanged?.Invoke(State);
+        OnStateChanged?.Invoke(State = newState);
     }
 }
 
