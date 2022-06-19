@@ -229,7 +229,7 @@ GameObject:
   - component: {fileID: 285284593}
   - component: {fileID: 285284592}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Crawl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -328,8 +328,9 @@ GameObject:
   - component: {fileID: 759296609}
   - component: {fileID: 759296608}
   - component: {fileID: 759296610}
+  - component: {fileID: 759296611}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: CrawlText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -385,18 +386,18 @@ MonoBehaviour:
 
 
 
-    
-
-    Nam nec dignissim metus.
-    Etiam at ligula dictum, pellentesque massa eget, tristique ex. In sit amet augue
-    arcu. Sed volutpat ante urna, ac commodo dui ullamcorper at. In vitae luctus
-    magna. Vivamus arcu nunc, dapibus sit amet venenatis nec, tincidunt vel nisl.
-    Nulla dictum suscipit sapien, in pulvinar velit malesuada et. Aliquam eget elit
-    ante. Integer quam neque, varius sit amet erat non, efficitur eleifend neque.
 
 
+    Nam nec dignissim metus. Etiam
+    at ligula dictum, pellentesque massa eget, tristique ex. In sit amet augue arcu.
+    Sed volutpat ante urna, ac commodo dui ullamcorper at. In vitae luctus magna.
+    Vivamus arcu nunc, dapibus sit amet venenatis nec, tincidunt vel nisl. Nulla
+    dictum suscipit sapien, in pulvinar velit malesuada et. Aliquam eget elit ante.
+    Integer quam neque, varius sit amet erat non, efficitur eleifend neque.
 
-    
+
+
+
 
     Vivamus
     sagittis tellus quis consequat tincidunt. Quisque rhoncus tellus condimentum
@@ -410,7 +411,7 @@ MonoBehaviour:
     Nisi sapien
     rutrum nisi....
 
-    
+
 
 '
   m_isRightToLeft: 0
@@ -508,6 +509,24 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &759296611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 759296606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7739837c911b42c4e85765182adc4bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnAnimationStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnAnimationComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &801929918
 GameObject:
   m_ObjectHideFlags: 0
