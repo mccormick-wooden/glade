@@ -1,3 +1,5 @@
+using Assets.Scripts.Interfaces;
+
 public class DevCommandResult : IDevCommandResult
 {
     public bool WasSuccessful { get; private set; } = false;

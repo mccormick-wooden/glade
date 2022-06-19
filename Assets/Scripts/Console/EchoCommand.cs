@@ -1,3 +1,4 @@
+using Assets.Scripts.Interfaces;
 using UnityEngine;
 
 [CreateAssetMenu(fileName =nameof(EchoCommand), menuName = "Console/EchoCommand")]

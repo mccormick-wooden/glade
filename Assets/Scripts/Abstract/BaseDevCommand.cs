@@ -1,3 +1,4 @@
+using Assets.Scripts.Interfaces;
 using UnityEngine;
 
 public abstract class BaseDevCommand : ScriptableObject, IDevCommand

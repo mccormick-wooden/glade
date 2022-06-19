@@ -1,3 +1,4 @@
+using Assets.Scripts.Interfaces;
 using UnityEngine;
 
 [CreateAssetMenu(fileName =nameof(LoadSceneCommand), menuName = "Console/LoadSceneCommand")]
