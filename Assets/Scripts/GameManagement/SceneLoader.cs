@@ -8,8 +8,7 @@ public class SceneLoader : MonoBehaviour
         if (CanLoadScene(sceneToLoad))
         {
             SceneManager.LoadScene(sceneToLoad);
-            if (TimeScaleToggle.IsTimePaused)
-                TimeScaleToggle.Toggle();
+            FindObjectOfType<PauseMenuManager>().SetPauseState(false);
         }
     }
 

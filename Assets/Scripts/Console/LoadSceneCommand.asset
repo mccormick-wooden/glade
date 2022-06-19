@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8431b4e4af6dc8147893e6cbe81b53d0, type: 3}
   m_Name: LoadSceneCommand
   m_EditorClassIdentifier: 
-  commandWord: lds
+  commandWord: load
