@@ -1,6 +1,9 @@
-public interface IDevCommand
+namespace Assets.Scripts.Interfaces
 {
-    string CommandWord { get; }
+    public interface IDevCommand
+    {
+        string CommandWord { get; }
 
-    IDevCommandResult Process(string[] args);
+        IDevCommandResult Process(string[] args);
+    }
 }
