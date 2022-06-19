@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 5bbd65a51ed8af649ab8e3344ace9cae, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1327,11 +1327,10 @@ MonoBehaviour:
   slashLungeFrameLen: 15
   slashLungeTransformMultiplier: 3.5
   GameMessage: {fileID: 0}
-  groundCheckTransform: {fileID: 0}
-  foo:
+  whatIsGround:
     serializedVersion: 2
     m_Bits: 0
-  prefab: {fileID: 0}
+  playerSpeedForce: 0
 --- !u!114 &106916372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15244,6 +15243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 1
+  TargetTags: []
 --- !u!1001 &1402813144
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17092,6 +17092,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 60
+  TargetTags: []
 --- !u!65 &1571394844
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -22642,7 +22643,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2089901203}
-  m_LocalRotation: {x: 0.30710986, y: -0.22616771, z: 0.075389236, w: 0.92132956}
+  m_LocalRotation: {x: 0.3071099, y: -0.22616775, z: 0.07538926, w: 0.92132956}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:

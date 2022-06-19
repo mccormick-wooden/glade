@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.5748171, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 5bbd65a51ed8af649ab8e3344ace9cae, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -14700,6 +14700,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 0
+  TargetTags: []
 --- !u!1001 &1384400355
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14898,7 +14899,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1401677235}
-  m_LocalRotation: {x: 0.28041884, y: -0.2282472, z: 0.068837106, w: 0.92980105}
+  m_LocalRotation: {x: 0.28041887, y: -0.22824721, z: 0.06883712, w: 0.92980105}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -20561,7 +20562,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1991175353}
-  m_LocalRotation: {x: 0.28041884, y: -0.22824718, z: 0.06883712, w: 0.92980105}
+  m_LocalRotation: {x: 0.28041884, y: -0.2282472, z: 0.06883711, w: 0.92980105}
   m_LocalPosition: {x: 2.6466653, y: 9.77, z: -5.065952}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -21222,17 +21223,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c28f83def5e8544a295a199c3817ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthBarController: {fileID: 0}
-  currentHp: 0
-  maxHp: 0
   slashLungeFrameLen: 15
   slashLungeTransformMultiplier: 3.5
   GameMessage: {fileID: 0}
-  groundCheckTransform: {fileID: 0}
-  foo:
+  whatIsGround:
     serializedVersion: 2
     m_Bits: 0
-  prefab: {fileID: 0}
+  playerSpeedForce: 0
 --- !u!1001 &2023063553
 PrefabInstance:
   m_ObjectHideFlags: 0
