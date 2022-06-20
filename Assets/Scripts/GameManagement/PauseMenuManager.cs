@@ -29,7 +29,6 @@ public class PauseMenuManager : MonoBehaviour
             canvasGroup.alpha = 0; // We don't set this in the inspector because then we can't see it in the inspector! And that's annoying.
             canvasGroup.blocksRaycasts = false;
             canvasGroup.interactable = false;
-            DontDestroyOnLoad(gameObject);
         }
     }
 

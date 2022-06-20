@@ -29,8 +29,6 @@ public class GameManager : MonoBehaviour // TODO: create other managers, attach 
 
         instance = this;
 
-        DontDestroyOnLoad(gameObject);
-
         // TODO: validations to ensure every scene and state is managed by only one object? 
     }
 

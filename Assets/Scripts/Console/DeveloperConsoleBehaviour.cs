@@ -27,8 +27,6 @@ namespace Assets.Scripts.GameManagement
             }
 
             instance = this;
-
-            DontDestroyOnLoad(gameObject);
         }
 
         public void Toggle(CallbackContext context)

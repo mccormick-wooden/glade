@@ -33,8 +33,6 @@ public abstract class BaseSceneManager : MonoBehaviour
         enabled = false;
 
         GameManager.OnStateChanged += GameManagerOnStateChanged;
-
-        DontDestroyOnLoad(gameObject);
     }
 
     /// <summary>
