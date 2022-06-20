@@ -110,7 +110,7 @@ NavMeshSettings:
     agentHeight: 2
     agentSlope: 45
     agentClimb: 0.4
-    ledgeDropHeight: 0
+    ledgeDropHeight: 5
     maxJumpAcrossDistance: 0
     minRegionArea: 2
     manualCellSize: 0
@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 3a5650f176a0e8647875399b94ce876a, type: 2}
 --- !u!1 &945394
 GameObject:
   m_ObjectHideFlags: 3
@@ -349,7 +349,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 281259820}
-  m_LocalRotation: {x: 0.20681393, y: -0.6681175, z: 0.20149776, w: 0.68574464}
+  m_LocalRotation: {x: 0.20681393, y: -0.6681176, z: 0.20149775, w: 0.6857446}
   m_LocalPosition: {x: 173.49593, y: 24.529999, z: 128.78758}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1226,7 +1226,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1685753572}
-  m_LocalRotation: {x: 0.20681392, y: -0.6681175, z: 0.20149775, w: 0.68574464}
+  m_LocalRotation: {x: 0.20681392, y: -0.6681175, z: 0.20149776, w: 0.6857446}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
