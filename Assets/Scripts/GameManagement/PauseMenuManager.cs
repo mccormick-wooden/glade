@@ -9,6 +9,8 @@ public class PauseMenuManager : MonoBehaviour
 {
     private CanvasGroup canvasGroup;
 
+    private Canvas canvas;
+
     private Player player => FindObjectOfType<Player>();
     private CinemachineBrain playerCamera => FindObjectOfType<CinemachineBrain>();
 
@@ -19,6 +21,7 @@ public class PauseMenuManager : MonoBehaviour
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
+        canvas = canvasGroup.GetComponent<Canvas>();
 
         if (canvasGroup == null)
         {
@@ -55,6 +58,11 @@ public class PauseMenuManager : MonoBehaviour
 
         if (areWePausing && !TimeScaleToggle.IsTimePaused || !areWePausing && TimeScaleToggle.IsTimePaused)
             TimeScaleToggle.Toggle();
+
+        if (areWePausing)
+            Utility.DisableAllOf(except: canvas);
+        else
+            Utility.EnableAllOf(except: canvas);
     }
 
     private bool InUnPauseableScene()
