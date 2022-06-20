@@ -43,5 +43,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1500b4273cd44d4fbe8a6f895cd19a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fallingBeaconObject: {fileID: 141530, guid: 369eee557c4d41c479225bf744fa6a5f, type: 3}
-  crashedBeaconObject: {fileID: 2775764871604184902, guid: 7c11c1d845754904a87e6ffef3ec1031, type: 3}
+  fallingBeaconPrefab: {fileID: 141530, guid: 369eee557c4d41c479225bf744fa6a5f, type: 3}
+  crashedBeaconPrefab: {fileID: 2775764871604184902, guid: 7c11c1d845754904a87e6ffef3ec1031, type: 3}

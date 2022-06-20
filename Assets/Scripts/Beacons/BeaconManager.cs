@@ -51,6 +51,7 @@ namespace Beacons
             fallingBeaconRigidBody = fallingBeaconInstance.GetComponentInChildren<Rigidbody>();
             if (fallingBeaconRigidBody == null)
             {
+                /* Need a rigid body so that collision with terrain works */
                 Debug.LogError("The falling beacon does not have a rigid body!");
             }
         }
