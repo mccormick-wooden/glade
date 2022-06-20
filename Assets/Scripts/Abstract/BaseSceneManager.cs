@@ -80,6 +80,9 @@ public abstract class BaseSceneManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Purely for dev / logging
+    /// </summary>
     private void CheckHeartbeat()
     {
         if (DateTime.Now > lastHeartbeat.AddSeconds(1))

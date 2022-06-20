@@ -34,6 +34,7 @@ public class NewGameManager : BaseSceneManager
             animationEventDispatcher.OnAnimationComplete -= OnAnimationComplete;
     }
 
+    // TODO: Add option to skip Crawl
     private void OnAnimationComplete(string animation)
     {
         Debug.Log($"{GetType().Name} received AnimationComplete for {animation}!");

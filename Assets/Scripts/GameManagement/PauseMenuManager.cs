@@ -2,7 +2,8 @@ using System.Linq;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+// TODO: need to figure out how this fits into event management system
+// buttons basically need to fire events in an idempotent way
 [RequireComponent(typeof(CanvasGroup))]
 public class PauseMenuManager : MonoBehaviour
 {
