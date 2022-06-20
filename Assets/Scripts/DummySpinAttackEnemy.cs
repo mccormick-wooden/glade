@@ -20,6 +20,12 @@ public class DummySpinAttackEnemy : BaseEnemy
         degreesSpun = 0;
         degreesPerAttack = 360;
         degreesPerSecond = degreesPerAttack;
+
+        desireToAttackPlayer = 0.75f;
+        desireToDefendBeacon = 0.125f;
+        desireToRunAndHeal = 0.125f;
+
+
     }
 
     // Update is called once per frame

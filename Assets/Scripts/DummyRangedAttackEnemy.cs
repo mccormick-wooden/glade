@@ -23,6 +23,8 @@ public class DummyRangedAttackEnemy : BaseEnemy
     // Update is called once per frame
     protected override void Update()
     {
+
+
         if (isAttacking)
         {
             ShootArrow();
