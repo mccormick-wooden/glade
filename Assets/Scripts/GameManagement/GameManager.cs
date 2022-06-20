@@ -6,7 +6,7 @@ public enum GameState
     Invalid = 0,
     MainMenu = 10,
     NewGame = 20,
-    LevelOne = 30,
+    Level1 = 30,
     GameWon = 40,
     GameLost = 550,
 }
@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour // TODO: create other managers, attach 
                 break;
             case GameState.NewGame:
                 break;
-            case GameState.LevelOne:
+            case GameState.Level1:
                 break;
             case GameState.GameWon:
                 break;

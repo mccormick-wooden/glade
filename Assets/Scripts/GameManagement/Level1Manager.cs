@@ -7,9 +7,9 @@
 /// 
 /// Have to weigh pros and cons.
 /// </summary>
-public class LevelOneManager : BaseSceneManager
+public class Level1Manager : BaseSceneManager
 {
-    public override string ManagedSceneName => "LevelOne";
+    public override string ManagedSceneName => "Level1";
 
-    public override GameState ManagedState => GameState.LevelOne;
+    public override GameState ManagedState => GameState.Level1;
 }
