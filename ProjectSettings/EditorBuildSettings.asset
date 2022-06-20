@@ -6,27 +6,27 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/GladeScenes/MainMenu.unity
+    path: Assets/Scenes/MainMenu.unity
     guid: 0f2f532d554cd6e42b852f8a682ff96f
   - enabled: 1
-    path: Assets/Scenes/MainScene.unity
+    path: Assets/Scenes/Demo/MainScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Scenes/BeaconScene.unity
+    path: Assets/Scenes/Demo/BeaconScene.unity
     guid: d0c1b0055190b4be2a09bf0013ece2dc
   - enabled: 1
-    path: Assets/Scenes/TerrainScene.unity
+    path: Assets/Scenes/Demo/TerrainScene.unity
     guid: edf5d7967bb903546909205f355d561f
   - enabled: 1
-    path: Assets/Scenes/EnemyScene.unity
+    path: Assets/Scenes/Demo/EnemyScene.unity
     guid: aab1c340cf10a2d468dae7ae8298dfc7
   - enabled: 1
-    path: Assets/Scenes/AutoGenerateEnemies.unity
+    path: Assets/Scenes/Demo/AutoGenerateEnemies.unity
     guid: ba13b395749e5c34ab5890b95c288b81
   - enabled: 1
-    path: Assets/Scenes/GladeScenes/NewGame.unity
+    path: Assets/Scenes/NewGame.unity
     guid: 8723daab9324b90479165fb21622e7c8
   - enabled: 1
-    path: Assets/Scenes/GladeScenes/LevelOne.unity
+    path: Assets/Scenes/LevelOne.unity
     guid: 0b604bca4c721b442a08c1f21fb8fab3
   m_configObjects: {}
