@@ -9,6 +9,8 @@ TagManager:
   - Enemy
   - Walkable
   - Weapon
+  - Environment
+  - Fire
   layers:
   - Default
   - TransparentFX
@@ -17,6 +19,8 @@ TagManager:
   - Water
   - UI
   - GroundCheck
+  - Terrain
+  - FireLayer
   - 
   - 
   - 
@@ -39,9 +43,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
+  - MainMenu
   m_SortingLayers:
   - name: Default
     uniqueID: 0

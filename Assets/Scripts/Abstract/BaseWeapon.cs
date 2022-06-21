@@ -22,7 +22,5 @@ namespace Assets.Scripts.Abstract
         {
             InUse = false;
         }
-
-        
     }
 }

@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Sword : BaseWeapon
 {
-    private string[] validCollideTags = new string[] { "Enemy", "Damageable" }; // I'm wondering if beacons should have a different tag?
+    private string[] validCollideTags = new string[] { "Enemy", "Damageable" };
 
-    public void Start()
+    protected override void Start()
     {
-        TargetTags = new string[] { "Enemy", "Damageable" }; // I'm wondering if beacons should have a different tag?    
+        base.Start();
+        TargetTags = new string[] { "Enemy", "Damageable" };  
     }
     
     private void OnCollisionEnter(Collision collision)
