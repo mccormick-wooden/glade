@@ -3,14 +3,16 @@ using System;
 using Assets.Scripts.Abstract;
 using Assets.Scripts.Damageable;
 using Random = UnityEngine.Random;
+using UnityEngine.AI;
+
 
 public class BaseEnemy : MonoBehaviour
 {
     private Animator animator;
     private Rigidbody rigidBody;
-    public GameObject playerGameObject;
+    //public GameObject playerGameObject;
     public GameObject beacon;
-    public Transform Player;
+    public GameObject Player;
 
     // Height should be filled in by a specific subclass 
     [SerializeField]
@@ -102,12 +104,14 @@ public class BaseEnemy : MonoBehaviour
 
     float autoAttackPlayerDistanceToBeacon;
 
+    NavMeshAgent agent;
+
     // Start is called before the first frame update
     protected virtual void Start()
     {
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
-        Player = GameObject.Find("Player").transform;
+        Player = GameObject.Find("Player");
         lastAttackTime = DateTime.Now;
         weapon = GetComponent<BaseWeapon>();
         damageable = GetComponent<AnimateDamageable>();
@@ -118,7 +122,9 @@ public class BaseEnemy : MonoBehaviour
         }
 
         lastPriorityChangeTime = DateTime.Now;
-        // make sure to set starting priorities in 
+        // make sure to set starting priorities in
+        
+        agent = GetComponent<NavMeshAgent>();
     }
 
     protected virtual void UpdateAnimations()
@@ -140,9 +146,64 @@ public class BaseEnemy : MonoBehaviour
                 break;
             case Priority.HealOthersOthers:
                 TryToHealOthers();
+                break;
         }
     }
 
+
+    private void setMovingTargetWaypoint(Vector3 targetPosition, Vector3 targetVelocity)
+    {
+        //Vector3 agentVelocity = transform.GetComponent<Rigidbody>().velocity;
+        //float   agentValocityMagnitude = agentVelocity.magnitude;
+        float agentVelocityMagnitude = agent.speed;
+
+        Vector3 distanceBetweenPlayerAndWaypoint = targetPosition - transform.position;
+        float distanceBetweenPlayerAndWaypointMagnitutde = distanceBetweenPlayerAndWaypoint.magnitude;
+
+        float angle = Mathf.Rad2Deg * Mathf.Atan2(distanceBetweenPlayerAndWaypoint.x, distanceBetweenPlayerAndWaypoint.z);
+        Debug.Log($"Angle: {angle}");
+
+        Debug.Log($"Distances: P->W: {distanceBetweenPlayerAndWaypoint}, Mag(P->W): {distanceBetweenPlayerAndWaypointMagnitutde}");
+
+        float lookAheadInSeconds = distanceBetweenPlayerAndWaypointMagnitutde / agentVelocityMagnitude;
+
+        Debug.Log($"Looking ahead {lookAheadInSeconds}");
+
+        Vector3 futureExtrapolatedPosition = targetPosition + (targetVelocity * lookAheadInSeconds);
+
+        Debug.Log($"Future extrapoloated position: {futureExtrapolatedPosition}");
+
+        NavMeshHit hit;
+        bool blocked = NavMesh.Raycast(transform.position, futureExtrapolatedPosition, out hit, 1 << NavMesh.GetAreaFromName("Walkable"));
+
+        if (blocked)
+        {
+            Debug.Log("Blocked");
+            //agent.SetDestination(hit.position);
+            agent.SetDestination(targetPosition);
+        }
+        else
+        {
+            Debug.Log("Not blocked");
+            agent.SetDestination(futureExtrapolatedPosition);
+
+        }
+
+        //agent.SetDestination(movingWaypoint.transform.position);
+    }
+
+
+    private void setMovingTargetWaypoint(GameObject targetPosition)
+    {
+        Debug.Log("Updating");
+
+        Vector3 waypointVelocity = targetPosition.GetComponent<VelocityReporter>() ? targetPosition.GetComponent<VelocityReporter>().velocity : Vector3.zero;
+        float waypointMagnitude = waypointVelocity.magnitude;
+
+        Debug.Log($"Waypoint velocity: {waypointVelocity}, magnitude: {waypointMagnitude}");
+        
+        setMovingTargetWaypoint(targetPosition.transform.position, waypointVelocity);
+    }
 
     protected virtual void TryToGetToAttack()
     {
@@ -151,21 +212,30 @@ public class BaseEnemy : MonoBehaviour
 
         // Default move/attack flow 
         // Can be overriden as needed
-        if (!isAttacking && Vector3.Magnitude(transform.position - Player.transform.position) < minDistanceFromPlayer)
+        //if (!isAttacking && Vector3.Magnitude(transform.position - Player.transform.position) < minDistanceFromPlayer)
+
+        float distanceToPlayer = Vector3.Magnitude(transform.position - Player.transform.position);
+
+        if (!isAttacking && (distanceToPlayer > maxDistanceFromPlayer || distanceToPlayer < minDistanceFromPlayer))
         {
             // TODO:  Improve this later
-            transform.LookAt(Player);
-            transform.position += -transform.forward * Speed * Time.deltaTime;
+            //transform.LookAt(Player);
+            //transform.position += -transform.forward * Speed * Time.deltaTime;
+            agent.isStopped = false;
+            setMovingTargetWaypoint(Player);
         }
-        else if (!isAttacking && Vector3.Magnitude(transform.position - Player.transform.position) > maxDistanceFromPlayer)
+        //else if (!isAttacking && Vector3.Magnitude(transform.position - Player.transform.position) > maxDistanceFromPlayer)
+        /*else if (!isAttacking && distanceToPlayer < minDistanceFromPlayer)
         {
             // TODO:  Improve this later
-            transform.LookAt(Player);
-            transform.position += transform.forward * Speed * Time.deltaTime;
-        }
+            //transform.LookAt(Player.transform.position);
+            //transform.position += transform.forward * Speed * Time.deltaTime;
+
+        }*/
         else if (isAttacking)
         {
             // we're inside the sweet spot and are already attacking
+            agent.isStopped = true;
         }
         else if ((DateTime.Now - lastAttackTime).Seconds > attackDelayTimeSeconds)
         {
@@ -174,6 +244,7 @@ public class BaseEnemy : MonoBehaviour
             Debug.Log("Start attack!!");
             isAttacking = true;
             lastAttackTime = DateTime.Now;
+            agent.isStopped = true;
         }
     }
 
@@ -200,10 +271,21 @@ public class BaseEnemy : MonoBehaviour
 
         Vector3 directionToMove = Vector3.zero;
 
-        if (distanceToBeacon > 
+        //if (distanceToBeacon > 
 
     }
 
+
+    protected virtual void TryToIncreaseDistance()
+    {
+
+    }
+
+
+    protected virtual void TryToHealOthers()
+    {
+
+    }
 
 
     protected virtual void DetermineAIPriority()
