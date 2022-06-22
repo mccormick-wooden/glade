@@ -253,16 +253,32 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8257945831418916891, guid: 97cf0fe1a2df46c4cac7d5523350d471, type: 3}
+      propertyPath: debugOutput
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8257945831418916891, guid: 97cf0fe1a2df46c4cac7d5523350d471, type: 3}
+      propertyPath: managedState
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8257945831418916891, guid: 97cf0fe1a2df46c4cac7d5523350d471, type: 3}
       propertyPath: heartbeatRate
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8257945831418916891, guid: 97cf0fe1a2df46c4cac7d5523350d471, type: 3}
       propertyPath: managedSceneName
       value: Level1
       objectReference: {fileID: 0}
     - target: {fileID: 8257945831418916892, guid: 97cf0fe1a2df46c4cac7d5523350d471, type: 3}
+      propertyPath: debugOutput
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8257945831418916892, guid: 97cf0fe1a2df46c4cac7d5523350d471, type: 3}
+      propertyPath: managedState
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8257945831418916892, guid: 97cf0fe1a2df46c4cac7d5523350d471, type: 3}
       propertyPath: heartbeatRate
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8257945831418916892, guid: 97cf0fe1a2df46c4cac7d5523350d471, type: 3}
       propertyPath: managedSceneName
@@ -273,12 +289,20 @@ PrefabInstance:
       value: GameManager
       objectReference: {fileID: 0}
     - target: {fileID: 8257945831418916895, guid: 97cf0fe1a2df46c4cac7d5523350d471, type: 3}
+      propertyPath: debugOutput
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8257945831418916895, guid: 97cf0fe1a2df46c4cac7d5523350d471, type: 3}
+      propertyPath: managedState
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8257945831418916895, guid: 97cf0fe1a2df46c4cac7d5523350d471, type: 3}
       propertyPath: speedUpScale
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8257945831418916895, guid: 97cf0fe1a2df46c4cac7d5523350d471, type: 3}
       propertyPath: heartbeatRate
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8257945831418916895, guid: 97cf0fe1a2df46c4cac7d5523350d471, type: 3}
       propertyPath: managedSceneName

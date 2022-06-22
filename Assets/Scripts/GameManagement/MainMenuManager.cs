@@ -1,7 +1,5 @@
 ﻿public class MainMenuManager : BaseSceneManager
 {
-    public override GameState ManagedState => GameState.MainMenu;
-
     protected override void OnSceneLoaded()
     {
     }

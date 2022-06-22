@@ -1,9 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.Events;
-
 // SOURCE - https://gamedev.stackexchange.com/questions/117423/unity-detect-animations-end
-
 
 [RequireComponent(typeof(Animator))]
 public class AnimationEventDispatcher : MonoBehaviour
@@ -32,20 +29,16 @@ public class AnimationEventDispatcher : MonoBehaviour
 
             clip.AddEvent(animationStartEvent);
             clip.AddEvent(animationEndEvent);
-
-            Debug.Log($"{GetType().Name} assigned handlers for {clip.name}");
         }
     }
 
     public void AnimationStartHandler(string name)
     {
-        Debug.Log($"{name} animation start.");
         OnAnimationStart?.Invoke(name);
     }
 
     public void AnimationCompleteHandler(string name)
     {
-        Debug.Log($"{name} animation complete event fired.");
         OnAnimationComplete?.Invoke(name);
     }
 }

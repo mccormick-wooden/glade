@@ -58,6 +58,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 807262c0d46c02d468b6c6ad5fd68362, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  managedSceneName: MainMenu
+  managedState: 10
+  debugOutput: 0
+  heartbeatRate: 0
 --- !u!114 &8257945831418916895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,6 +74,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b647b65e687adf4a9e5e31a7a62ee67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  managedSceneName: NewGame
+  managedState: 20
+  debugOutput: 0
+  heartbeatRate: 0
+  skipCrawl: 0
+  speedUpScale: 1
 --- !u!114 &8257945831418916891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,3 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acf4f9907e0216b43bdfa900512e3c57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  managedSceneName: Level1
+  managedState: 30
+  debugOutput: 0
+  heartbeatRate: 0

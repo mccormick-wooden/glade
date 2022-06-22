@@ -7,9 +7,12 @@ public abstract class BaseSceneManager : MonoBehaviour
     [SerializeField]
     protected string managedSceneName;
 
+    [SerializeField]
+    protected GameState managedState;
+
     public string ManagedSceneName => managedSceneName;
 
-    public abstract GameState ManagedState { get; }
+    public GameState ManagedState => managedState;
 
     public bool ManagedSceneIsActive => SceneLoader.GetCurrentSceneName() == ManagedSceneName;
 
@@ -29,6 +32,13 @@ public abstract class BaseSceneManager : MonoBehaviour
             throw new ArgumentOutOfRangeException($"{GetType().Name}.{nameof(ManagedSceneName)}",
                 ManagedSceneName,
                 $"Scene '{ManagedSceneName}' can't be loaded. Ensure scene exists and is configured in build settings!");
+        }
+
+        if (ManagedState == GameState.Invalid)
+        {
+            throw new ArgumentOutOfRangeException($"{GetType().Name}.{nameof(ManagedState)}",
+                ManagedState,
+                $"Must select a managed state.");
         }
 
         enabled = false;
@@ -58,21 +68,11 @@ public abstract class BaseSceneManager : MonoBehaviour
     /// <param name="newState"></param>
     protected void GameManagerOnStateChanged(GameState newState)
     {
-        Debug.Log($"State change received by {GetType().Name}.");
+        if (debugOutput)
+            Debug.Log($"State change '{newState}' received by {GetType().Name}.");
 
         if (newState == ManagedState && !ManagedSceneIsActive)
             SceneLoader.LoadScene(ManagedSceneName);
-
-        if (newState == ManagedState && !enabled)
-        {
-            enabled = true;
-            Debug.Log($"{GetType().Name}: ENABLED");
-        }
-        else if (newState != ManagedState && enabled)
-        {
-            enabled = false;
-            Debug.Log($"{GetType().Name}: DISABLED");
-        }
     }
 
     /// <summary>
@@ -85,10 +85,13 @@ public abstract class BaseSceneManager : MonoBehaviour
     /// <param name="loadSceneMode"></param>
     private void SceneManagerOnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
-        if (enabled && scene.name == ManagedSceneName)
+        if (!enabled && scene.name == ManagedSceneName)
         {
-            Debug.Log($"{scene.name} is loaded!");
+            enabled = true;
             OnSceneLoaded();
+
+            if (debugOutput)
+                Debug.Log($"{GetType().Name}: ENABLED, {ManagedSceneName}: LOADED");
         }
     }
 
@@ -101,29 +104,34 @@ public abstract class BaseSceneManager : MonoBehaviour
     /// <param name="scene"></param>
     private void SceneManagerOnSceneUnloaded(Scene scene)
     {
-        if (scene.name == ManagedSceneName)
+        if (enabled && scene.name == ManagedSceneName)
         {
-            Debug.Log($"{scene.name} is unloaded!");
-            OnSceneUnloaded(); 
+            enabled = false;
+            OnSceneUnloaded();
+
+            if (debugOutput)
+                Debug.Log($"{GetType().Name}: DISABLED, {ManagedSceneName}: UNLOADED");
         }
     }
 
     protected abstract void OnSceneUnloaded();
 
-    #region dev / logging
-
+    #region debug
+    [Header("Debug Settings")]
+    [SerializeField]
+    protected bool debugOutput = true;
     [SerializeField]
     protected float heartbeatRate = 1f;
 
     private void OnEnable()
     {
-        if (heartbeatRate > 0)
+        if (debugOutput && heartbeatRate > 0)
             InvokeRepeating("Heartbeat", 1f, heartbeatRate);
     }
 
     private void OnDisable()
     {
-        if (heartbeatRate > 0)
+        if (debugOutput && heartbeatRate > 0)
             CancelInvoke("Heartbeat");
     }
 

@@ -7,14 +7,15 @@ public class NewGameManager : BaseSceneManager
     private bool skipCrawl = false;
 
     [SerializeField]
-    private float speedUpScale = 1;
-
-    public override GameState ManagedState => GameState.NewGame;
+    private float timeScale = 1;
 
     private AnimationEventDispatcher animationEventDispatcher;
 
     protected override void OnSceneLoaded()
     {
+        animationEventDispatcher = GameObject.Find("CrawlText")?.GetComponent<AnimationEventDispatcher>();
+        animationEventDispatcher.OnAnimationComplete += OnAnimationComplete;
+
         if (skipCrawl)
         {
             GameManager.UpdateGameState(GameState.Level1);
@@ -22,9 +23,7 @@ public class NewGameManager : BaseSceneManager
         }
         else
         {
-            animationEventDispatcher = GameObject.Find("CrawlText")?.GetComponent<AnimationEventDispatcher>();
-            animationEventDispatcher.OnAnimationComplete += OnAnimationComplete;
-            Time.timeScale = speedUpScale;
+            Time.timeScale = timeScale;
         }
     }
 
@@ -34,7 +33,7 @@ public class NewGameManager : BaseSceneManager
         Time.timeScale = 1;
     }
 
-    // TODO: Add option to skip Crawl
+    // TODO: Add option for player to skip Crawl 
     private void OnAnimationComplete(string animation)
     {
         if (animation.Equals("NewGameCrawl", StringComparison.OrdinalIgnoreCase))
