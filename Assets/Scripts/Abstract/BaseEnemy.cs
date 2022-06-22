@@ -153,54 +153,49 @@ public class BaseEnemy : MonoBehaviour
 
     private void setMovingTargetWaypoint(Vector3 targetPosition, Vector3 targetVelocity)
     {
-        //Vector3 agentVelocity = transform.GetComponent<Rigidbody>().velocity;
-        //float   agentValocityMagnitude = agentVelocity.magnitude;
         float agentVelocityMagnitude = agent.speed;
 
         Vector3 distanceBetweenPlayerAndWaypoint = targetPosition - transform.position;
         float distanceBetweenPlayerAndWaypointMagnitutde = distanceBetweenPlayerAndWaypoint.magnitude;
 
         float angle = Mathf.Rad2Deg * Mathf.Atan2(distanceBetweenPlayerAndWaypoint.x, distanceBetweenPlayerAndWaypoint.z);
-        Debug.Log($"Angle: {angle}");
+        //Debug.Log($"Angle: {angle}");
 
-        Debug.Log($"Distances: P->W: {distanceBetweenPlayerAndWaypoint}, Mag(P->W): {distanceBetweenPlayerAndWaypointMagnitutde}");
+        //Debug.Log($"Distances: P->W: {distanceBetweenPlayerAndWaypoint}, Mag(P->W): {distanceBetweenPlayerAndWaypointMagnitutde}");
 
         float lookAheadInSeconds = distanceBetweenPlayerAndWaypointMagnitutde / agentVelocityMagnitude;
 
-        Debug.Log($"Looking ahead {lookAheadInSeconds}");
+        //Debug.Log($"Looking ahead {lookAheadInSeconds}");
 
         Vector3 futureExtrapolatedPosition = targetPosition + (targetVelocity * lookAheadInSeconds);
 
-        Debug.Log($"Future extrapoloated position: {futureExtrapolatedPosition}");
+        //Debug.Log($"Future extrapoloated position: {futureExtrapolatedPosition}");
 
         NavMeshHit hit;
         bool blocked = NavMesh.Raycast(transform.position, futureExtrapolatedPosition, out hit, 1 << NavMesh.GetAreaFromName("Walkable"));
 
         if (blocked)
         {
-            Debug.Log("Blocked");
-            //agent.SetDestination(hit.position);
+            //Debug.Log("Blocked");
             agent.SetDestination(targetPosition);
         }
         else
         {
-            Debug.Log("Not blocked");
+            //Debug.Log("Not blocked");
             agent.SetDestination(futureExtrapolatedPosition);
 
         }
-
-        //agent.SetDestination(movingWaypoint.transform.position);
     }
 
 
     private void setMovingTargetWaypoint(GameObject targetPosition)
     {
-        Debug.Log("Updating");
+        //Debug.Log("Updating");
 
         Vector3 waypointVelocity = targetPosition.GetComponent<VelocityReporter>() ? targetPosition.GetComponent<VelocityReporter>().velocity : Vector3.zero;
         float waypointMagnitude = waypointVelocity.magnitude;
 
-        Debug.Log($"Waypoint velocity: {waypointVelocity}, magnitude: {waypointMagnitude}");
+        //Debug.Log($"Waypoint velocity: {waypointVelocity}, magnitude: {waypointMagnitude}");
         
         setMovingTargetWaypoint(targetPosition.transform.position, waypointVelocity);
     }
@@ -212,39 +207,53 @@ public class BaseEnemy : MonoBehaviour
 
         // Default move/attack flow 
         // Can be overriden as needed
-        //if (!isAttacking && Vector3.Magnitude(transform.position - Player.transform.position) < minDistanceFromPlayer)
-
         float distanceToPlayer = Vector3.Magnitude(transform.position - Player.transform.position);
 
-        if (!isAttacking && (distanceToPlayer > maxDistanceFromPlayer || distanceToPlayer < minDistanceFromPlayer))
+
+        if (!isAttacking && (distanceToPlayer > maxDistanceFromPlayer))
         {
-            // TODO:  Improve this later
-            //transform.LookAt(Player);
-            //transform.position += -transform.forward * Speed * Time.deltaTime;
+
             agent.isStopped = false;
             setMovingTargetWaypoint(Player);
         }
-        //else if (!isAttacking && Vector3.Magnitude(transform.position - Player.transform.position) > maxDistanceFromPlayer)
-        /*else if (!isAttacking && distanceToPlayer < minDistanceFromPlayer)
+        else if (!isAttacking && (distanceToPlayer < minDistanceFromPlayer))
         {
-            // TODO:  Improve this later
-            //transform.LookAt(Player.transform.position);
-            //transform.position += transform.forward * Speed * Time.deltaTime;
+            // TODO: update this
+            // if navmesh.raycast backwards can't find a valid position, 
+            // iterate to find one.
+            //
+            // 
+            //
+            //
 
-        }*/
+            agent.isStopped = false;
+
+            Vector3 vectorFromPlayer = -(Player.transform.position - transform.position);
+            float desiredExtraDistance = minDistanceFromPlayer - distanceToPlayer;
+            vectorFromPlayer *= desiredExtraDistance;
+            Vector3 velocity = Player.GetComponent<VelocityReporter>().velocity;
+
+            setMovingTargetWaypoint(transform.position + vectorFromPlayer, velocity);
+        }
         else if (isAttacking)
         {
+            //transform.LookAt(Player.transform.position);
+
             // we're inside the sweet spot and are already attacking
+            agent.SetDestination(transform.position);
             agent.isStopped = true;
         }
         else if ((DateTime.Now - lastAttackTime).Seconds > attackDelayTimeSeconds)
         {
             // We're inside the enemy's desired attack range
             // and we're not already attacking - Attack!
-            Debug.Log("Start attack!!");
+            //Debug.Log("Start attack!!");
+            transform.LookAt(Player.transform.position);
+
             isAttacking = true;
             lastAttackTime = DateTime.Now;
             agent.isStopped = true;
+            agent.SetDestination(transform.position);
         }
     }
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using UnityEngine.AI;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -36,6 +37,16 @@ public class EnemySpawner : MonoBehaviour
 
     }
 
+    public void AddBeacon(GameObject g)
+    {
+        beacons.Add(g);
+    }
+
+    public void RemoveBeacon(GameObject g)
+    {
+        beacons.Remove(g);
+    }
+
     private void FixedUpdate()
     {
         float weight = CalculateSpawnWeight();
@@ -54,6 +65,7 @@ public class EnemySpawner : MonoBehaviour
             float distance = Vector3.Distance(beacons[i].transform.position, transform.position);
             float weight = 1f / (distance * distance) * (float)(DateTime.Now - lastSpawnTime).TotalSeconds;
             totalWeight += weight;
+            totalWeight *= nominalSpawnTime;
         }
 
         //Debug.Log(totalWeight);
@@ -70,13 +82,13 @@ public class EnemySpawner : MonoBehaviour
             Debug.Log("Make a bad guy!");
 
             
-            GameObject enemyPrefab = possibleEnemies[1];
-            GameObject g = Instantiate(enemyPrefab, enemiesParent.transform);
+            
+            //GameObject g = Instantiate(enemyPrefab, enemiesParent.transform);
 
             //UnityEditor.PrefabUtility.SaveAsPrefabAsset(g, possibleEnemies[0]);
 
             //g.transform.parent = enemiesParent.transform;
-
+            /*
             if (!FindValidPlacement(g))
             {
                 Destroy(g);
@@ -84,14 +96,30 @@ public class EnemySpawner : MonoBehaviour
             else
             {
                 lastSpawnTime = DateTime.Now;
-            }
+            }*/
+
+            Vector3 newPosition;
+            bool FoundValidPosition = FindValidPlacement(transform.position, out newPosition);
+
+            if (!FoundValidPosition)
+                return;
+
+            int randomEnemy = Random.Range(0, possibleEnemies.Count);
+
+            GameObject enemyPrefab = possibleEnemies[randomEnemy];
+            GameObject g = Instantiate(enemyPrefab, new Vector3(0,0,0), Quaternion.identity, enemiesParent.transform);
+            
+            g.GetComponent<NavMeshAgent>().Warp(newPosition);
+            g.GetComponent<NavMeshAgent>().enabled = true;
+            
         }
     }
 
-    bool FindValidPlacement(GameObject g)
+    //bool FindValidPlacement(GameObject g)
+    bool FindValidPlacement(Vector3 position, out Vector3 newPosition)
     {
         // Move enemy to a random location that isn't inside anything
-        g.transform.position = transform.position;
+        //g.transform.position = transform.position;
 
         const float MIN_X_OFFSET = 10;
         const float MAX_X_OFFSET = 25;
@@ -107,6 +135,24 @@ public class EnemySpawner : MonoBehaviour
             float randomX = UnityEngine.Random.Range(MIN_X_OFFSET, MAX_X_OFFSET) * ((UnityEngine.Random.Range(0f, 1f) >= 0.5) ? -1 : 1);
             float randomZ = UnityEngine.Random.Range(MIN_Z_OFFSET, MAX_Z_OFFSET) * ((UnityEngine.Random.Range(0f, 1f) >= 0.5) ? -1 : 1);
 
+            Vector3 samplePosition = new Vector3(randomX, 0, randomZ) + transform.position;
+
+            NavMeshHit hit;
+            bool gotHit = NavMesh.SamplePosition(samplePosition, out hit, 2, NavMesh.AllAreas);
+
+            if (!gotHit)
+            {
+                attempts++;
+                continue;
+            }
+
+
+            //g.transform.position = hit.position;
+            newPosition = hit.position;
+            return true;
+
+
+            /*
             g.transform.position += new Vector3(randomX, 0, randomZ);
 
             // move it up until we get to the ground 
@@ -163,8 +209,10 @@ public class EnemySpawner : MonoBehaviour
             {
                 return true;
             }
+            */
         }
 
+        newPosition = Vector3.zero;
         return false;
     }
 }

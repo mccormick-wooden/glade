@@ -72,6 +72,8 @@ namespace Beacons
             var transformRef = transform;
             IncrementBeaconCount();
             Instantiate(beaconToSpawn, transformRef.position, transformRef.rotation, transform);
+            
+            Debug.Log("Spawned new beacon!");
         }
 
         public void OnBeaconDeath(CrashedBeacon deadBeacon)
