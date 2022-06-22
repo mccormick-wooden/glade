@@ -14,7 +14,9 @@ namespace Assets.Scripts.Abstract
         private float currentHp;
 
         [SerializeField]
-        private float maxHp;
+        private float maxHp = 100;
+
+        public Action<string, int> Died;
 
         public float CurrentHp
         {
@@ -30,9 +32,8 @@ namespace Assets.Scripts.Abstract
 
         public bool HasHp => CurrentHp > 0;
 
-        public Action<string, int> Died;
 
-        public int AttachedInstanceId;
+        public int AttachedInstanceId { get; protected set; }
 
         public virtual bool IsDead { get; protected set; } = false;
 
@@ -96,11 +97,5 @@ namespace Assets.Scripts.Abstract
             Died?.Invoke(name, AttachedInstanceId);
             IsDead = true;
         }
-
-        /// <summary>
-        /// SHOULD BE DELETED
-        /// </summary>
-        /// <param name="dmg"></param>
-        public void testdamage(float dmg) { CurrentHp -= dmg; if (!HasHp && !IsDead) Die(); }
     }
 }

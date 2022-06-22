@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 198106201641129996}
   m_Layer: 0
-  m_Name: GlobalObjects
+  m_Name: GlobalManagementObjects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -252,9 +252,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8257945831418916891, guid: 97cf0fe1a2df46c4cac7d5523350d471, type: 3}
+      propertyPath: heartbeatRate
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8257945831418916891, guid: 97cf0fe1a2df46c4cac7d5523350d471, type: 3}
+      propertyPath: managedSceneName
+      value: Level1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8257945831418916892, guid: 97cf0fe1a2df46c4cac7d5523350d471, type: 3}
+      propertyPath: heartbeatRate
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8257945831418916892, guid: 97cf0fe1a2df46c4cac7d5523350d471, type: 3}
+      propertyPath: managedSceneName
+      value: MainMenu
+      objectReference: {fileID: 0}
     - target: {fileID: 8257945831418916894, guid: 97cf0fe1a2df46c4cac7d5523350d471, type: 3}
       propertyPath: m_Name
       value: GameManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8257945831418916895, guid: 97cf0fe1a2df46c4cac7d5523350d471, type: 3}
+      propertyPath: speedUpScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8257945831418916895, guid: 97cf0fe1a2df46c4cac7d5523350d471, type: 3}
+      propertyPath: heartbeatRate
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8257945831418916895, guid: 97cf0fe1a2df46c4cac7d5523350d471, type: 3}
+      propertyPath: managedSceneName
+      value: NewGame
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97cf0fe1a2df46c4cac7d5523350d471, type: 3}

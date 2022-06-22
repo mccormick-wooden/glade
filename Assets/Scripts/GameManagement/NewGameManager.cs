@@ -3,7 +3,11 @@ using UnityEngine;
 
 public class NewGameManager : BaseSceneManager
 {
-    public override string ManagedSceneName => "NewGame";
+    [SerializeField]
+    private bool skipCrawl = false;
+
+    [SerializeField]
+    private float speedUpScale = 1;
 
     public override GameState ManagedState => GameState.NewGame;
 
@@ -11,13 +15,23 @@ public class NewGameManager : BaseSceneManager
 
     protected override void OnSceneLoaded()
     {
-        animationEventDispatcher = GameObject.Find("CrawlText")?.GetComponent<AnimationEventDispatcher>();
-        animationEventDispatcher.OnAnimationComplete += OnAnimationComplete;
+        if (skipCrawl)
+        {
+            GameManager.UpdateGameState(GameState.Level1);
+            return;
+        }
+        else
+        {
+            animationEventDispatcher = GameObject.Find("CrawlText")?.GetComponent<AnimationEventDispatcher>();
+            animationEventDispatcher.OnAnimationComplete += OnAnimationComplete;
+            Time.timeScale = speedUpScale;
+        }
     }
 
     protected override void OnSceneUnloaded()
     {
         animationEventDispatcher.OnAnimationComplete -= OnAnimationComplete;
+        Time.timeScale = 1;
     }
 
     // TODO: Add option to skip Crawl

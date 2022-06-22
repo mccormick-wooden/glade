@@ -4,7 +4,10 @@ using UnityEngine.SceneManagement;
 
 public abstract class BaseSceneManager : MonoBehaviour
 {
-    public abstract string ManagedSceneName { get; }
+    [SerializeField]
+    protected string managedSceneName;
+
+    public string ManagedSceneName => managedSceneName;
 
     public abstract GameState ManagedState { get; }
 
@@ -107,14 +110,21 @@ public abstract class BaseSceneManager : MonoBehaviour
 
     protected abstract void OnSceneUnloaded();
 
+    #region dev / logging
+
+    [SerializeField]
+    protected float heartbeatRate = 1f;
+
     private void OnEnable()
     {
-        InvokeRepeating("Heartbeat", 1f, 1f);
+        if (heartbeatRate > 0)
+            InvokeRepeating("Heartbeat", 1f, heartbeatRate);
     }
 
     private void OnDisable()
     {
-        CancelInvoke("Heartbeat");
+        if (heartbeatRate > 0)
+            CancelInvoke("Heartbeat");
     }
 
     /// <summary>
@@ -124,4 +134,5 @@ public abstract class BaseSceneManager : MonoBehaviour
     {
         Debug.Log($"{GetType().Name} is alive");
     }
+    #endregion
 }
