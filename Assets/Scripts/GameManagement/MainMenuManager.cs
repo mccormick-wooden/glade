@@ -11,4 +11,12 @@
     {
         GameManager.UpdateGameState(GameState.NewGame);
     }
+
+    protected override void OnSceneLoaded()
+    {
+    }
+
+    protected override void OnSceneUnloaded()
+    {
+    }
 }
