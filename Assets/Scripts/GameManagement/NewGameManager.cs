@@ -15,12 +15,6 @@ public class NewGameManager : BaseSceneManager
         animationEventDispatcher.OnAnimationComplete += OnAnimationComplete;
     }
 
-    private void OnDisable()
-    {
-        if (animationEventDispatcher != null)
-            animationEventDispatcher.OnAnimationComplete -= OnAnimationComplete;
-    }
-
     protected override void OnSceneUnloaded()
     {
         animationEventDispatcher.OnAnimationComplete -= OnAnimationComplete;
