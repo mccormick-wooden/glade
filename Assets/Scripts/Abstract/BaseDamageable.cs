@@ -81,10 +81,19 @@ namespace Assets.Scripts.Abstract
             CurrentHp = newHp;
         }
 
+        /// <summary>
+        /// If overridden, base implementation MUST be called
+        /// </summary>
         protected virtual void Die()
         {
             Debug.Log($"{gameObject.name} died.");
             IsDead = true;
         }
+
+        /// <summary>
+        /// SHOULD BE DELETED
+        /// </summary>
+        /// <param name="dmg"></param>
+        public void testdamage(float dmg) { CurrentHp -= dmg; if (!HasHp) Die(); }
     }
 }

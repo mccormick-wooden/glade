@@ -10,8 +10,6 @@ public abstract class BaseSceneManager : MonoBehaviour
 
     public bool ManagedSceneIsActive => SceneLoader.GetCurrentSceneName() == ManagedSceneName;
 
-    private DateTime lastHeartbeat = DateTime.Now;
-
     /// <summary>
     /// Awake has the following purposes:
     /// - Ensure that the scene this is managing actually exists.
@@ -35,6 +33,8 @@ public abstract class BaseSceneManager : MonoBehaviour
         GameManager.OnStateChanged += GameManagerOnStateChanged;
         SceneManager.sceneLoaded += SceneManagerOnSceneLoaded;
         SceneManager.sceneUnloaded += SceneManagerOnSceneUnloaded;
+
+        InvokeRepeating("Heartbeat", 1f, 1f);
     }
 
     /// <summary>
@@ -45,15 +45,6 @@ public abstract class BaseSceneManager : MonoBehaviour
         GameManager.OnStateChanged -= GameManagerOnStateChanged;
         SceneManager.sceneLoaded -= SceneManagerOnSceneLoaded;
         SceneManager.sceneUnloaded -= SceneManagerOnSceneUnloaded;
-    }
-
-    /// <summary>
-    /// Derived classes should probably implement Update().
-    /// Base implementation should be called.
-    /// </summary>
-    protected virtual void Update()
-    {
-        CheckHeartbeat();
     }
 
     /// <summary>
@@ -121,12 +112,8 @@ public abstract class BaseSceneManager : MonoBehaviour
     /// <summary>
     /// Purely for dev / logging
     /// </summary>
-    private void CheckHeartbeat()
+    protected virtual void Heartbeat()
     {
-        if (DateTime.Now > lastHeartbeat.AddSeconds(1))
-        {
-            Debug.Log($"{GetType().Name} is alive");
-            lastHeartbeat = DateTime.Now;
-        }
+        Debug.Log($"{GetType().Name} is alive");
     }
 }
