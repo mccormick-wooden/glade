@@ -34,7 +34,6 @@ public abstract class BaseSceneManager : MonoBehaviour
         SceneManager.sceneLoaded += SceneManagerOnSceneLoaded;
         SceneManager.sceneUnloaded += SceneManagerOnSceneUnloaded;
 
-        InvokeRepeating("Heartbeat", 1f, 1f);
     }
 
     /// <summary>
@@ -50,9 +49,8 @@ public abstract class BaseSceneManager : MonoBehaviour
     /// <summary>
     /// Main callback that handles GameManager updates.
     /// 
-    /// Derived classes implement specific  enable/disable behavior either in:
-    ///     - OnEnable() / OnDisable() when behavior doesn't depend on getting references to GameObjects
-    ///     - OnSceneLoaded() when behavior depends on GameObjects existing in scene context.
+    /// Derived classes should implement specific enable/disable behavior in OnSceneLoaded()/OnSceneUnloaded() 
+    /// because it is the only place that ensures GameObjects exist in scene context.
     /// </summary>
     /// <param name="newState"></param>
     protected void GameManagerOnStateChanged(GameState newState)
@@ -108,6 +106,16 @@ public abstract class BaseSceneManager : MonoBehaviour
     }
 
     protected abstract void OnSceneUnloaded();
+
+    private void OnEnable()
+    {
+        InvokeRepeating("Heartbeat", 1f, 1f);
+    }
+
+    private void OnDisable()
+    {
+        CancelInvoke("Heartbeat");
+    }
 
     /// <summary>
     /// Purely for dev / logging

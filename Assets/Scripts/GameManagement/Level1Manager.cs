@@ -1,4 +1,4 @@
-﻿public class Level1Manager : BaseLevelManager
+﻿public class Level1Manager : BaseLevelSceneManager
 {
     public override string ManagedSceneName => "Level1";
 

@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Interfaces;
 using UnityEngine;
 using System.Linq;
+using System;
 
 namespace Assets.Scripts.Abstract
 {
@@ -29,6 +30,10 @@ namespace Assets.Scripts.Abstract
 
         public bool HasHp => CurrentHp > 0;
 
+        public Action<string, int> Died;
+
+        public int AttachedInstanceId;
+
         public virtual bool IsDead { get; protected set; } = false;
 
         protected virtual void Start()
@@ -43,6 +48,8 @@ namespace Assets.Scripts.Abstract
                     ? $"{gameObject.name} HP set to {CurrentHp}/{MaxHp}"
                     : $"{gameObject.name} HP set to {CurrentHp}/{MaxHp} with health bar at {healthBarController.CurrentHp}/{healthBarController.MaxHp}"
             );
+
+            AttachedInstanceId = gameObject.GetInstanceID();
         }
 
         protected virtual void OnTriggerEnter(Collider other)
@@ -86,7 +93,7 @@ namespace Assets.Scripts.Abstract
         /// </summary>
         protected virtual void Die()
         {
-            Debug.Log($"{gameObject.name} died.");
+            Died?.Invoke(name, AttachedInstanceId);
             IsDead = true;
         }
 
@@ -94,6 +101,6 @@ namespace Assets.Scripts.Abstract
         /// SHOULD BE DELETED
         /// </summary>
         /// <param name="dmg"></param>
-        public void testdamage(float dmg) { CurrentHp -= dmg; if (!HasHp) Die(); }
+        public void testdamage(float dmg) { CurrentHp -= dmg; if (!HasHp && !IsDead) Die(); }
     }
 }

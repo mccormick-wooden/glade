@@ -2,7 +2,7 @@
 using Assets.Scripts.Abstract;
 using UnityEngine;
 
-public abstract class BaseLevelManager : BaseSceneManager
+public abstract class BaseLevelSceneManager : BaseSceneManager
 {
     protected GameObject player;
     protected BaseDamageable playerDamageModel;
@@ -16,10 +16,18 @@ public abstract class BaseLevelManager : BaseSceneManager
         playerDamageModel = player.GetComponent<BaseDamageable>();
         if (playerDamageModel == null)
             Debug.LogError($"{GetType().Name}: {nameof(playerDamageModel)} is null.");
+
+        playerDamageModel.Died += OnPlayerDied;
     }
 
     protected override void OnSceneUnloaded()
     {
+        playerDamageModel.Died -= OnPlayerDied;
+    }
+
+    protected virtual void OnPlayerDied(string name, int instanceId)
+    {
+        Debug.Log($"GameObj '{name}:{instanceId}' died.");
     }
 
     /// <summary>
