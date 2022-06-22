@@ -8,10 +8,17 @@ public class CrystalController : MonoBehaviour
 {
     private Animator anim;
     private int activatorsClose = 0;
+    private int animActivatorsClose;
+
+    public bool effectActive { get; private set; }
+
+    [SerializeField]
+    private float effectRadius = 5;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
+        animActivatorsClose = Animator.StringToHash("ActivatorsClose");
         if (anim == null)
         {
             Debug.Log("Couldn't find animation component");
@@ -21,7 +28,11 @@ public class CrystalController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        anim.SetInteger("activatorsClose", activatorsClose);
+        anim.SetInteger(animActivatorsClose, activatorsClose);
+        if (effectActive)
+        {
+            Physics.OverlapSphere(transform.position, effectRadius);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -31,6 +42,7 @@ public class CrystalController : MonoBehaviour
             activatorsClose++;
             Debug.Log($"Crystal: Activator arrived. {activatorsClose} in vicinity");
         }
+        if (activatorsClose > 0) effectActive = true;
     }
 
     private void OnTriggerExit(Collider other)
@@ -40,5 +52,6 @@ public class CrystalController : MonoBehaviour
             activatorsClose--;
             Debug.Log($"Crystal: Activator left. {activatorsClose} in vicinity.");
         }
+        if (activatorsClose <= 0) effectActive = false;
     }
 }
