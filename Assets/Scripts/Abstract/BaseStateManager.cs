@@ -2,33 +2,33 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public abstract class BaseSceneManager : MonoBehaviour
+public abstract class BaseStateManager : MonoBehaviour
 {
-    /// <summary>
-    /// The scene that this manager will manage. 
-    /// Scene obviously must exist, but it also must be included in build settings.
-    /// </summary>
-    [Header("Game Settings")]
-    [SerializeField]
-    protected string managedSceneName;
-
     /// <summary>
     /// The state owned by this manager. 
     /// Separation of managedState / managedSceneName allows us to easily swap out test scenes for a certain state.
     /// </summary>
+    [Header("Game Settings")]
     [SerializeField]
     protected GameState managedState;
 
-    public string ManagedSceneName => managedSceneName;
+    /// <summary>
+    /// The scene that this manager will manage. 
+    /// Scene obviously must exist, but it also must be included in build settings.
+    /// </summary>
+    [SerializeField]
+    protected string managedSceneName;
 
     public GameState ManagedState => managedState;
+
+    public string ManagedSceneName => managedSceneName;
 
     public bool ManagedSceneIsActive => SceneLoader.GetCurrentSceneName() == ManagedSceneName;
 
     /// <summary>
     /// Awake has the following purposes:
-    /// - Ensure that the scene this is managing actually exists.
     /// - Ensure that the state being managed is set and valid.
+    /// - Ensure that the scene this is managing actually exists.
     /// - Start off in a disabled state (only enable if GameManager tells us to)
     /// - Subscribe to GameManager and SceneManager updates so we can answer the Call of Duty
     /// 
@@ -37,18 +37,18 @@ public abstract class BaseSceneManager : MonoBehaviour
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     protected void Awake()
     {
-        if (!SceneLoader.CanLoadScene(ManagedSceneName))
-        {
-            throw new ArgumentOutOfRangeException($"{GetType().Name}.{nameof(ManagedSceneName)}",
-                ManagedSceneName,
-                $"Scene '{ManagedSceneName}' can't be loaded. Ensure scene exists and is configured in build settings!");
-        }
-
         if (ManagedState == GameState.Invalid)
         {
             throw new ArgumentOutOfRangeException($"{GetType().Name}.{nameof(ManagedState)}",
                 ManagedState,
                 $"Must select a managed state.");
+        }
+
+        if (!SceneLoader.CanLoadScene(ManagedSceneName))
+        {
+            throw new ArgumentOutOfRangeException($"{GetType().Name}.{nameof(ManagedSceneName)}",
+                ManagedSceneName,
+                $"Scene '{ManagedSceneName}' can't be loaded. Ensure scene exists and is configured in build settings!");
         }
 
         enabled = false;
@@ -139,14 +139,15 @@ public abstract class BaseSceneManager : MonoBehaviour
     /// </summary>
     [Header("Debug Settings")]
     [SerializeField]
-    protected bool debugOutput = true; // Set to false to remove all debug output.
+    protected bool debugOutput = false;
 
     /// <summary>
     /// The rate in seconds at which heartbeat debug outputs are generated.
+    /// A 0 value means no heartbeat output will be generated.
     /// Higher values are useful to reduce noise when other types of debug output are more important.
     /// </summary>
     [SerializeField]
-    protected float heartbeatRate = 1f;
+    protected float heartbeatRate = 0f;
 
     private void OnEnable()
     {

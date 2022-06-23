@@ -1,9 +1,8 @@
-﻿using Assets.Scripts.Abstract;
+﻿using Assets.Scripts.Interfaces;
 using TMPro;
 using UnityEngine;
 
-[RequireComponent(typeof(BaseDamageable), typeof(TextMeshProUGUI))]
-public abstract class BaseLevelSceneManager : BaseSceneManager
+public abstract class BaseLevelStateManager : BaseStateManager
 {
     /// <summary>
     /// The playerGameObjectRootName must be the root of whatever object the player model lives on, or nothing will work.
@@ -20,7 +19,7 @@ public abstract class BaseLevelSceneManager : BaseSceneManager
     protected int returnToMainMenuCountdownLength = 10; 
 
     protected GameObject player;
-    protected BaseDamageable playerDamageModel;
+    protected IDamageable playerDamageModel;
     protected TextMeshProUGUI HUDMessageText;
 
     protected override void OnSceneLoaded()
@@ -29,7 +28,7 @@ public abstract class BaseLevelSceneManager : BaseSceneManager
         if (player == null)
             Debug.LogError($"{GetType().Name}: {nameof(player)} is null.");
 
-        playerDamageModel = player.GetComponentInChildren<BaseDamageable>();
+        playerDamageModel = player.GetComponentInChildren<IDamageable>();
         if (playerDamageModel == null)
             Debug.LogError($"{GetType().Name}: {nameof(playerDamageModel)} is null.");
 

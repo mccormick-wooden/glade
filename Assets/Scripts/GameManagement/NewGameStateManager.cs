@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(AnimationEventDispatcher))]
-public class NewGameManager : BaseSceneManager
+public class NewGameStateManager : BaseStateManager
 {
     /// <summary>
     /// Controls whether the crawl will be skipped.

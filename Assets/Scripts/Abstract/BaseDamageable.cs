@@ -16,8 +16,6 @@ namespace Assets.Scripts.Abstract
         [SerializeField]
         private float maxHp = 100;
 
-        public Action<string, int> Died;
-
         public float CurrentHp
         {
             get => currentHp;
@@ -32,10 +30,11 @@ namespace Assets.Scripts.Abstract
 
         public bool HasHp => CurrentHp > 0;
 
-
         public int AttachedInstanceId { get; protected set; }
 
         public virtual bool IsDead { get; protected set; } = false;
+
+        public Action<string, int> Died { get; set; }
 
         protected virtual void Start()
         {

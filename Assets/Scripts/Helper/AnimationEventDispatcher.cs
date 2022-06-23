@@ -5,7 +5,6 @@ using UnityEngine;
 /// Dynamimcally creates start/end animation events an animator (optionally assigned or dynamically found), which Monobehaviours may subscribe to
 /// Modified from source - https://gamedev.stackexchange.com/questions/117423/unity-detect-animations-end
 /// </summary>
-[RequireComponent(typeof(Animator[]))]
 public class AnimationEventDispatcher : MonoBehaviour
 {
     public Action<string> OnAnimationStart;

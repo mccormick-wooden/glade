@@ -730,17 +730,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &2125005906 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2928287154450232353, guid: 796d7e182ad8bad42ab6e1f7cd2ca495, type: 3}
-  m_PrefabInstance: {fileID: 2928287152547655795}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2928287152547655796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 807262c0d46c02d468b6c6ad5fd68362, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2928287152547655795
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -794,7 +783,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2928287154450232353, guid: 796d7e182ad8bad42ab6e1f7cd2ca495, type: 3}
       propertyPath: debugOutput
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2928287154450232353, guid: 796d7e182ad8bad42ab6e1f7cd2ca495, type: 3}
       propertyPath: heartbeatRate
@@ -858,6 +847,17 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2928287152547655803 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2915944603287997618, guid: 796d7e182ad8bad42ab6e1f7cd2ca495, type: 3}
+  m_PrefabInstance: {fileID: 2928287152547655795}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2928287152547655796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92fad0acc333f874a82ea1818508d5dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3834316623775380625
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -968,14 +968,14 @@ PrefabInstance:
     - target: {fileID: 3834316622284860681, guid: cbd951174aa59cd488b1b3294445235c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2125005906}
+      objectReference: {fileID: 2928287152547655803}
     - target: {fileID: 3834316622284860681, guid: cbd951174aa59cd488b1b3294445235c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: StartNewGame
       objectReference: {fileID: 0}
     - target: {fileID: 3834316622284860681, guid: cbd951174aa59cd488b1b3294445235c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: MainMenuManager, Assembly-CSharp
+      value: MainMenuStateManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3834316623207453171, guid: cbd951174aa59cd488b1b3294445235c, type: 3}
       propertyPath: m_Navigation.m_Mode
@@ -984,6 +984,18 @@ PrefabInstance:
     - target: {fileID: 3834316623207453171, guid: cbd951174aa59cd488b1b3294445235c, type: 3}
       propertyPath: m_Navigation.m_WrapAround
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3834316623207453171, guid: cbd951174aa59cd488b1b3294445235c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2928287152547655803}
+    - target: {fileID: 3834316623207453171, guid: cbd951174aa59cd488b1b3294445235c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: QuitGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 3834316623207453171, guid: cbd951174aa59cd488b1b3294445235c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MainMenuStateManager, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cbd951174aa59cd488b1b3294445235c, type: 3}
