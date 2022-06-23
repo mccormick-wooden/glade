@@ -19,20 +19,22 @@ public class NewGameStateManager : BaseStateManager
 
     private AnimationEventDispatcher animationEventDispatcher;
 
+    protected void FixedUpdate()
+    {
+#if UNITY_EDITOR
+        if (skipCrawl)
+            GameManager.UpdateGameState(GameState.Level1);
+
+        Time.timeScale = timeScale;
+#endif
+    }
     protected override void OnSceneLoaded()
     {
         animationEventDispatcher = GameObject.Find("CrawlText").GetComponent<AnimationEventDispatcher>();
-        animationEventDispatcher.OnAnimationComplete += OnAnimationComplete;
+        if (animationEventDispatcher == null)
+            Debug.LogError($"{GetType().Name}: {nameof(animationEventDispatcher)} is null.");
 
-        if (skipCrawl)
-        {
-            GameManager.UpdateGameState(GameState.Level1);
-            return;
-        }
-        else
-        {
-            Time.timeScale = timeScale;
-        }
+        animationEventDispatcher.OnAnimationComplete += OnAnimationComplete;
     }
 
     protected override void OnSceneUnloaded()

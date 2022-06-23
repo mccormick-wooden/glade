@@ -64,6 +64,8 @@ MonoBehaviour:
   managedSceneName: MainMenu
   debugOutput: 0
   heartbeatRate: 0
+  newGameButtonRootName: MainNewGame
+  exitGameButtonRootName: MainExitGame
 --- !u!114 &7986550363708548822
 MonoBehaviour:
   m_ObjectHideFlags: 0
