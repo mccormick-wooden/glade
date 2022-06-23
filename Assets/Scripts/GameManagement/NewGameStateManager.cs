@@ -8,6 +8,7 @@ public class NewGameStateManager : BaseStateManager
     /// Controls whether the crawl will be skipped.
     /// This is purely for dev / debug QoL - eventually a button will be added for the player to do this (TODO:).
     /// </summary>
+    [Header("Scene Settings")]
     [SerializeField]
     private bool skipCrawl = false; // Set to true to skip crawl
 
