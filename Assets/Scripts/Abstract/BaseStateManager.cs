@@ -31,8 +31,6 @@ public abstract class BaseStateManager : MonoBehaviour
     /// - Ensure that the scene this is managing actually exists.
     /// - Start off in a disabled state (only enable if GameManager tells us to)
     /// - Subscribe to GameManager and SceneManager updates so we can answer the Call of Duty
-    /// 
-    /// Derived classes should put startup logic in Start() if absolutely needed, but they probably shouldn't need to.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     protected void Awake()

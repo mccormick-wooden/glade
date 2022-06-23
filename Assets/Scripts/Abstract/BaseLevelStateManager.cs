@@ -7,7 +7,7 @@ public abstract class BaseLevelStateManager : BaseStateManager
     /// <summary>
     /// The playerGameObjectRootName must be the root of whatever object the player model lives on, or nothing will work.
     /// </summary>
-    [Header("Level Settings")]
+    [Header("Scene Settings")]
     [SerializeField]
     protected string playerGameObjectRootName = "Player";
 
