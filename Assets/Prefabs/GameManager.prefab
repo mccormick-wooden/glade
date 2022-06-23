@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 8257945831418916892}
   - component: {fileID: 8257945831418916895}
   - component: {fileID: 8257945831418916891}
+  - component: {fileID: 2001327028466082264}
+  - component: {fileID: 4847195641392796058}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -79,7 +81,7 @@ MonoBehaviour:
   debugOutput: 0
   heartbeatRate: 0
   skipCrawl: 0
-  speedUpScale: 1
+  timeScale: 1
 --- !u!114 &8257945831418916891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,3 +98,37 @@ MonoBehaviour:
   managedState: 30
   debugOutput: 0
   heartbeatRate: 0
+  playerGameObjectRootName: Player
+  returnToMainMenuCountdownLength: 10
+--- !u!114 &2001327028466082264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8257945831418916894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7739837c911b42c4e85765182adc4bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+--- !u!95 &4847195641392796058
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8257945831418916894}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

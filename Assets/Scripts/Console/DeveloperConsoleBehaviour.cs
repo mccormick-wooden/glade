@@ -25,8 +25,10 @@ namespace Assets.Scripts.GameManagement
                 Destroy(gameObject);
                 return;
             }
-
-            instance = this;
+            else
+            {
+                instance = this;
+            }
         }
 
         public void Toggle(CallbackContext context)

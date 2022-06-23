@@ -4,9 +4,18 @@ using UnityEngine.SceneManagement;
 
 public abstract class BaseSceneManager : MonoBehaviour
 {
+    /// <summary>
+    /// The scene that this manager will manage. 
+    /// Scene obviously must exist, but it also must be included in build settings.
+    /// </summary>
+    [Header("Game Settings")]
     [SerializeField]
     protected string managedSceneName;
 
+    /// <summary>
+    /// The state owned by this manager. 
+    /// Separation of managedState / managedSceneName allows us to easily swap out test scenes for a certain state.
+    /// </summary>
     [SerializeField]
     protected GameState managedState;
 
@@ -19,10 +28,11 @@ public abstract class BaseSceneManager : MonoBehaviour
     /// <summary>
     /// Awake has the following purposes:
     /// - Ensure that the scene this is managing actually exists.
+    /// - Ensure that the state being managed is set and valid.
     /// - Start off in a disabled state (only enable if GameManager tells us to)
     /// - Subscribe to GameManager and SceneManager updates so we can answer the Call of Duty
     /// 
-    /// Derived classes should put startup logic in Start()
+    /// Derived classes should put startup logic in Start() if absolutely needed, but they probably shouldn't need to.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     protected void Awake()
@@ -50,7 +60,7 @@ public abstract class BaseSceneManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Unsubscribe from event(s) to prevent memory leaks. 
+    /// We use OnDestroy to unsubscribe from event(s) to prevent memory leaks. 
     /// </summary>
     protected void OnDestroy()
     {
@@ -95,6 +105,9 @@ public abstract class BaseSceneManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Derived class implementation for OnSceneLoaded even.
+    /// </summary>
     protected abstract void OnSceneLoaded();
 
     /// <summary>
@@ -114,12 +127,24 @@ public abstract class BaseSceneManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Derived class implementation for OnSceneUnloaded event.
+    /// </summary>
     protected abstract void OnSceneUnloaded();
 
     #region debug
+
+    /// <summary>
+    /// Controls all SceneManager debug output.
+    /// </summary>
     [Header("Debug Settings")]
     [SerializeField]
-    protected bool debugOutput = true;
+    protected bool debugOutput = true; // Set to false to remove all debug output.
+
+    /// <summary>
+    /// The rate in seconds at which heartbeat debug outputs are generated.
+    /// Higher values are useful to reduce noise when other types of debug output are more important.
+    /// </summary>
     [SerializeField]
     protected float heartbeatRate = 1f;
 
@@ -135,9 +160,6 @@ public abstract class BaseSceneManager : MonoBehaviour
             CancelInvoke("Heartbeat");
     }
 
-    /// <summary>
-    /// Purely for dev / logging
-    /// </summary>
     protected virtual void Heartbeat()
     {
         Debug.Log($"{GetType().Name} is alive");

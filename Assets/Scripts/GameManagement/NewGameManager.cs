@@ -1,11 +1,19 @@
 ﻿using System;
 using UnityEngine;
 
+[RequireComponent(typeof(AnimationEventDispatcher))]
 public class NewGameManager : BaseSceneManager
 {
+    /// <summary>
+    /// Controls whether the crawl will be skipped.
+    /// This is purely for dev / debug QoL - eventually a button will be added for the player to do this (TODO:).
+    /// </summary>
     [SerializeField]
-    private bool skipCrawl = false;
+    private bool skipCrawl = false; // Set to true to skip crawl
 
+    /// <summary>
+    /// Controls the speed of the crawl using timeScale.
+    /// </summary>
     [SerializeField]
     private float timeScale = 1;
 
@@ -13,7 +21,7 @@ public class NewGameManager : BaseSceneManager
 
     protected override void OnSceneLoaded()
     {
-        animationEventDispatcher = GameObject.Find("CrawlText")?.GetComponent<AnimationEventDispatcher>();
+        animationEventDispatcher = GameObject.Find("CrawlText").GetComponent<AnimationEventDispatcher>();
         animationEventDispatcher.OnAnimationComplete += OnAnimationComplete;
 
         if (skipCrawl)
@@ -33,7 +41,10 @@ public class NewGameManager : BaseSceneManager
         Time.timeScale = 1;
     }
 
-    // TODO: Add option for player to skip Crawl 
+    /// <summary>
+    /// Callback to handle completion of crawl animation event.
+    /// </summary>
+    /// <param name="animation"></param>
     private void OnAnimationComplete(string animation)
     {
         if (animation.Equals("NewGameCrawl", StringComparison.OrdinalIgnoreCase))
