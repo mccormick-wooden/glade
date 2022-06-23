@@ -51,6 +51,7 @@ public class BaseEnemy : MonoBehaviour
         HealOthersOthers
     }
 
+    [SerializeField]
     protected Priority priority;
 
     // The AI's OVERALL desire to do the following.
@@ -97,7 +98,6 @@ public class BaseEnemy : MonoBehaviour
     // last time - use this to influence desire to
     // run away.
     protected BaseDamageable damageable;
-    //protected float recentHP;
 
     DateTime lastPriorityChangeTime;
     float minTimeToPriorityChanges;
@@ -133,6 +133,29 @@ public class BaseEnemy : MonoBehaviour
 
     protected virtual void ApplyTransforms()
     {
+        priority = Priority.DefendBeacon;
+
+        GameObject beaconSpawner = GameObject.Find("BeaconSpawner");
+
+        float nearestBeaconDistance = float.MaxValue;
+        GameObject nearestBeacon = null;
+
+        foreach (Transform beaconManager in beaconSpawner.transform)
+        {
+            GameObject crashedBeacon = beaconManager.GetChild(0).gameObject;
+
+            float distanceToEnemy = (transform.position - crashedBeacon.transform.position).magnitude;
+            float distanceToPlayer = (Player.transform.position - crashedBeacon.transform.position).magnitude;
+
+            if (distanceToEnemy < nearestBeaconDistance)
+            {
+                nearestBeaconDistance = distanceToEnemy;
+                nearestBeacon = crashedBeacon;
+            }
+        }
+
+        beacon = nearestBeacon;
+
         switch (priority)
         {
             case Priority.AttackPlayer:
@@ -219,12 +242,8 @@ public class BaseEnemy : MonoBehaviour
         else if (!isAttacking && (distanceToPlayer < minDistanceFromPlayer))
         {
             // TODO: update this
-            // if navmesh.raycast backwards can't find a valid position, 
-            // iterate to find one.
-            //
-            // 
-            //
-            //
+            // if navmesh.raycast backwards can't find  
+            // a valid position, iterate to find one.
 
             agent.isStopped = false;
 
@@ -258,39 +277,67 @@ public class BaseEnemy : MonoBehaviour
     }
 
 
+    // don't let it get here if player and agent aren't nearish to a beacon
     protected virtual void TryToDefendBeacon()
     {
         // if the player is too close to the beacon or player, 
         // the enemy should just jump to attack player 
         Vector3 beaconToPlayerVector = beacon.transform.position - Player.transform.position;
-        Vector3 beaconToEnemyVector = beacon.transform.position - transform.position;
-        Vector3 playerToEnemyVector = Player.transform.position - transform.position;
+        float beaconToPlayerDistance = Vector3.Magnitude(beaconToPlayerVector);
+        
+        Vector3 enemyToPlayerVector = Player.transform.position - transform.position;
+        float enemyToPlayerDistance = Vector3.Magnitude(enemyToPlayerVector);
 
-        if (Vector3.Magnitude(beaconToPlayerVector) < autoAttackPlayerDistanceToBeacon
-            || Vector3.Magnitude(playerToEnemyVector) < minDistanceFromPlayer) 
+        if (beaconToPlayerDistance < autoAttackPlayerDistanceToBeacon
+            || enemyToPlayerDistance < minDistanceFromPlayer) 
         {
             priority = Priority.AttackPlayer;
             TryToGetToAttack();
         }
 
-        // calculate a few values first:
+        // place ourselves in between the player and beacon
+        float defendBeaconDistance = 3f;
 
-        float distanceToBeacon = Vector3.Magnitude(transform.position - beacon.transform.position);
-        float angleBetweenPlayerBeaconAndBeaconEnemy = Vector3.Angle(beaconToPlayerVector, beaconToEnemyVector);
+        //Vector3 desiredPosition = Player.transform.position + (beaconToPlayerVector) * (defendBeaconDistance / beaconToPlayerDistance);
+        Vector3 desiredPosition = beacon.transform.position - (beaconToPlayerVector) * (defendBeaconDistance / beaconToPlayerDistance);
 
-        Vector3 directionToMove = Vector3.zero;
 
-        //if (distanceToBeacon > 
+        NavMeshHit hit;
+        bool foundValid = NavMesh.SamplePosition(desiredPosition, out hit, 1f, NavMesh.AllAreas);
 
+        // just assume hit is okay for now, worry about wtf to do if not later        
+        Vector3 closestToDesiredPosition = hit.position;
+
+        bool blocked = NavMesh.Raycast(transform.position, closestToDesiredPosition, out hit, NavMesh.AllAreas);
+
+        // again, just assume good for now, figure out wtf to do if not later
+        agent.SetDestination(desiredPosition);
     }
 
 
     protected virtual void TryToIncreaseDistance()
     {
+        Vector3 enemyToPlayerVector = Player.transform.position - transform.position;
 
+        // simple for now, just flee player, go to enemyToPlayer + 1 each frame
+        // use samplePosition to 
+
+        Vector3 desiredPosition = enemyToPlayerVector + enemyToPlayerVector.normalized;
+
+        NavMeshHit hit;
+        bool foundValid = NavMesh.SamplePosition(transform.position, out hit, 1f, NavMesh.AllAreas);
+
+        // just assume hit is okay for now, worry about wtf to do if not later        
+        Vector3 closestToDesiredPosition = hit.position;
+
+        bool blocked = NavMesh.Raycast(transform.position, closestToDesiredPosition, out hit, NavMesh.AllAreas);
+
+        // again, just assume good for now, figure out wtf to do if not later
+        agent.SetDestination(desiredPosition);
     }
 
 
+    // assume for now only some enemies can do that, leave this blank?
     protected virtual void TryToHealOthers()
     {
 
@@ -306,6 +353,9 @@ public class BaseEnemy : MonoBehaviour
         // priorities all over the place.  make up your mind
         // and stick to it for a bit.
 
+
+
+        /*
         // Don't switch mid-attack
         if (!isAttacking 
               && DateTime.Now > lastPriorityChangeTime.AddSeconds(minTimeToPriorityChanges))
@@ -343,6 +393,7 @@ public class BaseEnemy : MonoBehaviour
         }
 
         lastPriorityChangeTime = DateTime.Now;
+        */
     }
 
 
