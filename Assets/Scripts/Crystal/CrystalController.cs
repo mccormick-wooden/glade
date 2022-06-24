@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
@@ -13,33 +14,49 @@ public class CrystalController : MonoBehaviour
 
     private SphereCollider effectEnableCollider;
 
+    private HashSet<int> ActivatorInstanceIds = new HashSet<int>();
+
     private Animator anim;
     private int activatorsClose = 0;
-    private int animActivatorsClose;
 
     private float nextEffectTime;
 
+    /// <summary>
+    /// Registers a collider as something that can activate the crystal. I
+    /// wanted to avoid using tags. There's probably a more C# or Unity way of
+    /// doing this, but this works.
+    /// </summary>
+    public void RegisterActivator(Collider collider)
+    {
+        Debug.Log($"{name} registering activator {collider.GetInstanceID()}");
+        ActivatorInstanceIds.Add(collider.GetInstanceID());
+    }
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
-        animActivatorsClose = Animator.StringToHash("ActivatorsClose");
         if (anim == null)
             Debug.Log("Couldn't find animation component");
 
+        // Set the activator collider to the effect radius.
         effectEnableCollider = GetComponent<SphereCollider>();
         if (effectEnableCollider == null)
             Debug.Log("Couldn't find SphereCollider component");
         else
             effectEnableCollider.radius = effectRadius;
 
+        // Set the first effect time to be one second in the future.
         nextEffectTime = Mathf.Floor(Time.time) + 1;
     }
 
     // Update is called once per frame
     void Update()
     {
-        anim.SetInteger(animActivatorsClose, activatorsClose);
+        anim.SetInteger("ActivatorsClose", activatorsClose);
+
+        // Since we know when a crystal is active, might as well avoid every
+        // crystal spamming events while they're unactivated.
+        // Also, only trigger the crystal effect once per second.
         if (effectActive && (Time.time > nextEffectTime))
         {
             EventManager.TriggerEvent<CrystalEffectEvent, Vector3, float, float>(transform.position, effectRadius, effectMultiplier);
@@ -47,9 +64,15 @@ public class CrystalController : MonoBehaviour
         nextEffectTime = Mathf.Floor(Time.time) + 1;
     }
 
+    private void OnEnable()
+    {
+        // Let the activators retrigger the crystal
+        activatorsClose = 0;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (ActivatorInstanceIds.Contains(other.GetInstanceID()))
         {
             activatorsClose++;
             Debug.Log($"{name}: Activator arrived. {activatorsClose} in vicinity");
@@ -59,7 +82,7 @@ public class CrystalController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (ActivatorInstanceIds.Contains(other.GetInstanceID()))
         {
             activatorsClose--;
             Debug.Log($"{name}: Activator left. {activatorsClose} in vicinity.");
