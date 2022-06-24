@@ -10,9 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 8257945831418916890}
   - component: {fileID: 8257945831418916893}
-  - component: {fileID: 8257945831418916892}
-  - component: {fileID: 8257945831418916895}
-  - component: {fileID: 8257945831418916891}
+  - component: {fileID: 8236736784404236431}
+  - component: {fileID: 7986550363708548822}
+  - component: {fileID: 8250716618195528625}
+  - component: {fileID: 2001327028466082264}
+  - component: {fileID: 4847195641392796058}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -46,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf1118146921b8445b2caf936efcb78d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8257945831418916892
+--- !u!114 &8236736784404236431
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -55,10 +57,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 8257945831418916894}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 807262c0d46c02d468b6c6ad5fd68362, type: 3}
+  m_Script: {fileID: 11500000, guid: 92fad0acc333f874a82ea1818508d5dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8257945831418916895
+  managedState: 10
+  managedSceneName: MainMenu
+  debugOutput: 0
+  heartbeatRate: 0
+  newGameButtonRootName: MainNewGame
+  exitGameButtonRootName: MainExitGame
+--- !u!114 &7986550363708548822
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -67,10 +75,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 8257945831418916894}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b647b65e687adf4a9e5e31a7a62ee67, type: 3}
+  m_Script: {fileID: 11500000, guid: d7f4775787fb60a43945a2bd0cd4abce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8257945831418916891
+  managedState: 20
+  managedSceneName: NewGame
+  debugOutput: 0
+  heartbeatRate: 0
+  skipCrawl: 0
+  timeScale: 1
+--- !u!114 &8250716618195528625
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -79,6 +93,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 8257945831418916894}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acf4f9907e0216b43bdfa900512e3c57, type: 3}
+  m_Script: {fileID: 11500000, guid: a04a30576ba567741a3c8fa1b2f203a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  managedState: 30
+  managedSceneName: Level1TestGameLoop
+  debugOutput: 0
+  heartbeatRate: 0
+  playerGameObjectRootName: Player
+  returnToMainMenuCountdownLength: 10
+--- !u!114 &2001327028466082264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8257945831418916894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7739837c911b42c4e85765182adc4bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+--- !u!95 &4847195641392796058
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8257945831418916894}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
