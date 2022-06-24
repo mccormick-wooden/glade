@@ -10,7 +10,7 @@ public class CrystalHealer : MonoBehaviour
     private float hpPerSecond;
 
     private BaseDamageable health;
-    private Collider myCollider;
+    private Collider[] myColliders;
 
     void Awake()
     {
@@ -19,8 +19,9 @@ public class CrystalHealer : MonoBehaviour
             Debug.LogError("Couldn't find damageable component.");
 
         // Need to have a collider in order to know when within effect radius
-        if (null == (myCollider = GetComponent<Collider>()))
-            Debug.LogError("Couldn't find collider component.");
+        myColliders = GetComponents<Collider>();
+        if (myColliders.Length == 0)
+            Debug.LogError("Couldn't find enabled collider component.");
     }
 
 
@@ -36,7 +37,10 @@ public class CrystalHealer : MonoBehaviour
         CrystalController[] crystals = GameObject.FindObjectsOfType<CrystalController>(true);
         foreach (CrystalController crystal in crystals)
         {
-            crystal.RegisterActivator(myCollider);
+            // I know this isn't great nesting for loops but hopefully we don't
+            // actually have more than one collider very often
+            foreach (Collider collider in myColliders)
+                crystal.RegisterActivator(collider);
         }
     }
 

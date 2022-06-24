@@ -12,7 +12,8 @@ within range.
 
 Drop in a prefab and add the CrystalHealer script to anything you want to be
 healed by the crystals. The CrystalHealer requires that the GameObject have a
-Damageable script added, since it depends on that to update the HP.
+Damageable script added, since it depends on that to update the HP. The
+Damageable script should have the IsHealable checkbox checked.
 
 ## References
 
