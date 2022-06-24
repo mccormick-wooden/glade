@@ -1,23 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Animations;
-
-public delegate void CrystalEffectCallback();
 
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(SphereCollider))]
 public class CrystalController : MonoBehaviour
 {
+    [SerializeField]
+    private float effectRadius = 5;
+    [SerializeField]
+    private float effectMultiplier = 1;
+
+    public bool effectActive { get; private set; }
+
+    private SphereCollider effectEnableCollider;
+
     private Animator anim;
     private int activatorsClose = 0;
     private int animActivatorsClose;
 
-    public bool effectActive { get; private set; }
+    private float nextEffectTime;
 
-    private Dictionary<int, CrystalEffectCallback> registrations = new Dictionary<int, CrystalEffectCallback>();
-
-    [SerializeField]
-    private float effectRadius = 5;
 
     private void Awake()
     {
@@ -25,29 +26,25 @@ public class CrystalController : MonoBehaviour
         animActivatorsClose = Animator.StringToHash("ActivatorsClose");
         if (anim == null)
             Debug.Log("Couldn't find animation component");
-    }
 
-    public void RegisterForCrystalEffect(int instanceId, CrystalEffectCallback callback)
-    {
-        registrations.Add(instanceId, callback);
-    }
+        effectEnableCollider = GetComponent<SphereCollider>();
+        if (effectEnableCollider == null)
+            Debug.Log("Couldn't find SphereCollider component");
+        else
+            effectEnableCollider.radius = effectRadius;
 
-    public void Unregister(int instanceId) { registrations.Remove(instanceId); }
+        nextEffectTime = Mathf.Floor(Time.time) + 1;
+    }
 
     // Update is called once per frame
     void Update()
     {
         anim.SetInteger(animActivatorsClose, activatorsClose);
-        if (effectActive)
+        if (effectActive && (Time.time > nextEffectTime))
         {
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, effectRadius);
-            foreach (var hitCollider in hitColliders)
-            {
-                int instanceId = hitCollider.GetInstanceID();
-                if (registrations.ContainsKey(instanceId))
-                    registrations[instanceId]();
-            }
+            EventManager.TriggerEvent<CrystalEffectEvent, Vector3, float, float>(transform.position, effectRadius, effectMultiplier);
         }
+        nextEffectTime = Mathf.Floor(Time.time) + 1;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -55,7 +52,7 @@ public class CrystalController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             activatorsClose++;
-            Debug.Log($"Crystal: Activator {other.GetInstanceID()} arrived. {activatorsClose} in vicinity");
+            Debug.Log($"{name}: Activator arrived. {activatorsClose} in vicinity");
         }
         if (activatorsClose > 0) effectActive = true;
     }
@@ -65,8 +62,12 @@ public class CrystalController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             activatorsClose--;
-            Debug.Log($"Crystal: Activator left. {activatorsClose} in vicinity.");
+            Debug.Log($"{name}: Activator left. {activatorsClose} in vicinity.");
         }
-        if (activatorsClose <= 0) effectActive = false;
+        if (activatorsClose <= 0)
+        {
+            activatorsClose = 0;
+            effectActive = false;
+        }
     }
 }

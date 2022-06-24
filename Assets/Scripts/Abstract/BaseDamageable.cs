@@ -36,6 +36,12 @@ namespace Assets.Scripts.Abstract
 
         public virtual void Heal(float healAmount)
         {
+            if (healAmount < 0)
+            {
+                Debug.LogError($"Tried to heal with negative value {healAmount}");
+                return;
+            }
+
             if (!IsDead && isHealable) 
             {
                 var newHp = Mathf.Max(CurrentHp + healAmount, MaxHp);

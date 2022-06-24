@@ -178,6 +178,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Crystal
       objectReference: {fileID: 0}
+    - target: {fileID: 3195626198634527306, guid: 7772123ee301b3041bd95e81fad5427c, type: 3}
+      propertyPath: m_Radius
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3196552577343956220, guid: 7772123ee301b3041bd95e81fad5427c, type: 3}
       propertyPath: m_Name
       value: BetterCrystal01-1
@@ -301,6 +305,49 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &383448524
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 383448525}
+  - component: {fileID: 383448526}
+  m_Layer: 0
+  m_Name: EventManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &383448525
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 383448524}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.0894676, y: 2.0500174, z: -5.644869}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &383448526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 383448524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9c93fff8a117a645bf8b47fa3d61b66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &467889544
 GameObject:
   m_ObjectHideFlags: 0
@@ -667,6 +714,8 @@ GameObject:
   - component: {fileID: 1640573785}
   - component: {fileID: 1640573784}
   - component: {fileID: 1640573783}
+  - component: {fileID: 1640573790}
+  - component: {fileID: 1640573789}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -781,6 +830,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1640573789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1640573782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d821ef289d0582b4ba2ab9c19c2a7ad0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpPerSecond: 1
+--- !u!114 &1640573790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1640573782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89b4d0963ff204f44abc7aa7f7e641ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarController: {fileID: 0}
+  currentHp: 0
+  maxHp: 0
+  isHealable: 1
+  applyDamageAnimTrigger: 
+  dieAnimTrigger: 
 --- !u!1 &2096727997
 GameObject:
   m_ObjectHideFlags: 0

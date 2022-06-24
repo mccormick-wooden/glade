@@ -4,41 +4,33 @@ using Assets.Scripts.Abstract;
 using UnityEngine;
 
 [RequireComponent(typeof(BaseDamageable))]
-[RequireComponent(typeof(Collider))]
-public class CrystalEffect : MonoBehaviour
+public class CrystalHealer : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject crystal;
-
     [SerializeField]
     private float hpPerSecond;
 
-    private Collider myCollider;
     private BaseDamageable health;
 
-    // Start is called before the first frame update
     void Awake()
     {
-        if (null == (myCollider = GetComponent<Collider>()))
-            Debug.LogError("Couldn't find collider.");
-
         if (null == (health = GetComponent<BaseDamageable>()))
-            Debug.LogError("Couldn't find damageable.");
+            Debug.LogError("Couldn't find damageable component.");
     }
 
-    private void Start()
+    void OnEnable()
     {
-        crystal.GetComponent<CrystalController>().RegisterForCrystalEffect(myCollider.GetInstanceID(), Heal);
+        EventManager.StartListening<CrystalEffectEvent, Vector3, float, float>(CrystalEffectEventHandler);
     }
 
-    public void Heal()
+    private void OnDisable()
     {
-        health.Heal(hpPerSecond*Time.deltaTime);
+        EventManager.StopListening<CrystalEffectEvent, Vector3, float, float>(CrystalEffectEventHandler);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void CrystalEffectEventHandler(Vector3 position, float effectRadius, float effectMultiplier)
     {
-        
+        var distance = (position - transform.position).magnitude;
+        if (distance <= effectRadius)
+            health.Heal(hpPerSecond * effectMultiplier);
     }
 }
