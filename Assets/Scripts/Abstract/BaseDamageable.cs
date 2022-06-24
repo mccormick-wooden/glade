@@ -44,7 +44,7 @@ namespace Assets.Scripts.Abstract
 
             if (!IsDead && isHealable) 
             {
-                var newHp = Mathf.Max(CurrentHp + healAmount, MaxHp);
+                var newHp = Mathf.Min(CurrentHp + healAmount, MaxHp);
                 Debug.Log($"Healing {gameObject.name}: currentHp = {CurrentHp}, healAmount: {healAmount}, newHp = {newHp}");
                 CurrentHp = newHp;
             }
