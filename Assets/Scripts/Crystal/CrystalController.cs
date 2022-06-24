@@ -18,6 +18,7 @@ public class CrystalController : MonoBehaviour
 
     private Animator anim;
     private int activatorsClose = 0;
+    private bool animIsGrowing => anim.GetCurrentAnimatorStateInfo(0).IsName("Growing");
 
     private float nextEffectTime;
 
@@ -52,7 +53,14 @@ public class CrystalController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        anim.SetInteger("ActivatorsClose", activatorsClose);
+        if (animIsGrowing)
+        {
+            anim.SetInteger("ActivatorsClose", 0);
+        }
+        else
+        {
+            anim.SetInteger("ActivatorsClose", activatorsClose);
+        }
 
         // Since we know when a crystal is active, might as well avoid every
         // crystal spamming events while they're unactivated.
@@ -68,6 +76,7 @@ public class CrystalController : MonoBehaviour
     {
         // Let the activators retrigger the crystal
         activatorsClose = 0;
+        anim.Play("Growing");
     }
 
     private void OnTriggerEnter(Collider other)
