@@ -18,5 +18,6 @@ Damageable script added, since it depends on that to update the HP.
 
 ### SineVFX TransluscentCrystals
 
-This prefab uses model and shader assets from SineVFX's [TransluscentCrystals](https://assetstore.unity.com/packages/3d/environments/fantasy/translucent-crystals-106274).
+This prefab uses modified model and shader assets from SineVFX's
+[TransluscentCrystals](https://assetstore.unity.com/packages/3d/environments/fantasy/translucent-crystals-106274).
 
