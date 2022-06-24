@@ -74,7 +74,6 @@ public class CrystalController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"{name} triggerenter: {other.GetInstanceID()}");
         if (ActivatorInstanceIds.Contains(other.GetInstanceID()))
         {
             activatorsClose++;
