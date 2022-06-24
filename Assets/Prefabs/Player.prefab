@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3492924701691078483}
-  m_LocalRotation: {x: 0.20608161, y: -0.6706006, z: 0.20224658, w: 0.68331665}
+  m_LocalRotation: {x: 0.20593262, y: -0.6711036, z: 0.20239827, w: 0.6828226}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -98,7 +98,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3492924701730609784}
-  m_LocalRotation: {x: 0.225697, y: -0.66449076, z: 0.22149698, w: 0.6770908}
+  m_LocalRotation: {x: 0.2255338, y: -0.6649891, z: 0.22166307, w: 0.6766014}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -204,7 +204,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3492924702036808564}
-  m_LocalRotation: {x: 0.18642618, y: -0.676118, z: 0.1829569, w: 0.68893874}
+  m_LocalRotation: {x: 0.18629138, y: -0.6766252, z: 0.18309413, w: 0.68844056}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -280,7 +280,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3492924702343736218}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 173.49788, y: 24.529999, z: 128.87462}
+  m_LocalPosition: {x: 173.4982, y: 24.529999, z: 128.89229}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3492924701730609767}
@@ -954,8 +954,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3492924703507662491}
-  m_LocalRotation: {x: 0.20443404, y: -0.6761223, z: 0.20391189, w: 0.6778535}
-  m_LocalPosition: {x: 173.49995, y: 24.529999, z: 129.06932}
+  m_LocalRotation: {x: 0.20593262, y: -0.67110366, z: 0.20239829, w: 0.6828226}
+  m_LocalPosition: {x: 173.4982, y: 24.529999, z: 128.89229}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3492924702019507072}
@@ -1227,7 +1227,7 @@ MonoBehaviour:
   GameMessage: {fileID: 0}
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 128
   playerSpeedForce: 1250
 --- !u!114 &3492924701992890874
 MonoBehaviour:
