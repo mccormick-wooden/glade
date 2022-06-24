@@ -53,14 +53,7 @@ public class CrystalController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (animIsGrowing)
-        {
-            anim.SetInteger("ActivatorsClose", 0);
-        }
-        else
-        {
-            anim.SetInteger("ActivatorsClose", activatorsClose);
-        }
+        anim.SetInteger("ActivatorsClose", activatorsClose);
 
         // Since we know when a crystal is active, might as well avoid every
         // crystal spamming events while they're unactivated.
