@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Interfaces;
 using UnityEngine;
 using System.Linq;
+using System;
 
 namespace Assets.Scripts.Abstract
 {
@@ -13,7 +14,7 @@ namespace Assets.Scripts.Abstract
         private float currentHp;
 
         [SerializeField]
-        private float maxHp;
+        private float maxHp = 100;
 
         [SerializeField]
         private bool isHealable;
@@ -31,6 +32,8 @@ namespace Assets.Scripts.Abstract
         }
 
         public bool HasHp => CurrentHp > 0;
+
+        public int AttachedInstanceId { get; protected set; }
 
         public virtual bool IsDead { get; protected set; } = false;
 
@@ -50,6 +53,8 @@ namespace Assets.Scripts.Abstract
             }
         }
 
+        public Action<IDamageable, string, int> Died { get; set; }
+
         protected virtual void Start()
         {
             CurrentHp = MaxHp;
@@ -62,6 +67,8 @@ namespace Assets.Scripts.Abstract
                     ? $"{gameObject.name} HP set to {CurrentHp}/{MaxHp}"
                     : $"{gameObject.name} HP set to {CurrentHp}/{MaxHp} with health bar at {healthBarController.CurrentHp}/{healthBarController.MaxHp}"
             );
+
+            AttachedInstanceId = gameObject.GetInstanceID();
         }
 
         protected virtual void OnTriggerEnter(Collider other)
@@ -100,9 +107,12 @@ namespace Assets.Scripts.Abstract
             CurrentHp = newHp;
         }
 
+        /// <summary>
+        /// If overridden, base implementation MUST be called
+        /// </summary>
         protected virtual void Die()
         {
-            Debug.Log($"{gameObject.name} died.");
+            Died?.Invoke(this, name, AttachedInstanceId);
             IsDead = true;
         }
     }

@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(CanvasGroup))]
 public class PauseMenuManager : MonoBehaviour
 {
+    private static PauseMenuManager instance;
+
     private CanvasGroup canvasGroup;
 
     private Canvas canvas;
@@ -20,6 +22,17 @@ public class PauseMenuManager : MonoBehaviour
 
     private void Awake()
     {
+        // TODO: - make singleton dry? low priority
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        else
+        {
+            instance = this;
+        }
+
         canvasGroup = GetComponent<CanvasGroup>();
         canvas = canvasGroup.GetComponent<Canvas>();
 
