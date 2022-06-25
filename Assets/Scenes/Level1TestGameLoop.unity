@@ -414,6 +414,10 @@ PrefabInstance:
       value: BeaconParent
       objectReference: {fileID: 0}
     - target: {fileID: 8710085024142302781, guid: 225b290c69a04fa468d70c1b018ed5dd, type: 3}
+      propertyPath: maxTotalBeacons
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8710085024142302781, guid: 225b290c69a04fa468d70c1b018ed5dd, type: 3}
       propertyPath: maxSpawnWaitTime
       value: 1
       objectReference: {fileID: 0}
@@ -423,6 +427,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8710085024142302781, guid: 225b290c69a04fa468d70c1b018ed5dd, type: 3}
       propertyPath: spawnTimerRemaining
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8710085024142302781, guid: 225b290c69a04fa468d70c1b018ed5dd, type: 3}
+      propertyPath: maxConcurrentBeacons
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8710085024142302781, guid: 225b290c69a04fa468d70c1b018ed5dd, type: 3}
+      propertyPath: initialBeaconSpawnTime
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

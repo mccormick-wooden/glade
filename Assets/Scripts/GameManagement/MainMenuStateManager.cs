@@ -16,12 +16,10 @@ public class MainMenuStateManager : BaseStateManager
         void AddMainMenuButtonCallback(string buttonRootName, UnityAction method)
         {
             var buttonRoot = GameObject.Find(buttonRootName);
-            if (buttonRoot == null)
-                Debug.LogError($"{GetType().Name}: {nameof(buttonRoot)} '{buttonRootName}' is null.");
+            Utility.LogErrorIfNull(buttonRoot, nameof(buttonRootName));
 
             var button = buttonRoot.GetComponentInChildren<Button>();
-            if (button == null)
-                Debug.LogError($"{GetType().Name}: {nameof(button)} is null.");
+            Utility.LogErrorIfNull(button, nameof(button));
 
             button.onClick.AddListener(method);
         }
