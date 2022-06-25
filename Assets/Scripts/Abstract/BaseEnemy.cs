@@ -79,28 +79,14 @@ public class BaseEnemy : MonoBehaviour
     // period may add a scalar to the desireToRunAndHeal
     // so it may still happen.
 
-    // The (current) thinking is these should be clamped
-    // from [0,1] each..  the sum of desire to attack/defend
-    // should total 1, and the desire to run should be
-    // between [0,1] as well.  
-
-    // Desire to run should indicate the MAX chance 
-    // that the AI wants to run away if it's just 
-    // taken a TON of damage, otherwise the desire
-    // to run drops proportionally to how much
-    // health it still has left.  The rest of the
-    // 1 - desireToRun is distributed between the
-    // other two, according to their proportions.
-
-    // e.g. if desire to run is 0.25, and desire to
-    // attack/defend are 0.75, 0.25, if the AI has
-    // lost 50% of it's health, desire to run should
-    // be 0.125, and the desire to attack / defend,
-    // then desires to attack/defend are reduced
-    // by 0.125/2 each, leaving us with:
-    // - 0.6875 desire to attack
-    // - 0.1875 desire to defend
-    // - 0.1250 desire to run
+    // The updated version of this is to just give each
+    // enemy type their own values to each of the following
+    // four fields, and they act as a relative weight to 
+    // one another..  if desiretoAttack is 4 and desire
+    // to defend beacon is 1, we can expect a 4x likelihood 
+    // of attack vs defend (other factors may influence 
+    // the AI's decision though, like a damaged beacon
+    // may be chosen more often 
 
     protected float desireToAttackPlayer;
     protected float desireToDefendBeacon;
