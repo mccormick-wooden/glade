@@ -1,15 +1,22 @@
 ﻿using Assets.Scripts.Interfaces;
+using Beacons;
 using TMPro;
 using UnityEngine;
 
 public abstract class BaseLevelStateManager : BaseStateManager
 {
     /// <summary>
-    /// The playerGameObjectRootName must be the root of whatever object the player model lives on, or nothing will work.
+    /// The playerGameObjectRootName must be the root of whatever object the player model lives on.
     /// </summary>
     [Header("Scene Settings")]
     [SerializeField]
     protected string playerGameObjectRootName = "Player";
+
+    /// <summary>
+    /// The beaconSpawnerObjectRootName must be the root of whatever object the beacon spawner lives on.
+    /// </summary>
+    [SerializeField]
+    protected string beaconParentObjectRootName = "BeaconParent";
 
     /// <summary>
     /// When the game ends, the user is sent to the main menu.
@@ -22,36 +29,76 @@ public abstract class BaseLevelStateManager : BaseStateManager
     protected IDamageable playerDamageModel;
     protected TextMeshProUGUI HUDMessageText;
 
+    protected GameObject beaconParent;
+    protected BeaconSpawner beaconSpawner;
+
     protected override void OnSceneLoaded()
     {
+        #region player objs and subscriptions
+
         player = GameObject.Find(playerGameObjectRootName);
-        if (player == null)
-            Debug.LogError($"{GetType().Name}: {nameof(player)} is null.");
+        Utility.LogErrorIfNull(player, nameof(player));
 
         playerDamageModel = player.GetComponentInChildren<IDamageable>();
-        if (playerDamageModel == null)
-            Debug.LogError($"{GetType().Name}: {nameof(playerDamageModel)} is null.");
+        Utility.LogErrorIfNull(playerDamageModel, nameof(playerDamageModel));
 
         HUDMessageText = player.GetComponentInChildren<TextMeshProUGUI>();
-        if (HUDMessageText == null)
-            Debug.LogError($"{GetType().Name}: {nameof(HUDMessageText)} is null.");
-
+        Utility.LogErrorIfNull(HUDMessageText, nameof(HUDMessageText));
 
         playerDamageModel.Died += OnPlayerDied;
+
+        #endregion
+
+        #region beacon objs and subscriptions
+
+        beaconParent = GameObject.Find(beaconParentObjectRootName);
+        Utility.LogErrorIfNull(beaconParent, nameof(beaconParent));
+
+        beaconSpawner = beaconParent.GetComponentInChildren<BeaconSpawner>();
+        Utility.LogErrorIfNull(beaconSpawner, nameof(beaconSpawner));
+
+        beaconSpawner.AllBeaconsDied += OnAllBeaconsDied;
+
+        #endregion
     }
 
     protected override void OnSceneUnloaded()
     {
         playerDamageModel.Died -= OnPlayerDied;
-        CancelInvoke();
+        beaconSpawner.AllBeaconsDied -= OnAllBeaconsDied;
+
+        CancelInvoke(); // Clean up any active invokes.
     }
 
     /// <summary>
-    /// Main callback that handles the BaseDamageable.Died event for the player model.
+    /// Callback that handles the BeaconSpawner.AllBeaconsDied event.
+    /// This is effectively the "game won" callback.
     /// </summary>
-    /// <param name="name"></param>
-    /// <param name="instanceId"></param>
-    private void OnPlayerDied(string name, int instanceId)
+    private void OnAllBeaconsDied()
+    {
+        if (debugOutput)
+            Debug.Log("All beacons died.");
+
+        InvokeRepeating("OnAllBeaconsDiedReturnToMainMenuCountdown", 0f, 1f);
+    }
+
+    private void OnAllBeaconsDiedReturnToMainMenuCountdown()
+    {
+        HUDMessageText.fontSize = 50;
+        HUDMessageText.text = $"YOU WON!\n\nReturning to Main Menu in {returnToMainMenuCountdownLength} seconds...";
+        returnToMainMenuCountdownLength -= 1;
+        if (returnToMainMenuCountdownLength < 0)
+            ReturnToMainMenu();
+    }
+
+    /// <summary>
+    /// Callback that handles the IDamageable.Died event for the player model.
+    /// This is effectively the "game lost" callback.
+    /// </summary>
+    /// <param name="damageModel">A reference to the object emitting the event</param>
+    /// <param name="name">Name of the GameObject that IDamageable is attached to.</param>
+    /// <param name="instanceId">Unity InstanceId of the GameObject that IDamageable is attached to</param>
+    private void OnPlayerDied(IDamageable damageModel, string name, int instanceId)
     {
         if (debugOutput)
             Debug.Log($"GameObj '{name}:{instanceId}' died.");

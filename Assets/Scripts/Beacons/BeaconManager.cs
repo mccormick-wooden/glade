@@ -17,54 +17,36 @@ namespace Beacons
         private Rigidbody fallingBeaconRigidBody;
         private FireProjectileScript beaconFall;
 
-        private bool _isCrashed;
-        private bool _isBeaconSpawned;
-
-        private void Awake()
-        {
-            if (fallingBeaconPrefab == null) Debug.LogError("Beacon does not have an object to represent fallingBeacon!");
-        }
+        public Action<BeaconManager, GameObject> BeaconReadyForDamage { get; set; } 
 
         private void Start()
         {
-            _isCrashed = false;
-            _isBeaconSpawned = false;
-
-            if (fallingBeaconPrefab == null)
-            {
-                Debug.LogError("Could not find fallingBeaconObject");
-            }
+            Utility.LogErrorIfNull(fallingBeaconPrefab, nameof(fallingBeaconPrefab), "Need an object to represent falling beacon!");
 
             fallingBeaconInstance = Instantiate(fallingBeaconPrefab, transform.position, transform.rotation, transform);
-            if (fallingBeaconInstance == null)
-            {
-                Debug.LogError("Could not find fallingBeacon");
-            }
-
-            beaconFall = GetComponentInChildren<FireProjectileScript>();
-            if (beaconFall == null)
-            {
-                Debug.LogError("Could not find component BeaconFall");
-                _isCrashed = true;
-            }
+            Utility.LogErrorIfNull(fallingBeaconInstance, nameof(fallingBeaconInstance));
 
             fallingBeaconRigidBody = fallingBeaconInstance.GetComponentInChildren<Rigidbody>();
-            if (fallingBeaconRigidBody == null)
-            {
-                /* Need a rigid body so that collision with terrain works */
-                Debug.LogError("The falling beacon does not have a rigid body!");
-            }
+            Utility.LogErrorIfNull(fallingBeaconRigidBody, nameof(fallingBeaconRigidBody), "Needs a rigidbody so that collision with terrain works!");
+
+            beaconFall = GetComponentInChildren<FireProjectileScript>();
+            Utility.LogErrorIfNull(beaconFall, nameof(beaconFall));
+
+            beaconFall.CollisionDelegate += OnBeaconLanded;
         }
 
-        private void LateUpdate()
+        /// <summary>
+        /// Callback for the FireProjectileScript's collision delegate.
+        /// This effectivly tells us when the projectile (beacon) experiences a collision event,
+        /// which for beacons mean they have landed.
+        /// </summary>
+        /// <param name="script"></param>
+        /// <param name="pos"></param>
+        private void OnBeaconLanded(FireProjectileScript script, Vector3 pos)
         {
-            _isCrashed = beaconFall.isCrashed;
-
-            if (!_isCrashed || _isBeaconSpawned) return;
-
+            beaconFall.CollisionDelegate -= OnBeaconLanded; 
             crashedBeaconInstance = Instantiate(crashedBeaconPrefab, fallingBeaconRigidBody.transform.position, Quaternion.LookRotation(transform.position, Vector3.up), transform);
-            _isCrashed = true;
-            _isBeaconSpawned = true;
+            BeaconReadyForDamage?.Invoke(this, crashedBeaconInstance);
         }
     }
 }

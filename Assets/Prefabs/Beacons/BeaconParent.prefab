@@ -171,11 +171,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   beaconToSpawn: {fileID: 6010572465883681626, guid: 98f6dcc3b4eda1f44aa51f7a488ed84c, type: 3}
-  spawnTimerRemaining: 10
+  initialBeaconSpawnTime: 1
   minSpawnWaitTime: 30
   maxSpawnWaitTime: 180
-  beaconCount: 0
-  beaconTotal: 0
   maxConcurrentBeacons: 5
   maxTotalBeacons: 10
   beaconCountText: {fileID: 0}
+  currentBeaconCount: 0
+  totalBeaconsSpawnedCount: 0
+  totalBeaconsDiedCount: 0
+  spawnTimerRemaining: 0

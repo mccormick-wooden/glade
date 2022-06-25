@@ -389,6 +389,10 @@ PrefabInstance:
       value: BeaconParent
       objectReference: {fileID: 0}
     - target: {fileID: 8710085024142302781, guid: 225b290c69a04fa468d70c1b018ed5dd, type: 3}
+      propertyPath: maxTotalBeacons
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8710085024142302781, guid: 225b290c69a04fa468d70c1b018ed5dd, type: 3}
       propertyPath: maxSpawnWaitTime
       value: 1
       objectReference: {fileID: 0}
@@ -398,6 +402,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8710085024142302781, guid: 225b290c69a04fa468d70c1b018ed5dd, type: 3}
       propertyPath: spawnTimerRemaining
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8710085024142302781, guid: 225b290c69a04fa468d70c1b018ed5dd, type: 3}
+      propertyPath: maxConcurrentBeacons
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8710085024142302781, guid: 225b290c69a04fa468d70c1b018ed5dd, type: 3}
+      propertyPath: initialBeaconSpawnTime
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1716,7 +1728,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3492924701691078482, guid: 1ede34130e960cd46b655a4f950aa3fe, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.20443404
+      value: 0.20443402
       objectReference: {fileID: 0}
     - target: {fileID: 3492924701691078482, guid: 1ede34130e960cd46b655a4f950aa3fe, type: 3}
       propertyPath: m_LocalRotation.y
@@ -1724,7 +1736,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3492924701691078482, guid: 1ede34130e960cd46b655a4f950aa3fe, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.2039119
+      value: 0.20391193
       objectReference: {fileID: 0}
     - target: {fileID: 3492924701730609767, guid: 1ede34130e960cd46b655a4f950aa3fe, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1844,7 +1856,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3492924703507662490, guid: 1ede34130e960cd46b655a4f950aa3fe, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.6778535
+      value: 0.6778534
       objectReference: {fileID: 0}
     - target: {fileID: 3492924703507662490, guid: 1ede34130e960cd46b655a4f950aa3fe, type: 3}
       propertyPath: m_LocalRotation.x
@@ -1856,7 +1868,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3492924703507662490, guid: 1ede34130e960cd46b655a4f950aa3fe, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.20391189
+      value: 0.20391195
       objectReference: {fileID: 0}
     - target: {fileID: 6379204943449663660, guid: 1ede34130e960cd46b655a4f950aa3fe, type: 3}
       propertyPath: m_SizeDelta.y

@@ -34,7 +34,7 @@ namespace Assets.Scripts.Abstract
 
         public virtual bool IsDead { get; protected set; } = false;
 
-        public Action<string, int> Died { get; set; }
+        public Action<IDamageable, string, int> Died { get; set; }
 
         protected virtual void Start()
         {
@@ -93,7 +93,7 @@ namespace Assets.Scripts.Abstract
         /// </summary>
         protected virtual void Die()
         {
-            Died?.Invoke(name, AttachedInstanceId);
+            Died?.Invoke(this, name, AttachedInstanceId);
             IsDead = true;
         }
     }
