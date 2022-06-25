@@ -21,23 +21,23 @@ public class DummySpinAttackEnemy : BaseEnemy
         degreesPerAttack = 360;
         degreesPerSecond = degreesPerAttack;
 
-        desireToAttackPlayer = 0.75f;
-        desireToDefendBeacon = 0.125f;
-        desireToRunAndHeal = 0.125f;
+        desireToAttackPlayer = 4f;  //0.75f;
+        desireToDefendBeacon = 4f;  //0.125f;
+        desireToRunAndHeal = 1f;    //0.125f;
+        desireToHealOthers = 0f;
 
-
+        autoAttackPlayerDistanceToBeacon = 5f;
+        minTimeToPriorityChanges = 5f;
     }
 
     // Update is called once per frame
     protected override void Update()
     {
+        base.Update();
+
         if (isAttacking)
         {
             SpinAttackStep();
-        }
-        else
-        {
-
         }
     }
 
@@ -47,13 +47,11 @@ public class DummySpinAttackEnemy : BaseEnemy
         // dumb simple example
         if (isAttacking && degreesSpun > degreesPerAttack)
         {
-            Debug.Log("Spun " + degreesSpun + ", attack done!");
             isAttacking = false;
             degreesSpun = 0.0f;
         }
         else
         {
-            Debug.Log("Spinning: " + degreesSpun);
             float amountToSpin = degreesPerSecond * Time.deltaTime;
             degreesSpun += amountToSpin;
             transform.Rotate(0, amountToSpin, 0);

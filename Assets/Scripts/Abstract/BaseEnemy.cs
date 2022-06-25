@@ -11,7 +11,10 @@ public class BaseEnemy : MonoBehaviour
     private Animator animator;
     private Rigidbody rigidBody;
     //public GameObject playerGameObject;
+
     public GameObject beacon;
+    protected BaseDamageable beaconDamageable;
+
     public GameObject Player;
 
     // Height should be filled in by a specific subclass 
@@ -48,11 +51,21 @@ public class BaseEnemy : MonoBehaviour
         AttackPlayer,
         DefendBeacon,
         IncreaseDistanceFromPlayer,
-        HealOthersOthers
+        HealOthersOthers,
+        NeedsRecomputed
     }
 
     [SerializeField]
     protected Priority priority;
+
+    [SerializeField]
+    float minTimeToPriorityChange;
+    
+    [SerializeField]
+    float maxTimeToPriorityChange;
+    
+    DateTime nextPriorityChangeTime;
+
 
     // The AI's OVERALL desire to do the following.
     // These should just represent the AI's tendencies,
@@ -99,10 +112,10 @@ public class BaseEnemy : MonoBehaviour
     // run away.
     protected BaseDamageable damageable;
 
-    DateTime lastPriorityChangeTime;
-    float minTimeToPriorityChanges;
+    protected DateTime lastPriorityChangeTime;
+    protected float minTimeToPriorityChanges;
 
-    float autoAttackPlayerDistanceToBeacon;
+    protected float autoAttackPlayerDistanceToBeacon;
 
     NavMeshAgent agent;
 
@@ -121,20 +134,21 @@ public class BaseEnemy : MonoBehaviour
             damageable = GetComponent<DisappearDamageable>();
         }
 
+        priority = Priority.NeedsRecomputed;
         lastPriorityChangeTime = DateTime.Now;
         // make sure to set starting priorities in
-        
+
+
         agent = GetComponent<NavMeshAgent>();
+        autoAttackPlayerDistanceToBeacon = 0f;
     }
 
     protected virtual void UpdateAnimations()
     {
     }
 
-    protected virtual void ApplyTransforms()
+    protected virtual void FindClosestBeacon()
     {
-        priority = Priority.DefendBeacon;
-
         GameObject beaconSpawner = GameObject.Find("BeaconSpawner");
 
         float nearestBeaconDistance = float.MaxValue;
@@ -155,13 +169,31 @@ public class BaseEnemy : MonoBehaviour
         }
 
         beacon = nearestBeacon;
+        if (beacon != null)
+        {
+            beaconDamageable = beacon.GetComponent<AnimateDamageable>();
+            if (beaconDamageable == null)
+                beaconDamageable = beacon.GetComponent<DisappearDamageable>();
+        }
+        else
+        {
+            beaconDamageable = null;
+        }
+    }
 
+    protected virtual void ApplyTransforms()
+    {
         switch (priority)
         {
             case Priority.AttackPlayer:
                 TryToGetToAttack();
                 break;
             case Priority.DefendBeacon:
+                if (beacon == null)
+                {
+                    priority = Priority.NeedsRecomputed;
+                    break;
+                }
                 TryToDefendBeacon();
                 break;
             case Priority.IncreaseDistanceFromPlayer:
@@ -173,53 +205,96 @@ public class BaseEnemy : MonoBehaviour
         }
     }
 
+    protected void DeterminePriority()
+    {
+        // don't update priority if we're in the middle of an attack,
+        // OR we haven't reached the next priority change time (prevents spastic changing priorities)
+        // OR the priority hasn't been flagged as needing computing early
+        if (isAttacking || (DateTime.Now < nextPriorityChangeTime && priority != Priority.NeedsRecomputed))
+        {
+            return;
+        }
+            
+        FindClosestBeacon();
+
+        float damageRunInfluence = 1f - damageable.CurrentHp / damageable.MaxHp;  // 0% chance at full HP
+
+        // first check if the beacon needs saving
+        float attackPlayerWeight = Random.Range(0f, desireToAttackPlayer);
+        float defendBeaconWeight = 0;
+        
+        if (beacon)
+        {
+            float beaconHealthInfluence = beaconDamageable.CurrentHp / beaconDamageable.MaxHp;
+            defendBeaconWeight = Random.Range(0f, desireToDefendBeacon) * beaconHealthInfluence; // increase desire to defend beacon based on dmg
+        }
+
+        float runAwayWeight = Random.Range(0f, desireToRunAndHeal) * damageRunInfluence; // low desire to run at full health
+        float healOthersWeight = Random.Range(0, desireToHealOthers);
+
+        if (attackPlayerWeight > defendBeaconWeight 
+            && attackPlayerWeight > runAwayWeight 
+            && attackPlayerWeight > healOthersWeight)
+        {
+            priority = Priority.AttackPlayer;
+        }
+        else if (defendBeaconWeight > attackPlayerWeight
+            && defendBeaconWeight > runAwayWeight
+            && defendBeaconWeight > healOthersWeight)
+        {
+            priority = Priority.DefendBeacon;
+        }
+        else if (runAwayWeight > attackPlayerWeight
+            && runAwayWeight > healOthersWeight
+            && runAwayWeight > defendBeaconWeight)
+        {
+            priority = Priority.IncreaseDistanceFromPlayer;
+        }
+        else if (healOthersWeight > attackPlayerWeight
+            && healOthersWeight > defendBeaconWeight
+            && healOthersWeight > runAwayWeight)
+        {
+            priority = Priority.HealOthersOthers;
+        }
+        else
+        {
+            // shouldn't really need this, but just covering bases
+            priority = Priority.NeedsRecomputed;
+        }
+
+        float secondsToNextChangeTime = Random.Range(minTimeToPriorityChange, maxTimeToPriorityChange);
+        nextPriorityChangeTime = DateTime.Now.AddSeconds(secondsToNextChangeTime);
+    }
+
 
     private void setMovingTargetWaypoint(Vector3 targetPosition, Vector3 targetVelocity)
     {
-        float agentVelocityMagnitude = agent.speed;
-
         Vector3 distanceBetweenPlayerAndWaypoint = targetPosition - transform.position;
         float distanceBetweenPlayerAndWaypointMagnitutde = distanceBetweenPlayerAndWaypoint.magnitude;
 
-        float angle = Mathf.Rad2Deg * Mathf.Atan2(distanceBetweenPlayerAndWaypoint.x, distanceBetweenPlayerAndWaypoint.z);
-        //Debug.Log($"Angle: {angle}");
-
-        //Debug.Log($"Distances: P->W: {distanceBetweenPlayerAndWaypoint}, Mag(P->W): {distanceBetweenPlayerAndWaypointMagnitutde}");
-
-        float lookAheadInSeconds = distanceBetweenPlayerAndWaypointMagnitutde / agentVelocityMagnitude;
-
-        //Debug.Log($"Looking ahead {lookAheadInSeconds}");
-
+        // todo - tweak this, this tends to overshoot at high velcity player coming in toward 
+        float lookAheadInSeconds = distanceBetweenPlayerAndWaypointMagnitutde / agent.speed; 
         Vector3 futureExtrapolatedPosition = targetPosition + (targetVelocity * lookAheadInSeconds);
-
-        //Debug.Log($"Future extrapoloated position: {futureExtrapolatedPosition}");
 
         NavMeshHit hit;
         bool blocked = NavMesh.Raycast(transform.position, futureExtrapolatedPosition, out hit, 1 << NavMesh.GetAreaFromName("Walkable"));
 
         if (blocked)
         {
-            //Debug.Log("Blocked");
             agent.SetDestination(targetPosition);
         }
         else
         {
-            //Debug.Log("Not blocked");
             agent.SetDestination(futureExtrapolatedPosition);
-
         }
     }
 
 
     private void setMovingTargetWaypoint(GameObject targetPosition)
     {
-        //Debug.Log("Updating");
-
         Vector3 waypointVelocity = targetPosition.GetComponent<VelocityReporter>() ? targetPosition.GetComponent<VelocityReporter>().velocity : Vector3.zero;
         float waypointMagnitude = waypointVelocity.magnitude;
-
-        //Debug.Log($"Waypoint velocity: {waypointVelocity}, magnitude: {waypointMagnitude}");
-        
+       
         setMovingTargetWaypoint(targetPosition.transform.position, waypointVelocity);
     }
 
@@ -256,8 +331,6 @@ public class BaseEnemy : MonoBehaviour
         }
         else if (isAttacking)
         {
-            //transform.LookAt(Player.transform.position);
-
             // we're inside the sweet spot and are already attacking
             agent.SetDestination(transform.position);
             agent.isStopped = true;
@@ -266,7 +339,6 @@ public class BaseEnemy : MonoBehaviour
         {
             // We're inside the enemy's desired attack range
             // and we're not already attacking - Attack!
-            //Debug.Log("Start attack!!");
             transform.LookAt(Player.transform.position);
 
             isAttacking = true;
@@ -298,9 +370,7 @@ public class BaseEnemy : MonoBehaviour
         // place ourselves in between the player and beacon
         float defendBeaconDistance = 3f;
 
-        //Vector3 desiredPosition = Player.transform.position + (beaconToPlayerVector) * (defendBeaconDistance / beaconToPlayerDistance);
         Vector3 desiredPosition = beacon.transform.position - (beaconToPlayerVector) * (defendBeaconDistance / beaconToPlayerDistance);
-
 
         NavMeshHit hit;
         bool foundValid = NavMesh.SamplePosition(desiredPosition, out hit, 1f, NavMesh.AllAreas);
@@ -343,65 +413,10 @@ public class BaseEnemy : MonoBehaviour
 
     }
 
-
-    protected virtual void DetermineAIPriority()
-    {
-        // override this on a case by case, AI by AI basis
-        // this is a basic priority tree that will suit most,
-        // be sure to only allow it to change over N second
-        // time periods - don't let it jitter between 
-        // priorities all over the place.  make up your mind
-        // and stick to it for a bit.
-
-
-
-        /*
-        // Don't switch mid-attack
-        if (!isAttacking 
-              && DateTime.Now > lastPriorityChangeTime.AddSeconds(minTimeToPriorityChanges))
-            return;
-
-        float chanceOfRun = (1 + damageable.CurrentHp / damageable.MaxHp) * desireToRunAndHeal;
-
-        // if there's no beacon, no desire to defend
-        float leftOver = 1 - chanceOfRun;
-        float chanceOfBeacon = beacon ? leftOver * desireToDefendBeacon : 0f;
-
-        leftOver -= chanceOfBeacon;
-
-        float chanceOfAttack = leftOver * desireToAttackPlayer;
-        float chanceOfHealOthers = leftOver * desireToHealOthers;
-
-        float random = Random.Range(0.0f, 1.0f);
-
-        if (random < chanceOfAttack)
-        {
-            priority = Priority.AttackPlayer;
-        }
-        else if (random > chanceOfAttack && random < (chanceOfAttack + chanceOfBeacon))
-        {
-            priority = Priority.DefendBeacon;
-        }
-        else if (random > (chanceOfAttack + chanceOfBeacon)
-            && (random < chanceOfAttack + chanceOfBeacon + chanceOfRun))
-        {
-            priority = Priority.IncreaseDistanceFromPlayer;
-        }
-        else
-        {
-            priority = Priority.HealOthersOthers;
-        }
-
-        lastPriorityChangeTime = DateTime.Now;
-        */
-    }
-
-
     // Update is called once per frame
     protected virtual void Update()
     {
-        DetermineAIPriority();
-
+        DeterminePriority();
         UpdateAnimations();
     }
 

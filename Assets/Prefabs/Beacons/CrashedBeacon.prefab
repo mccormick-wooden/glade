@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4263302755561423127}
   - component: {fileID: 8485064355238389314}
   - component: {fileID: 6997175789639800599}
+  - component: {fileID: -6444843833389009397}
   m_Layer: 0
   m_Name: CrashedBeacon
   m_TagString: Untagged
@@ -61,6 +62,21 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1.1
   m_Center: {x: 0, y: 1.2, z: 0}
+--- !u!114 &-6444843833389009397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2775764871604184902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa6005456495c7942bb108889492ce48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarController: {fileID: 0}
+  currentHp: 500
+  maxHp: 500
 --- !u!1001 &2157548319131922879
 PrefabInstance:
   m_ObjectHideFlags: 0
