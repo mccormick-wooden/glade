@@ -50,12 +50,13 @@ public class Utility : MonoBehaviour
     /// A helpful name to log if reference is null. Usually this can just be passed as nameof(checkReference) from calling context,
     /// but occasionally it may be helpful to pass a different / more descriptive name if the calling context name is not specific enough.
     /// </param>
-    public static void LogErrorIfNull(object checkReference, string checkReferenceName)
+    /// <param name="optionalInfo">Optional context information to include in the log.</param>
+    public static void LogErrorIfNull(object checkReference, string checkReferenceName, string optionalInfo = "")
     {
         if (checkReference == null)
         {
             var callStack = new StackFrame(skipFrames: 1, fNeedFileInfo: true);
-            Debug.LogError($"{Path.GetFileName(callStack.GetFileName())}:{callStack.GetFileLineNumber()} - '{checkReferenceName}' is null");
+            Debug.LogError($"{Path.GetFileName(callStack.GetFileName())}:{callStack.GetFileLineNumber()} - '{checkReferenceName}' is null. {optionalInfo}");
         }
     }
 }

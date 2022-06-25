@@ -29,6 +29,7 @@ public class NewGameStateManager : BaseStateManager
         Time.timeScale = timeScale;
 #endif
     }
+
     protected override void OnSceneLoaded()
     {
         animationEventDispatcher = GameObject.Find("CrawlText").GetComponent<AnimationEventDispatcher>();
