@@ -37,7 +37,7 @@ namespace Beacons
 
         /// <summary>
         /// Callback for the FireProjectileScript's collision delegate.
-        /// This effectivly tells us when the projectile (beacon) experiences a collision event,
+        /// This effectively tells us when the projectile (beacon) experiences a collision event,
         /// which for beacons mean they have landed.
         /// </summary>
         /// <param name="script"></param>
