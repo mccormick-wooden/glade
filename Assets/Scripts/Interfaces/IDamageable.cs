@@ -1,4 +1,6 @@
-﻿namespace Assets.Scripts.Interfaces
+﻿using System;
+
+namespace Assets.Scripts.Interfaces
 {
     public interface IDamageable
     {
@@ -7,5 +9,6 @@
         float CurrentHp { get; }
         bool HasHp { get; }
         bool IsDead { get; }
+        Action<string, int> Died { get; set; }
     }
 }
