@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Linq;
 using System.Numerics;
+using Beacons;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 

@@ -1,13 +1,38 @@
-using Beacons;
+using System;
 using UnityEngine;
 
-public class CrashedBeacon : MonoBehaviour
+/* 
+* Please note that the `FireProjectileScript.cs` depends on the CrashedBeacon class to find crashed beacon game objects**
+*/
+namespace Beacons
 {
-    /* I don't think we need this class because IDamageable provides all the behavior we currently care about on the beacon, 
-     * but if we want to implement other behavior on the beacon, that could go here.
-     * 
-     * Presence of this script could also be a good way to coerce the type on death since otherwise 
-     * we only know that the dying thing is a generic GameObject - although we do have alternate options for coercing a type, e.g. tags
-     * 
-     * Leaving for now  */
+    public class CrashedBeacon : MonoBehaviour
+    {
+        private Vector3 position;
+
+        [SerializeField] private float rotationSpeed;
+        [SerializeField] private float hoverFrequency;
+        [SerializeField] private float hoverAmplitude;
+
+        private void Start()
+        {
+            position = transform.position;
+            position.y += hoverAmplitude;
+        }
+
+        private void Update()
+        {
+            Hover();
+        }
+
+        private void Hover()
+        {
+            transform.Rotate(new Vector3(0f, Time.deltaTime * rotationSpeed, 0f));
+
+            var newPosition = position;
+            newPosition.y += Mathf.Sin (Time.fixedTime * Mathf.PI * hoverFrequency) * hoverAmplitude;
+ 
+            transform.position = newPosition;
+        }
+    }
 }
