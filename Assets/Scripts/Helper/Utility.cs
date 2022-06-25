@@ -1,8 +1,9 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
 public class Utility : MonoBehaviour
@@ -58,6 +59,22 @@ public class Utility : MonoBehaviour
             var callStack = new StackFrame(skipFrames: 1, fNeedFileInfo: true);
             Debug.LogError($"{Path.GetFileName(callStack.GetFileName())}:{callStack.GetFileLineNumber()} - '{checkReferenceName}' is null. {optionalInfo}");
         }
+    }
+
+    /// <summary>
+    /// Helper to add onClick callback to buttons.
+    /// </summary>
+    /// <param name="buttonRootName">The parent GameObject name for the button. If this isn't unique in scene u gon be mad.</param>
+    /// <param name="lambda">The callback, an arrow function works.</param>
+    public static void AddButtonCallback(string buttonRootName, UnityAction lambda)
+    {
+        var buttonRoot = GameObject.Find(buttonRootName);
+        Utility.LogErrorIfNull(buttonRoot, nameof(buttonRootName));
+
+        var button = buttonRoot.GetComponentInChildren<Button>();
+        Utility.LogErrorIfNull(button, nameof(button));
+
+        button.onClick.AddListener(lambda);
     }
 }
 
