@@ -95,6 +95,7 @@ public abstract class BaseLevelStateManager : BaseStateManager
     /// Callback that handles the IDamageable.Died event for the player model.
     /// This is effectively the "game lost" callback.
     /// </summary>
+    /// <param name="damageModel">A reference to the object emitting the event</param>
     /// <param name="name">Name of the GameObject that IDamageable is attached to.</param>
     /// <param name="instanceId">Unity InstanceId of the GameObject that IDamageable is attached to</param>
     private void OnPlayerDied(IDamageable damageModel, string name, int instanceId)

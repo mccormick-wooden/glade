@@ -180,4 +180,4 @@ MonoBehaviour:
   currentBeaconCount: 0
   totalBeaconsSpawnedCount: 0
   totalBeaconsDiedCount: 0
-  spawnTimerRemaining: 10
+  spawnTimerRemaining: 0
