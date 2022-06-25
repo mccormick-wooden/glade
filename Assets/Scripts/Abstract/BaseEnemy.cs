@@ -124,7 +124,7 @@ public class BaseEnemy : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
-        Player = GameObject.Find("Player");
+        Player = GameObject.Find("PlayerModel");
         lastAttackTime = DateTime.Now;
         weapon = GetComponent<BaseWeapon>();
         damageable = GetComponent<AnimateDamageable>();
@@ -151,12 +151,18 @@ public class BaseEnemy : MonoBehaviour
     {
         GameObject beaconSpawner = GameObject.Find("BeaconSpawner");
 
+        if (!beaconSpawner)
+            return;
+
         float nearestBeaconDistance = float.MaxValue;
         GameObject nearestBeacon = null;
 
         foreach (Transform beaconManager in beaconSpawner.transform)
         {
-            GameObject crashedBeacon = beaconManager.GetChild(0).gameObject;
+            GameObject crashedBeacon = beaconManager.Find("CrashedBeacon")?.gameObject;
+
+            if (!crashedBeacon)
+                continue;
 
             float distanceToEnemy = (transform.position - crashedBeacon.transform.position).magnitude;
             float distanceToPlayer = (Player.transform.position - crashedBeacon.transform.position).magnitude;
@@ -164,7 +170,7 @@ public class BaseEnemy : MonoBehaviour
             if (distanceToEnemy < nearestBeaconDistance)
             {
                 nearestBeaconDistance = distanceToEnemy;
-                nearestBeacon = crashedBeacon;
+                nearestBeacon = crashedBeacon.gameObject;
             }
         }
 

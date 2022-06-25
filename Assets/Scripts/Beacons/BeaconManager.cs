@@ -63,7 +63,7 @@ namespace Beacons
             if (!_isCrashed || _isBeaconSpawned) return;
 
             crashedBeaconInstance = Instantiate(crashedBeaconPrefab, fallingBeaconRigidBody.transform.position, Quaternion.LookRotation(transform.position, Vector3.up), transform);
-            GameObject.Find("Player").GetComponent<EnemySpawner>().AddBeacon(crashedBeaconInstance);
+            GameObject.Find("PlayerModel").GetComponent<EnemySpawner>().AddBeacon(crashedBeaconInstance);
             _isCrashed = true;
             _isBeaconSpawned = true;
         }

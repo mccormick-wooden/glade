@@ -24,6 +24,9 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private float nominalSpawnTime;
 
+    [SerializeField]
+    private float minTimeBetweenSpawnsSeconds;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,8 +52,11 @@ public class EnemySpawner : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float weight = CalculateSpawnWeight();
-        GenerateEnemies(weight);
+        if (DateTime.Now > lastSpawnTime.AddSeconds(minTimeBetweenSpawnsSeconds))
+        {
+            float weight = CalculateSpawnWeight();
+            GenerateEnemies(weight);
+        }
     }
 
     float CalculateSpawnWeight()
@@ -68,35 +74,17 @@ public class EnemySpawner : MonoBehaviour
             totalWeight *= nominalSpawnTime;
         }
 
-        //Debug.Log(totalWeight);
         return totalWeight;
     }
 
     void GenerateEnemies(float weight)
     {
         float r = Random.Range(0.0f, 1.0f);
-        GameObject enemiesParent = GameObject.Find("ParentEnemy");
+        GameObject enemiesParent = GameObject.Find("EnemiesParent");
 
         if (weight > r)
         {
             Debug.Log("Make a bad guy!");
-
-            
-            
-            //GameObject g = Instantiate(enemyPrefab, enemiesParent.transform);
-
-            //UnityEditor.PrefabUtility.SaveAsPrefabAsset(g, possibleEnemies[0]);
-
-            //g.transform.parent = enemiesParent.transform;
-            /*
-            if (!FindValidPlacement(g))
-            {
-                Destroy(g);
-            }
-            else
-            {
-                lastSpawnTime = DateTime.Now;
-            }*/
 
             Vector3 newPosition;
             bool FoundValidPosition = FindValidPlacement(transform.position, out newPosition);
@@ -111,16 +99,13 @@ public class EnemySpawner : MonoBehaviour
             
             g.GetComponent<NavMeshAgent>().Warp(newPosition);
             g.GetComponent<NavMeshAgent>().enabled = true;
-            
+
+            lastSpawnTime = DateTime.Now;
         }
     }
 
-    //bool FindValidPlacement(GameObject g)
     bool FindValidPlacement(Vector3 position, out Vector3 newPosition)
     {
-        // Move enemy to a random location that isn't inside anything
-        //g.transform.position = transform.position;
-
         const float MIN_X_OFFSET = 10;
         const float MAX_X_OFFSET = 25;
 
@@ -150,66 +135,6 @@ public class EnemySpawner : MonoBehaviour
             //g.transform.position = hit.position;
             newPosition = hit.position;
             return true;
-
-
-            /*
-            g.transform.position += new Vector3(randomX, 0, randomZ);
-
-            // move it up until we get to the ground 
-            float halfHeight = g.GetComponent<BaseEnemy>().Height / 2f;
-            g.transform.position += new Vector3(0, halfHeight, 0);
-
-            float groundInterceptRayLength = halfHeight + 0.1f;
-
-            int yPositionAttempts = 0;
-            const int maxYPositionAttempts = 20;
-            bool gotValidYPosition = false;
-
-            // Try going up from our current position first
-            for (yPositionAttempts = 0; yPositionAttempts < maxYPositionAttempts; yPositionAttempts++)
-            {
-                if (Physics.Raycast(g.transform.position, Vector3.down, groundInterceptRayLength, whatIsGround))
-                {
-
-                    gotValidYPosition = true;
-                    break;
-                }
-
-                g.transform.position += new Vector3(0, 0.1f, 0);
-            }
-
-            if (gotValidYPosition)
-            {
-                return true;
-            }
-
-            // If we couldn't figure it out going up, try down
-            g.transform.position = transform.position + new Vector3(randomX, 0, randomZ);
-
-            // Then try going down
-            for (yPositionAttempts = 0; yPositionAttempts < maxYPositionAttempts; yPositionAttempts++)
-            {
-                if (Physics.Raycast(g.transform.position, Vector3.down, groundInterceptRayLength, whatIsGround))
-                {
-                    gotValidYPosition = true;
-                    break;
-                }
-
-                g.transform.position -= new Vector3(0, 0.1f, 0);
-            }
-
-            // if we still didn't get anything -
-            if (!gotValidYPosition)
-            {
-                // failed to find a valid placement, 
-                // give up and start again
-                attempts++;
-            }
-            else
-            {
-                return true;
-            }
-            */
         }
 
         newPosition = Vector3.zero;

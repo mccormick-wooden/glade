@@ -1192,8 +1192,8 @@ GameObject:
   - component: {fileID: 8631642910838523036}
   - component: {fileID: 5637460018451787564}
   - component: {fileID: 5493705606817355207}
-  - component: {fileID: -50393245859121532}
   - component: {fileID: 378291042682893160}
+  - component: {fileID: -50393245859121532}
   - component: {fileID: 691763536489525588}
   m_Layer: 0
   m_Name: DummySpinAttackEnemy
@@ -1268,6 +1268,21 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &378291042682893160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3054070596095771740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa6005456495c7942bb108889492ce48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarController: {fileID: 0}
+  currentHp: 100
+  maxHp: 100
 --- !u!114 &-50393245859121532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1288,21 +1303,9 @@ MonoBehaviour:
   maxDistanceFromPlayer: 2
   attackPushbackForce: 0
   attackDelayTimeSeconds: 2
---- !u!114 &378291042682893160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3054070596095771740}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa6005456495c7942bb108889492ce48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthBarController: {fileID: 0}
-  currentHp: 100
-  maxHp: 100
+  priority: 0
+  minTimeToPriorityChange: 0
+  maxTimeToPriorityChange: 0
 --- !u!195 &691763536489525588
 NavMeshAgent:
   m_ObjectHideFlags: 0
