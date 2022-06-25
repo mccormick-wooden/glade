@@ -289,6 +289,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1122183331078557434, guid: 0d1bfde883507044a810b09666683f3e, type: 3}
+      propertyPath: m_text
+      value: '<align=center><size=50>GLADE</size></align>
+
+
+        The forests of
+        a distant world have a secret: tucked away GLADES designated by the ANCIENT
+        TREE SPIRITS as a neutral space to meet, broker peace, and foster relations
+        between the disparate TREE TRIBES.
+
+
+        Now, the seeds of an ALIEN CIVILIZATION
+        are falling from meteorites to colonize the Glades for their rich resources.
+
+
+        Imbued
+        with the powers of the Ancient Tree Spirits, the WARDEN OF THE GLADES is
+        the only force standing in between the aliens and the utter descrution of
+        the Glades.
+
+
+        Will the Warden succeed in repelling the alien invasion?
+        Or will the Warden succumb to overwhelming alien numbers?
+
+
+        Only
+        time will tell...'
+      objectReference: {fileID: 0}
     - target: {fileID: 1122183331946800233, guid: 0d1bfde883507044a810b09666683f3e, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
