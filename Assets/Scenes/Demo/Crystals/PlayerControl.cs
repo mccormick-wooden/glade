@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Abstract;
 using UnityEngine;
 
 namespace crystal
@@ -8,6 +9,9 @@ namespace crystal
     {
         [SerializeField]
         private float PlayerSpeed = 1;
+
+        [SerializeField]
+        private GameObject crystalToKill;
 
         private Vector3 targetVelocity;
 
@@ -36,6 +40,13 @@ namespace crystal
             if (Input.GetKey(KeyCode.D))
             {
                 targetVelocity += transform.right;
+            }
+            if (Input.GetKeyUp(KeyCode.F))
+            {
+                if (null != crystalToKill)
+                {
+                    crystalToKill.SetActive(false);
+                }
             }
 
             targetVelocity.Normalize();
