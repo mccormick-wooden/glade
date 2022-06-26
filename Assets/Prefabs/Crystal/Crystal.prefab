@@ -93,6 +93,7 @@ GameObject:
   - component: {fileID: 3195626198634527307}
   - component: {fileID: 3195626198634527306}
   - component: {fileID: 3195626198634527317}
+  - component: {fileID: 6899622666681059824}
   m_Layer: 0
   m_Name: Crystal
   m_TagString: Untagged
@@ -162,6 +163,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EffectMultiplier: 1
   effectRadius: 5
+--- !u!114 &6899622666681059824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3195626198634527305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89b4d0963ff204f44abc7aa7f7e641ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarController: {fileID: 0}
+  currentHp: 0
+  maxHp: 100
+  isHealable: 0
+  applyDamageAnimTrigger: Damage
+  dieAnimTrigger: Die
 --- !u!1001 &3195626198197401714
 PrefabInstance:
   m_ObjectHideFlags: 0
