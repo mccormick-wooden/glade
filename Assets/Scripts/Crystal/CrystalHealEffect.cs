@@ -12,8 +12,6 @@ public class CrystalHealEffect : BaseCrystalEffect
 
     private BaseDamageable health;
 
-    private int globalCtr = 0;
-
     void Awake()
     {
         // Need to be damageable in order to heal
@@ -22,11 +20,10 @@ public class CrystalHealEffect : BaseCrystalEffect
 
     private void Heal()
     {
-        int i = 0;
         // For each nearby crystal, apply healing
         foreach (KeyValuePair<int, float> crystal in nearbyCrystalIDs)
         {
-            Debug.Log($"{Time.time}: {++i} {++globalCtr} Crystal {crystal.Key} healing");
+            Debug.Log($"Crystal {crystal.Key} healing");
             float multiplier = crystal.Value;
             health.Heal(hpPerSecond * multiplier);
         }
