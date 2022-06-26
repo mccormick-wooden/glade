@@ -79,13 +79,11 @@ public class PauseMenuManager : MonoBehaviour
     private void OnEnable()
     {
         controls.PauseGame.Enable();
-        controls.Gameplay.Disable();
     }
 
     private void OnDisable()
     {
         controls.PauseGame.Disable();
-        controls.Gameplay.Disable();
     }
 
     public void SetPauseState(bool areWePausing)
