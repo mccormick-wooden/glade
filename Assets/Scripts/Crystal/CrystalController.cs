@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
@@ -21,14 +20,12 @@ public class CrystalController : MonoBehaviour
     private void Awake()
     {
         anim = GetComponent<Animator>();
-        if (anim == null)
-            Debug.Log("Couldn't find animation component");
+        Utility.LogErrorIfNull(anim, "animator", "Crystal Controller requires an animator.");
 
         // Set the activator collider to the effect radius.
         effectEnableCollider = GetComponent<SphereCollider>();
-        if (effectEnableCollider == null)
-            Debug.Log("Couldn't find SphereCollider component");
-        else
+        Utility.LogErrorIfNull(anim, "sphere collider", "Crystal Controller requires a sphere collider.");
+        if (effectEnableCollider != null)
             effectEnableCollider.radius = effectRadius;
     }
 
