@@ -15,7 +15,6 @@ public class CrystalController : MonoBehaviour
 
     private Animator anim;
     private int activatorsClose = 0;
-    private bool animIsGrowing => anim.GetCurrentAnimatorStateInfo(0).IsName("Growing");
 
     private void Awake()
     {
