@@ -1,6 +1,7 @@
 using System.Linq;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(CanvasGroup))]
 public class PauseMenuManager : MonoBehaviour
@@ -103,6 +104,11 @@ public class PauseMenuManager : MonoBehaviour
             Utility.DisableAllOf(except: canvas);
         else
             Utility.EnableAllOf(except: canvas);
+
+        if (areWePausing)
+        {
+            GameObject.Find(pauseResumeRootName).GetComponentInChildren<Button>().Select();
+        }
     }
 
     private bool InUnPauseableState()

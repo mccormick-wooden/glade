@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenuStateManager : BaseStateManager
 {
@@ -13,6 +14,7 @@ public class MainMenuStateManager : BaseStateManager
     {
         Utility.AddButtonCallback(mainNewGameRootName, () => GameManager.UpdateGameState(GameState.NewGame));
         Utility.AddButtonCallback(mainExitRootName, () => Quitter.QuitGame());
+        GameObject.Find(mainNewGameRootName).GetComponentInChildren<Button>().Select();
     }
 
     protected override void OnSceneUnloaded()
