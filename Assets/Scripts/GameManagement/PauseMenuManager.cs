@@ -23,6 +23,8 @@ public class PauseMenuManager : MonoBehaviour
     [SerializeField]
     private string pauseExitGameRootName = "PauseExitGame";
 
+    private CharacterPlayerControls controls;
+
     private CanvasGroup canvasGroup;
 
     private Canvas canvas;
@@ -35,7 +37,7 @@ public class PauseMenuManager : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.OnStateChanged += GameManagerOnStateChanged;
+        controls = new CharacterPlayerControls();
 
         canvasGroup = GetComponent<CanvasGroup>();
         Utility.LogErrorIfNull(canvasGroup, nameof(canvas));
@@ -53,21 +55,36 @@ public class PauseMenuManager : MonoBehaviour
         Utility.AddButtonCallback(pauseExitGameRootName, () => Quitter.QuitGame());
     }
 
+    private void Start()
+    {
+        controls.PauseGame.PauseGameAction.performed += _ => TogglePause();
+        GameManager.OnStateChanged += GameManagerOnStateChanged;
+    }
+
     private void OnDestroy()
     {
+        controls.PauseGame.PauseGameAction.performed -= _ => TogglePause();
         GameManager.OnStateChanged -= GameManagerOnStateChanged;
     }
 
-    private void Update()
+    private void TogglePause()
     {
-        if (IsPaused && InUnPauseableState())
-        {
+        if (!IsPaused && !InUnPauseableState())
+            SetPauseState(true);
+        else if (IsPaused)
             SetPauseState(false);
-        }
-        else if (Input.GetKeyDown(KeyCode.Escape) && !InUnPauseableState()) // TODO: Fix this input so that gamepad works
-        {
-            SetPauseState(!canvasGroup.interactable);
-        }
+    }
+
+    private void OnEnable()
+    {
+        controls.PauseGame.Enable();
+        controls.Gameplay.Disable();
+    }
+
+    private void OnDisable()
+    {
+        controls.PauseGame.Disable();
+        controls.Gameplay.Disable();
     }
 
     public void SetPauseState(bool areWePausing)
