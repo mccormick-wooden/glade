@@ -178,7 +178,7 @@ MonoBehaviour:
   healthBarController: {fileID: 0}
   currentHp: 0
   maxHp: 100
-  isHealable: 0
+  IsHealable: 1
   applyDamageAnimTrigger: Damage
   dieAnimTrigger: Die
 --- !u!1001 &3195626198197401714

@@ -41,13 +41,6 @@ namespace crystal
             {
                 targetVelocity += transform.right;
             }
-            if (Input.GetKeyUp(KeyCode.F))
-            {
-                if (null != crystalToKill)
-                {
-                    crystalToKill.SetActive(false);
-                }
-            }
 
             targetVelocity.Normalize();
             targetVelocity *= PlayerSpeed;

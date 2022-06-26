@@ -17,7 +17,7 @@ namespace Assets.Scripts.Abstract
         private float maxHp = 100;
 
         [SerializeField]
-        private bool isHealable;
+        public bool IsHealable;
 
         public float CurrentHp
         {
@@ -41,11 +41,11 @@ namespace Assets.Scripts.Abstract
         {
             if (healAmount < 0)
             {
-                Debug.LogError($"Tried to heal with negative value {healAmount}");
+                Debug.LogError($"{name}: Tried to heal with negative value {healAmount}");
                 return;
             }
 
-            if (!IsDead && isHealable) 
+            if (!IsDead && IsHealable) 
             {
                 var newHp = Mathf.Min(CurrentHp + healAmount, MaxHp);
                 Debug.Log($"Healing {gameObject.name}: currentHp = {CurrentHp}, healAmount: {healAmount}, newHp = {newHp}");

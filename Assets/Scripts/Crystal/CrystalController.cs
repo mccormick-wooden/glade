@@ -4,12 +4,13 @@ using UnityEngine;
 [RequireComponent(typeof(SphereCollider))]
 public class CrystalController : MonoBehaviour
 {
+    public int CrystalID => gameObject.GetInstanceID();
+
     public float EffectMultiplier = 1;
+    public bool effectActive { get; private set; }
 
     [SerializeField]
     private float effectRadius = 5;
-
-    public bool effectActive { get; private set; }
 
     private SphereCollider effectEnableCollider;
 

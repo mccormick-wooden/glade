@@ -14,8 +14,13 @@ public class CrystalHealEffect : BaseCrystalEffect
 
     void Awake()
     {
-        // Need to be damageable in order to heal
-        Utility.LogErrorIfNull(health = GetComponent<BaseDamageable>(), "BaseDamageable", $"Requires some sort of damageable such that {name} can be healed.");
+        // Need to be damageable/healable for healh effect
+        Utility.LogErrorIfNull(health = GetComponent<BaseDamageable>(),
+            "BaseDamageable",
+            $"Requires some sort of damageable such that {name} can be healed.");
+
+        if (null != health && !health.IsHealable)
+            Debug.LogError("Attached BaseDamageable must be marked healable.");
     }
 
     private void Heal()
@@ -31,15 +36,13 @@ public class CrystalHealEffect : BaseCrystalEffect
 
     protected override void CrystalEffectStart()
     {
-        base.CrystalEffectStart();
-        Debug.Log($"{name}: starting heal effect.");
+        Debug.Log($"{name}: Heal buff active.");
         InvokeRepeating("Heal", 0f, 1f);
     }
 
     protected override void CrystalEffectStop()
     {
-        base.CrystalEffectStop();
-        Debug.Log($"{name}: canceling heal effect.");
+        Debug.Log($"{name}: Heal buff stopping.");
         CancelInvoke("Heal");
     }
 }
