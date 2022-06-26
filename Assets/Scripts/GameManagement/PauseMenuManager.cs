@@ -35,6 +35,8 @@ public class PauseMenuManager : MonoBehaviour
 
     private void Awake()
     {
+        GameManager.OnStateChanged += GameManagerOnStateChanged;
+
         canvasGroup = GetComponent<CanvasGroup>();
         Utility.LogErrorIfNull(canvasGroup, nameof(canvas));
 
@@ -49,6 +51,11 @@ public class PauseMenuManager : MonoBehaviour
         Utility.AddButtonCallback(pauseRestartRootName, () => GameManager.UpdateGameState(GameManager.State));
         Utility.AddButtonCallback(pauseMainMenuRootName, () => GameManager.UpdateGameState(GameState.MainMenu));
         Utility.AddButtonCallback(pauseExitGameRootName, () => Quitter.QuitGame());
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.OnStateChanged -= GameManagerOnStateChanged;
     }
 
     private void Update()
@@ -84,5 +91,11 @@ public class PauseMenuManager : MonoBehaviour
     private bool InUnPauseableState()
     {
         return unPausableStates.Any(s => s == GameManager.State);
+    }
+
+    private void GameManagerOnStateChanged(GameState obj)
+    {
+        // I'm like 99.99% sure we always want to unpause on a state change.
+        SetPauseState(areWePausing: false);
     }
 }
