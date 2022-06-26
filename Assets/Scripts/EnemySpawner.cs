@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using UnityEngine.AI;
+using Beacons;
+using Assets.Scripts.Interfaces;
+
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -27,6 +30,9 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private float minTimeBetweenSpawnsSeconds;
 
+    [SerializeField]
+    private BeaconManager beaconManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,16 +44,6 @@ public class EnemySpawner : MonoBehaviour
     void Update()
     {
 
-    }
-
-    public void AddBeacon(GameObject g)
-    {
-        beacons.Add(g);
-    }
-
-    public void RemoveBeacon(GameObject g)
-    {
-        beacons.Remove(g);
     }
 
     private void FixedUpdate()
@@ -139,5 +135,21 @@ public class EnemySpawner : MonoBehaviour
 
         newPosition = Vector3.zero;
         return false;
+    }
+
+    public void NewBeaconEventHandler(Beacons.BeaconManager beaconManager, GameObject crashedBeacon)
+    {
+        beacons.Add(crashedBeacon);
+    }
+
+    public void BeaconDeathEventHandler(IDamageable damageModel, string name, int instanceId)
+    {
+        GameObject deadBeacon = beacons.Find(delegate (GameObject beacon)
+           {
+               return beacon.GetInstanceID() == instanceId;
+           }
+        );
+
+        beacons.Remove(deadBeacon);
     }
 }

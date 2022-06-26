@@ -46,7 +46,6 @@ namespace Beacons
         {
             beaconFall.CollisionDelegate -= OnBeaconLanded; 
             crashedBeaconInstance = Instantiate(crashedBeaconPrefab, fallingBeaconRigidBody.transform.position, Quaternion.LookRotation(transform.position, Vector3.up), transform);
-            GameObject.Find("PlayerModel").GetComponent<EnemySpawner>().AddBeacon(crashedBeaconInstance);
             BeaconReadyForDamage?.Invoke(this, crashedBeaconInstance);
         }
     }

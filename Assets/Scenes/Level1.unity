@@ -422,7 +422,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 281259820}
-  m_LocalRotation: {x: 0.20681392, y: -0.66811746, z: 0.20149778, w: 0.6857447}
+  m_LocalRotation: {x: 0.20681389, y: -0.6681175, z: 0.20149773, w: 0.6857446}
   m_LocalPosition: {x: 173.49593, y: 24.529999, z: 128.78758}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -524,7 +524,7 @@ GameObject:
   m_Component:
   - component: {fileID: 317890749}
   m_Layer: 0
-  m_Name: PlayerParent
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -715,7 +715,7 @@ GameObject:
   m_Component:
   - component: {fileID: 751970760}
   m_Layer: 0
-  m_Name: ParentEnemy
+  m_Name: EnemiesParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1384,7 +1384,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1685753572}
-  m_LocalRotation: {x: 0.20681392, y: -0.66811746, z: 0.20149776, w: 0.68574464}
+  m_LocalRotation: {x: 0.20681389, y: -0.6681175, z: 0.20149775, w: 0.68574464}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1489,6 +1489,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BeaconParent
       objectReference: {fileID: 0}
+    - target: {fileID: 8710085024142302781, guid: 225b290c69a04fa468d70c1b018ed5dd, type: 3}
+      propertyPath: enemySpawner
+      value: 
+      objectReference: {fileID: 2054707285}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 225b290c69a04fa468d70c1b018ed5dd, type: 3}
 --- !u!1 &1792439247
@@ -1515,7 +1519,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1792439247}
-  m_LocalRotation: {x: 0.226499, y: -0.6620303, z: 0.22067681, w: 0.6794968}
+  m_LocalRotation: {x: 0.22649902, y: -0.6620302, z: 0.22067682, w: 0.6794968}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1828,7 +1832,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a4837675e0934b24e8594980e2773da6, type: 3}
       propertyPath: m_Name
-      value: Player
+      value: PlayerModel
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: a4837675e0934b24e8594980e2773da6, type: 3}
       propertyPath: m_Controller
@@ -2000,6 +2004,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   nominalSpawnTime: 0.005
+  minTimeBetweenSpawnsSeconds: 0
+  beaconManager: {fileID: 0}
 --- !u!1 &2132163267
 GameObject:
   m_ObjectHideFlags: 3

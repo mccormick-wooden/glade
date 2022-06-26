@@ -80,6 +80,9 @@ namespace Beacons
         [SerializeField]
         private float spawnTimerRemaining;
 
+        [SerializeField]
+        private EnemySpawner enemySpawner;
+
         private void Awake()
         {
             // Enforced Singleton
@@ -119,9 +122,9 @@ namespace Beacons
                 Utility.LogErrorIfNull(beaconManager, nameof(beaconManager));
 
             beaconManager.BeaconReadyForDamage += OnBeaconReadyForDamage;
+            beaconManager.BeaconReadyForDamage += enemySpawner.NewBeaconEventHandler;
 
             IncrementBeaconCount();
-            Instantiate(beaconToSpawn, transformRef.position, transformRef.rotation, transform);
             
             Debug.Log("Spawned new beacon!");
         }
@@ -132,6 +135,7 @@ namespace Beacons
 
             var beaconDamageModel = beacon.GetComponent<IDamageable>();
             beaconDamageModel.Died += OnBeaconDeath;
+            beaconDamageModel.Died += enemySpawner.BeaconDeathEventHandler;
         }
 
         public void OnBeaconDeath(IDamageable damageModel, string name, int instanceId)
