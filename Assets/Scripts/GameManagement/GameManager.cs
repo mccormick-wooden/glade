@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour // TODO: create other managers, attach 
 
     public static GameState State { get; private set; }
 
+    [SerializeField]
+    private GameState startingState = GameState.MainMenu;
+
     public static event Action<GameState> OnStateChanged;
 
     private void Awake()
@@ -36,7 +39,7 @@ public class GameManager : MonoBehaviour // TODO: create other managers, attach 
 
     private void Start()
     {
-        UpdateGameState(GameState.MainMenu);
+        UpdateGameState(startingState);
     }
 
     public static void UpdateGameState(GameState newState)
