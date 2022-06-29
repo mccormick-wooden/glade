@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8927542069060899307}
   - component: {fileID: 8927542069060899316}
   - component: {fileID: 8927542069060899317}
+  - component: {fileID: 1640371893615775057}
   m_Layer: 6
   m_Name: MainMenuCamera
   m_TagString: MainCamera
@@ -153,3 +154,11 @@ MonoBehaviour:
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
   m_AfterStackBundles: []
+--- !u!81 &1640371893615775057
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8927542069060899318}
+  m_Enabled: 1

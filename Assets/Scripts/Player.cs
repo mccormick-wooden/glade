@@ -128,9 +128,6 @@ public class Player : MonoBehaviour
         isJumping = false;
         doSlash = false;
         doBlock = false;
-
-        EventManager.TriggerEvent<PlayMusicEvent, int>(0);
-
     }
 
 
