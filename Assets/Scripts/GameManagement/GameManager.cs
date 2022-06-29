@@ -24,7 +24,8 @@ public class GameManager : MonoBehaviour // TODO: create other managers, attach 
 
     [Header("Player Controlled Game Settings")]
     [SerializeField]
-    private static float globalMaxVolume = 1;
+    [Range(0f, 1f)]
+    private float globalMaxVolume = 1;
 
     public static event Action<GameState> OnStateChanged;
 
@@ -74,7 +75,7 @@ public class GameManager : MonoBehaviour // TODO: create other managers, attach 
     public static void PlayLoopedAudio(AudioClip audioClip, float normalizedMaxVolume)
     {
         backgroundAudioSource.clip = audioClip;
-        backgroundAudioSource.volume = normalizedMaxVolume * globalMaxVolume;
+        backgroundAudioSource.volume = normalizedMaxVolume * instance.globalMaxVolume;
         backgroundAudioSource.loop = true;
         backgroundAudioSource.Play();
     }

@@ -29,6 +29,7 @@ public abstract class BaseStateManager : MonoBehaviour
     /// To account for volume discrepencies in clips, a max volume specific to the clip.
     /// </summary>
     [SerializeField]
+    [Range(0f, 1f)]
     protected float sceneAudioClipNormalizedMaxVolume;
 
     public GameState ManagedState => managedState;
