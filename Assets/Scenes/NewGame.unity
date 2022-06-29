@@ -323,6 +323,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1122183331946800235, guid: 0d1bfde883507044a810b09666683f3e, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1122183331946800245, guid: 0d1bfde883507044a810b09666683f3e, type: 3}
       propertyPath: m_Name
       value: NewGameCrawl
