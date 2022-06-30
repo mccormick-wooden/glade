@@ -67,12 +67,30 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<align=center><size=50>GLADE</size></align>\n\nLorem ipsum dolor sit amet,
-    consectetur adipiscing elit. Pellentesque sodales sed lorem sit amet aliquam.
-    Sed quis magna ut dolor volutpat dignissim sit amet ac turpis. Nam gravida sapien
-    sed nisl elementum tristique. \n\n\nDonec pretium orci nec nibh porta, eu varius
-    mauris dapibus. Nulla pulvinar feugiat lectus. Integer quam neque, varius sit
-    amet erat non, efficitur eleifend neque.\n\n\nNisi sapien rutrum nisi...."
+  m_text: '<align=center><size=50>GLADE</size></align>
+
+
+    The forests of a distant
+    world have a secret: tucked away GLADES designated by the ANCIENT TREE SPIRITS
+    as a neutral space to meet, broker peace, and foster relations between the disparate
+    TREE TRIBES.
+
+
+    Now, an ALIEN CIVILIZATION riding on meteorites are falling
+    from the sky to colonize the Glades for their rich resources.
+
+
+    Imbued with
+    the powers of the Ancient Tree Spirits, the WARDEN OF THE GLADES is the only
+    force standing in between the aliens and the utter descrution of the Glades.
+
+
+    Will
+    the Warden succeed in repelling the alien invasion? Or will the Warden succumb
+    to overwhelming alien numbers?
+
+
+    Only time will tell...'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b85077b8ce18238498d92f5d9d62e272, type: 2}
   m_sharedMaterial: {fileID: -3012982523012662432, guid: b85077b8ce18238498d92f5d9d62e272, type: 2}
@@ -172,6 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7739837c911b42c4e85765182adc4bf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
 --- !u!1 &1122183331102901796
 GameObject:
   m_ObjectHideFlags: 0
