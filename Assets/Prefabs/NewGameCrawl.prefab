@@ -67,30 +67,18 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '<align=center><size=50>GLADE</size></align>
-
-
-    The forests of a distant
-    world have a secret: tucked away GLADES designated by the ANCIENT TREE SPIRITS
-    as a neutral space to meet, broker peace, and foster relations between the disparate
-    TREE TRIBES.
-
-
-    Now, an ALIEN CIVILIZATION riding on meteorites are falling
-    from the sky to colonize the Glades for their rich resources.
-
-
-    Imbued with
+  m_text: "<align=center><size=80>GLADE</size></align>\n\n\n\n\nThe forests of a
+    distant world have a secret: tucked away GLADES designated by the ANCIENT TREE
+    SPIRITS as a neutral space to meet, broker peace, and foster relations between
+    the disparate TREE TRIBES.\n\nNow, the BEACONS of an ALIEN CIVILIZATION are falling
+    from meteorites to colonize the Glades for their rich resources.\n\nImbued with
     the powers of the Ancient Tree Spirits, the WARDEN OF THE GLADES is the only
-    force standing in between the aliens and the utter descrution of the Glades.
-
-
-    Will
-    the Warden succeed in repelling the alien invasion? Or will the Warden succumb
-    to overwhelming alien numbers?
-
-
-    Only time will tell...'
+    force standing in between the aliens and the utter destruction of the Glades.\n\nThe
+    Warden must find and destory each BEACON before the alien forces dominate the
+    Glades, fighting off waves of alien enemies in the process. Along the way, the
+    Warden may use POWERUPS provided by the Ancient Tree Spirits to assist in the
+    grand mission. \n\nWill the Warden succeed in repelling the alien invasion? Or
+    will the Warden succumb to overwhelming alien numbers?\n\nOnly time will tell..."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b85077b8ce18238498d92f5d9d62e272, type: 2}
   m_sharedMaterial: {fileID: -3012982523012662432, guid: b85077b8ce18238498d92f5d9d62e272, type: 2}
@@ -357,7 +345,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &1122183331946800234
 MonoBehaviour:
   m_ObjectHideFlags: 0

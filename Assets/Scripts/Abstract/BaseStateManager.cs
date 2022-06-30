@@ -19,6 +19,19 @@ public abstract class BaseStateManager : MonoBehaviour
     [SerializeField]
     protected string managedSceneName;
 
+    /// <summary>
+    /// An audio clip to loop during a managed state
+    /// </summary>
+    [SerializeField]
+    protected AudioClip optionalSceneAudioClip;
+
+    /// <summary>
+    /// To account for volume discrepencies in clips, a max volume specific to the clip.
+    /// </summary>
+    [SerializeField]
+    [Range(0f, 1f)]
+    protected float sceneAudioClipNormalizedMaxVolume;
+
     public GameState ManagedState => managedState;
 
     public string ManagedSceneName => managedSceneName;
@@ -98,6 +111,9 @@ public abstract class BaseStateManager : MonoBehaviour
             enabled = true;
             OnSceneLoaded();
 
+            if (optionalSceneAudioClip != null)
+                GameManager.PlayLoopedAudio(optionalSceneAudioClip, sceneAudioClipNormalizedMaxVolume);
+
             if (debugOutput)
                 Debug.Log($"{GetType().Name}: ENABLED, {ManagedSceneName}: LOADED");
         }
@@ -119,6 +135,8 @@ public abstract class BaseStateManager : MonoBehaviour
         {
             enabled = false;
             OnSceneUnloaded();
+
+            GameManager.StopLoopedAudio();
 
             if (debugOutput)
                 Debug.Log($"{GetType().Name}: DISABLED, {ManagedSceneName}: UNLOADED");

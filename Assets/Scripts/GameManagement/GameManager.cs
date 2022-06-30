@@ -17,8 +17,15 @@ public class GameManager : MonoBehaviour // TODO: create other managers, attach 
 
     public static GameState State { get; private set; }
 
+    private static AudioSource backgroundAudioSource;
+
     [SerializeField]
     private GameState startingState = GameState.MainMenu;
+
+    [Header("Player Controlled Game Settings")]
+    [SerializeField]
+    [Range(0f, 1f)]
+    private float globalMaxVolume = 1;
 
     public static event Action<GameState> OnStateChanged;
 
@@ -34,6 +41,8 @@ public class GameManager : MonoBehaviour // TODO: create other managers, attach 
             instance = this;
         }
 
+        backgroundAudioSource = GetComponent<AudioSource>();
+        Utility.LogErrorIfNull(backgroundAudioSource, nameof(backgroundAudioSource), "No background audio source component on game manager!");
         // TODO: validations to ensure every scene and state is managed by only one object? 
     }
 
@@ -61,6 +70,19 @@ public class GameManager : MonoBehaviour // TODO: create other managers, attach 
         }
 
         OnStateChanged?.Invoke(State = newState);
+    }
+
+    public static void PlayLoopedAudio(AudioClip audioClip, float normalizedMaxVolume)
+    {
+        backgroundAudioSource.clip = audioClip;
+        backgroundAudioSource.volume = normalizedMaxVolume * instance.globalMaxVolume;
+        backgroundAudioSource.loop = true;
+        backgroundAudioSource.Play();
+    }
+
+    public static void StopLoopedAudio()
+    {
+        backgroundAudioSource.Stop();
     }
 }
 
