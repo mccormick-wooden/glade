@@ -79,7 +79,7 @@ public abstract class BaseStateManager : MonoBehaviour
         if (debugOutput)
             Debug.Log($"State change '{newState}' received by {GetType().Name}.");
 
-        if (newState == ManagedState && !ManagedSceneIsActive)
+        if (newState == ManagedState)
             SceneLoader.LoadScene(ManagedSceneName);
     }
 

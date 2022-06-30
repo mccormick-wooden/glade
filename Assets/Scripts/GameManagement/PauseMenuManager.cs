@@ -1,63 +1,89 @@
 using System.Linq;
 using Cinemachine;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-// TODO: need to figure out how this fits into event management system
-// buttons basically need to fire events in an idempotent way
+using UnityEngine.UI;
+
 [RequireComponent(typeof(CanvasGroup))]
 public class PauseMenuManager : MonoBehaviour
 {
-    private static PauseMenuManager instance;
+    /// <summary>
+    /// GameStates where pause should not be active. Currently and probably always will only make sense for MainMenu
+    /// </summary>
+    [SerializeField]
+    private GameState[] unPausableStates = new GameState[] { GameState.MainMenu };
+
+    [SerializeField]
+    private string pauseResumeRootName = "PauseResume";
+
+    [SerializeField]
+    private string pauseRestartRootName = "PauseRestart";
+
+    [SerializeField]
+    private string pauseMainMenuRootName = "PauseMainMenu";
+
+    [SerializeField]
+    private string pauseExitGameRootName = "PauseExitGame";
+
+    private CharacterPlayerControls controls;
 
     private CanvasGroup canvasGroup;
 
     private Canvas canvas;
 
     private Player player => FindObjectOfType<Player>();
-    private CinemachineBrain playerCamera => FindObjectOfType<CinemachineBrain>();
 
-    private readonly string[] unPausableScenes = new string[] { "MainMenu" };
+    private CinemachineBrain playerCamera => FindObjectOfType<CinemachineBrain>();
 
     public bool IsPaused => canvasGroup.interactable;
 
     private void Awake()
     {
-        // TODO: - make singleton dry? low priority
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        else
-        {
-            instance = this;
-        }
+        controls = new CharacterPlayerControls();
 
         canvasGroup = GetComponent<CanvasGroup>();
-        canvas = canvasGroup.GetComponent<Canvas>();
+        Utility.LogErrorIfNull(canvasGroup, nameof(canvas));
 
-        if (canvasGroup == null)
-        {
-            Debug.LogError("CanvasGroup not found");
-        }
-        else
-        {
-            canvasGroup.alpha = 0; // We don't set this in the inspector because then we can't see it in the inspector! And that's annoying.
-            canvasGroup.blocksRaycasts = false;
-            canvasGroup.interactable = false;
-        }
+        canvas = canvasGroup.GetComponent<Canvas>();
+        Utility.LogErrorIfNull(canvas, nameof(canvas));
+
+        canvasGroup.alpha = 0; // We don't set this in the inspector because then we can't see it in the inspector! And that's annoying.
+        canvasGroup.blocksRaycasts = false;
+        canvasGroup.interactable = false;
+
+        Utility.AddButtonCallback(pauseResumeRootName, () => SetPauseState(areWePausing: false));
+        Utility.AddButtonCallback(pauseRestartRootName, () => GameManager.UpdateGameState(GameManager.State));
+        Utility.AddButtonCallback(pauseMainMenuRootName, () => GameManager.UpdateGameState(GameState.MainMenu));
+        Utility.AddButtonCallback(pauseExitGameRootName, () => Quitter.QuitGame());
     }
 
-    private void Update()
+    private void Start()
     {
-        if (IsPaused && InUnPauseableScene())
-        {
+        controls.PauseGame.PauseGameAction.performed += _ => TogglePause();
+        GameManager.OnStateChanged += GameManagerOnStateChanged;
+    }
+
+    private void OnDestroy()
+    {
+        controls.PauseGame.PauseGameAction.performed -= _ => TogglePause();
+        GameManager.OnStateChanged -= GameManagerOnStateChanged;
+    }
+
+    private void TogglePause()
+    {
+        if (!IsPaused && !InUnPauseableState())
+            SetPauseState(true);
+        else if (IsPaused)
             SetPauseState(false);
-        }
-        else if (Input.GetKeyDown(KeyCode.Escape) && !InUnPauseableScene()) // TODO: Fix this input so that gamepad works
-        {
-            SetPauseState(!canvasGroup.interactable);
-        }
+    }
+
+    private void OnEnable()
+    {
+        controls.PauseGame.Enable();
+    }
+
+    private void OnDisable()
+    {
+        controls.PauseGame.Disable();
     }
 
     public void SetPauseState(bool areWePausing)
@@ -76,10 +102,21 @@ public class PauseMenuManager : MonoBehaviour
             Utility.DisableAllOf(except: canvas);
         else
             Utility.EnableAllOf(except: canvas);
+
+        if (areWePausing)
+        {
+            GameObject.Find(pauseResumeRootName).GetComponentInChildren<Button>().Select();
+        }
     }
 
-    private bool InUnPauseableScene()
+    private bool InUnPauseableState()
     {
-        return unPausableScenes.Any(s => SceneManager.GetSceneByName(s).isLoaded); // todo: replace this with game mananager state check maybe?
+        return unPausableStates.Any(s => s == GameManager.State);
+    }
+
+    private void GameManagerOnStateChanged(GameState obj)
+    {
+        // I'm like 99.99% sure we always want to unpause on a state change.
+        SetPauseState(areWePausing: false);
     }
 }
