@@ -353,6 +353,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &986430098 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 19389699136907525, guid: 1ede34130e960cd46b655a4f950aa3fe, type: 3}
+  m_PrefabInstance: {fileID: 3492924703226554807}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abdb184cde9dff04784e124dc843828c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1007401302 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4031818978694551067, guid: 1ede34130e960cd46b655a4f950aa3fe, type: 3}
@@ -413,6 +424,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BeaconParent
       objectReference: {fileID: 0}
+    - target: {fileID: 8710085024142302781, guid: 225b290c69a04fa468d70c1b018ed5dd, type: 3}
+      propertyPath: enemySpawner
+      value: 
+      objectReference: {fileID: 986430098}
     - target: {fileID: 8710085024142302781, guid: 225b290c69a04fa468d70c1b018ed5dd, type: 3}
       propertyPath: maxTotalBeacons
       value: 3
@@ -1817,7 +1832,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3492924702036808563, guid: 1ede34130e960cd46b655a4f950aa3fe, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.68343055
+      value: 0.6834306
       objectReference: {fileID: 0}
     - target: {fileID: 3492924702036808563, guid: 1ede34130e960cd46b655a4f950aa3fe, type: 3}
       propertyPath: m_LocalRotation.x
@@ -1825,11 +1840,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3492924702036808563, guid: 1ede34130e960cd46b655a4f950aa3fe, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.6816852
+      value: -0.68168515
       objectReference: {fileID: 0}
     - target: {fileID: 3492924702036808563, guid: 1ede34130e960cd46b655a4f950aa3fe, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.18446344
+      value: 0.18446343
       objectReference: {fileID: 0}
     - target: {fileID: 3492924702343736217, guid: 1ede34130e960cd46b655a4f950aa3fe, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3447,6 +3462,7 @@ MonoBehaviour:
   healthBarController: {fileID: 6313019388123030832}
   currentHp: 0
   maxHp: 100
+  IsHealable: 0
 --- !u!4 &8760378065736791996
 Transform:
   m_ObjectHideFlags: 0
