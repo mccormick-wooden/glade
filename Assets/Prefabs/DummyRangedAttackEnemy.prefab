@@ -1083,6 +1083,7 @@ GameObject:
   - component: {fileID: 378291042682893160}
   - component: {fileID: 9138424767231823314}
   - component: {fileID: 674888660242858651}
+  - component: {fileID: 5333267338205985154}
   m_Layer: 0
   m_Name: DummyRangedAttackEnemy
   m_TagString: Enemy
@@ -1171,6 +1172,7 @@ MonoBehaviour:
   healthBarController: {fileID: 0}
   currentHp: 50
   maxHp: 50
+  IsHealable: 1
 --- !u!114 &9138424767231823314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1191,6 +1193,10 @@ MonoBehaviour:
   maxDistanceFromPlayer: 25
   attackPushbackForce: 0
   attackDelayTimeSeconds: 3
+  priority: 0
+  minTimeToPriorityChange: 3
+  maxTimeToPriorityChange: 6
+  crystalManager: {fileID: 0}
   arrowPrefab: {fileID: 7317300718817760254, guid: 695a6223079caf84380b8f8985075e95, type: 3}
   arrowForce: 5
 --- !u!195 &674888660242858651
@@ -1215,6 +1221,19 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &5333267338205985154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3054070596095771740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d821ef289d0582b4ba2ab9c19c2a7ad0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpPerSecond: 10
 --- !u!1 &3558732370113055110
 GameObject:
   m_ObjectHideFlags: 0

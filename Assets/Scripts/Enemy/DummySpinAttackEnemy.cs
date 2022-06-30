@@ -23,7 +23,7 @@ public class DummySpinAttackEnemy : BaseEnemy
 
         desireToAttackPlayer = 4f;  //0.75f;
         desireToDefendBeacon = 4f;  //0.125f;
-        desireToRunAndHeal = 1f;    //0.125f;
+        desireToRunAndHeal = 20f;    //0.125f;
         desireToHealOthers = 0f;
 
         autoAttackPlayerDistanceToBeacon = 5f;

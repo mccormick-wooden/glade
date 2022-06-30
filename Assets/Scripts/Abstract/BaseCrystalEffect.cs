@@ -60,6 +60,9 @@ public abstract class BaseCrystalEffect : MonoBehaviour
 
     protected void AddCrystalEffect(int crystalID, float multiplier)
     {
+        if (nearbyCrystalIDs.ContainsKey(crystalID))
+            return;
+
         Debug.Log($"{name}: Adding Crystal {crystalID} effect.");
         nearbyCrystalIDs.Add(crystalID, multiplier);
     }

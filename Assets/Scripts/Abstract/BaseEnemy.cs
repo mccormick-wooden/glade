@@ -50,7 +50,7 @@ public class BaseEnemy : MonoBehaviour
     protected enum Priority {
         AttackPlayer,
         DefendBeacon,
-        IncreaseDistanceFromPlayer,
+        HealAtCrystal,
         HealOthersOthers,
         NeedsRecomputed
     }
@@ -105,6 +105,11 @@ public class BaseEnemy : MonoBehaviour
 
     NavMeshAgent agent;
 
+    [SerializeField]
+    protected CrystalManager crystalManager;
+
+    protected GameObject nearestCrystal;
+
     // Start is called before the first frame update
     protected virtual void Start()
     {
@@ -127,6 +132,8 @@ public class BaseEnemy : MonoBehaviour
 
         agent = GetComponent<NavMeshAgent>();
         autoAttackPlayerDistanceToBeacon = 0f;
+
+        crystalManager = GameObject.Find("CrystalParent").GetComponent<CrystalManager>();
     }
 
     protected virtual void UpdateAnimations()
@@ -173,6 +180,12 @@ public class BaseEnemy : MonoBehaviour
         }
     }
 
+    protected virtual void FindNearestCrystal()
+    {
+        nearestCrystal = crystalManager.FindNearestCrystal(transform.position);
+    }
+
+
     protected virtual void ApplyTransforms()
     {
         switch (priority)
@@ -188,8 +201,8 @@ public class BaseEnemy : MonoBehaviour
                 }
                 TryToDefendBeacon();
                 break;
-            case Priority.IncreaseDistanceFromPlayer:
-                TryToIncreaseDistance();
+            case Priority.HealAtCrystal:
+                TryToGoToCrystal();
                 break;
             case Priority.HealOthersOthers:
                 TryToHealOthers();
@@ -202,14 +215,25 @@ public class BaseEnemy : MonoBehaviour
         // don't update priority if we're in the middle of an attack,
         // OR we haven't reached the next priority change time (prevents spastic changing priorities)
         // OR the priority hasn't been flagged as needing computing early
+        
+        // alternatively, if the enemy has full HP and priority is heal,
+        // switch to something else, no point in it staying at beacon longer
+
+        float damageRunInfluence = 1f - damageable.CurrentHp / damageable.MaxHp;  // 0% chance at full HP
+
+        if (priority == Priority.HealAtCrystal && damageRunInfluence < .01)
+        {
+            priority = Priority.NeedsRecomputed;
+        }   
+
         if (isAttacking || (DateTime.Now < nextPriorityChangeTime && priority != Priority.NeedsRecomputed))
         {
             return;
         }
             
         FindClosestBeacon();
+        FindNearestCrystal();
 
-        float damageRunInfluence = 1f - damageable.CurrentHp / damageable.MaxHp;  // 0% chance at full HP
 
         // first check if the beacon needs saving
         float attackPlayerWeight = Random.Range(0f, desireToAttackPlayer);
@@ -221,7 +245,13 @@ public class BaseEnemy : MonoBehaviour
             defendBeaconWeight = Random.Range(0f, desireToDefendBeacon) * beaconHealthInfluence; // increase desire to defend beacon based on dmg
         }
 
-        float runAwayWeight = Random.Range(0f, desireToRunAndHeal) * damageRunInfluence; // low desire to run at full health
+        float runAwayWeight = 0;
+
+        if (nearestCrystal)
+        {
+            runAwayWeight = Random.Range(0f, desireToRunAndHeal) * damageRunInfluence; // low desire to run at full health
+        }
+        
         float healOthersWeight = Random.Range(0, desireToHealOthers);
 
         if (attackPlayerWeight > defendBeaconWeight 
@@ -240,7 +270,7 @@ public class BaseEnemy : MonoBehaviour
             && runAwayWeight > healOthersWeight
             && runAwayWeight > defendBeaconWeight)
         {
-            priority = Priority.IncreaseDistanceFromPlayer;
+            priority = Priority.HealAtCrystal;
         }
         else if (healOthersWeight > attackPlayerWeight
             && healOthersWeight > defendBeaconWeight
@@ -377,17 +407,21 @@ public class BaseEnemy : MonoBehaviour
     }
 
 
-    protected virtual void TryToIncreaseDistance()
+    protected virtual void TryToGoToCrystal()
     {
-        Vector3 enemyToPlayerVector = Player.transform.position - transform.position;
+        //Vector3 enemyToPlayerVector = Player.transform.position - transform.position;
+
+        //Vector3 enemyToCrystalVector = Player.transform.position - nearestCrystal.transform.position;
 
         // simple for now, just flee player, go to enemyToPlayer + 1 each frame
         // use samplePosition to 
 
-        Vector3 desiredPosition = enemyToPlayerVector + enemyToPlayerVector.normalized;
+        //Vector3 desiredPosition = enemyToCrystalVector + enemyToCrystalVector.normalized;
+
+        Vector3 desiredPosition = nearestCrystal.transform.position;
 
         NavMeshHit hit;
-        bool foundValid = NavMesh.SamplePosition(transform.position, out hit, 1f, NavMesh.AllAreas);
+        bool foundValid = NavMesh.SamplePosition(desiredPosition, out hit, 1f, NavMesh.AllAreas);
 
         // just assume hit is okay for now, worry about wtf to do if not later        
         Vector3 closestToDesiredPosition = hit.position;
@@ -395,7 +429,8 @@ public class BaseEnemy : MonoBehaviour
         bool blocked = NavMesh.Raycast(transform.position, closestToDesiredPosition, out hit, NavMesh.AllAreas);
 
         // again, just assume good for now, figure out wtf to do if not later
-        agent.SetDestination(desiredPosition);
+        agent.SetDestination(hit.position);
+        agent.isStopped = false;
     }
 
 
