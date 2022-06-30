@@ -18,11 +18,21 @@ public class DummyRangedAttackEnemy : BaseEnemy
         isAttacking = false;
 
         attackDelayTimeSeconds = 2.0f;
+
+        desireToAttackPlayer = 4f;
+        desireToDefendBeacon = 1f;
+        desireToRunAndHeal = 4f; // easy to scare off
+        desireToHealOthers = 0f;
+
+        autoAttackPlayerDistanceToBeacon = 3f;
+        minTimeToPriorityChanges = 5f;
     }
 
     // Update is called once per frame
     protected override void Update()
     {
+        base.Update();
+
         if (isAttacking)
         {
             ShootArrow();

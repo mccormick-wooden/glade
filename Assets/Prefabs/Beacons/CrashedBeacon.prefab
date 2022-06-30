@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4263302755561423127}
   - component: {fileID: 6997175789639800599}
-  - component: {fileID: 6445112803189994876}
+  - component: {fileID: -6444843833389009397}
   m_Layer: 0
   m_Name: CrashedBeacon
   m_TagString: Enemy
@@ -47,7 +47,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1.1
   m_Center: {x: 0, y: 1.2, z: 0}
---- !u!114 &6445112803189994876
+--- !u!114 &-6444843833389009397
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

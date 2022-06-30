@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using UnityEngine.AI;
+using Beacons;
+using Assets.Scripts.Interfaces;
+
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -23,6 +27,12 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private float nominalSpawnTime;
 
+    [SerializeField]
+    private float minTimeBetweenSpawnsSeconds;
+
+    [SerializeField]
+    private BeaconManager beaconManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,8 +48,11 @@ public class EnemySpawner : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float weight = CalculateSpawnWeight();
-        GenerateEnemies(weight);
+        if (DateTime.Now > lastSpawnTime.AddSeconds(minTimeBetweenSpawnsSeconds))
+        {
+            float weight = CalculateSpawnWeight();
+            GenerateEnemies(weight);
+        }
     }
 
     float CalculateSpawnWeight()
@@ -54,45 +67,41 @@ public class EnemySpawner : MonoBehaviour
             float distance = Vector3.Distance(beacons[i].transform.position, transform.position);
             float weight = 1f / (distance * distance) * (float)(DateTime.Now - lastSpawnTime).TotalSeconds;
             totalWeight += weight;
+            totalWeight *= nominalSpawnTime;
         }
 
-        //Debug.Log(totalWeight);
         return totalWeight;
     }
 
     void GenerateEnemies(float weight)
     {
         float r = Random.Range(0.0f, 1.0f);
-        GameObject enemiesParent = GameObject.Find("ParentEnemy");
+        GameObject enemiesParent = GameObject.Find("EnemiesParent");
 
         if (weight > r)
         {
             Debug.Log("Make a bad guy!");
 
+            Vector3 newPosition;
+            bool FoundValidPosition = FindValidPlacement(transform.position, out newPosition);
+
+            if (!FoundValidPosition)
+                return;
+
+            int randomEnemy = Random.Range(0, possibleEnemies.Count);
+
+            GameObject enemyPrefab = possibleEnemies[randomEnemy];
+            GameObject g = Instantiate(enemyPrefab, new Vector3(0,0,0), Quaternion.identity, enemiesParent.transform);
             
-            GameObject enemyPrefab = possibleEnemies[1];
-            GameObject g = Instantiate(enemyPrefab, enemiesParent.transform);
+            g.GetComponent<NavMeshAgent>().Warp(newPosition);
+            g.GetComponent<NavMeshAgent>().enabled = true;
 
-            //UnityEditor.PrefabUtility.SaveAsPrefabAsset(g, possibleEnemies[0]);
-
-            //g.transform.parent = enemiesParent.transform;
-
-            if (!FindValidPlacement(g))
-            {
-                Destroy(g);
-            }
-            else
-            {
-                lastSpawnTime = DateTime.Now;
-            }
+            lastSpawnTime = DateTime.Now;
         }
     }
 
-    bool FindValidPlacement(GameObject g)
+    bool FindValidPlacement(Vector3 position, out Vector3 newPosition)
     {
-        // Move enemy to a random location that isn't inside anything
-        g.transform.position = transform.position;
-
         const float MIN_X_OFFSET = 10;
         const float MAX_X_OFFSET = 25;
 
@@ -107,64 +116,40 @@ public class EnemySpawner : MonoBehaviour
             float randomX = UnityEngine.Random.Range(MIN_X_OFFSET, MAX_X_OFFSET) * ((UnityEngine.Random.Range(0f, 1f) >= 0.5) ? -1 : 1);
             float randomZ = UnityEngine.Random.Range(MIN_Z_OFFSET, MAX_Z_OFFSET) * ((UnityEngine.Random.Range(0f, 1f) >= 0.5) ? -1 : 1);
 
-            g.transform.position += new Vector3(randomX, 0, randomZ);
+            Vector3 samplePosition = new Vector3(randomX, 0, randomZ) + transform.position;
 
-            // move it up until we get to the ground 
-            float halfHeight = g.GetComponent<BaseEnemy>().Height / 2f;
-            g.transform.position += new Vector3(0, halfHeight, 0);
+            NavMeshHit hit;
+            bool gotHit = NavMesh.SamplePosition(samplePosition, out hit, 2, NavMesh.AllAreas);
 
-            float groundInterceptRayLength = halfHeight + 0.1f;
-
-            int yPositionAttempts = 0;
-            const int maxYPositionAttempts = 20;
-            bool gotValidYPosition = false;
-
-            // Try going up from our current position first
-            for (yPositionAttempts = 0; yPositionAttempts < maxYPositionAttempts; yPositionAttempts++)
+            if (!gotHit)
             {
-                if (Physics.Raycast(g.transform.position, Vector3.down, groundInterceptRayLength, whatIsGround))
-                {
-
-                    gotValidYPosition = true;
-                    break;
-                }
-
-                g.transform.position += new Vector3(0, 0.1f, 0);
-            }
-
-            if (gotValidYPosition)
-            {
-                return true;
-            }
-
-            // If we couldn't figure it out going up, try down
-            g.transform.position = transform.position + new Vector3(randomX, 0, randomZ);
-
-            // Then try going down
-            for (yPositionAttempts = 0; yPositionAttempts < maxYPositionAttempts; yPositionAttempts++)
-            {
-                if (Physics.Raycast(g.transform.position, Vector3.down, groundInterceptRayLength, whatIsGround))
-                {
-                    gotValidYPosition = true;
-                    break;
-                }
-
-                g.transform.position -= new Vector3(0, 0.1f, 0);
-            }
-
-            // if we still didn't get anything -
-            if (!gotValidYPosition)
-            {
-                // failed to find a valid placement, 
-                // give up and start again
                 attempts++;
+                continue;
             }
-            else
-            {
-                return true;
-            }
+
+
+            //g.transform.position = hit.position;
+            newPosition = hit.position;
+            return true;
         }
 
+        newPosition = Vector3.zero;
         return false;
+    }
+
+    public void NewBeaconEventHandler(Beacons.BeaconManager beaconManager, GameObject crashedBeacon)
+    {
+        beacons.Add(crashedBeacon);
+    }
+
+    public void BeaconDeathEventHandler(IDamageable damageModel, string name, int instanceId)
+    {
+        GameObject deadBeacon = beacons.Find(delegate (GameObject beacon)
+           {
+               return beacon.GetInstanceID() == instanceId;
+           }
+        );
+
+        beacons.Remove(deadBeacon);
     }
 }
