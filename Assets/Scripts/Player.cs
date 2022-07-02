@@ -369,8 +369,8 @@ public class Player : MonoBehaviour
                 // Downhill: negative angles.
                 float slopeAngle = (
                         Vector3.Angle(groundNormal, transform.forward) - 90f);
-                Debug.Log("groundNormal: " + groundNormal);
-                Debug.Log("slopeAngle: " + slopeAngle);
+                //Debug.Log("groundNormal: " + groundNormal);
+                //Debug.Log("slopeAngle: " + slopeAngle);
 
                 if (hasLanded)
                 {
