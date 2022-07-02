@@ -140,6 +140,14 @@ public class EnemySpawner : MonoBehaviour
     public void NewBeaconEventHandler(Beacons.BeaconManager beaconManager, GameObject crashedBeacon)
     {
         beacons.Add(crashedBeacon);
+
+        // spawn some enemies directly from the beacon
+        // temp variables for now, maybe make this random later?
+        const int numberOfMeleeEnemies = 5;
+        const int numberOfRangedEnemies = 5;
+        const int numberOfAOEEnemies = 5;
+
+
     }
 
     public void BeaconDeathEventHandler(IDamageable damageModel, string name, int instanceId)
