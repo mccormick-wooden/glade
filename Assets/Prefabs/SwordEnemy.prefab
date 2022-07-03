@@ -2666,6 +2666,10 @@ PrefabInstance:
       propertyPath: attackDamage
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 518273760588877567, guid: 31b0a14242544f443b567f6ab2b26833, type: 3}
+      propertyPath: TargetTags.Array.data[0]
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31b0a14242544f443b567f6ab2b26833, type: 3}
 --- !u!4 &9067223094074185990 stripped
