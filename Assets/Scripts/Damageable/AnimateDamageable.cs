@@ -7,11 +7,9 @@ namespace Assets.Scripts.Damageable
     {
         private Animator animator;
 
-        [SerializeField]
-        private string applyDamageAnimTrigger;
+        [SerializeField] private string applyDamageAnimTrigger;
 
-        [SerializeField]
-        private string dieAnimTrigger;
+        [SerializeField] private string dieAnimTrigger;
 
         protected override void Start()
         {
@@ -22,10 +20,10 @@ namespace Assets.Scripts.Damageable
                 Debug.Log($"{gameObject.name}.{GetType().Name}.{nameof(animator)} is null.");
         }
 
-        protected override void ApplyDamage(BaseWeapon attackingWeapon)
+        protected override void ApplyDamage(BaseWeapon attackingWeapon, float modifier = 1f)
         {
             animator.SetTrigger(applyDamageAnimTrigger);
-            base.ApplyDamage(attackingWeapon);
+            base.ApplyDamage(attackingWeapon, modifier);
         }
 
         protected override void Die()

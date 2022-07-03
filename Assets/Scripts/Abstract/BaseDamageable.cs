@@ -7,17 +7,13 @@ namespace Assets.Scripts.Abstract
 {
     public abstract class BaseDamageable : MonoBehaviour, IDamageable
     {
-        [SerializeField]
-        protected HealthBarController healthBarController;
+        [SerializeField] protected HealthBarController healthBarController;
 
-        [SerializeField]
-        private float currentHp;
+        [SerializeField] private float currentHp;
 
-        [SerializeField]
-        private float maxHp = 100;
+        [SerializeField] private float maxHp = 100;
 
-        [SerializeField]
-        public bool IsHealable;
+        [SerializeField] public bool IsHealable;
 
         public float CurrentHp
         {
@@ -45,10 +41,11 @@ namespace Assets.Scripts.Abstract
                 return;
             }
 
-            if (!IsDead && IsHealable) 
+            if (!IsDead && IsHealable)
             {
                 var newHp = Mathf.Min(CurrentHp + healAmount, MaxHp);
-                Debug.Log($"Healing {gameObject.name}: currentHp = {CurrentHp}, healAmount: {healAmount}, newHp = {newHp}");
+                Debug.Log(
+                    $"Healing {gameObject.name}: currentHp = {CurrentHp}, healAmount: {healAmount}, newHp = {newHp}");
                 CurrentHp = newHp;
             }
         }
@@ -98,11 +95,12 @@ namespace Assets.Scripts.Abstract
             return attackingWeapon.InUse && HasHp && isWeaponTarget;
         }
 
-        protected virtual void ApplyDamage(BaseWeapon attackingWeapon)
+        protected virtual void ApplyDamage(BaseWeapon attackingWeapon, float modifier = 1f)
         {
-            var newHp = Mathf.Max(CurrentHp - attackingWeapon.AttackDamage, 0f);
+            var netAttackDamage = attackingWeapon.AttackDamage * modifier;
+            var newHp = Mathf.Max(CurrentHp - netAttackDamage, 0f);
             Debug.Log(
-                $"Applying damage to {gameObject.name}: currentHp = {CurrentHp}, damage = {attackingWeapon.AttackDamage}, newHp = {newHp}"
+                $"Applying damage to {gameObject.name}: currentHp = {CurrentHp}, damage = {netAttackDamage}, newHp = {newHp}"
             );
             CurrentHp = newHp;
         }
