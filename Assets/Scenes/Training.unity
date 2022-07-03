@@ -378,11 +378,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 683423951991350864, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.028937422
+      value: -0.028937405
       objectReference: {fileID: 0}
     - target: {fileID: 683423951991350864, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.009464561
+      value: 0.009464555
       objectReference: {fileID: 0}
     - target: {fileID: 683423952067722006, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_RootOrder
@@ -585,7 +585,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4189083855617056745, guid: 31bcad68a9f5c1c41ace2d8e898e3b73, type: 3}
       propertyPath: m_Name
-      value: TreeSpiritRig
+      value: EntRig
       objectReference: {fileID: 0}
     - target: {fileID: 4189083855617056747, guid: 31bcad68a9f5c1c41ace2d8e898e3b73, type: 3}
       propertyPath: m_Name
@@ -593,7 +593,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4189083855617056749, guid: 31bcad68a9f5c1c41ace2d8e898e3b73, type: 3}
       propertyPath: m_Name
-      value: TreeSpirit
+      value: Ent
       objectReference: {fileID: 0}
     - target: {fileID: 4189083855617475531, guid: 31bcad68a9f5c1c41ace2d8e898e3b73, type: 3}
       propertyPath: m_RootOrder
