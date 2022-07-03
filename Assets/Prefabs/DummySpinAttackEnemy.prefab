@@ -1309,6 +1309,7 @@ MonoBehaviour:
   minTimeToPriorityChange: 3
   maxTimeToPriorityChange: 6
   crystalManager: {fileID: 0}
+  timeToFullyAppear: 0.5
 --- !u!195 &691763536489525588
 NavMeshAgent:
   m_ObjectHideFlags: 0

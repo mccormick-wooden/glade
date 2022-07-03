@@ -1232,7 +1232,8 @@ MonoBehaviour:
   minTimeToPriorityChange: 5
   maxTimeToPriorityChange: 5
   crystalManager: {fileID: 0}
-  aoeAttackPrefab: {fileID: 3054070596095771740}
+  timeToFullyAppear: 0.5
+  aoeAttackPrefab: {fileID: 4554370377841570503, guid: db92ec7a788b6a1449fee71c4a9cecaf, type: 3}
 --- !u!1 &3558732370113055110
 GameObject:
   m_ObjectHideFlags: 0

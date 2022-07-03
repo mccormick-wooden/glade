@@ -5,7 +5,6 @@ using Assets.Scripts.Damageable;
 using Random = UnityEngine.Random;
 using UnityEngine.AI;
 
-
 public class BaseEnemy : MonoBehaviour
 {
     private Animator animator;
@@ -110,6 +109,15 @@ public class BaseEnemy : MonoBehaviour
 
     protected GameObject nearestCrystal;
 
+    Renderer[] renderers;
+
+    [SerializeField]
+    float timeToFullyAppear;
+
+    float currentFade = 0f;
+
+    Vector3 lastSeenPlayerPosition;
+
     // Start is called before the first frame update
     protected virtual void Start()
     {
@@ -119,6 +127,7 @@ public class BaseEnemy : MonoBehaviour
         lastAttackTime = DateTime.Now;
         weapon = GetComponent<BaseWeapon>();
         damageable = GetComponent<AnimateDamageable>();
+
         // if not animate, check for disappear
         if (!damageable)
         {
@@ -127,14 +136,44 @@ public class BaseEnemy : MonoBehaviour
 
         priority = Priority.NeedsRecomputed;
         lastPriorityChangeTime = DateTime.Now;
-        // make sure to set starting priorities in
-
 
         agent = GetComponent<NavMeshAgent>();
         autoAttackPlayerDistanceToBeacon = 0f;
 
         crystalManager = GameObject.Find("CrystalParent").GetComponent<CrystalManager>();
+        renderers = GetComponentsInChildren<Renderer>();
+
+
+        for (int r = 0; r < renderers.Length; r++)
+        {
+            Material[] materials = renderers[r].materials;
+            for (int i = 0; i < materials.Length; i++)
+            {
+                Material m = materials[i];
+
+                // These settings are from the StandardShader from Unity:
+                //   - https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/Inspector/StandardShaderGUI.cs
+                // This is what the Unity editor does behind the scenes when you change the render mode to "Fade"
+                // and there's no one shot way to change it programmatically on the fly in code without just
+                // duplicating what the editor does.
+
+                m.SetOverrideTag("RenderType", "Transparent");
+                m.SetFloat("_SrcBlend", (float)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                m.SetFloat("_DstBlend", (float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                m.SetFloat("_ZWrite", 0.0f);
+                m.DisableKeyword("_ALPHATEST_ON");
+                m.EnableKeyword("_ALPHABLEND_ON");
+                m.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                m.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+
+                Color c = m.color;
+                c.a = currentFade;
+                m.color = c;
+            }
+        }
+
     }
+
 
     protected virtual void UpdateAnimations()
     {
@@ -440,9 +479,55 @@ public class BaseEnemy : MonoBehaviour
 
     }
 
+    void FadeIn()
+    {
+        currentFade += Time.deltaTime / timeToFullyAppear;
+
+        currentFade = Math.Min(currentFade, 1.0f);
+
+        for (int r = 0; r < renderers.Length; r++)
+        {
+            Material[] materials = renderers[r].materials;
+            for (int i = 0; i < materials.Length; i++)
+            {
+                Material m = materials[i];
+
+                if (currentFade >= 1.0f)
+                {
+                    // These settings are from the StandardShader from Unity:
+                    //   - https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/Inspector/StandardShaderGUI.cs
+                    // This is what the Unity editor does behind the scenes when you change the render mode to "Opaque"
+                    // and there's no one shot way to change it programmatically on the fly in code without just
+                    // duplicating what the editor does.
+
+                    // Change back to opaque mode once fading in is done so that we don't waste performance 
+                    // on transparency effects (even with 1.0 alpha) 
+
+                    m.SetOverrideTag("RenderType", "");
+                    m.SetFloat("_SrcBlend", (float)UnityEngine.Rendering.BlendMode.One);
+                    m.SetFloat("_DstBlend", (float)UnityEngine.Rendering.BlendMode.Zero);
+                    m.SetFloat("_ZWrite", 1.0f);
+                    m.DisableKeyword("_ALPHATEST_ON");
+                    m.DisableKeyword("_ALPHABLEND_ON");
+                    m.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                    m.renderQueue = 3000;
+                    continue;
+                }
+
+                Color c = m.color;
+                c.a = currentFade;
+                m.color = c;
+            }
+        }
+
+    }
+
     // Update is called once per frame
     protected virtual void Update()
     {
+        if (currentFade < 1f)
+            FadeIn();
+
         DeterminePriority();
         UpdateAnimations();
     }

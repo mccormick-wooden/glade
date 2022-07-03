@@ -1197,6 +1197,7 @@ MonoBehaviour:
   minTimeToPriorityChange: 3
   maxTimeToPriorityChange: 6
   crystalManager: {fileID: 0}
+  timeToFullyAppear: 0.5
   arrowPrefab: {fileID: 7317300718817760254, guid: 695a6223079caf84380b8f8985075e95, type: 3}
   arrowForce: 5
 --- !u!195 &674888660242858651

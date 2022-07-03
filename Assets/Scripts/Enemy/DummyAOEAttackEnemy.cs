@@ -14,7 +14,7 @@ public class DummyAOEAttackEnemy : BaseEnemy
 
         isAttacking = false;
 
-        attackDelayTimeSeconds = 5.0f;
+        attackDelayTimeSeconds = 10.0f;
 
         desireToAttackPlayer = 4f;
         desireToDefendBeacon = 1f;

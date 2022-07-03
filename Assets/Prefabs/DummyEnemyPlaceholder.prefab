@@ -125,8 +125,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41e28313019469c4784f448ff740a5a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthBarController: {fileID: 0}
-  currentHp: 0
-  maxHp: 0
+  beacon: {fileID: 0}
   Player: {fileID: 0}
   Height: 1
+  Speed: 0
+  minDistanceFromPlayer: 0
+  maxDistanceFromPlayer: 0
+  attackPushbackForce: 0
+  attackDelayTimeSeconds: 0
+  priority: 0
+  minTimeToPriorityChange: 0
+  maxTimeToPriorityChange: 0
+  crystalManager: {fileID: 0}
+  timeToFullyAppear: 0
