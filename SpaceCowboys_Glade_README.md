@@ -7,24 +7,114 @@ Team Members
 - McCormick Wooden - mwooden3@gatech.edu
 - Daniel Zuniga - daniel.zuniga@gatech.edu
 
-
-
 ## Table of Contents
-
+- [SpaceCowboys_Glade_README](#spacecowboys_glade_readme)
+  - [Table of Contents](#table-of-contents)
+  - [Start Scene File](#start-scene-file)
+  - [How To Play](#how-to-play)
+    - [To Start Game](#to-start-game)
+    - [Controls](#controls)
+    - [Game Requirements Achieved](#game-requirements-achieved)
+  - [Known Problem Areas](#known-problem-areas)
+  - [Manifest](#manifest)
+    - [Features / Non-Script Assets](#features--non-script-assets)
+      - [Chris Dail - cdail7](#chris-dail---cdail7)
+      - [Eric Gilligan - eric.gilligan](#eric-gilligan---ericgilligan)
+      - [Thomas Lagrange - tlagrange3](#thomas-lagrange---tlagrange3)
+      - [McCormick Wooden - mwooden3](#mccormick-wooden---mwooden3)
+      - [Daniel Zuniga](#daniel-zuniga)
+    - [Scripts](#scripts)
+    - [3rd Party Assets](#3rd-party-assets)
+  - [Internal Team Documentation](#internal-team-documentation)
+    - [Beacons](#beacons)
+      - [How to Use](#how-to-use)
+      - [Known-Issues](#known-issues)
+    - [Camera Sensitivity](#camera-sensitivity)
 
 ## Start Scene File
+*Requirement from assignment pdf:*
+```
+i. Start scene file
+```
 
 The starting scene is the `Start` scene. This scene bootstraps all global management objects and immediately loads the scene/state specified in the `GameManager` GameObject's `Starting State`. By default, the starting scene/state is `Main Menu`
 
 ## How To Play
-## Game Requirements Achieved
+*Requirement from assignment pdf:*
+```
+ii. How to play and what parts of the level to observe technology requirements
+```
+
+### To Start Game
+- Begin the game
+- Select `New Game` in menu
+- Progress through the story crawl and tutorial
+- Follow the instructions in the story crawl and tutorial to play and win the game - just don't die!
+
+### Controls
+- Left Stick, WASD = Warden movement
+- Right Stick, Mouse = Camera Control
+- Right Bumper, Left Click - Attack
+- Left Bumper, Right Click - Defend
+- Start Button, ESC - Pause Game
+
+### Game Requirements Achieved
+- Clearly defined, achievable, objective/goal?
+  - *see new game story crawl, tutorial*
+- Communication of success or failure to player!
+  - *on death game tells you that you lost, on killing all beacons game says you won*
+- Start menu to support Starting Action?
+  - *press start button on gamepad or ESC*
+- Sorry, no first-person perspective games (e.g. FPS) unless briefly used for
+  - *self-explanatory*
+- Goals/sub-goals effectively communicated to player
+    - *see new game story crawl, tutorial*
+- Avoid Fun Killers (micromanagement, stagnation, insurmountable obstacles, arbitrary events, etc.)
+  - *self explanatory*
+- Character control is a predominant part of gameplay and not simply a way to traverse between non-“Game Feel” interactions.
+  - *self explanatory*
+- No Unity tutorial characters or CS4455 milestone characters allowed. You must use characters other than those in tutorials; that includes the “3DGameKit”
+  - *self explanatory*
+- Your character is not a complete prepackaged asset from a 3rd party. It is ok to use models and animations from another source, but your team should configure animation control and input processing
+  - *self explanatory*
+- Utilize a character/vehicle controlled by the player with engaging animations that react to the player’s inputs.
+  - *self explanatory*
+- Player has Game Feel style control: continuous, dynamic, low latency, variable/analog-style control of character movement majority of time
+  - *self explanatory*
+- Camera has limited passing through walls, near clipping plane cutting through objects (e.g. player model), etc.
+  - *self explanatory*
+- Synthesized unique environment
+  - *Level is synthesized from NatureStarterKit2 assets*
+- Consistent spatial simulation throughout
+  - *self explanatory*
+- Your AI agents are not complete prepackaged assets from a 3rd party
+- Implement a start menu GUI.
+- Implement in-game pause menu with ability to quit game
+- Ability to exit software at any time
+
 ## Known Problem Areas
+*Requirement from assignment pdf:*
+```
+iii. Known problem areas
+```
+- Player slides around, no root motion
+- Defending (LB) doesn't do anything
+- Others??
+
 ## Manifest
 
 **Primary contributors** are listed first. Primary contributors are defined as the person that instantiated the idea and contributed the majority of the work.
 **Secondary contributors** are listed after primaries. Secondary contributors are defined as contributing something to the file, either adding additional features or refactoring. Order here doesn't matter
 
 ### Features / Non-Script Assets
+*Requirement from assignment pdf:*
+```
+iv. Manifest of which files authored by each teammate:
+1. Detail who on the team did what
+2. For each team member, list each asset implemented.
+3. Make sure to list C# script files individually so we can confirm
+each team member contributed to code written
+```
 
 #### Chris Dail - cdail7
 - Player control
@@ -154,7 +244,7 @@ The entirety of the 3rd Party assets that are in use are contained in `Assets/3r
 - (where are crystals from?)
 
 
-## Internal Documentation
+## Internal Team Documentation
 ### Beacons
 
 Beacons are special seeds sent as forward recon/attack positions by the invading enemy. The player must find and destroy beacons to progress towards the boss fight.
