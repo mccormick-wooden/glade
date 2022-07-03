@@ -13,6 +13,9 @@ Team Members
 
 
 ## Start Scene File
+
+The starting scene is the `Start` scene. This scene bootstraps all global management objects and immediately loads the scene/state specified in the `GameManager` GameObject's `Starting State`. By default, the starting scene/state is `Main Menu`
+
 ## How To Play
 ## Game Requirements Achieved
 ## Known Problem Areas
@@ -22,6 +25,33 @@ Team Members
 **Secondary contributors** are listed after primaries. Secondary contributors are defined as contributing something to the file, either adding additional features or refactoring. Order here doesn't matter
 
 ### Features / Non-Script Assets
+
+#### Chris Dail - cdail7
+- Player control
+- Enemy AI
+- Player model
+- Audio framework
+
+#### Eric Gilligan - eric.gilligan
+- Crystals and related logic
+- Enemy health bars
+
+#### Thomas Lagrange - tlagrange3
+- Beacon spawning / flying / management
+- Level / terrain design
+- Boss design / logic
+
+#### McCormick Wooden - mwooden3
+- Menus - Main Menu + Pause Menu
+- Game state management
+- Win / Loss conditions
+- Damage / Combat framework
+- Story introduction crawl
+- Tutorial
+
+#### Daniel Zuniga
+- Camera
+- Player Health Bar
 
 ### Scripts
 
@@ -87,7 +117,7 @@ To regenerate tree for new files:
 │   ├── NewGameStateManager.cs - *(mwooden3)*
 │   ├── PauseMenuManager.cs - *(mwooden3)*
 │   └── TrainingStateManager.cs - *(mwooden3)*
-├── HealthBarController.cs - *(daniel.zuniga, eric.gilligan)*
+├── HealthBarController.cs - *(daniel.zuniga, eric.gilligan, mwooden3)*
 ├── Helper
 │   ├── AnimationEventDispatcher.cs - ([from StackOverflow](https://gamedev.stackexchange.com/questions/117423/unity-detect-animations-end))
 │   ├── DontDestroyThisOnLoad.cs - *(mwooden3)*
