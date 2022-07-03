@@ -19,7 +19,7 @@ Team Members
 ## Manifest
 
 **Primary contributors** are listed first. Primary contributors are defined as the person that instantiated the idea and contributed the majority of the work.
-**Secondary contributors** are listed after primaries. Secondary contributors are defined as contributing something to the file, either adding additional features or refactoring.
+**Secondary contributors** are listed after primaries. Secondary contributors are defined as contributing something to the file, either adding additional features or refactoring. Order here doesn't matter
 
 ### Features / Non-Script Assets
 
@@ -32,13 +32,13 @@ To regenerate tree for new files:
 
 .
 ├── Abstract
-│   ├── BaseCrystalEffect.cs - *((eric.gilligan))*
-│   ├── BaseDamageable.cs - *(mwooden3)*
+│   ├── BaseCrystalEffect.cs - *(eric.gilligan)*
+│   ├── BaseDamageable.cs - *(mwooden3, cdail7, eric.gilligan, tlagrange3)*
 │   ├── BaseDevCommand.cs - *(mwooden3)*
 │   ├── BaseEnemy.cs - *(cdail7)*
 │   ├── BaseLevelStateManager.cs - *(mwooden3)*
-│   ├── BaseStateManager.cs - *(mwooden3)*
-│   └── BaseWeapon.cs - *(mwooden3)*
+│   ├── BaseStateManager.cs - *(mwooden3, cdail7)*
+│   └── BaseWeapon.cs - *(mwooden3, cdail7)*
 ├── AngryChestBump.cs - *(mwooden3)*
 ├── AppEvents
 │   ├── PlayMusicEvent.cs - *(cdail7)*
@@ -47,13 +47,13 @@ To regenerate tree for new files:
 ├── AudioEventManager.cs - *(cdail7)*
 ├── Beacons
 │   ├── BeaconFall.cs - *(tlagrange3)*
-│   ├── BeaconManager.cs - *(tlagrange3)*
+│   ├── BeaconManager.cs - *(tlagrange3, cdail7, eric.gilligan, mwooden3)*
 │   ├── BeaconOrbiter.cs - *(tlagrange3)*
-│   ├── BeaconSpawner.cs - *(tlagrange3)*
-│   ├── CrashedBeacon.cs - *(tlagrange3)*
+│   ├── BeaconSpawner.cs - *(tlagrange3, mwooden3)*
+│   ├── CrashedBeacon.cs - *(tlagrange3, mwooden3)*
 │   └── dev
 │       └── TriggerBeaconSpawn.cs - *(tlagrange3)*
-├── BillboardController.cs - *(daniel.zuniga)*
+├── BillboardController.cs - *(daniel.zuniga, mwooden3, eric.gilligan)*
 ├── Boss.cs - *(tlagrange3)*
 ├── BossRootMotion.cs - *(tlagrange3)*
 ├── Console
@@ -68,8 +68,8 @@ To regenerate tree for new files:
 │   ├── CrystalController.cs - *(eric.gilligan)*
 │   └── CrystalHealEffect.cs - *(eric.gilligan)*
 ├── Damageable
-│   ├── AnimateDamageable.cs - *(tlagrange3)*
-│   └── DisappearDamageable.cs - *(tlagrange3)*
+│   ├── AnimateDamageable.cs - *(tlagrange3, mwooden3)*
+│   └── DisappearDamageable.cs - *(tlagrange3, mwooden3)*
 ├── Enemy
 │   ├── DummyBeaconDefenderEnemy.cs - *(cdail7)*
 │   ├── DummyRangedAttackEnemy.cs - *(cdail7)*
@@ -87,7 +87,7 @@ To regenerate tree for new files:
 │   ├── NewGameStateManager.cs - *(mwooden3)*
 │   ├── PauseMenuManager.cs - *(mwooden3)*
 │   └── TrainingStateManager.cs - *(mwooden3)*
-├── HealthBarController.cs - *(daniel.zuniga)*
+├── HealthBarController.cs - *(daniel.zuniga, eric.gilligan)*
 ├── Helper
 │   ├── AnimationEventDispatcher.cs - ([from StackOverflow](https://gamedev.stackexchange.com/questions/117423/unity-detect-animations-end))
 │   ├── DontDestroyThisOnLoad.cs - *(mwooden3)*
@@ -103,7 +103,7 @@ To regenerate tree for new files:
 │   └── IWeapon.cs - *(mwooden3)*
 ├── Movement
 │   └── CameraRelativeRootMovement.cs - *(cdail7)*
-├── Player.cs - *(cdail7)*
+├── Player.cs - *(cdail7, eric.gilligan, tlagrange3, mwooden3, Daniel Zuniga)*
 ├── PlayerControls.cs - *(cdail7)*
 ├── Shield.cs - *(cdail7)*
 ├── Sword.cs - *(cdail7)*
