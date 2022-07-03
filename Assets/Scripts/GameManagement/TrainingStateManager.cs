@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using Cinemachine;
+using UnityEngine;
 
 public class TrainingStateManager : BaseStateManager
 {
@@ -9,6 +9,14 @@ public class TrainingStateManager : BaseStateManager
     [Header("Scene Settings")]
     [SerializeField]
     private bool skipTraining = false;
+
+    /// <summary>
+    /// todo
+    /// </summary>
+    [SerializeField]
+    private string trainingHostVirtualCameraName = "TrainingHostVirtualCamera";
+
+    private CinemachineVirtualCamera trainingHostVirtualCamera;
 
     //[SerializeField]
     //private string mainExitRootName = "MainExitGame";
@@ -23,12 +31,18 @@ public class TrainingStateManager : BaseStateManager
 
     protected override void OnSceneLoaded()
     {
-        //Utility.AddButtonCallback(mainNewGameRootName, () => GameManager.UpdateGameState(GameState.NewGame));
-        //Utility.AddButtonCallback(mainExitRootName, () => Quitter.QuitGame());
-        //GameObject.Find(mainNewGameRootName).GetComponentInChildren<Button>().Select();
+        trainingHostVirtualCamera = GameObject.Find(trainingHostVirtualCameraName)?.GetComponent<CinemachineVirtualCamera>();
+        Utility.LogErrorIfNull(trainingHostVirtualCamera, nameof(trainingHostVirtualCamera));
+
+        InvokeRepeating("testswitchcamera", 1f, 2f);
     }
 
     protected override void OnSceneUnloaded()
     {
+    }
+
+    private void testswitchcamera()
+    {
+        trainingHostVirtualCamera.enabled = !trainingHostVirtualCamera.enabled;
     }
 }
