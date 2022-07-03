@@ -426,9 +426,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4189083855617056745, guid: 31bcad68a9f5c1c41ace2d8e898e3b73, type: 3}
+      propertyPath: m_Name
+      value: TreeSpiritRig
+      objectReference: {fileID: 0}
     - target: {fileID: 4189083855617056747, guid: 31bcad68a9f5c1c41ace2d8e898e3b73, type: 3}
       propertyPath: m_Name
-      value: Ent
+      value: TreeSpirit
+      objectReference: {fileID: 0}
+    - target: {fileID: 4189083855617056749, guid: 31bcad68a9f5c1c41ace2d8e898e3b73, type: 3}
+      propertyPath: m_Name
+      value: TreeSpirit
       objectReference: {fileID: 0}
     - target: {fileID: 4189083855617475531, guid: 31bcad68a9f5c1c41ace2d8e898e3b73, type: 3}
       propertyPath: m_RootOrder
