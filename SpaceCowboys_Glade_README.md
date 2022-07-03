@@ -1,6 +1,11 @@
 # SpaceCowboys_Glade_README
 
-
+Team Members
+- Chris Dail - cdail7@gatech.edu
+- Eric Gilligan - eric.gilligan@gatech.edu
+- Thomas Lagrange - tlagrange3@gatech.edu
+- McCormick Wooden - mwooden3@gatech.edu
+- Daniel Zuniga - daniel.zuniga@gatech.edu
 
 
 
@@ -12,6 +17,99 @@
 ## Game Requirements Achieved
 ## Known Problem Areas
 ## Manifest
+
+**Primary contributors** are listed first. Primary contributors are defined as the person that instantiated the idea and contributed the majority of the work.
+**Secondary contributors** are listed after primaries. Secondary contributors are defined as contributing something to the file, either adding additional features or refactoring.
+
+### Features / Assets
+
+### Scripts
+
+To regenerate tree for new files:
+- `apt-get install tree`
+- `cd <projectdir>/Assets/Scripts && tree -I '*.meta'`
+- Copy the specific part of the tree that's new, and insert into existing tree (don't overwrite existing manifest)
+
+.
+├── Abstract
+│   ├── BaseCrystalEffect.cs - *((eric.gilligan))*
+│   ├── BaseDamageable.cs - *(mwooden3)*
+│   ├── BaseDevCommand.cs - *(mwooden3)*
+│   ├── BaseEnemy.cs - *(cdail7)*
+│   ├── BaseLevelStateManager.cs - *(mwooden3)*
+│   ├── BaseStateManager.cs - *(mwooden3)*
+│   └── BaseWeapon.cs - *(mwooden3)*
+├── AngryChestBump.cs - *(mwooden3)*
+├── AppEvents
+│   ├── PlayMusicEvent.cs - *(cdail7)*
+│   └── SwordSwingEvent.cs - *(cdail7)*
+├── Arrow.cs - *(cdail7)*
+├── AudioEventManager.cs - *(cdail7)*
+├── Beacons
+│   ├── BeaconFall.cs - *(tlagrange3)*
+│   ├── BeaconManager.cs - *(tlagrange3)*
+│   ├── BeaconOrbiter.cs - *(tlagrange3)*
+│   ├── BeaconSpawner.cs - *(tlagrange3)*
+│   ├── CrashedBeacon.cs - *(tlagrange3)*
+│   └── dev
+│       └── TriggerBeaconSpawn.cs - *(tlagrange3)*
+├── BillboardController.cs - *(daniel.zuniga)*
+├── Boss.cs - *(tlagrange3)*
+├── BossRootMotion.cs - *(tlagrange3)*
+├── Console
+│   ├── DevCommandResult.cs - *(mwooden3)*
+│   ├── DeveloperConsole.cs - *(mwooden3)*
+│   ├── DeveloperConsoleBehaviour.cs - *(mwooden3)*
+│   ├── EchoCommand.asset - *(mwooden3)*
+│   ├── EchoCommand.cs - *(mwooden3)*
+│   ├── LoadSceneCommand.asset - *(mwooden3)*
+│   └── LoadSceneCommand.cs - *(mwooden3)*
+├── Crystal
+│   ├── CrystalController.cs - *(eric.gilligan)*
+│   └── CrystalHealEffect.cs - *(eric.gilligan)*
+├── Damageable
+│   ├── AnimateDamageable.cs - *(tlagrange3)*
+│   └── DisappearDamageable.cs - *(tlagrange3)*
+├── Enemy
+│   ├── DummyBeaconDefenderEnemy.cs - *(cdail7)*
+│   ├── DummyRangedAttackEnemy.cs - *(cdail7)*
+│   ├── DummySpinAttackEnemy.cs - *(cdail7)*
+│   ├── HackTestEnemy.cs - *(mwooden3)*
+│   └── SwordEnemy.cs - *(mwooden3)*
+├── EnemySpawner.cs - *(cdail7)*
+├── EventSound3D.cs - *(cdail7)*
+├── FootIK.cs - *(cdail7)*
+├── GameManagement
+│   ├── EventManager.cs - (from course)
+│   ├── GameManager.cs - *(mwooden3)*
+│   ├── Level1StateManager.cs - *(mwooden3)*
+│   ├── MainMenuStateManager.cs - *(mwooden3)*
+│   ├── NewGameStateManager.cs - *(mwooden3)*
+│   ├── PauseMenuManager.cs - *(mwooden3)*
+│   └── TrainingStateManager.cs - *(mwooden3)*
+├── HealthBarController.cs - *(daniel.zuniga)*
+├── Helper
+│   ├── AnimationEventDispatcher.cs - ([from StackOverflow](https://gamedev.stackexchange.com/questions/117423/unity-detect-animations-end))
+│   ├── DontDestroyThisOnLoad.cs - *(mwooden3)*
+│   ├── Quitter.cs - *(mwooden3)*
+│   ├── SceneLoader.cs - *(mwooden3)*
+│   ├── TimeScaleToggle.cs - *(mwooden3)*
+│   └── Utility.cs - *(mwooden3)*
+├── IKFootPlacement.cs - *(cdail7)*
+├── Interfaces
+│   ├── IDamageable.cs - *(mwooden3)*
+│   ├── IDevCommand.cs - *(mwooden3)*
+│   ├── IDevCommandResult.cs - *(mwooden3)*
+│   └── IWeapon.cs - *(mwooden3)*
+├── Movement
+│   └── CameraRelativeRootMovement.cs - *(cdail7)*
+├── Player.cs - *(cdail7)*
+├── PlayerControls.cs - *(cdail7)*
+├── Shield.cs - *(cdail7)*
+├── Sword.cs - *(cdail7)*
+├── ThirdPersonCamera.cs - *(daniel.zuniga)*
+└── VelocityReporter.cs - (from course)
+
 ### 3rd Party Assets
 
 The entirety of the 3rd Party assets that are in use are contained in `Assets/3rdParty/`:
