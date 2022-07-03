@@ -44,22 +44,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventSound3DPrefab: {fileID: 4439039625866004102, guid: a2f8d3d38d23eb846930e66846874d49, type: 3}
-  backgroundMusic:
-  - {fileID: 8300000, guid: f07d5ab95b4acd14b9a6847e81667f46, type: 3}
-  - {fileID: 8300000, guid: 4d70b639337f1d046b127a955d96776a, type: 3}
-  - {fileID: 8300000, guid: 86776336db580a84a8c0129947706ebe, type: 3}
   swordSwingAudio:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 0c36434e474e1e6448c828df6ffb7996, type: 3}
+  - {fileID: 8300000, guid: 0c36434e474e1e6448c828df6ffb7996, type: 3}
+  - {fileID: 8300000, guid: 0c36434e474e1e6448c828df6ffb7996, type: 3}
   swordSwingSoundDelays:
   - 0
   - 0
   - 0
   swordSwingPitches:
-  - 0
-  - 0
-  - 0
+  - 1
+  - 1.1
+  - 0.9
 --- !u!1 &6345278748276999239
 GameObject:
   m_ObjectHideFlags: 0

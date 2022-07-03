@@ -8,8 +8,9 @@ using UnityEngine.AI;
 
 public class BaseEnemy : MonoBehaviour
 {
-    private Animator animator;
+    protected Animator animator;
     private Rigidbody rigidBody;
+    protected VelocityReporter velocityReporter;
     //public GameObject playerGameObject;
 
     public GameObject beacon;
@@ -105,6 +106,8 @@ public class BaseEnemy : MonoBehaviour
 
     NavMeshAgent agent;
 
+    public string EnemyId => $"{GetType()}:{gameObject.name}:{gameObject.GetInstanceID()}";
+
     // Start is called before the first frame update
     protected virtual void Start()
     {
@@ -127,6 +130,13 @@ public class BaseEnemy : MonoBehaviour
 
         agent = GetComponent<NavMeshAgent>();
         autoAttackPlayerDistanceToBeacon = 0f;
+
+        velocityReporter = GetComponent<VelocityReporter>();
+        if (velocityReporter == null)
+        {
+            velocityReporter = gameObject.AddComponent<VelocityReporter>();
+            velocityReporter.smoothingTimeFactor = 0.5f; // I guess? 
+        }
     }
 
     protected virtual void UpdateAnimations()
