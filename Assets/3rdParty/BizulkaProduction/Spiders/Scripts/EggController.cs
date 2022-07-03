@@ -5,9 +5,12 @@ public class EggController : MonoBehaviour
     [SerializeField] GameObject _full;
     [SerializeField] GameObject _damaged;
     [SerializeField] private ParticleSystem _particleSystem;
-    
-    // We're really not using this functionality since we just disable the parent game object on death.
-    
+
+    void OnMouseOver()
+    {
+        Destroy();
+    }
+
     public void Clear()
     {
         _full.gameObject.SetActive(true);

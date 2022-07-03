@@ -10010,10 +10010,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967039
   ProjectileDestroyParticleSystemsOnCollision: []
-  firedRotation: {x: 0, y: 0, z: 0, w: 0}
-  desiredCollisionTerrainLayer: {fileID: 8574412962073106934, guid: 3ba498f27ed2fd741a259ef82f854a6d, type: 2}
-  offset1: 0
-  offset2: 0
 --- !u!1 &136118
 GameObject:
   m_ObjectHideFlags: 0

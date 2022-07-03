@@ -1,4 +1,5 @@
 using System;
+using Assets.Scripts.Abstract;
 using DigitalRuby.PyroParticles;
 using UnityEngine;
 
@@ -16,21 +17,17 @@ namespace Beacons
         private Rigidbody fallingBeaconRigidBody;
         private FireProjectileScript beaconFall;
 
-        public Action<BeaconManager, GameObject> BeaconReadyForDamage { get; set; }
+        public Action<BeaconManager, GameObject> BeaconReadyForDamage { get; set; } 
 
         private void Start()
         {
-            Utility.LogErrorIfNull(fallingBeaconPrefab, nameof(fallingBeaconPrefab),
-                "Need an object to represent falling beacon!");
-
-            if (!fallingBeaconPrefab) return;
+            Utility.LogErrorIfNull(fallingBeaconPrefab, nameof(fallingBeaconPrefab), "Need an object to represent falling beacon!");
 
             fallingBeaconInstance = Instantiate(fallingBeaconPrefab, transform.position, transform.rotation, transform);
             Utility.LogErrorIfNull(fallingBeaconInstance, nameof(fallingBeaconInstance));
 
             fallingBeaconRigidBody = fallingBeaconInstance.GetComponentInChildren<Rigidbody>();
-            Utility.LogErrorIfNull(fallingBeaconRigidBody, nameof(fallingBeaconRigidBody),
-                "Needs a rigidbody so that collision with terrain works!");
+            Utility.LogErrorIfNull(fallingBeaconRigidBody, nameof(fallingBeaconRigidBody), "Needs a rigidbody so that collision with terrain works!");
 
             beaconFall = GetComponentInChildren<FireProjectileScript>();
             Utility.LogErrorIfNull(beaconFall, nameof(beaconFall));
@@ -40,16 +37,15 @@ namespace Beacons
 
         /// <summary>
         /// Callback for the FireProjectileScript's collision delegate.
-        /// This effectively tells us when the projectile (beacon) experiences a collision event,
+        /// This effectivly tells us when the projectile (beacon) experiences a collision event,
         /// which for beacons mean they have landed.
         /// </summary>
         /// <param name="script"></param>
         /// <param name="pos"></param>
         private void OnBeaconLanded(FireProjectileScript script, Vector3 pos)
         {
-            beaconFall.CollisionDelegate -= OnBeaconLanded;
-            crashedBeaconInstance = Instantiate(crashedBeaconPrefab, fallingBeaconRigidBody.transform.position,
-                Quaternion.LookRotation(transform.position, Vector3.up), transform);
+            beaconFall.CollisionDelegate -= OnBeaconLanded; 
+            crashedBeaconInstance = Instantiate(crashedBeaconPrefab, fallingBeaconRigidBody.transform.position, Quaternion.LookRotation(transform.position, Vector3.up), transform);
             BeaconReadyForDamage?.Invoke(this, crashedBeaconInstance);
         }
     }

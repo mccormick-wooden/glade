@@ -55,6 +55,9 @@ public class Player : MonoBehaviour
     private Rigidbody rigidBody;
     private Animator animator;
 
+    [SerializeField]
+    private TextMeshProUGUI GameMessage = null;
+
     // Helpers
     private bool ShouldLunge => sword.InUse && slashLungeFrameCtr < slashLungeFrameLen && verticalInput > .1;
     private bool IsAnimStateSwordSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("SwordSlash");
@@ -62,7 +65,8 @@ public class Player : MonoBehaviour
     private bool IsAnimStateJumpSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("JumpSlash");
 
     // Stuff to help us know when we're in contact with the ground
-    [SerializeField] private LayerMask whatIsGround;
+    [SerializeField] 
+    private LayerMask whatIsGround;
 
     public float playerSpeedForce;
 
@@ -130,9 +134,16 @@ public class Player : MonoBehaviour
             slashLungeFrameCtr = 0;
         };
 
-        controls.Gameplay.Shield.performed += ctx => { doBlock = true; };
+        controls.Gameplay.Shield.performed += ctx =>
+        {
+            doBlock = true;
+        };
 
-        controls.Gameplay.Shield.canceled += ctx => { doBlock = false; };
+        controls.Gameplay.Shield.canceled += ctx =>
+        {
+            doBlock = false;
+        };
+
     }
 
     private void OnEnable()
@@ -181,9 +192,9 @@ public class Player : MonoBehaviour
             transformForward;
 
         // The final jump animation should lunge differently, not sure how
-        transformForward = !ShouldLunge && (IsAnimStateSwordSlash || IsAnimStateSwordBackSlash)
-            ? transform.forward * 0
-            : transformForward;
+        transformForward = !ShouldLunge && (IsAnimStateSwordSlash || IsAnimStateSwordBackSlash) ?
+            transform.forward * 0 :
+            transformForward;
 
         if (ShouldLunge)
         {
@@ -229,18 +240,20 @@ public class Player : MonoBehaviour
 
         foreach (RaycastHit hit in hits)
         {
+
             //if (hit.collider.gameObject.CompareTag("Walkable"))
             //{
 
-            ret = true;
+                ret = true;
 
-            groundHit = hit;
+                groundHit = hit;
 
-            _isJumpable = Vector3.Angle(Vector3.up, hit.normal) < MAX_JUMPABLE_ANGLE;
+                _isJumpable = Vector3.Angle(Vector3.up, hit.normal) < MAX_JUMPABLE_ANGLE;
 
-            break; //only need to find the ground once
+                break; //only need to find the ground once
 
             //}
+
         }
 
         isJumpable = _isJumpable;
@@ -432,6 +445,7 @@ public class Player : MonoBehaviour
 
                 sword.InUse = false;
             }
+
         }
         else
         {
@@ -455,6 +469,7 @@ public class Player : MonoBehaviour
             }
             else if (IsAnimStateSwordSlash)
             {
+
                 sword.InUse = true;
                 animator.SetBool("DoBackslash", true);
             }
@@ -463,6 +478,7 @@ public class Player : MonoBehaviour
                 sword.InUse = true;
                 animator.SetBool("DoJumpSlash", true);
             }
+
         }
         else
         {
@@ -487,6 +503,33 @@ public class Player : MonoBehaviour
                 sword.InUse = true;
             }
         }
+    }
+
+    private void ShowMessage(string message, uint timeout = 3)
+    {
+        GameMessage.SetText(message);
+
+        if (timeout > 0)
+        {
+            StartCoroutine(DestroyMessage(timeout));
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("AbilityPickup"))
+        {
+            ShowMessage("You acquired a new ability!");
+            other.gameObject.SetActive(false);
+        }
+    }
+    private IEnumerator DestroyMessage(float waitTime)
+    {
+        Debug.Log($"Destroying message in {waitTime.ToString()} seconds...");
+        yield return new WaitForSeconds(waitTime);
+
+        Debug.Log("Destroying message");
+        GameMessage.SetText("");
     }
 
     public void EmitFirstSwordSlash()

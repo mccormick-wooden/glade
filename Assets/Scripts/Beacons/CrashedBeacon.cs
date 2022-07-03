@@ -1,69 +1,13 @@
-using Assets.Scripts.Interfaces;
+using Beacons;
 using UnityEngine;
 
-/* 
-* Please note that the `FireProjectileScript.cs` depends on the CrashedBeacon class to find crashed beacon game objects**
-*/
-namespace Beacons
+public class CrashedBeacon : MonoBehaviour
 {
-    public class CrashedBeacon : MonoBehaviour
-    {
-        public GameObject powerUpPrefab;
-
-        private Vector3 position;
-        [SerializeField] private float rotationSpeed;
-        [SerializeField] private float hoverFrequency;
-        [SerializeField] private float hoverAmplitude;
-
-        private IDamageable _damageable;
-
-        private void Awake()
-        {
-            _damageable = GetComponent<IDamageable>();
-            Utility.LogErrorIfNull(_damageable, "_damageable",
-                "CrashedBeacon must have a component that implements IDamageable");
-            if (_damageable != null)
-            {
-                _damageable.Died += OnDied;
-            }
-
-            Utility.LogErrorIfNull(powerUpPrefab, "powerUpPrefab",
-                "The CrashedBeacon will not turn into a powerUpPickup without a prefab to Instantiate");
-        }
-
-        private void OnDied(IDamageable damageable, string name, int id)
-        {
-            damageable.Died -= OnDied;
-            DropPowerUp();
-        }
-
-        private void DropPowerUp()
-        {
-            if (powerUpPrefab == null) return;
-            Instantiate(powerUpPrefab,
-                new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z),
-                Quaternion.identity, transform.parent);
-        }
-
-        private void Start()
-        {
-            position = transform.position;
-            position.y += hoverAmplitude;
-        }
-
-        private void Update()
-        {
-            HoverAndRotate();
-        }
-
-        private void HoverAndRotate()
-        {
-            transform.Rotate(new Vector3(0f, Time.deltaTime * rotationSpeed, 0f));
-
-            var newPosition = position;
-            newPosition.y += Mathf.Sin(Time.fixedTime * Mathf.PI * hoverFrequency) * hoverAmplitude;
-
-            transform.position = newPosition;
-        }
-    }
+    /* I don't think we need this class because IDamageable provides all the behavior we currently care about on the beacon, 
+     * but if we want to implement other behavior on the beacon, that could go here.
+     * 
+     * Presence of this script could also be a good way to coerce the type on death since otherwise 
+     * we only know that the dying thing is a generic GameObject - although we do have alternate options for coercing a type, e.g. tags
+     * 
+     * Leaving for now  */
 }
