@@ -1,4 +1,4 @@
-using System;
+using Assets.Scripts.Interfaces;
 using UnityEngine;
 
 /* 
@@ -8,11 +8,42 @@ namespace Beacons
 {
     public class CrashedBeacon : MonoBehaviour
     {
-        private Vector3 position;
+        public GameObject powerUpPrefab;
 
+        private Vector3 position;
         [SerializeField] private float rotationSpeed;
         [SerializeField] private float hoverFrequency;
         [SerializeField] private float hoverAmplitude;
+
+        private IDamageable _damageable;
+
+        private void Awake()
+        {
+            _damageable = GetComponent<IDamageable>();
+            Utility.LogErrorIfNull(_damageable, "_damageable",
+                "CrashedBeacon must have a component that implements IDamageable");
+            if (_damageable != null)
+            {
+                _damageable.Died += OnDied;
+            }
+
+            Utility.LogErrorIfNull(powerUpPrefab, "powerUpPrefab",
+                "The CrashedBeacon will not turn into a powerUpPickup without a prefab to Instantiate");
+        }
+
+        private void OnDied(IDamageable damageable, string name, int id)
+        {
+            damageable.Died -= OnDied;
+            DropPowerUp();
+        }
+
+        private void DropPowerUp()
+        {
+            if (powerUpPrefab == null) return;
+            Instantiate(powerUpPrefab,
+                new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z),
+                Quaternion.identity, transform.parent);
+        }
 
         private void Start()
         {
@@ -22,16 +53,16 @@ namespace Beacons
 
         private void Update()
         {
-            Hover();
+            HoverAndRotate();
         }
 
-        private void Hover()
+        private void HoverAndRotate()
         {
             transform.Rotate(new Vector3(0f, Time.deltaTime * rotationSpeed, 0f));
 
             var newPosition = position;
-            newPosition.y += Mathf.Sin (Time.fixedTime * Mathf.PI * hoverFrequency) * hoverAmplitude;
- 
+            newPosition.y += Mathf.Sin(Time.fixedTime * Mathf.PI * hoverFrequency) * hoverAmplitude;
+
             transform.position = newPosition;
         }
     }

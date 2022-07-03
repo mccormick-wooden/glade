@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4263302755561423127}
   - component: {fileID: 6997175789639800599}
-  - component: {fileID: 6445112803189994876}
   - component: {fileID: 6114219959068737442}
   - component: {fileID: 8588397374441406097}
+  - component: {fileID: 8684198906370970507}
   m_Layer: 0
   m_Name: CrashedBeacon
   m_TagString: Enemy
@@ -48,21 +48,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1.1
   m_Center: {x: 0, y: 1.2, z: 0}
---- !u!114 &6445112803189994876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2775764871604184902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa6005456495c7942bb108889492ce48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthBarController: {fileID: 0}
-  currentHp: 0
-  maxHp: 100
 --- !u!114 &6114219959068737442
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,7 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce43936e17fc164db792fb227871b21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  beaconHumSound: {fileID: 0}
+  powerUpPrefab: {fileID: 8392457230069742203, guid: 9ed2f36cf954d47f298f372c76a2f94b, type: 3}
   rotationSpeed: 40
   hoverFrequency: 0.5
   hoverAmplitude: 0.5
@@ -175,6 +160,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8684198906370970507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2775764871604184902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa6005456495c7942bb108889492ce48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarController: {fileID: 0}
+  currentHp: 0
+  maxHp: 100
 --- !u!1001 &2157548319131922879
 PrefabInstance:
   m_ObjectHideFlags: 0
