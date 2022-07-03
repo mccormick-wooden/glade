@@ -21,7 +21,7 @@ Team Members
 **Primary contributors** are listed first. Primary contributors are defined as the person that instantiated the idea and contributed the majority of the work.
 **Secondary contributors** are listed after primaries. Secondary contributors are defined as contributing something to the file, either adding additional features or refactoring.
 
-### Features / Assets
+### Features / Non-Script Assets
 
 ### Scripts
 
