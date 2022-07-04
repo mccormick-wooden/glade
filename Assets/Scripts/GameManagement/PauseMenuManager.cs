@@ -1,5 +1,6 @@
 using System.Linq;
 using Cinemachine;
+using PowerUps;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -111,7 +112,9 @@ public class PauseMenuManager : MonoBehaviour
 
     private bool InUnPauseableState()
     {
-        return unPausableStates.Any(s => s == GameManager.State);
+        // Ideally the interaction with the power up menu is a state unto itself
+        // For now it's (active!) presence signals we are interacting with that menu
+        return unPausableStates.Any(s => s == GameManager.State) || FindObjectOfType<PowerUpMenu>();
     }
 
     private void GameManagerOnStateChanged(GameState obj)
