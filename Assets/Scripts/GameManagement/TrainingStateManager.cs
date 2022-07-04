@@ -24,6 +24,7 @@ public class TrainingStateManager : BaseStateManager
     private string playerModelGameObjectRootName = "PlayerModel";
     private GameObject playerModel;
     private Vector3 playerModelStartingPos;
+    private Player playerScript;
 
     /// <summary>
     /// The triggerPlaneGameObjectName must be the name of an object with a TriggerPlane behavior
@@ -52,6 +53,9 @@ public class TrainingStateManager : BaseStateManager
         Utility.LogErrorIfNull(playerModel, nameof(playerModel));
         playerModelStartingPos = playerModel.transform.position;
 
+        playerScript = playerModel.GetComponent<Player>();
+        Utility.LogErrorIfNull(playerScript, nameof(playerScript));
+
         outOfBoundsTriggerPlane = GameObject.Find(triggerPlaneGameObjectName)?.GetComponentInChildren<TriggerPlane>();
         Utility.LogErrorIfNull(outOfBoundsTriggerPlane, nameof(outOfBoundsTriggerPlane));
 
@@ -76,5 +80,6 @@ public class TrainingStateManager : BaseStateManager
     private void testswitchcamera()
     {
         trainingHostVirtualCamera.enabled = !trainingHostVirtualCamera.enabled;
+        playerScript.UpdateControlStateGracefully(!trainingHostVirtualCamera.enabled);
     }
 }
