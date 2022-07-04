@@ -2,7 +2,7 @@
 
 Team Members
 - Chris Dail - cdail7@gatech.edu
-- Eric Gilligan - eric.gilligan@gatech.edu
+- Eric Gilligan - egilligan3@gatech.edu
 - Thomas Lagrange - tlagrange3@gatech.edu
 - McCormick Wooden - mwooden3@gatech.edu
 - Daniel Zuniga - daniel.zuniga@gatech.edu
@@ -19,7 +19,7 @@ Team Members
   - [Manifest](#manifest)
     - [Features / Non-Script Assets](#features--non-script-assets)
       - [Chris Dail - cdail7](#chris-dail---cdail7)
-      - [Eric Gilligan - eric.gilligan](#eric-gilligan---ericgilligan)
+      - [Eric Gilligan - egilligan3](#eric-gilligan---egilligan3)
       - [Thomas Lagrange - tlagrange3](#thomas-lagrange---tlagrange3)
       - [McCormick Wooden - mwooden3](#mccormick-wooden---mwooden3)
       - [Daniel Zuniga](#daniel-zuniga)
@@ -122,7 +122,7 @@ each team member contributed to code written
 - Player model
 - Audio framework
 
-#### Eric Gilligan - eric.gilligan
+#### Eric Gilligan - egilligan3
 - Crystals and related logic
 - Enemy health bars
 
@@ -152,8 +152,8 @@ To regenerate tree for new files:
 
 .
 ├── Abstract
-│   ├── BaseCrystalEffect.cs - *(eric.gilligan)*
-│   ├── BaseDamageable.cs - *(mwooden3, cdail7, eric.gilligan, tlagrange3)*
+│   ├── BaseCrystalEffect.cs - *(egilligan3)*
+│   ├── BaseDamageable.cs - *(mwooden3, cdail7, egilligan3, tlagrange3)*
 │   ├── BaseDevCommand.cs - *(mwooden3)*
 │   ├── BaseEnemy.cs - *(cdail7)*
 │   ├── BaseLevelStateManager.cs - *(mwooden3)*
@@ -167,13 +167,13 @@ To regenerate tree for new files:
 ├── AudioEventManager.cs - *(cdail7)*
 ├── Beacons
 │   ├── BeaconFall.cs - *(tlagrange3)*
-│   ├── BeaconManager.cs - *(tlagrange3, cdail7, eric.gilligan, mwooden3)*
+│   ├── BeaconManager.cs - *(tlagrange3, cdail7, egilligan3, mwooden3)*
 │   ├── BeaconOrbiter.cs - *(tlagrange3)*
-│   ├── BeaconSpawner.cs - *(tlagrange3, mwooden3)*
+│   ├── BeaconSpawner.cs - *(tlagrange3, mwooden3, egilligan3)*
 │   ├── CrashedBeacon.cs - *(tlagrange3, mwooden3)*
 │   └── dev
 │       └── TriggerBeaconSpawn.cs - *(tlagrange3)*
-├── BillboardController.cs - *(daniel.zuniga, mwooden3, eric.gilligan)*
+├── BillboardController.cs - *(daniel.zuniga, mwooden3, egilligan3)*
 ├── Boss.cs - *(tlagrange3)*
 ├── BossRootMotion.cs - *(tlagrange3)*
 ├── Console
@@ -185,8 +185,11 @@ To regenerate tree for new files:
 │   ├── LoadSceneCommand.asset - *(mwooden3)*
 │   └── LoadSceneCommand.cs - *(mwooden3)*
 ├── Crystal
-│   ├── CrystalController.cs - *(eric.gilligan)*
-│   └── CrystalHealEffect.cs - *(eric.gilligan)*
+│   ├── CrystalController.cs - *(egilligan3)*
+│   ├── CrystalDamageEffect.cs - *(egilligan3)*
+│   ├── CrystalHealEffect.cs - *(egilligan3)*
+│   ├── CrystalManager.cs - *(egilligan3)*
+│   └── CrystalSpawner.cs - *(egilligan3)*
 ├── Damageable
 │   ├── AnimateDamageable.cs - *(tlagrange3, mwooden3)*
 │   └── DisappearDamageable.cs - *(tlagrange3, mwooden3)*
@@ -207,7 +210,7 @@ To regenerate tree for new files:
 │   ├── NewGameStateManager.cs - *(mwooden3)*
 │   ├── PauseMenuManager.cs - *(mwooden3)*
 │   └── TrainingStateManager.cs - *(mwooden3)*
-├── HealthBarController.cs - *(daniel.zuniga, eric.gilligan, mwooden3)*
+├── HealthBarController.cs - *(daniel.zuniga, egilligan3, mwooden3)*
 ├── Helper
 │   ├── AnimationEventDispatcher.cs - ([from StackOverflow](https://gamedev.stackexchange.com/questions/117423/unity-detect-animations-end))
 │   ├── DontDestroyThisOnLoad.cs - *(mwooden3)*
@@ -217,13 +220,13 @@ To regenerate tree for new files:
 │   └── Utility.cs - *(mwooden3)*
 ├── IKFootPlacement.cs - *(cdail7)*
 ├── Interfaces
-│   ├── IDamageable.cs - *(mwooden3)*
+│   ├── IDamageable.cs - *(mwooden3, egilligan3)*
 │   ├── IDevCommand.cs - *(mwooden3)*
 │   ├── IDevCommandResult.cs - *(mwooden3)*
 │   └── IWeapon.cs - *(mwooden3)*
 ├── Movement
 │   └── CameraRelativeRootMovement.cs - *(cdail7)*
-├── Player.cs - *(cdail7, eric.gilligan, tlagrange3, mwooden3, Daniel Zuniga)*
+├── Player.cs - *(cdail7, egilligan3, tlagrange3, mwooden3, Daniel Zuniga)*
 ├── PlayerControls.cs - *(cdail7)*
 ├── Shield.cs - *(cdail7)*
 ├── Sword.cs - *(cdail7)*
