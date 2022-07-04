@@ -22,7 +22,7 @@ public class CrystalDamageEffect : BaseCrystalEffect
 
     private void Damage()
     {
-        // For each nearby crystal, apply healing
+        // For each nearby crystal, apply damage
         foreach (KeyValuePair<int, float> crystal in nearbyCrystalIDs)
         {
             Debug.Log($"{name} taking damage from {crystal.Key}");
