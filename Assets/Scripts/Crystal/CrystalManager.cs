@@ -45,14 +45,14 @@ public class CrystalManager : MonoBehaviour
     /// </returns>
     public GameObject FindNearest(Vector3 position)
     {
-        float minDistance = -1;
+        float minDistance = float.MaxValue;
         GameObject nearestCrystal = null;
         foreach (var crystal in crystals)
         {
             if (crystal.Value.isActiveAndEnabled)
             {
                 float distance = Vector3.Distance(position, crystal.Value.transform.position);
-                if (distance < minDistance || minDistance < 0)
+                if (distance < minDistance)
                 {
                     minDistance = distance;
                     nearestCrystal = crystal.Value.gameObject;
