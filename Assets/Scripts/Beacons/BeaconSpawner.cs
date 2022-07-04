@@ -133,7 +133,7 @@ namespace Beacons
         private void OnBeaconReadyForDamage(BeaconManager beaconManager, GameObject beacon)
         {
             beaconManager.BeaconReadyForDamage -= OnBeaconReadyForDamage;
-            NewBeaconLanded.Invoke(this, beacon);
+            NewBeaconLanded?.Invoke(this, beacon);
 
             var beaconDamageModel = beacon.GetComponent<IDamageable>();
             beaconDamageModel.Died += OnBeaconDeath;
