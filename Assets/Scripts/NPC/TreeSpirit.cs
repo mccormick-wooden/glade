@@ -11,6 +11,7 @@ public class TreeSpirit : MonoBehaviour
     private string playerModelGameObjectRootName = "PlayerModel";
 
     private GameObject playerModel;
+    private GameObject ent;
     private Animator animator;
     
     private void Awake()
@@ -18,13 +19,20 @@ public class TreeSpirit : MonoBehaviour
         playerModel = GameObject.Find(playerModelGameObjectRootName);
         Utility.LogErrorIfNull(playerModel, nameof(playerModel));
 
+        ent = GameObject.Find("Ent");
+        Utility.LogErrorIfNull(ent, nameof(ent));
+
         animator = GetComponent<Animator>();
         Utility.LogErrorIfNull(animator, nameof(animator));
     }
 
     private void Update()
     {
-        transform.LookAt(playerModel.transform); // TODO: If time, consider adding animation
+        var lookAtThis = new Vector3 { x = playerModel.transform.position.x, y = transform.position.y, z = playerModel.transform.position.z };
+        transform.LookAt(lookAtThis);
+        ent.transform.LookAt(lookAtThis);
+
+        // TODO: If time, consider adding animation
         //var lookRotation = Quaternion.LookRotation((playerModel.transform.position - transform.position).normalized);
 
         //transform.rotation = lookRotation;
