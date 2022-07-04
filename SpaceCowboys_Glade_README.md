@@ -212,7 +212,8 @@ To regenerate tree for new files:
 │   └── TriggerPlane.cs - *(mwooden3)*
 ├── HealthBarController.cs - *(daniel.zuniga, eric.gilligan, mwooden3)*
 ├── Helper
-│   ├── AnimationEventDispatcher.cs - ([from StackOverflow](https://gamedev.stackexchange.com/questions/117423/unity-detect-animations-end))
+│   ├── AnimationEventDispatcher.cs - *(mwooden3, [inspired by StackOverflow](https://gamedev.stackexchange.com/questions/117423/unity-detect-animations-end))*
+│   ├── CameraBlendEventDispatcher.cs *(mwooden3, [inspired by thread](https://forum.unity.com/threads/oncameratransition-onblendcomplete-event.520056/))*
 │   ├── DontDestroyThisOnLoad.cs - *(mwooden3)*
 │   ├── Quitter.cs - *(mwooden3)*
 │   ├── SceneLoader.cs - *(mwooden3)*

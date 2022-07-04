@@ -18,6 +18,12 @@ public class TrainingStateManager : BaseStateManager
     private CinemachineVirtualCamera trainingHostVirtualCamera;
 
     /// <summary>
+    /// The playerCameraName must be the name of the main camera that follows the player
+    /// </summary>
+    [SerializeField]
+    private string playerCameraName = "3rdPersonCamera";
+
+    /// <summary>
     /// The playerGameObjectRootName must be the name of the physical player model.
     /// </summary>
     [SerializeField]
@@ -33,6 +39,11 @@ public class TrainingStateManager : BaseStateManager
     private string triggerPlaneGameObjectName = "TriggerPlane";
     private TriggerPlane outOfBoundsTriggerPlane;
 
+    private void Update()
+    {
+
+    }
+
     protected void FixedUpdate()
     {
 #if UNITY_EDITOR
@@ -46,6 +57,7 @@ public class TrainingStateManager : BaseStateManager
 
     protected override void OnSceneLoaded()
     {
+        #region get dependencies
         trainingHostVirtualCamera = GameObject.Find(trainingHostVirtualCameraName)?.GetComponent<CinemachineVirtualCamera>();
         Utility.LogErrorIfNull(trainingHostVirtualCamera, nameof(trainingHostVirtualCamera));
 
@@ -55,21 +67,26 @@ public class TrainingStateManager : BaseStateManager
 
         playerScript = playerModel.GetComponent<Player>();
         Utility.LogErrorIfNull(playerScript, nameof(playerScript));
+        playerScript.UpdateControlStateGracefully(enableControlState: false); // Don't allow control on scene start
 
         outOfBoundsTriggerPlane = GameObject.Find(triggerPlaneGameObjectName)?.GetComponentInChildren<TriggerPlane>();
         Utility.LogErrorIfNull(outOfBoundsTriggerPlane, nameof(outOfBoundsTriggerPlane));
+        #endregion
 
-        //InvokeRepeating("testswitchcamera", 1f, 2f);
+        #region event subscriptions
         outOfBoundsTriggerPlane.PlaneTriggered += OnOutOfBoundsPlaneTriggered;
+        CameraBlendEventDispatcher.CameraBlendStarted += OnCameraBlendStarted;
+        CameraBlendEventDispatcher.CameraBlendCompleted += OnCameraBlendCompleted;
+        #endregion
+
+        InvokeRepeating("testswitchcamera", 1f, 5f);
     }
 
     protected override void OnSceneUnloaded()
     {
-    }
-
-    private void Update()
-    {
-
+        outOfBoundsTriggerPlane.PlaneTriggered -= OnOutOfBoundsPlaneTriggered;
+        CameraBlendEventDispatcher.CameraBlendStarted -= OnCameraBlendStarted;
+        CameraBlendEventDispatcher.CameraBlendCompleted -= OnCameraBlendCompleted;
     }
 
     private void OnOutOfBoundsPlaneTriggered()
@@ -77,9 +94,20 @@ public class TrainingStateManager : BaseStateManager
         GameManager.instance.InvokeTransition(midTransitionAction: () => playerModel.transform.position = playerModelStartingPos);
     }
 
+    private void OnCameraBlendStarted(ICinemachineCamera activeCamera)
+    {
+        if (activeCamera.Name == trainingHostVirtualCameraName)
+            playerScript.UpdateControlStateGracefully(enableControlState: false);
+    }
+
+    private void OnCameraBlendCompleted(ICinemachineCamera activeCamera)
+    {
+        if (activeCamera.Name == playerCameraName)
+            playerScript.UpdateControlStateGracefully(enableControlState: true);
+    }
+
     private void testswitchcamera()
     {
         trainingHostVirtualCamera.enabled = !trainingHostVirtualCamera.enabled;
-        playerScript.UpdateControlStateGracefully(!trainingHostVirtualCamera.enabled);
     }
 }

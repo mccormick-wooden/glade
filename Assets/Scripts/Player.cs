@@ -559,12 +559,12 @@ public class Player : MonoBehaviour
     /// Take away any of these instructions and watch the world burn
     /// </summary>
     /// <param name="isEnabled"></param>
-    public void UpdateControlStateGracefully(bool isEnabled)
+    public void UpdateControlStateGracefully(bool enableControlState)
     {
         animator.SetFloat("Speed", 0f);
         horizontalInput = 0;
         verticalInput = 0;
-        if (isEnabled)
+        if (enableControlState)
             controls.Gameplay.Enable();
         else
             controls.Gameplay.Disable();
