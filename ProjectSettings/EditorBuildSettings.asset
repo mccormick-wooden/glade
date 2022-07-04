@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/NewGame.unity
     guid: 8723daab9324b90479165fb21622e7c8
   - enabled: 1
+    path: Assets/Scenes/Training.unity
+    guid: 3a0c6f8941014df4f8664c3295382ce3
+  - enabled: 1
     path: Assets/Scenes/Level1.unity
     guid: 6e62b28241851c94d8f336e0e1cdf536
   - enabled: 1

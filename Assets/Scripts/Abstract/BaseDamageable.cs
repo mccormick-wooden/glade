@@ -56,6 +56,8 @@ namespace Assets.Scripts.Abstract
         {
             CurrentHp = MaxHp;
 
+            if (healthBarController == null)
+                healthBarController = GetComponentInChildren<HealthBarController>();
             if (healthBarController != null)
                 healthBarController.InitHealthBar(CurrentHp);
 
