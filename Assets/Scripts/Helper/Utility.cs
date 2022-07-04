@@ -8,18 +8,33 @@ using Debug = UnityEngine.Debug;
 
 public class Utility : MonoBehaviour
 {
-    //TODO: If needed, we could add overloads that take T[] instead of T
     /// <summary>
     /// Disables all objects of T type. 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <param name="except">Optionally, caller may pass a reference that they wish to be excluded from Disable.</param>
+    /// <param name="except">Optionally, caller may pass a T that they wish to be excluded from Disable.</param>
     public static void DisableAllOf<T>(T except = default) where T : Behaviour
     {
         var objects = FindObjectsOfType<T>();
 
         if (except != default)
             objects = objects.Where(o => o != except).ToArray();
+
+        foreach (var obj in objects)
+            obj.enabled = false;
+    }
+
+    /// <summary>
+    /// Disables all objects of T type. 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="except">Optionally, caller may pass a T[] that they wish to be excluded from Disable.</param>
+    public static void DisableAllOf<T>(T[] except = default) where T : Behaviour
+    {
+        var objects = FindObjectsOfType<T>();
+
+        if (except != default)
+            objects = objects.Where(o => o != except.Any(e => e == o)).ToArray();
 
         foreach (var obj in objects)
             obj.enabled = false;

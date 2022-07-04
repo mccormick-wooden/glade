@@ -13,6 +13,9 @@ public class PauseMenuManager : MonoBehaviour
     private GameState[] unPausableStates = new GameState[] { GameState.MainMenu };
 
     [SerializeField]
+    private GameState[] pauseBackgroundAudioStates = new GameState[] { GameState.NewGame };
+
+    [SerializeField]
     private string pauseResumeRootName = "PauseResume";
 
     [SerializeField]
@@ -24,11 +27,18 @@ public class PauseMenuManager : MonoBehaviour
     [SerializeField]
     private string pauseExitGameRootName = "PauseExitGame";
 
+    [SerializeField]
+    private string transitionCanvasRootName = "Transitions";
+    private Canvas transitionCanvas;
+
+    [SerializeField]
+    private string newGameCrawlCanvasRootName = "NewGameCrawl";
+
     private CharacterPlayerControls controls;
 
     private CanvasGroup canvasGroup;
 
-    private Canvas canvas;
+    private Canvas pauseCanvas;
 
     private Player player => FindObjectOfType<Player>();
 
@@ -41,18 +51,22 @@ public class PauseMenuManager : MonoBehaviour
         controls = new CharacterPlayerControls();
 
         canvasGroup = GetComponent<CanvasGroup>();
-        Utility.LogErrorIfNull(canvasGroup, nameof(canvas));
+        Utility.LogErrorIfNull(canvasGroup, nameof(pauseCanvas));
 
-        canvas = canvasGroup.GetComponent<Canvas>();
-        Utility.LogErrorIfNull(canvas, nameof(canvas));
+        pauseCanvas = canvasGroup.GetComponent<Canvas>();
+        Utility.LogErrorIfNull(pauseCanvas, nameof(pauseCanvas));
+
+        transitionCanvas = GameObject.Find(transitionCanvasRootName)?.GetComponentInChildren<Canvas>();
+        Utility.LogErrorIfNull(transitionCanvas, nameof(transitionCanvas));
+
 
         canvasGroup.alpha = 0; // We don't set this in the inspector because then we can't see it in the inspector! And that's annoying.
         canvasGroup.blocksRaycasts = false;
         canvasGroup.interactable = false;
 
         Utility.AddButtonCallback(pauseResumeRootName, () => SetPauseState(areWePausing: false));
-        Utility.AddButtonCallback(pauseRestartRootName, () => GameManager.UpdateGameState(GameManager.State));
-        Utility.AddButtonCallback(pauseMainMenuRootName, () => GameManager.UpdateGameState(GameState.MainMenu));
+        Utility.AddButtonCallback(pauseRestartRootName, () => GameManager.instance.UpdateGameState(GameManager.instance.State));
+        Utility.AddButtonCallback(pauseMainMenuRootName, () => GameManager.instance.UpdateGameState(GameState.MainMenu));
         Utility.AddButtonCallback(pauseExitGameRootName, () => Quitter.QuitGame());
     }
 
@@ -88,6 +102,9 @@ public class PauseMenuManager : MonoBehaviour
 
     public void SetPauseState(bool areWePausing)
     {
+        if (IsPauseBackgroundAudioState())
+            GameManager.instance.ToggleLoopedAudio(areWePausing);
+
         canvasGroup.alpha = areWePausing ? 1 : 0;
         canvasGroup.blocksRaycasts = areWePausing;
         canvasGroup.interactable = areWePausing;
@@ -99,9 +116,16 @@ public class PauseMenuManager : MonoBehaviour
             TimeScaleToggle.Toggle();
 
         if (areWePausing)
-            Utility.DisableAllOf(except: canvas);
+        {
+            Utility.DisableAllOf(except: new Canvas[] {
+                pauseCanvas,
+                transitionCanvas,
+                GameObject.Find(newGameCrawlCanvasRootName)?.GetComponentInChildren<Canvas>()});
+        }
         else
-            Utility.EnableAllOf(except: canvas);
+        {
+            Utility.EnableAllOf(except: pauseCanvas);
+        }
 
         if (areWePausing)
         {
@@ -111,7 +135,12 @@ public class PauseMenuManager : MonoBehaviour
 
     private bool InUnPauseableState()
     {
-        return unPausableStates.Any(s => s == GameManager.State);
+        return unPausableStates.Any(s => s == GameManager.instance.State);
+    }
+
+    private bool IsPauseBackgroundAudioState()
+    {
+        return pauseBackgroundAudioStates.Any(s => s == GameManager.instance.State);
     }
 
     private void GameManagerOnStateChanged(GameState obj)
