@@ -27,7 +27,7 @@ public abstract class BaseCrystalEffect : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         CrystalController crystal;
-        if (null != (crystal = other.GetComponent<CrystalController>()))
+        if (!effectActive && (null != (crystal = other.GetComponent<CrystalController>())))
         {
             // If it's a damageable crystal, add a callback function for when it dies
             BaseDamageable crystalDamageable = other.GetComponent<BaseDamageable>();
