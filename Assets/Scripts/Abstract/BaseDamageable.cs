@@ -63,11 +63,6 @@ namespace Assets.Scripts.Abstract
                 Die();
         }
 
-        public virtual void Damage(float damageAmount)
-        {
-            ApplyDamage(damageAmount);
-        }
-
         public Action<IDamageable, string, int> Died { get; set; }
 
         protected virtual void Start()
@@ -104,18 +99,13 @@ namespace Assets.Scripts.Abstract
             return attackingWeapon.InUse && HasHp && isWeaponTarget;
         }
 
-        protected virtual void ApplyDamage(float damage)
-        {
-            var newHp = Mathf.Max(CurrentHp - damage, 0f);
-            Debug.Log(
-                $"Applying damage to {gameObject.name}: currentHp = {CurrentHp}, damage = {damage}, newHp = {newHp}"
-            );
-            CurrentHp = newHp;
-        }
-
         protected virtual void ApplyDamage(IWeapon attackingWeapon)
         {
-            ApplyDamage(attackingWeapon.AttackDamage);
+            var newHp = Mathf.Max(CurrentHp - attackingWeapon.AttackDamage, 0f);
+            Debug.Log(
+                $"Applying damage to {gameObject.name}: currentHp = {CurrentHp}, damage = {attackingWeapon.AttackDamage}, newHp = {newHp}"
+            );
+            CurrentHp = newHp;
         }
 
         /// <summary>
