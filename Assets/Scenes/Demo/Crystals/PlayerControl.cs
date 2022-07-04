@@ -11,7 +11,7 @@ namespace crystal
         private float PlayerSpeed = 1;
 
         [SerializeField]
-        private GameObject crystalToKill;
+        private CrystalManager crystalManager;
 
         private Vector3 targetVelocity;
 
@@ -40,6 +40,11 @@ namespace crystal
             if (Input.GetKey(KeyCode.D))
             {
                 targetVelocity += transform.right;
+            }
+            if (Input.GetKeyUp(KeyCode.N))
+            {
+                GameObject crystal = crystalManager.FindNearest(transform.position);
+                Debug.Log($"Found crystal {crystal.name}");
             }
 
             targetVelocity.Normalize();

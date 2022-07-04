@@ -18,6 +18,11 @@ namespace Beacons
         public Action AllBeaconsDied { get; set; }
 
         /// <summary>
+        /// Event indicating a new beacon has landed. Provides a reference to the landed beacon GameObject.
+        /// </summary>
+        public Action<BeaconSpawner, GameObject> NewBeaconLanded { get; set; } 
+
+        /// <summary>
         /// The type of beacon that will be spawned by this spawner.
         /// </summary>
         [Header("Config Settings")]
@@ -132,6 +137,7 @@ namespace Beacons
         private void OnBeaconReadyForDamage(BeaconManager beaconManager, GameObject beacon)
         {
             beaconManager.BeaconReadyForDamage -= OnBeaconReadyForDamage;
+            NewBeaconLanded.Invoke(this, beacon);
 
             var beaconDamageModel = beacon.GetComponent<IDamageable>();
             beaconDamageModel.Died += OnBeaconDeath;

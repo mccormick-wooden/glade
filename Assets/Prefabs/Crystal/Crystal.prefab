@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 3195626198634527306}
   - component: {fileID: 3195626198634527317}
   - component: {fileID: 6899622666681059824}
+  - component: {fileID: 2231281949063299370}
   m_Layer: 0
   m_Name: Crystal
   m_TagString: Untagged
@@ -181,6 +182,25 @@ MonoBehaviour:
   IsHealable: 1
   applyDamageAnimTrigger: Damage
   dieAnimTrigger: Die
+--- !u!114 &2231281949063299370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3195626198634527305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15f8d24c3018fc04ca987078f676d7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  crystalPrefab: {fileID: 3195626198634527305}
+  minSpawnDistance: 3
+  maxSpawnDistance: 20
+  minSpawnDelta: 10
+  spawnColliderRadius: 1
+  spawnChancePerSecond: 0.025
+  spawnActive: 1
 --- !u!1001 &3195626198197401714
 PrefabInstance:
   m_ObjectHideFlags: 0
