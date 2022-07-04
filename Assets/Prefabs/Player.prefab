@@ -150,7 +150,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 683423951842939100}
-  m_LocalRotation: {x: 0.01936771, y: -0.0048829573, z: 0.0014720625, w: 0.99979943}
+  m_LocalRotation: {x: 0.01936771, y: -0.0048830356, z: 0.0014720862, w: 0.99979943}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -224,7 +224,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 683423951991350865}
-  m_LocalRotation: {x: 0.04265422, y: -0.004847365, z: 0.0015854273, w: 0.9990769}
+  m_LocalRotation: {x: 0.04265422, y: -0.00484739, z: 0.0015854355, w: 0.9990769}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -333,8 +333,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 683423952098063495}
-  m_LocalRotation: {x: 0.019367741, y: -0.0048829573, z: 0.0014720627, w: 0.99979943}
-  m_LocalPosition: {x: 0.08159933, y: 0.52871686, z: -0.14784935}
+  m_LocalRotation: {x: 0.019367741, y: -0.0048830356, z: 0.0014720863, w: 0.99979943}
+  m_LocalPosition: {x: 0.08160003, y: 0.52871776, z: -0.1478496}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 683423952755876252}
@@ -449,7 +449,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 683423952174336692}
-  m_LocalRotation: {x: -0.0038285404, y: -0.0049157906, z: 0.0013584034, w: 0.9999797}
+  m_LocalRotation: {x: -0.0038285404, y: -0.004915866, z: 0.0013584243, w: 0.9999797}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -525,7 +525,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 683423952471677778}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.08159933, y: 0.52871686, z: -0.14784935}
+  m_LocalPosition: {x: 0.08160003, y: 0.52871776, z: -0.1478496}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 683423951991350864}
@@ -1182,6 +1182,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 9075297421484407199, guid: dbd6fce6d4ef9c24896a17c9c3ad65b4, type: 3}
   m_PrefabInstance: {fileID: 683423951529893820}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4792565021476698546 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5475987954964522510, guid: dbd6fce6d4ef9c24896a17c9c3ad65b4, type: 3}
+  m_PrefabInstance: {fileID: 683423951529893820}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adce6d5766e4d4c3986bbb32bb954198, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6067665533583041178
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1380,9 +1391,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ab3c53c23ac07c4eb519ba1a43b5170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealthModifier: 1
-  damageModifier: 1
-  damageResistanceModifier: 1
 --- !u!114 &6081101253339513337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1403,6 +1411,22 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   playerSpeedForce: 1250
+--- !u!114 &6791283896735602130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6410245657010118603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4940a782f91c5640a8e5ef3d12d3c60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarController: {fileID: 4792565021476698546}
+  currentHp: 0
+  maxHp: 100
+  IsHealable: 0
 --- !u!114 &9141648846534440693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1426,15 +1450,3 @@ MonoBehaviour:
   nominalSpawnTime: 1
   minTimeBetweenSpawnsSeconds: 2
   beaconManager: {fileID: 2860638167261607854, guid: 98f6dcc3b4eda1f44aa51f7a488ed84c, type: 3}
---- !u!114 &6791283896735602130
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6410245657010118603}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4940a782f91c5640a8e5ef3d12d3c60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

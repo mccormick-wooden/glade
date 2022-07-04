@@ -105,6 +105,37 @@ namespace Assets.Scripts.Abstract
             CurrentHp = newHp;
         }
 
+        public void UpdateMaxHealth(float scalar)
+        {
+            var oldMaxHp = MaxHp;
+            var newMaxHp = Mathf.Floor(oldMaxHp * scalar);
+            MaxHp = newMaxHp < 1 ? 1 : newMaxHp;
+
+            healthBarController.MaxHp = MaxHp;
+            Debug.Log("Changed Max HP from " + oldMaxHp + " to " + MaxHp);
+
+            var oldCurrentHp = CurrentHp;
+            if (scalar >= 1f)
+            {
+                // This is opinionated so this can change:
+                // but the health points "gained" from the new MaxHp are applied as healing
+                var diff = MaxHp - oldMaxHp;
+                CurrentHp += diff;
+            }
+            else
+            {
+                // Also opinionated:
+                // Losing max health only lowers our existing health if the max is lower than current hp
+                if (CurrentHp > MaxHp)
+                {
+                    CurrentHp = MaxHp;
+                }
+            }
+
+            healthBarController.CurrentHp = CurrentHp;
+            Debug.Log("Changed Current HP from " + oldCurrentHp + " to " + CurrentHp);
+        }
+        
         /// <summary>
         /// If overridden, base implementation MUST be called
         /// </summary>
