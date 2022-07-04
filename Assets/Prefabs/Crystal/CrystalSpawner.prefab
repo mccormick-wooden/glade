@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1883573128693887150
+--- !u!1 &5536124710727514574
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,41 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8784851082819971018}
-  - component: {fileID: 20593271982827935}
+  - component: {fileID: 7927818125434602660}
+  - component: {fileID: 321111283666434763}
   m_Layer: 0
-  m_Name: CrystalManager
+  m_Name: CrystalSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8784851082819971018
+--- !u!4 &7927818125434602660
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1883573128693887150}
+  m_GameObject: {fileID: 5536124710727514574}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 54.872997, y: 9.843383, z: 41.08431}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &20593271982827935
+--- !u!114 &321111283666434763
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1883573128693887150}
+  m_GameObject: {fileID: 5536124710727514574}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fa730d501aeb144a875ecb31f99e703, type: 3}
+  m_Script: {fileID: 11500000, guid: 15f8d24c3018fc04ca987078f676d7d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crystalPrefab: {fileID: 3195626198634527305, guid: 7772123ee301b3041bd95e81fad5427c, type: 3}
-  crystalSpawnerPrefab: {fileID: 5536124710727514574, guid: 9b70a189291759f418f7040645ad60e0, type: 3}
-  beaconSpawner: {fileID: 0}
+  crystalPrefab: {fileID: 0}
+  minSpawnDistance: 3
+  maxSpawnDistance: 20
+  maxSpawnSlopeDeg: 20
+  maxSpawnHeightDelta: 5
+  minSpawnDelta: 10
+  spawnChancePerSecond: 0.025
+  spawnActive: 1

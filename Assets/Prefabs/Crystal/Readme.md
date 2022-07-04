@@ -29,9 +29,6 @@ lands.
    * Requires that the GameObject have a Damageable script added, since it depends on that to update the HP.
 
 ## Known Issues
-* Crystal's sphere collider erroneously applies damage if hit by a sword. This
-sphere collider is intended to just be used for determining when an activator
-is in the vicinity in order to animate the crystal.
 * Crystal does not yet have any audio attached.
 * Crystals will all be clones of the prefab, but eventually want to have a way
 to set various parameters on dynamically spawned crystals to change their size,

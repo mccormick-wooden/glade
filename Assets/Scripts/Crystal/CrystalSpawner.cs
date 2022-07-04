@@ -37,8 +37,6 @@ public class CrystalSpawner : MonoBehaviour
         timeSinceSpawn = 0f;
     }
 
-    // Start is called before the first frame update
-    void Start() {}
 
     private Vector3 generateRandomSpawnPoint()
     {
@@ -102,6 +100,20 @@ public class CrystalSpawner : MonoBehaviour
             return Vector3.zero;
     }
 
+    public bool Spawn()
+    {
+        Vector3 spawnPoint = findValidSpawnPoint();
+        if (!Mathf.Approximately(spawnPoint.magnitude, 0f))
+        {
+            crystalManager.SpawnCrystal(spawnPoint);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
     // Update is called once per frame
     void Update()
     {
@@ -113,13 +125,8 @@ public class CrystalSpawner : MonoBehaviour
                 float spawnValue = Random.value;
                 if (spawnValue <= (spawnChancePerSecond * Time.deltaTime))
                 {
-                    Debug.Log($"{name} attempting spawn.");
-                    Vector3 spawnPoint = findValidSpawnPoint();
-                    if (!Mathf.Approximately(spawnPoint.magnitude, 0f))
-                    {
-                        crystalManager.SpawnCrystal(spawnPoint);
+                    if (Spawn())
                         timeSinceSpawn = 0;
-                    }
                 }
             }
         }
