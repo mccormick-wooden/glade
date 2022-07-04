@@ -30,11 +30,7 @@ public class TrainingStateManager : BaseStateManager
     /// </summary>
     [SerializeField]
     private string triggerPlaneGameObjectName = "TriggerPlane";
-    private TriggerPlane triggerPlane;
-
-    //[SerializeField]
-    //private string mainExitRootName = "MainExitGame";
-
+    private TriggerPlane outOfBoundsTriggerPlane;
 
     protected void FixedUpdate()
     {
@@ -55,13 +51,12 @@ public class TrainingStateManager : BaseStateManager
         playerModel = GameObject.Find(playerModelGameObjectRootName);
         Utility.LogErrorIfNull(playerModel, nameof(playerModel));
         playerModelStartingPos = playerModel.transform.position;
-        //Debug.Log($"{playerModelStartingPos.x}, {playerModelStartingPos.y},{playerModelStartingPos.z},"); 
 
-        triggerPlane = GameObject.Find(triggerPlaneGameObjectName)?.GetComponentInChildren<TriggerPlane>();
-        Utility.LogErrorIfNull(triggerPlane, nameof(triggerPlane));
+        outOfBoundsTriggerPlane = GameObject.Find(triggerPlaneGameObjectName)?.GetComponentInChildren<TriggerPlane>();
+        Utility.LogErrorIfNull(outOfBoundsTriggerPlane, nameof(outOfBoundsTriggerPlane));
 
         //InvokeRepeating("testswitchcamera", 1f, 2f);
-        triggerPlane.PlaneTriggered += OnResetPlayer;
+        outOfBoundsTriggerPlane.PlaneTriggered += OnOutOfBoundsPlaneTriggered;
     }
 
     protected override void OnSceneUnloaded()
@@ -70,13 +65,10 @@ public class TrainingStateManager : BaseStateManager
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            OnResetPlayer();
-        }
+
     }
 
-    private void OnResetPlayer()
+    private void OnOutOfBoundsPlaneTriggered()
     {
         GameManager.instance.InvokeTransition(midTransitionAction: () => playerModel.transform.position = playerModelStartingPos);
     }
