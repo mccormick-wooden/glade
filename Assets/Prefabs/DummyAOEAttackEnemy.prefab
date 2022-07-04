@@ -1229,10 +1229,13 @@ MonoBehaviour:
   attackPushbackForce: 0
   attackDelayTimeSeconds: 5
   priority: 0
-  minTimeToPriorityChange: 5
-  maxTimeToPriorityChange: 5
+  minTimeToPriorityChange: 15
+  maxTimeToPriorityChange: 30
   crystalManager: {fileID: 0}
   timeToFullyAppear: 0.5
+  lookForPlayerMask:
+    serializedVersion: 2
+    m_Bits: 2147484665
   aoeAttackPrefab: {fileID: 4554370377841570503, guid: db92ec7a788b6a1449fee71c4a9cecaf, type: 3}
 --- !u!1 &3558732370113055110
 GameObject:

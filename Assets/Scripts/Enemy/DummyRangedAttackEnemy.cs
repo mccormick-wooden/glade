@@ -25,7 +25,6 @@ public class DummyRangedAttackEnemy : BaseEnemy
         desireToHealOthers = 0f;
 
         autoAttackPlayerDistanceToBeacon = 3f;
-        minTimeToPriorityChanges = 5f;
     }
 
     // Update is called once per frame

@@ -21,10 +21,7 @@ public class DummyAOEAttackEnemy : BaseEnemy
         desireToRunAndHeal = 4f; // easy to scare off
         desireToHealOthers = 0f;
 
-        autoAttackPlayerDistanceToBeacon = 3f;
-        minTimeToPriorityChanges = 5f;
-
-        
+        autoAttackPlayerDistanceToBeacon = 3f;        
     }
 
     // Update is called once per frame

@@ -119,12 +119,6 @@ public class EnemySpawner : MonoBehaviour
 
     bool FindValidPlacement(Vector3 position, out Vector3 newPosition)
     {
-        const float MIN_X_OFFSET = 10;
-        const float MAX_X_OFFSET = 25;
-
-        const float MIN_Z_OFFSET = 10;
-        const float MAX_Z_OFFSET = 25;
-
         int attempts = 0;
         const int maxAttempts = 5;
 
