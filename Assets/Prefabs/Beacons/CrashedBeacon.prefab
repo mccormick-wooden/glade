@@ -44,10 +44,10 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2775764871604184902}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.1
+  m_Radius: 1.2
   m_Center: {x: 0, y: 1.2, z: 0}
 --- !u!114 &6114219959068737442
 MonoBehaviour:
@@ -176,6 +176,7 @@ MonoBehaviour:
   healthBarController: {fileID: 4383631140296088618}
   currentHp: 0
   maxHp: 100
+  IsHealable: 0
 --- !u!1001 &212331095519575609
 PrefabInstance:
   m_ObjectHideFlags: 0

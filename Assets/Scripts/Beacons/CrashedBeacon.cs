@@ -41,7 +41,7 @@ namespace Beacons
         {
             if (powerUpPrefab == null) return;
             Instantiate(powerUpPrefab,
-                new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z),
+                transform.position,
                 Quaternion.identity, transform.parent);
         }
 
