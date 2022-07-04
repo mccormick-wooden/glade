@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Assets.Scripts.Abstract;
+using Assets.Scripts.Interfaces;
 using UnityEngine;
 
-[RequireComponent(typeof(BaseDamageable))]
+[RequireComponent(typeof(IDamageable))]
 public class CrystalHealEffect : BaseCrystalEffect
 {
     [Tooltip("Nominal healing rate. May be multiplied by stronger crystals.")]
@@ -10,17 +10,17 @@ public class CrystalHealEffect : BaseCrystalEffect
     [Min(0f)]
     private float hpPerSecond;
 
-    private BaseDamageable health;
+    private IDamageable health;
 
     void Awake()
     {
         // Need to be damageable/healable for healh effect
-        Utility.LogErrorIfNull(health = GetComponent<BaseDamageable>(),
-            "BaseDamageable",
+        Utility.LogErrorIfNull(health = GetComponent<IDamageable>(),
+            "IDamageable",
             $"Requires some sort of damageable such that {name} can be healed.");
 
         if (null != health && !health.IsHealable)
-            Debug.LogError("Attached BaseDamageable must be marked healable.");
+            Debug.LogError("Attached IDamageable must be marked healable.");
     }
 
     private void Heal()

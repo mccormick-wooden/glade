@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Beacons;
-using Assets.Scripts.Abstract;
 using Assets.Scripts.Interfaces;
 
 public class CrystalManager : MonoBehaviour
@@ -147,7 +146,7 @@ public class CrystalManager : MonoBehaviour
 
         // add to list of crystals and subscribe to its death event to remove it
         crystals.Add(crystal.GetInstanceID(), crystal.GetComponent<CrystalController>());
-        crystal.GetComponent<BaseDamageable>().Died += removeCrystal;
+        crystal.GetComponentInChildren<IDamageable>().Died += removeCrystal;
     }
 
 }

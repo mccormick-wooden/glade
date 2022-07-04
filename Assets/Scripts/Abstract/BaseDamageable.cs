@@ -17,7 +17,13 @@ namespace Assets.Scripts.Abstract
         private float maxHp = 100;
 
         [SerializeField]
-        public bool IsHealable;
+        private bool isHealable = false;
+
+        public bool IsHealable
+        {
+            get => isHealable;
+            protected set => isHealable = value;
+        }
 
         public float CurrentHp
         {
