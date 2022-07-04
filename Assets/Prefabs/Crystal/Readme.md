@@ -6,13 +6,18 @@ Crystal uses the included animation and animation controller. It sends
 CrystalEffect events once per second when active and is activated by anything
 with a Crystal Effect script attached. 
 
+Crystals will dynamically spawn near other crystals per the parameters set in
+the CrystalSpawner script in the prefab. If the CrystalManager has a
+beaconSpawner reference defined, a crystal will spawn near a new beacon when it
+lands.
+
 ### How to use
 
 1. Add a CrystalEffect script to anything you want to be affected by the crystals. 
-2. (optional) Drop in a Crystal prefab
-3. (optional) Add a CrystalManager prefab in the scene and provide it a
+2. Add a CrystalManager prefab in the scene and optionally provide it a
 reference to the BeaconSpawner to have a crystal spawn whenever a new beacon
 lands.
+3. (optional) Drop in a Crystal prefab anywhere to start with a crystal in the scene.
 
 #### Crystal Effects
 1. CrystalHealEffect
@@ -28,6 +33,9 @@ lands.
 sphere collider is intended to just be used for determining when an activator
 is in the vicinity in order to animate the crystal.
 * Crystal does not yet have any audio attached.
+* Crystals will all be clones of the prefab, but eventually want to have a way
+to set various parameters on dynamically spawned crystals to change their size,
+strength, effect radius, health, etc.
 
 ## References
 
