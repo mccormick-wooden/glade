@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/NewGame.unity
     guid: 8723daab9324b90479165fb21622e7c8
   - enabled: 1
+    path: Assets/Scenes/Training.unity
+    guid: 3a0c6f8941014df4f8664c3295382ce3
+  - enabled: 1
     path: Assets/Scenes/Level1.unity
     guid: 6e62b28241851c94d8f336e0e1cdf536
   - enabled: 1
@@ -35,4 +38,5 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Demo/AutoGenerateEnemies.unity
     guid: ba13b395749e5c34ab5890b95c288b81
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: f208800a3dbf4414c9524c848c618797, type: 2}

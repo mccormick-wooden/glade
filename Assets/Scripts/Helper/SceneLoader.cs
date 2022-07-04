@@ -8,7 +8,6 @@ public class SceneLoader : MonoBehaviour
         if (CanLoadScene(sceneToLoad))
         {
             SceneManager.LoadScene(sceneToLoad);
-            FindObjectOfType<PauseMenuManager>().SetPauseState(false);
         }
     }
 

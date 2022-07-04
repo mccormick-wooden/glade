@@ -37,15 +37,6 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Rotate"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""00c80e57-f82f-4817-b150-f2c77d9ccfbc"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Slash"",
                     ""type"": ""Button"",
                     ""id"": ""8c1a5430-3947-4dda-9a47-92514a01bad5"",
@@ -80,19 +71,8 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                     ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""356a846a-eed4-487c-9d82-baf9c9023d63"",
-                    ""path"": ""<Gamepad>/leftStick"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -218,24 +198,13 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""WASD"",
-                    ""id"": ""6aa2f1ee-ac7c-48eb-84bb-62d9892e0344"",
-                    ""path"": ""Dpad"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotate"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
                     ""name"": ""left"",
                     ""id"": ""29346dd7-5968-4313-9820-b22a895e738b"",
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Rotate"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -246,7 +215,7 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Rotate"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -257,7 +226,7 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Rotate"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -268,22 +237,91 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Rotate"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""PauseGame"",
+            ""id"": ""1dda00a2-148b-4538-8a44-2fa2a0047418"",
+            ""actions"": [
+                {
+                    ""name"": ""PauseGameAction"",
+                    ""type"": ""Button"",
+                    ""id"": ""4e88761c-2f7d-4d4b-aa2b-ba8f68e7ef82"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""746091c3-4c8c-4017-aaf6-611f590ae756"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PauseGameAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""569a3d68-d31a-48ac-9c2b-d186b31007e4"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PauseGameAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
-    ""controlSchemes"": []
+    ""controlSchemes"": [
+        {
+            ""name"": ""Gamepad"",
+            ""bindingGroup"": ""Gamepad"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Gamepad>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Mouse&Keyboard"",
+            ""bindingGroup"": ""Mouse&Keyboard"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Mouse>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                },
+                {
+                    ""devicePath"": ""<Keyboard>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        }
+    ]
 }");
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
-        m_Gameplay_Rotate = m_Gameplay.FindAction("Rotate", throwIfNotFound: true);
         m_Gameplay_Slash = m_Gameplay.FindAction("Slash", throwIfNotFound: true);
         m_Gameplay_Shield = m_Gameplay.FindAction("Shield", throwIfNotFound: true);
         m_Gameplay_Cast = m_Gameplay.FindAction("Cast", throwIfNotFound: true);
+        // PauseGame
+        m_PauseGame = asset.FindActionMap("PauseGame", throwIfNotFound: true);
+        m_PauseGame_PauseGameAction = m_PauseGame.FindAction("PauseGameAction", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -344,7 +382,6 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
     private readonly InputActionMap m_Gameplay;
     private IGameplayActions m_GameplayActionsCallbackInterface;
     private readonly InputAction m_Gameplay_Move;
-    private readonly InputAction m_Gameplay_Rotate;
     private readonly InputAction m_Gameplay_Slash;
     private readonly InputAction m_Gameplay_Shield;
     private readonly InputAction m_Gameplay_Cast;
@@ -353,7 +390,6 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
         private @CharacterPlayerControls m_Wrapper;
         public GameplayActions(@CharacterPlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Gameplay_Move;
-        public InputAction @Rotate => m_Wrapper.m_Gameplay_Rotate;
         public InputAction @Slash => m_Wrapper.m_Gameplay_Slash;
         public InputAction @Shield => m_Wrapper.m_Gameplay_Shield;
         public InputAction @Cast => m_Wrapper.m_Gameplay_Cast;
@@ -369,9 +405,6 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                 @Move.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMove;
-                @Rotate.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRotate;
-                @Rotate.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRotate;
-                @Rotate.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRotate;
                 @Slash.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSlash;
                 @Slash.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSlash;
                 @Slash.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSlash;
@@ -388,9 +421,6 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
-                @Rotate.started += instance.OnRotate;
-                @Rotate.performed += instance.OnRotate;
-                @Rotate.canceled += instance.OnRotate;
                 @Slash.started += instance.OnSlash;
                 @Slash.performed += instance.OnSlash;
                 @Slash.canceled += instance.OnSlash;
@@ -404,12 +434,68 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
         }
     }
     public GameplayActions @Gameplay => new GameplayActions(this);
+
+    // PauseGame
+    private readonly InputActionMap m_PauseGame;
+    private IPauseGameActions m_PauseGameActionsCallbackInterface;
+    private readonly InputAction m_PauseGame_PauseGameAction;
+    public struct PauseGameActions
+    {
+        private @CharacterPlayerControls m_Wrapper;
+        public PauseGameActions(@CharacterPlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @PauseGameAction => m_Wrapper.m_PauseGame_PauseGameAction;
+        public InputActionMap Get() { return m_Wrapper.m_PauseGame; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PauseGameActions set) { return set.Get(); }
+        public void SetCallbacks(IPauseGameActions instance)
+        {
+            if (m_Wrapper.m_PauseGameActionsCallbackInterface != null)
+            {
+                @PauseGameAction.started -= m_Wrapper.m_PauseGameActionsCallbackInterface.OnPauseGameAction;
+                @PauseGameAction.performed -= m_Wrapper.m_PauseGameActionsCallbackInterface.OnPauseGameAction;
+                @PauseGameAction.canceled -= m_Wrapper.m_PauseGameActionsCallbackInterface.OnPauseGameAction;
+            }
+            m_Wrapper.m_PauseGameActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @PauseGameAction.started += instance.OnPauseGameAction;
+                @PauseGameAction.performed += instance.OnPauseGameAction;
+                @PauseGameAction.canceled += instance.OnPauseGameAction;
+            }
+        }
+    }
+    public PauseGameActions @PauseGame => new PauseGameActions(this);
+    
+    private int m_GamepadSchemeIndex = -1;
+    public InputControlScheme GamepadScheme
+    {
+        get
+        {
+            if (m_GamepadSchemeIndex == -1) m_GamepadSchemeIndex = asset.FindControlSchemeIndex("Gamepad");
+            return asset.controlSchemes[m_GamepadSchemeIndex];
+        }
+    }
+    private int m_MouseKeyboardSchemeIndex = -1;
+    public InputControlScheme MouseKeyboardScheme
+    {
+        get
+        {
+            if (m_MouseKeyboardSchemeIndex == -1) m_MouseKeyboardSchemeIndex = asset.FindControlSchemeIndex("Mouse&Keyboard");
+            return asset.controlSchemes[m_MouseKeyboardSchemeIndex];
+        }
+    }
+    
     public interface IGameplayActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnRotate(InputAction.CallbackContext context);
         void OnSlash(InputAction.CallbackContext context);
         void OnShield(InputAction.CallbackContext context);
         void OnCast(InputAction.CallbackContext context);
+    }
+    public interface IPauseGameActions
+    {
+        void OnPauseGameAction(InputAction.CallbackContext context);
     }
 }

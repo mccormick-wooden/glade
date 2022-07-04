@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8257945831418916893}
   - component: {fileID: 8236736784404236431}
   - component: {fileID: 7986550363708548822}
+  - component: {fileID: 8108481348631420129}
   - component: {fileID: 8250716618195528625}
   - component: {fileID: 2001327028466082264}
   - component: {fileID: 4847195641392796058}
@@ -48,6 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf1118146921b8445b2caf936efcb78d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startingState: 10
+  globalMaxVolume: 1
 --- !u!114 &8236736784404236431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,10 +65,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   managedState: 10
   managedSceneName: MainMenu
+  optionalSceneAudioClip: {fileID: 8300000, guid: 86776336db580a84a8c0129947706ebe, type: 3}
+  sceneAudioClipNormalizedMaxVolume: 1
   debugOutput: 0
   heartbeatRate: 0
-  newGameButtonRootName: MainNewGame
-  exitGameButtonRootName: MainExitGame
+  mainNewGameRootName: MainNewGame
+  mainExitRootName: MainExitGame
 --- !u!114 &7986550363708548822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80,10 +85,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   managedState: 20
   managedSceneName: NewGame
+  optionalSceneAudioClip: {fileID: 8300000, guid: 4d70b639337f1d046b127a955d96776a, type: 3}
+  sceneAudioClipNormalizedMaxVolume: 0.3
   debugOutput: 0
   heartbeatRate: 0
   skipCrawl: 0
   timeScale: 1
+--- !u!114 &8108481348631420129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8257945831418916894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7009ed50006746f4991fce20f7be30d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  managedState: 21
+  managedSceneName: Training
+  optionalSceneAudioClip: {fileID: 8300000, guid: 86776336db580a84a8c0129947706ebe, type: 3}
+  sceneAudioClipNormalizedMaxVolume: 0.315
+  debugOutput: 0
+  heartbeatRate: 0
 --- !u!114 &8250716618195528625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98,9 +123,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   managedState: 30
   managedSceneName: Level1TestGameLoop
+  optionalSceneAudioClip: {fileID: 8300000, guid: f07d5ab95b4acd14b9a6847e81667f46, type: 3}
+  sceneAudioClipNormalizedMaxVolume: 0.3
   debugOutput: 0
   heartbeatRate: 0
   playerGameObjectRootName: Player
+  beaconParentObjectRootName: BeaconParent
   returnToMainMenuCountdownLength: 10
 --- !u!114 &2001327028466082264
 MonoBehaviour:

@@ -7,10 +7,11 @@ using UnityEngine.AI;
 
 public class BaseEnemy : MonoBehaviour
 {
-    private Animator animator;
+    protected Animator animator;
     private Rigidbody rigidBody;
     NavMeshAgent agent;
     Renderer[] renderers;
+    protected VelocityReporter velocityReporter;
 
     /// <summary>
     /// The nearest beacon to the transform, located by FindClosestBeacon; 
@@ -284,6 +285,8 @@ public class BaseEnemy : MonoBehaviour
     bool lostPlayer = true;
 
 
+    public string EnemyId => $"{GetType()}:{gameObject.name}:{gameObject.GetInstanceID()}";
+
     // Start is called before the first frame update
     protected virtual void Start()
     {
@@ -298,6 +301,13 @@ public class BaseEnemy : MonoBehaviour
         crystalManager = GameObject.Find("CrystalParent").GetComponent<CrystalManager>();
         renderers = GetComponentsInChildren<Renderer>();
         nextBeaconDefenseNextPositionTime = DateTime.Now;
+
+        velocityReporter = GetComponent<VelocityReporter>();
+        if (velocityReporter == null)
+        {
+            velocityReporter = gameObject.AddComponent<VelocityReporter>();
+            velocityReporter.smoothingTimeFactor = 0.5f; // I guess? 
+        }
     }
 
     ///////////////////////////////////////////////////////
