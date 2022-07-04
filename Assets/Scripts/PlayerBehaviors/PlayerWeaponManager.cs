@@ -1,0 +1,32 @@
+using System;
+using UnityEngine;
+using Weapons;
+
+namespace PlayerBehaviors
+{
+    public class PlayerWeaponManager : MonoBehaviour
+    {
+        [SerializeField] private WeaponSlot leftHand;
+        [SerializeField] private WeaponSlot rightHand;
+
+        private void Awake()
+        {
+            Utility.LogErrorIfNull(leftHand, "leftHand",
+                "Could not find the leftHand WeaponSlot. Make sure to add a WeaponSlot component to this model's left hand object and assign it to the PlayerWeaponManager's leftHand variable in the editor.");
+            Utility.LogErrorIfNull(rightHand, "rightHand",
+                "Could not find the rightHand WeaponSlot. Make sure to add a WeaponSlot component to this model's right hand object and assign it to the PlayerWeaponManager's rightHand variable in the editor.");
+        }
+
+        public void EquipWeaponSlot(Weapon weapon, bool shouldLoadLeftHand)
+        {
+            if (shouldLoadLeftHand)
+            {
+                leftHand.EquipWeapon(weapon);
+            }
+            else
+            {
+                rightHand.EquipWeapon(weapon);
+            }
+        }
+    }
+}

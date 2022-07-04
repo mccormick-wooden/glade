@@ -76,5 +76,16 @@ public class Utility : MonoBehaviour
 
         button.onClick.AddListener(lambda);
     }
+
+    /// <summary>
+    /// Helper to mimic in the runtime what clicking "Reset" on a transform in the editor while respecting the parent's transform
+    /// </summary>
+    /// <param name="transform">The transform to reset to local positions.</param>
+    public static void ResetLocalTransform(Transform transform)
+    {
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+        transform.localScale = Vector3.one;
+    }
 }
 

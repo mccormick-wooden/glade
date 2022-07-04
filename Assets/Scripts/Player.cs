@@ -1,6 +1,9 @@
 using System.Collections;
+using PlayerBehaviors;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
+using Weapons;
 
 public class Player : MonoBehaviour
 {
@@ -45,7 +48,6 @@ public class Player : MonoBehaviour
     // Attack & Defense
     private bool doBlock;
     private bool doSlash;
-    private Sword sword;
     private int slashLungeFrameCtr = 0;
     public int slashLungeFrameLen = 15;
     public float slashLungeTransformMultiplier = 3.5f;
@@ -59,7 +61,7 @@ public class Player : MonoBehaviour
     private TextMeshProUGUI GameMessage = null;
 
     // Helpers
-    private bool ShouldLunge => sword.InUse && slashLungeFrameCtr < slashLungeFrameLen && verticalInput > .1;
+    private bool ShouldLunge => false;
     private bool IsAnimStateSwordSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("SwordSlash");
     private bool IsAnimStateSwordBackSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("SwordBackSlash");
     private bool IsAnimStateJumpSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("JumpSlash");
@@ -73,13 +75,57 @@ public class Player : MonoBehaviour
     CharacterController characterController;
     CapsuleCollider capsuleCollider;
 
+    #region CombatProperties
+
+    private PlayerWeaponManager playerWeaponManager;
+    [SerializeField] private Weapon primaryWeapon;
+    [SerializeField] private Weapon secondaryWeapon;
+
+    #endregion
+
     private void Awake()
     {
+        # region CombatAwake
+
+        playerWeaponManager = GetComponent<PlayerWeaponManager>();
+        Utility.LogErrorIfNull(playerWeaponManager, "playerWeaponManager",
+            "Player game object must have a PlayerWeaponManager component");
+
+        #endregion
+        
         GetTerrainInfo();
         GetCamera();
         GatherComponents();
         SetPlayerPhysicalProperties();
         SetupControls();
+    }
+
+    // Start is called before the first frame update
+    private void Start()
+    {
+        # region CombatStart
+
+        Utility.LogErrorIfNull(primaryWeapon, "primaryWeapon",
+            "Please add a Weapon to the primaryWeapon variable on Player in the Editor");
+        // Utility.LogErrorIfNull(secondaryWeapon, "secondaryWeapon",
+        // "Please add a Weapon to the secondaryWeapon variable on Player in the Editor");
+
+        if (primaryWeapon != null)
+        {
+            playerWeaponManager.EquipWeaponSlot(primaryWeapon, false);
+        }
+
+        if (secondaryWeapon != null)
+        {
+            playerWeaponManager.EquipWeaponSlot(secondaryWeapon, true);
+        }
+
+        #endregion
+
+        isGrounded = true;
+        isJumping = false;
+        doSlash = false;
+        doBlock = false;
     }
 
     private void GetTerrainInfo()
@@ -164,22 +210,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        isGrounded = true;
-        isJumping = false;
-        doSlash = false;
-        doBlock = false;
-    }
-
 
     void GatherComponents()
     {
         animator = GetComponent<Animator>();
         capsuleCollider = GetComponent<CapsuleCollider>();
         rigidBody = GetComponent<Rigidbody>();
-        sword = GameObject.Find("Sword").GetComponent<Sword>();
+        // sword = GameObject.Find("Sword").GetComponent<Sword>();
     }
 
 
@@ -352,7 +389,7 @@ public class Player : MonoBehaviour
 
             // TRANSLATION -----------------------------------------------------
 
-            if ((!doBlock) && (!sword.InUse))
+            if (!doBlock)
             {
                 // Determine whether the player is going uphill or downhill:
                 // 1. Get the player's position on the map (horizontal plane).
@@ -423,7 +460,7 @@ public class Player : MonoBehaviour
     private void UpdateAnimator()
     {
         AnimatorBlockLogic();
-        AnimatorSlashLogic();
+        // AnimatorSlashLogic();
     }
 
     void AnimatorBlockLogic()
@@ -438,13 +475,13 @@ public class Player : MonoBehaviour
             animator.SetBool("DoBackslash", false);
             animator.SetBool("DoJumpSlash", false);
 
-            if (animState.IsName("Block"))
+            /*if (animState.IsName("Block"))
             {
                 // set this here because we may have circumvented
                 // the normal way around this.
 
                 sword.InUse = false;
-            }
+            }*/
 
         }
         else
@@ -453,7 +490,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    void AnimatorSlashLogic()
+    /*void AnimatorSlashLogic()
     {
         var animState = animator.GetCurrentAnimatorStateInfo(0);
 
@@ -463,8 +500,8 @@ public class Player : MonoBehaviour
 
             if (animState.IsName("MovementTree"))
             {
-                sword.InUse = true;
-                animator.SetBool("DoAttack", true);
+                // sword.InUse = true;
+                // animator.SetBool("DoAttack", true);
                 //EventManager.TriggerEvent<SwordSwingEvent, Vector3, float>(transform.position, 0);
             }
             else if (IsAnimStateSwordSlash)
@@ -503,7 +540,7 @@ public class Player : MonoBehaviour
                 sword.InUse = true;
             }
         }
-    }
+    }*/
 
     private void ShowMessage(string message, uint timeout = 3)
     {
