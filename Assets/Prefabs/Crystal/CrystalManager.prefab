@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fa730d501aeb144a875ecb31f99e703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crystalPrefab: {fileID: 0}
+  crystalPrefab: {fileID: 3195626198634527305, guid: 7772123ee301b3041bd95e81fad5427c, type: 3}
   beaconSpawner: {fileID: 0}
   startingSearchRadius: 6
   searchIncreaseFactor: 2

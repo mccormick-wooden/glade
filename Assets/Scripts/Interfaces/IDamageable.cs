@@ -11,6 +11,7 @@ namespace Assets.Scripts.Interfaces
         bool IsDead { get; }
         bool IsHealable { get; }
         public void Heal(float healAmount);
+        public void Damage(float damageAmount);
         Action<IDamageable, string, int> Died { get; set; }
     }
 }
