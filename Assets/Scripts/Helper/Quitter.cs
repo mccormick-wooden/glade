@@ -5,9 +5,9 @@ public class Quitter : MonoBehaviour
     public static void QuitGame()
     {
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
+        GameManager.instance.InvokeTransition(() => UnityEditor.EditorApplication.isPlaying = false);
 #else
-         Application.Quit();
+        GameManager.instance.InvokeTransition(() => Application.Quit());
 #endif
     }
 }

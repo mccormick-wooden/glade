@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
 
     public GameState State { get; private set; }
 
+    public bool IsMidTransition { get; private set; }
+
     private AudioSource backgroundAudioSource;
 
     private Animator transitionCanvasAnimationController;
@@ -52,7 +54,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        UpdateGameState(startingState, withTransition: false);
+        UpdateGameState(startingState);
     }
 
     public void UpdateGameState(GameState newState, bool withTransition = true)
@@ -91,6 +93,8 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator Transition(Action midTransitionAction)
     {
+        IsMidTransition = true;
+
         transitionCanvasAnimationController.SetTrigger("FadeOut");
         yield return new WaitForSecondsRealtime(1);
 
@@ -98,7 +102,9 @@ public class GameManager : MonoBehaviour
             midTransitionAction();
 
         transitionCanvasAnimationController.SetTrigger("FadeIn");
-        yield return new WaitForSecondsRealtime(1); 
+        yield return new WaitForSecondsRealtime(1);
+
+        IsMidTransition = false;
     }
 }
 

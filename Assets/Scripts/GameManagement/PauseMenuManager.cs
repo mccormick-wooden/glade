@@ -6,15 +6,6 @@ using UnityEngine.UI;
 [RequireComponent(typeof(CanvasGroup))]
 public class PauseMenuManager : MonoBehaviour
 {
-    /// <summary>
-    /// GameStates where pause should not be active. Currently and probably always will only make sense for MainMenu
-    /// </summary>
-    [SerializeField]
-    private GameState[] unPausableStates = new GameState[] { GameState.MainMenu };
-
-    [SerializeField]
-    private GameState[] pauseBackgroundAudioStates = new GameState[] { GameState.NewGame };
-
     [SerializeField]
     private string pauseResumeRootName = "PauseResume";
 
@@ -34,6 +25,10 @@ public class PauseMenuManager : MonoBehaviour
     [SerializeField]
     private string newGameCrawlCanvasRootName = "NewGameCrawl";
 
+    private GameState[] unPauseableStates;
+
+    private GameState[] pauseBackgroundAudioStates;
+
     private CharacterPlayerControls controls;
 
     private CanvasGroup canvasGroup;
@@ -48,6 +43,9 @@ public class PauseMenuManager : MonoBehaviour
 
     private void Awake()
     {
+        unPauseableStates = new GameState[] { GameState.Invalid, GameState.MainMenu };
+        pauseBackgroundAudioStates = new GameState[] { GameState.NewGame };
+
         controls = new CharacterPlayerControls();
 
         canvasGroup = GetComponent<CanvasGroup>();
@@ -58,7 +56,6 @@ public class PauseMenuManager : MonoBehaviour
 
         transitionCanvas = GameObject.Find(transitionCanvasRootName)?.GetComponentInChildren<Canvas>();
         Utility.LogErrorIfNull(transitionCanvas, nameof(transitionCanvas));
-
 
         canvasGroup.alpha = 0; // We don't set this in the inspector because then we can't see it in the inspector! And that's annoying.
         canvasGroup.blocksRaycasts = false;
@@ -84,6 +81,9 @@ public class PauseMenuManager : MonoBehaviour
 
     private void TogglePause()
     {
+        if (GameManager.instance.IsMidTransition) 
+            return;
+
         if (!IsPaused && !InUnPauseableState())
             SetPauseState(true);
         else if (IsPaused)
@@ -135,7 +135,7 @@ public class PauseMenuManager : MonoBehaviour
 
     private bool InUnPauseableState()
     {
-        return unPausableStates.Any(s => s == GameManager.instance.State);
+        return unPauseableStates.Any(s => s == GameManager.instance.State);
     }
 
     private bool IsPauseBackgroundAudioState()
