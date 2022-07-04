@@ -4,7 +4,7 @@ namespace PowerUps
 {
     public class MaxHealthPowerUp : BasePowerUp
     {
-        private float scalar = 1.15f;
+        private float summand = 0.15f;
 
         public MaxHealthPowerUp()
         {
@@ -14,12 +14,12 @@ namespace PowerUps
         public override void ApplyPowerUp()
         {
             base.ApplyPowerUp();
-            PlayerStats.Instance.ScaleMaxHealthModifier(scalar);
+            PlayerStats.Instance.UpdateMaxHealthModifier(summand);
         }
 
         public override void RepealPowerUp()
         {
-            PlayerStats.Instance.ScaleMaxHealthModifier(1 / scalar);
+            PlayerStats.Instance.UpdateMaxHealthModifier(-summand);
         }
     }
 }

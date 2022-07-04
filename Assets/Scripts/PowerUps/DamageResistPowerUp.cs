@@ -4,7 +4,7 @@ namespace PowerUps
 {
     public class DamageResistPowerUp : BasePowerUp
     {
-        private float scalar = 1.1f;
+        private float summand = .1f;
 
         public DamageResistPowerUp()
         {
@@ -14,12 +14,12 @@ namespace PowerUps
         public override void ApplyPowerUp()
         {
             base.ApplyPowerUp();
-            PlayerStats.Instance.ScaleDamageResistanceModifier(scalar);
+            PlayerStats.Instance.UpdateDamageResistanceModifier(summand);
         }
 
         public override void RepealPowerUp()
         {
-            PlayerStats.Instance.ScaleDamageResistanceModifier(scalar);
+            PlayerStats.Instance.UpdateDamageResistanceModifier(-summand);
         }
     }
 }
