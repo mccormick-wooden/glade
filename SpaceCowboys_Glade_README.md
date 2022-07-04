@@ -91,6 +91,7 @@ ii. How to play and what parts of the level to observe technology requirements
 - Implement a start menu GUI.
 - Implement in-game pause menu with ability to quit game
 - Ability to exit software at any time
+- Transitions between scenes should be done aesthetically
 
 ## Known Problem Areas
 *Requirement from assignment pdf:*
@@ -138,6 +139,7 @@ each team member contributed to code written
 - Damage / Combat framework
 - Story introduction crawl
 - Tutorial
+- Scene Transitions
 
 #### Daniel Zuniga
 - Camera
@@ -207,6 +209,7 @@ To regenerate tree for new files:
 │   ├── NewGameStateManager.cs - *(mwooden3)*
 │   ├── PauseMenuManager.cs - *(mwooden3)*
 │   └── TrainingStateManager.cs - *(mwooden3)*
+│   └── TriggerPlane.cs - *(mwooden3)*
 ├── HealthBarController.cs - *(daniel.zuniga, eric.gilligan, mwooden3)*
 ├── Helper
 │   ├── AnimationEventDispatcher.cs - ([from StackOverflow](https://gamedev.stackexchange.com/questions/117423/unity-detect-animations-end))
