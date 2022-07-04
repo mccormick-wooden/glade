@@ -31,13 +31,15 @@ public class EnemySpawner : MonoBehaviour
     private float minTimeBetweenSpawnsSeconds;
 
     [SerializeField]
-    private BeaconManager beaconManager;
+    private BeaconSpawner beaconSpawner;
 
     // Start is called before the first frame update
     void Start()
     {
         spawnActive = true;
         lastSpawnTime = DateTime.Now;
+        if (beaconSpawner != null)
+            beaconSpawner.NewBeaconLanded += NewBeaconEventHandler;
     }
 
     // Update is called once per frame
@@ -137,13 +139,17 @@ public class EnemySpawner : MonoBehaviour
         return false;
     }
 
-    public void NewBeaconEventHandler(Beacons.BeaconManager beaconManager, GameObject crashedBeacon)
+    public void NewBeaconEventHandler(Beacons.BeaconSpawner beaconSpawner, GameObject crashedBeacon)
     {
         beacons.Add(crashedBeacon);
+        IDamageable beaconDamageModel = crashedBeacon.GetComponent<IDamageable>();
+        if (beaconDamageModel != null)
+            beaconDamageModel.Died += BeaconDeathEventHandler;
     }
 
     public void BeaconDeathEventHandler(IDamageable damageModel, string name, int instanceId)
     {
+        damageModel.Died -= BeaconDeathEventHandler;
         GameObject deadBeacon = beacons.Find(delegate (GameObject beacon)
            {
                return beacon.GetInstanceID() == instanceId;
