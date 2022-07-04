@@ -99,6 +99,7 @@ iii. Known problem areas
 ```
 - Player slides around, no root motion
 - Defending (LB) doesn't do anything
+- Incidental sword collisions cause damage even if player hasn't attacked.
 - Others??
 
 ## Manifest
@@ -244,7 +245,7 @@ The entirety of the 3rd Party assets that are in use are contained in `Assets/3r
 - [Polygonal Metalon](https://assetstore.unity.com/packages/3d/characters/creatures/meshtint-free-polygonal-metalon-151383) - Used for "Boss" character
 - [Toby Fredson](need link) - No idea
 - [BizulkaProduction](need link) - No idea
-- (where are crystals from?)
+- [SineVFX - Transluscent Crystals](https://assetstore.unity.com/packages/3d/environments/fantasy/translucent-crystals-106274)
 
 
 ## Internal Team Documentation
