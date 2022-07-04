@@ -16,14 +16,7 @@ namespace Assets.Scripts.Abstract
         [SerializeField]
         private float maxHp = 100;
 
-        [SerializeField]
-        private bool isHealable = false;
-
-        public bool IsHealable
-        {
-            get => isHealable;
-            protected set => isHealable = value;
-        }
+        public bool IsHealable { get; set; }
 
         public float CurrentHp
         {
@@ -59,9 +52,20 @@ namespace Assets.Scripts.Abstract
             }
         }
 
+        public void HandleAttack(IWeapon attackingWeapon)
+        {
+            ApplyDamage(attackingWeapon);
+
+            if (healthBarController != null)
+                healthBarController.CurrentHp = CurrentHp;
+
+            if (!HasHp)
+                Die();
+        }
+
         public virtual void Damage(float damageAmount)
         {
-            ApplyRawDamage(damageAmount);
+            ApplyDamage(damageAmount);
         }
 
         public Action<IDamageable, string, int> Died { get; set; }
@@ -90,17 +94,6 @@ namespace Assets.Scripts.Abstract
                 HandleAttack(other.GetComponent<BaseWeapon>());
         }
 
-        protected void HandleAttack(BaseWeapon attackingWeapon)
-        {
-            ApplyDamage(attackingWeapon);
-
-            if (healthBarController != null)
-                healthBarController.CurrentHp = CurrentHp;
-
-            if (!HasHp)
-                Die();
-        }
-
         protected virtual bool ShouldHandleCollisionAsAttack(Collider other)
         {
             var attackingWeapon = other.GetComponent<BaseWeapon>();
@@ -111,7 +104,7 @@ namespace Assets.Scripts.Abstract
             return attackingWeapon.InUse && HasHp && isWeaponTarget;
         }
 
-        protected virtual void ApplyRawDamage(float damage)
+        protected virtual void ApplyDamage(float damage)
         {
             var newHp = Mathf.Max(CurrentHp - damage, 0f);
             Debug.Log(
@@ -120,9 +113,9 @@ namespace Assets.Scripts.Abstract
             CurrentHp = newHp;
         }
 
-        protected virtual void ApplyDamage(BaseWeapon attackingWeapon)
+        protected virtual void ApplyDamage(IWeapon attackingWeapon)
         {
-            ApplyRawDamage(attackingWeapon.AttackDamage);
+            ApplyDamage(attackingWeapon.AttackDamage);
         }
 
         /// <summary>

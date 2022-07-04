@@ -19,8 +19,8 @@ public class CrystalHealEffect : BaseCrystalEffect
             "IDamageable",
             $"Requires some sort of damageable such that {name} can be healed.");
 
-        if (null != health && !health.IsHealable)
-            Debug.LogError("Attached IDamageable must be marked healable.");
+        if (health != null)
+            health.IsHealable = true;
     }
 
     private void Heal()

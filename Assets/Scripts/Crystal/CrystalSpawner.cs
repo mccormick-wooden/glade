@@ -1,16 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Beacons;
 
-[RequireComponent(typeof(CrystalController))]
 public class CrystalSpawner : MonoBehaviour
 {
     [SerializeField]
     private GameObject crystalPrefab;
 
     public float minSpawnDistance = 3f;
-    public float maxSpawnDistance = 20f;
+    public float maxSpawnDistance = 10f;
+    public float maxSpawnSlopeDeg = 20f;
+    public float maxSpawnHeightDelta = 5f;
 
     [Tooltip("Min time between spawns")]
     [SerializeField]
@@ -57,16 +55,51 @@ public class CrystalSpawner : MonoBehaviour
         return spawnPoint;
     }
 
-    private Vector3 findValidSpawnPoint()
+    private bool isValidSpawnPoint(Vector3 position)
     {
-        Vector3 position = generateRandomSpawnPoint();
+        bool isValid = true;
+
+        // Check for physics collisions at location
         if (Physics.CheckSphere(position, spawnColliderRadius))
         {
             Debug.Log($"{name}: Attempted to spawn at {position}, but failed due to predicted collision.");
-            return Vector3.zero;
+            isValid = false;
         }
 
-        return position;
+        // Check for high sloped terrain
+        // TODO: There's probably a better way to do this:
+        // Get 2D terrain position
+        Terrain terrain = Terrain.activeTerrain;
+        Vector3 terrainPos3 = position - terrain.transform.position;
+        Vector2 terrainPos = new Vector2(terrainPos3.x, terrainPos3.z);
+        // Determine slope at position
+        TerrainData terrainData = terrain.terrainData;
+        Vector2 terrainSize = new Vector2(terrainData.size.x, terrainData.size.y);
+        Vector2 normPos = terrainPos / terrainSize;
+        float slope = terrainData.GetSteepness(normPos.x, normPos.y);
+        if (slope > maxSpawnSlopeDeg)
+        {
+            Debug.Log($"{name}: Attempted to spawn at {position}, but failed because slope is {slope}deg (max {maxSpawnSlopeDeg}).");
+            isValid = false;
+        }
+
+        // Check for height difference
+        if (Mathf.Abs(position.y - transform.position.y) > maxSpawnHeightDelta)
+        {
+            Debug.Log($"{name}: Attempted to spawn at {position}, but failed because height difference is too great.");
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    private Vector3 findValidSpawnPoint()
+    {
+        Vector3 position = generateRandomSpawnPoint();
+        if (isValidSpawnPoint(position))
+            return position;
+        else
+            return Vector3.zero;
     }
 
     // Update is called once per frame

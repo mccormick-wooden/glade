@@ -27,7 +27,8 @@ public class CrystalDamageEffect : BaseCrystalEffect
         {
             Debug.Log($"{name} taking damage from {crystal.Key}");
             float multiplier = crystal.Value;
-            health.Damage(hpPerSecond * multiplier);
+            CrystalWeapon crystalWeapon = new CrystalWeapon(hpPerSecond * crystal.Value);
+            health.HandleAttack(crystalWeapon);
         }
     }
 

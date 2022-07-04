@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Abstract;
+﻿using Assets.Scripts.Interfaces;
+using Assets.Scripts.Abstract;
 using UnityEngine;
 
 namespace Assets.Scripts.Damageable
@@ -27,7 +28,7 @@ namespace Assets.Scripts.Damageable
                 Debug.LogError($"{gameObject.name}.{GetType().Name}.{nameof(animator)} is null.");
         }
 
-        protected override void ApplyDamage(BaseWeapon attackingWeapon)
+        protected override void ApplyDamage(IWeapon attackingWeapon)
         {
             animator.SetTrigger(applyDamageAnimTrigger);
             base.ApplyDamage(attackingWeapon);
