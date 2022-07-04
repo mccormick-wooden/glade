@@ -5,8 +5,8 @@ using System;
 [RequireComponent(typeof(CinemachineBrain))]
 public class CameraBlendEventDispatcher : MonoBehaviour
 {
-    public static Action<ICinemachineCamera> CameraBlendStarted;
-    public static Action<ICinemachineCamera> CameraBlendCompleted;
+    public Action<ICinemachineCamera> CameraBlendStarted;
+    public Action<ICinemachineCamera> CameraBlendCompleted;
 
     private CinemachineBrain cineMachineBrain;
 

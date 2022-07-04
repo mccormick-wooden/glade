@@ -555,18 +555,28 @@ public class Player : MonoBehaviour
     }
     */
 
+    public bool ControlsEnabled => controls.Gameplay.enabled;
+
     /// <summary>
-    /// Take away any of these instructions and watch the world burn
+    /// External API to update control state
     /// </summary>
     /// <param name="isEnabled"></param>
-    public void UpdateControlStateGracefully(bool enableControlState)
+    public void UpdateControlState(bool enableControlState)
     {
-        animator.SetFloat("Speed", 0f);
-        horizontalInput = 0;
-        verticalInput = 0;
         if (enableControlState)
             controls.Gameplay.Enable();
         else
             controls.Gameplay.Disable();
+    }
+
+    /// <summary>
+    /// External API to halt animation motion
+    /// TODO: replace with some kind of graceful slowdown eventually
+    /// </summary>
+    public void StopAnimMotion()
+    {
+        animator.SetFloat("Speed", 0f);
+        horizontalInput = 0;
+        verticalInput = 0;
     }
 }

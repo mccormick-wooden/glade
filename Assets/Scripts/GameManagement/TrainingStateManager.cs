@@ -31,6 +31,7 @@ public class TrainingStateManager : BaseStateManager
     private GameObject playerModel;
     private Vector3 playerModelStartingPos;
     private Player playerScript;
+    private CameraBlendEventDispatcher cameraBlendEventDispatcher;
 
     /// <summary>
     /// The triggerPlaneGameObjectName must be the name of an object with a TriggerPlane behavior
@@ -65,9 +66,12 @@ public class TrainingStateManager : BaseStateManager
         Utility.LogErrorIfNull(playerModel, nameof(playerModel));
         playerModelStartingPos = playerModel.transform.position;
 
+        cameraBlendEventDispatcher = playerModel.transform.parent.GetComponentInChildren<CameraBlendEventDispatcher>();
+        Utility.LogErrorIfNull(cameraBlendEventDispatcher, nameof(cameraBlendEventDispatcher), "Need a camera blend event dispatcher somewhere");
+        
         playerScript = playerModel.GetComponent<Player>();
         Utility.LogErrorIfNull(playerScript, nameof(playerScript));
-        playerScript.UpdateControlStateGracefully(enableControlState: false); // Don't allow control on scene start
+        UpdateControlStateGracefully(enableControlState: false); // Don't allow control on scene start
 
         outOfBoundsTriggerPlane = GameObject.Find(triggerPlaneGameObjectName)?.GetComponentInChildren<TriggerPlane>();
         Utility.LogErrorIfNull(outOfBoundsTriggerPlane, nameof(outOfBoundsTriggerPlane));
@@ -75,8 +79,8 @@ public class TrainingStateManager : BaseStateManager
 
         #region event subscriptions
         outOfBoundsTriggerPlane.PlaneTriggered += OnOutOfBoundsPlaneTriggered;
-        CameraBlendEventDispatcher.CameraBlendStarted += OnCameraBlendStarted;
-        CameraBlendEventDispatcher.CameraBlendCompleted += OnCameraBlendCompleted;
+        cameraBlendEventDispatcher.CameraBlendStarted += OnCameraBlendStarted;
+        cameraBlendEventDispatcher.CameraBlendCompleted += OnCameraBlendCompleted;
         #endregion
 
         InvokeRepeating("testswitchcamera", 1f, 5f);
@@ -85,8 +89,10 @@ public class TrainingStateManager : BaseStateManager
     protected override void OnSceneUnloaded()
     {
         outOfBoundsTriggerPlane.PlaneTriggered -= OnOutOfBoundsPlaneTriggered;
-        CameraBlendEventDispatcher.CameraBlendStarted -= OnCameraBlendStarted;
-        CameraBlendEventDispatcher.CameraBlendCompleted -= OnCameraBlendCompleted;
+        cameraBlendEventDispatcher.CameraBlendStarted -= OnCameraBlendStarted;
+        cameraBlendEventDispatcher.CameraBlendCompleted -= OnCameraBlendCompleted;
+
+        CancelInvoke();
     }
 
     private void OnOutOfBoundsPlaneTriggered()
@@ -97,13 +103,20 @@ public class TrainingStateManager : BaseStateManager
     private void OnCameraBlendStarted(ICinemachineCamera activeCamera)
     {
         if (activeCamera.Name == trainingHostVirtualCameraName)
-            playerScript.UpdateControlStateGracefully(enableControlState: false);
+            UpdateControlStateGracefully(enableControlState: false);
     }
 
     private void OnCameraBlendCompleted(ICinemachineCamera activeCamera)
     {
         if (activeCamera.Name == playerCameraName)
-            playerScript.UpdateControlStateGracefully(enableControlState: true);
+            UpdateControlStateGracefully(enableControlState: true);
+    }
+
+    private void UpdateControlStateGracefully(bool enableControlState)
+    {
+        if (!enableControlState)
+            playerScript.StopAnimMotion();
+        playerScript.UpdateControlState(enableControlState);
     }
 
     private void testswitchcamera()

@@ -41,12 +41,17 @@ public class PauseMenuManager : MonoBehaviour
 
     public bool IsPaused => canvasGroup.interactable;
 
+    private bool playerPrePauseState = true;
+
+    private bool cameraPrePauseState = true;
+
     private void Awake()
     {
         unPauseableStates = new GameState[] { GameState.Invalid, GameState.MainMenu };
         pauseBackgroundAudioStates = new GameState[] { GameState.NewGame };
 
         controls = new CharacterPlayerControls();
+        controls.Gameplay.Disable(); // We don't need the Gameplay mapping in this manager
 
         canvasGroup = GetComponent<CanvasGroup>();
         Utility.LogErrorIfNull(canvasGroup, nameof(pauseCanvas));
@@ -109,8 +114,19 @@ public class PauseMenuManager : MonoBehaviour
         canvasGroup.blocksRaycasts = areWePausing;
         canvasGroup.interactable = areWePausing;
 
-        if (player != null) player.enabled = !areWePausing;
-        if (playerCamera != null) playerCamera.enabled = !areWePausing;
+        if (player != null)
+        {
+            if (areWePausing)
+            {
+                playerPrePauseState = player.ControlsEnabled;
+                player.UpdateControlState(false);
+            }
+            else
+            {
+                player.UpdateControlState(playerPrePauseState);
+            }
+        }
+
 
         if (areWePausing && !TimeScaleToggle.IsTimePaused || !areWePausing && TimeScaleToggle.IsTimePaused)
             TimeScaleToggle.Toggle();
