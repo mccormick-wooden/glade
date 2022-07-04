@@ -78,7 +78,6 @@ public class CrystalSpawner : MonoBehaviour
             if (timeSinceSpawn >= minSpawnDelta)
             {
                 float spawnValue = Random.value;
-                Debug.Log($"{name} Spawn Value: {spawnValue} <= {spawnChancePerSecond * Time.deltaTime}.");
                 if (spawnValue <= (spawnChancePerSecond * Time.deltaTime))
                 {
                     Debug.Log($"{name} attempting spawn.");
