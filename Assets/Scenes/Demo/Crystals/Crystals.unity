@@ -679,7 +679,6 @@ MonoBehaviour:
   beaconSpawner: {fileID: 0}
   startingSearchRadius: 6
   searchIncreaseFactor: 2
-  spawnPoints: []
 --- !u!4 &1185447613
 Transform:
   m_ObjectHideFlags: 0
@@ -791,7 +790,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerSpeed: 5
-  crystalToKill: {fileID: 795251615}
+  crystalManager: {fileID: 1185447612}
 --- !u!54 &1640573784
 Rigidbody:
   m_ObjectHideFlags: 0
