@@ -84,11 +84,7 @@ namespace DigitalRuby.PyroParticles
         {
             return FindObjectsOfType<CrashedBeacon>()
                 .Select(beacon => Vector3.Distance(landingSpotPosition, beacon.transform.position))
-                .Any(distance =>
-                {
-                    Debug.Log(distance);
-                    return distance <= minDistanceBetweenCrashedBeacons;
-                });
+                .Any(distance => distance <= minDistanceBetweenCrashedBeacons);
         }
 
         private Quaternion FindAppropriateProjectileRotation()
@@ -116,8 +112,6 @@ namespace DigitalRuby.PyroParticles
                         "Unable to find a suitable beacon landing spot after 100 attempts, firing straight down.");
                     return Quaternion.identity;
                 }
-
-                ;
 
                 // Pick a random direction to fly off into
                 var proposedRotation = Quaternion.Euler(Random.Range(-45, 45), Random.Range(-45, 45), 0f);
