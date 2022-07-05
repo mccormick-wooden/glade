@@ -123,9 +123,9 @@ each team member contributed to code written
 ```
 
 #### Chris Dail - cdail7
-- Player control
+- Player control / animations
 - Enemy AI
-- Player model
+- Enemy Spawning
 - Audio framework
 
 #### Eric Gilligan - eric.gilligan
@@ -167,6 +167,7 @@ To regenerate tree for new files:
 │   ├── BaseStateManager.cs - *(mwooden3, cdail7)*
 │   └── BaseWeapon.cs - *(mwooden3, cdail7)*
 ├── AngryChestBump.cs - *(mwooden3)*
+├── AOEAttack.cs - *(cdail7)*
 ├── AppEvents
 │   ├── PlayMusicEvent.cs - *(cdail7)*
 │   └── SwordSwingEvent.cs - *(cdail7)*
@@ -199,13 +200,13 @@ To regenerate tree for new files:
 │   └── DisappearDamageable.cs - *(tlagrange3, mwooden3)*
 ├── Enemy
 │   ├── DummyBeaconDefenderEnemy.cs - *(cdail7)*
+│   ├── DummyAOEAttackEnemy.cs - *(cdail7)*
 │   ├── DummyRangedAttackEnemy.cs - *(cdail7)*
 │   ├── DummySpinAttackEnemy.cs - *(cdail7)*
 │   ├── HackTestEnemy.cs - *(mwooden3)*
 │   └── SwordEnemy.cs - *(mwooden3)*
 ├── EnemySpawner.cs - *(cdail7)*
 ├── EventSound3D.cs - *(cdail7)*
-├── FootIK.cs - *(cdail7)*
 ├── GameManagement
 │   ├── EventManager.cs - (from course)
 │   ├── GameManager.cs - *(mwooden3)*
@@ -224,7 +225,6 @@ To regenerate tree for new files:
 │   ├── SceneLoader.cs - *(mwooden3)*
 │   ├── TimeScaleToggle.cs - *(mwooden3)*
 │   └── Utility.cs - *(mwooden3)*
-├── IKFootPlacement.cs - *(cdail7)*
 ├── Interfaces
 │   ├── IDamageable.cs - *(mwooden3)*
 │   ├── IDevCommand.cs - *(mwooden3)*

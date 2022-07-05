@@ -2,13 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DummyRangedAttackEnemy : BaseEnemy
+public class DummyAOEAttackEnemy : BaseEnemy
 {
     [SerializeField]
-    private GameObject arrowPrefab;
-
-    [SerializeField]
-    private float arrowForce;
+    GameObject aoeAttackPrefab;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -17,14 +14,14 @@ public class DummyRangedAttackEnemy : BaseEnemy
 
         isAttacking = false;
 
-        attackDelayTimeSeconds = 2.0f;
+        attackDelayTimeSeconds = 10.0f;
 
         desireToAttackPlayer = 4f;
         desireToDefendBeacon = 1f;
         desireToRunAndHeal = 4f; // easy to scare off
         desireToHealOthers = 0f;
 
-        autoAttackPlayerDistanceToBeacon = 3f;
+        autoAttackPlayerDistanceToBeacon = 3f;        
     }
 
     // Update is called once per frame
@@ -34,10 +31,19 @@ public class DummyRangedAttackEnemy : BaseEnemy
 
         if (isAttacking)
         {
-            ShootArrow();
+            DoAOEAttack();
         }
     }
 
+    void DoAOEAttack()
+    {
+        //GameObject aoeAttack = Instantiate(aoeAttackPrefab, Player.transform.position, Player.transform.rotation, transform);
+        GameObject aoeAttack = Instantiate(aoeAttackPrefab);
+        aoeAttack.transform.position = Player.transform.position;
+        isAttacking = false;
+    }
+
+    /*
     void ShootArrow()
     {
         GameObject arrow = Instantiate(arrowPrefab, transform);
@@ -58,4 +64,5 @@ public class DummyRangedAttackEnemy : BaseEnemy
         rb.AddForce(arrowForce * -v, ForceMode.Impulse);
         isAttacking = false;
     }
+    */
 }

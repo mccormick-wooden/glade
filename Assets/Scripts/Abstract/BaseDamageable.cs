@@ -75,8 +75,25 @@ namespace Assets.Scripts.Abstract
 
         protected virtual void OnTriggerEnter(Collider other)
         {
-            if (ShouldHandleCollisionAsAttack(other))
-                HandleAttack(other.GetComponent<BaseWeapon>());
+            var attackingWeapon = other.GetComponent<BaseWeapon>();
+
+            if (!attackingWeapon || attackingWeapon.isDPSType)
+                return;
+
+            if (ShouldHandleCollisionAsAttack(attackingWeapon))
+                HandleAttack(attackingWeapon);
+        }
+
+        protected virtual void OnTriggerStay(Collider other)
+        {
+            var attackingWeapon = other.GetComponent<BaseWeapon>();
+
+            if (!attackingWeapon)
+                return;
+
+            // short circuit on AOEType to get out quick if not AOE
+            if (attackingWeapon && attackingWeapon.isDPSType && ShouldHandleCollisionAsAttack(attackingWeapon))
+                HandleAttack(attackingWeapon);
         }
 
         protected void HandleAttack(BaseWeapon attackingWeapon)
@@ -90,21 +107,21 @@ namespace Assets.Scripts.Abstract
                 Die();
         }
 
-        protected virtual bool ShouldHandleCollisionAsAttack(Collider other)
+        protected virtual bool ShouldHandleCollisionAsAttack(BaseWeapon attackingWeapon)
         {
-            var attackingWeapon = other.GetComponent<BaseWeapon>();
-            if (attackingWeapon == null)
-                return false;
-
             bool isWeaponTarget = attackingWeapon.TargetTags.Contains(transform.tag);
             return attackingWeapon.InUse && HasHp && isWeaponTarget;
         }
 
         protected virtual void ApplyDamage(BaseWeapon attackingWeapon)
         {
-            var newHp = Mathf.Max(CurrentHp - attackingWeapon.AttackDamage, 0f);
+            float damage = attackingWeapon.AttackDamage;
+            if (attackingWeapon.isDPSType)
+                damage *= Time.deltaTime;
+
+            var newHp = Mathf.Max(CurrentHp - damage, 0f);
             Debug.Log(
-                $"Applying damage to {gameObject.name}: currentHp = {CurrentHp}, damage = {attackingWeapon.AttackDamage}, newHp = {newHp}"
+                $"Applying damage to {gameObject.name}: currentHp = {CurrentHp}, damage = {damage}, newHp = {newHp}"
             );
             CurrentHp = newHp;
         }

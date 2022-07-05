@@ -8,6 +8,9 @@ namespace Assets.Scripts.Abstract
         [SerializeField]
         protected float attackDamage;
 
+        [SerializeField]
+        public bool isDPSType { get; protected set; } = false;
+
         public string[] TargetTags;
         
         public virtual float AttackDamage
