@@ -16,6 +16,8 @@ Team Members
     - [Controls](#controls)
     - [Game Requirements Achieved](#game-requirements-achieved)
   - [Known Problem Areas](#known-problem-areas)
+    - [General](#general)
+    - [Training Scene](#training-scene)
   - [Manifest](#manifest)
     - [Features / Non-Script Assets](#features--non-script-assets)
       - [Chris Dail - cdail7](#chris-dail---cdail7)
@@ -98,9 +100,12 @@ ii. How to play and what parts of the level to observe technology requirements
 ```
 iii. Known problem areas
 ```
+### General
 - Player slides around, no root motion
 - Defending (LB) doesn't do anything
 - Others??
+### Training Scene
+- SwordEnemy can't do damage to player
 
 ## Manifest
 
@@ -134,11 +139,11 @@ each team member contributed to code written
 
 #### McCormick Wooden - mwooden3
 - Menus - Main Menu + Pause Menu
+- Story introduction crawl
+- Tutorial / Training scene
 - Game state management
 - Win / Loss conditions
 - Damage / Combat framework
-- Story introduction crawl
-- Tutorial
 - Scene Transitions
 
 #### Daniel Zuniga
@@ -227,6 +232,8 @@ To regenerate tree for new files:
 │   └── IWeapon.cs - *(mwooden3)*
 ├── Movement
 │   └── CameraRelativeRootMovement.cs - *(cdail7)*
+├── NPC
+│   └── TreeSpirit.cs - *(mwooden3)*
 ├── Player.cs - *(cdail7, eric.gilligan, tlagrange3, mwooden3, Daniel Zuniga)*
 ├── PlayerControls.cs - *(cdail7)*
 ├── Shield.cs - *(cdail7)*
