@@ -7,7 +7,6 @@ namespace PlayerBehaviors
     [RequireComponent(typeof(Player))]
     public class PlayerDamageable : DisappearDamageable
     {
-
         protected override void Start()
         {
             base.Start();

@@ -158,7 +158,7 @@ public class PauseMenuManager : MonoBehaviour
     {
         // Ideally the interaction with the power up menu is a state unto itself
         // For now it's (active!) presence signals we are interacting with that menu
-        return unPauseableStates.Any(s => s == GameManager.State) || FindObjectOfType<PowerUpMenu>();
+        return unPauseableStates.Any(s => s == GameManager.instance.State) || FindObjectOfType<PowerUpMenu>();
     }
 
     private bool IsPauseBackgroundAudioState()
