@@ -20,7 +20,6 @@ public class SwordEnemy : BaseEnemy
         desireToHealOthers = 0f;
 
         autoAttackPlayerDistanceToBeacon = 5f;
-        minTimeToPriorityChanges = 5f;
     }
 
     // Update is called once per frame

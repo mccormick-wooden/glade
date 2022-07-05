@@ -511,4 +511,29 @@ public class Player : MonoBehaviour
         
     }
     */
+
+    public bool ControlsEnabled => controls.Gameplay.enabled;
+
+    /// <summary>
+    /// External API to update control state
+    /// </summary>
+    /// <param name="isEnabled"></param>
+    public void UpdateControlState(bool enableControlState)
+    {
+        if (enableControlState)
+            controls.Gameplay.Enable();
+        else
+            controls.Gameplay.Disable();
+    }
+
+    /// <summary>
+    /// External API to halt animation motion
+    /// TODO: replace with some kind of graceful slowdown eventually
+    /// </summary>
+    public void StopAnimMotion()
+    {
+        animator.SetFloat("Speed", 0f);
+        horizontalInput = 0;
+        verticalInput = 0;
+    }
 }

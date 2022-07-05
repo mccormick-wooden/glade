@@ -16,6 +16,8 @@ Team Members
     - [Controls](#controls)
     - [Game Requirements Achieved](#game-requirements-achieved)
   - [Known Problem Areas](#known-problem-areas)
+    - [General](#general)
+    - [Training Scene](#training-scene)
   - [Manifest](#manifest)
     - [Features / Non-Script Assets](#features--non-script-assets)
       - [Chris Dail - cdail7](#chris-dail---cdail7)
@@ -91,15 +93,19 @@ ii. How to play and what parts of the level to observe technology requirements
 - Implement a start menu GUI.
 - Implement in-game pause menu with ability to quit game
 - Ability to exit software at any time
+- Transitions between scenes should be done aesthetically
 
 ## Known Problem Areas
 *Requirement from assignment pdf:*
 ```
 iii. Known problem areas
 ```
+### General
 - Player slides around, no root motion
 - Defending (LB) doesn't do anything
 - Others??
+### Training Scene
+- SwordEnemy can't do damage to player
 
 ## Manifest
 
@@ -117,9 +123,9 @@ each team member contributed to code written
 ```
 
 #### Chris Dail - cdail7
-- Player control
+- Player control / animations
 - Enemy AI
-- Player model
+- Enemy Spawning
 - Audio framework
 
 #### Eric Gilligan - eric.gilligan
@@ -133,11 +139,12 @@ each team member contributed to code written
 
 #### McCormick Wooden - mwooden3
 - Menus - Main Menu + Pause Menu
+- Story introduction crawl
+- Tutorial / Training scene
 - Game state management
 - Win / Loss conditions
 - Damage / Combat framework
-- Story introduction crawl
-- Tutorial
+- Scene Transitions
 
 #### Daniel Zuniga
 - Camera
@@ -161,6 +168,7 @@ To regenerate tree for new files:
 │   ├── BaseStateManager.cs - *(mwooden3, cdail7)*
 │   └── BaseWeapon.cs - *(mwooden3, cdail7, tlagrange3)*
 ├── AngryChestBump.cs - *(mwooden3)*
+├── AOEAttack.cs - *(cdail7)*
 ├── AppEvents
 │   ├── PlayMusicEvent.cs - *(cdail7)*
 │   └── SwordSwingEvent.cs - *(cdail7)*
@@ -193,13 +201,13 @@ To regenerate tree for new files:
 │   └── DisappearDamageable.cs - *(tlagrange3, mwooden3)*
 ├── Enemy
 │   ├── DummyBeaconDefenderEnemy.cs - *(cdail7)*
+│   ├── DummyAOEAttackEnemy.cs - *(cdail7)*
 │   ├── DummyRangedAttackEnemy.cs - *(cdail7)*
 │   ├── DummySpinAttackEnemy.cs - *(cdail7)*
 │   ├── HackTestEnemy.cs - *(mwooden3)*
 │   └── SwordEnemy.cs - *(mwooden3)*
 ├── EnemySpawner.cs - *(cdail7)*
 ├── EventSound3D.cs - *(cdail7)*
-├── FootIK.cs - *(cdail7)*
 ├── GameManagement
 │   ├── EventManager.cs - (from course)
 │   ├── GameManager.cs - *(mwooden3)*
@@ -208,22 +216,23 @@ To regenerate tree for new files:
 │   ├── NewGameStateManager.cs - *(mwooden3)*
 │   ├── PauseMenuManager.cs - *(mwooden3, tlagrange3)*
 │   └── TrainingStateManager.cs - *(mwooden3)*
+│   └── TriggerPlane.cs - *(mwooden3)*
 ├── HealthBarController.cs - *(daniel.zuniga, eric.gilligan, mwooden3, tlagrange3)*
 ├── Helper
-│   ├── AnimationEventDispatcher.cs - ([from StackOverflow](https://gamedev.stackexchange.com/questions/117423/unity-detect-animations-end))
+│   ├── AnimationEventDispatcher.cs - *(mwooden3, [inspired by StackOverflow](https://gamedev.stackexchange.com/questions/117423/unity-detect-animations-end))*
+│   ├── CameraBlendEventDispatcher.cs *(mwooden3, [inspired by thread](https://forum.unity.com/threads/oncameratransition-onblendcomplete-event.520056/))*
 │   ├── DontDestroyThisOnLoad.cs - *(mwooden3)*
 │   ├── Quitter.cs - *(mwooden3)*
 │   ├── SceneLoader.cs - *(mwooden3)*
 │   ├── TimeScaleToggle.cs - *(mwooden3)*
 │   └── Utility.cs - *(mwooden3)*
-├── IKFootPlacement.cs - *(cdail7)*
 ├── Interfaces
 │   ├── IDamageable.cs - *(mwooden3)*
 │   ├── IDevCommand.cs - *(mwooden3)*
 │   ├── IDevCommandResult.cs - *(mwooden3)*
 │   └── IWeapon.cs - *(mwooden3)*
-├── Movement
-│   └── CameraRelativeRootMovement.cs - *(tlagrange3)*
+├── NPC
+│   └── TreeSpirit.cs - *(mwooden3)*
 ├── Player.cs - *(cdail7, eric.gilligan, tlagrange3, mwooden3, Daniel Zuniga)*
 ├── PlayerBehaviors
 │   ├── PlayerDamageable.cs - *(tlagrange3)*

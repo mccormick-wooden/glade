@@ -72,8 +72,33 @@ namespace Assets.Scripts.Abstract
 
         protected virtual void OnTriggerEnter(Collider other)
         {
-            if (ShouldHandleCollisionAsAttack(other))
-                HandleAttack(other.GetComponent<BaseWeapon>());
+            var attackingWeapon = other.GetComponent<BaseWeapon>();
+
+            if (!attackingWeapon || attackingWeapon.isDPSType)
+            {
+                return;
+            }
+
+            if (ShouldHandleCollisionAsAttack(attackingWeapon))
+            {
+                HandleAttack(attackingWeapon);
+            }
+        }
+
+        protected virtual void OnTriggerStay(Collider other)
+        {
+            var attackingWeapon = other.GetComponent<BaseWeapon>();
+
+            if (!attackingWeapon)
+            {
+                return;
+            }
+
+            // short circuit on AOEType to get out quick if not AOE
+            if (attackingWeapon && attackingWeapon.isDPSType && ShouldHandleCollisionAsAttack(attackingWeapon))
+            {
+                HandleAttack(attackingWeapon);
+            }
         }
 
         protected void HandleAttack(BaseWeapon attackingWeapon)
@@ -87,12 +112,8 @@ namespace Assets.Scripts.Abstract
                 Die();
         }
 
-        protected virtual bool ShouldHandleCollisionAsAttack(Collider other)
+        protected virtual bool ShouldHandleCollisionAsAttack(BaseWeapon attackingWeapon)
         {
-            var attackingWeapon = other.GetComponent<BaseWeapon>();
-            if (attackingWeapon == null)
-                return false;
-
             bool isWeaponTarget = attackingWeapon.TargetTags.Contains(transform.tag);
             return attackingWeapon.InUse && HasHp && isWeaponTarget;
         }
@@ -100,6 +121,11 @@ namespace Assets.Scripts.Abstract
         protected virtual void ApplyDamage(BaseWeapon attackingWeapon, float modifier = 1f)
         {
             var netAttackDamage = attackingWeapon.AttackDamage * modifier;
+            if (attackingWeapon.isDPSType)
+            {
+                netAttackDamage *= Time.deltaTime;
+            }
+
             var newHp = Mathf.Max(CurrentHp - netAttackDamage, 0f);
             Debug.Log(
                 $"Applying damage to {gameObject.name}: currentHp = {CurrentHp}, damage = {netAttackDamage}, newHp = {newHp}"

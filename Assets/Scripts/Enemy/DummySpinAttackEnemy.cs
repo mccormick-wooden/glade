@@ -21,13 +21,12 @@ public class DummySpinAttackEnemy : BaseEnemy
         degreesPerAttack = 360;
         degreesPerSecond = degreesPerAttack;
 
-        desireToAttackPlayer = 4f;  //0.75f;
-        desireToDefendBeacon = 4f;  //0.125f;
-        desireToRunAndHeal = 1f;    //0.125f;
+        desireToAttackPlayer = 4f;  
+        desireToDefendBeacon = 2f; 
+        desireToRunAndHeal = 1f;  
         desireToHealOthers = 0f;
 
         autoAttackPlayerDistanceToBeacon = 5f;
-        minTimeToPriorityChanges = 5f;
     }
 
     // Update is called once per frame

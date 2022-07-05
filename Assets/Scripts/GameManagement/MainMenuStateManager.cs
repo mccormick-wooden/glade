@@ -12,7 +12,7 @@ public class MainMenuStateManager : BaseStateManager
 
     protected override void OnSceneLoaded()
     {
-        Utility.AddButtonCallback(mainNewGameRootName, () => GameManager.UpdateGameState(GameState.NewGame));
+        Utility.AddButtonCallback(mainNewGameRootName, () => GameManager.instance.UpdateGameState(GameState.NewGame));
         Utility.AddButtonCallback(mainExitRootName, () => Quitter.QuitGame());
         GameObject.Find(mainNewGameRootName).GetComponentInChildren<Button>().Select();
     }

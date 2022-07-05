@@ -9,6 +9,8 @@ namespace Assets.Scripts.Interfaces
         float CurrentHp { get; }
         bool HasHp { get; }
         bool IsDead { get; }
+        void Heal(float healAmount);
+        bool enabled { get; set; }
         Action<IDamageable, string, int> Died { get; set; }
     }
 }

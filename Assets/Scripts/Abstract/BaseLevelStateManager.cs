@@ -120,7 +120,8 @@ public abstract class BaseLevelStateManager : BaseStateManager
     /// </summary>
     private void ReturnToMainMenu()
     {
-        GameManager.UpdateGameState(GameState.MainMenu);
+        CancelInvoke(); // YOLO
+        GameManager.instance.UpdateGameState(GameState.MainMenu);
     }
 }
 

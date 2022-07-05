@@ -22,8 +22,8 @@ TagManager:
   - GroundCheck
   - Terrain
   - FireLayer
-  - 
-  - 
+  - Player
+  - Enemy
   - 
   - 
   - 

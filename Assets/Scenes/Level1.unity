@@ -422,7 +422,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 281259820}
-  m_LocalRotation: {x: 0.20681389, y: -0.6681175, z: 0.20149773, w: 0.6857446}
+  m_LocalRotation: {x: 0.20681392, y: -0.66811746, z: 0.20149778, w: 0.6857447}
   m_LocalPosition: {x: 173.49593, y: 24.529999, z: 128.78758}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1110,8 +1110,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventSound3DPrefab: {fileID: 4439039625866004102, guid: a2f8d3d38d23eb846930e66846874d49, type: 3}
-  backgroundMusic:
-  - {fileID: 8300000, guid: f07d5ab95b4acd14b9a6847e81667f46, type: 3}
   swordSwingAudio:
   - {fileID: 8300000, guid: 0c36434e474e1e6448c828df6ffb7996, type: 3}
   - {fileID: 8300000, guid: 0c36434e474e1e6448c828df6ffb7996, type: 3}
@@ -1384,7 +1382,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1685753572}
-  m_LocalRotation: {x: 0.20681389, y: -0.6681175, z: 0.20149775, w: 0.68574464}
+  m_LocalRotation: {x: 0.20681392, y: -0.66811746, z: 0.20149776, w: 0.68574464}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1905,6 +1903,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c28f83def5e8544a295a199c3817ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movementSpeed: 10
+  rotationSmoothTime: 0.1
   slashLungeFrameLen: 15
   slashLungeTransformMultiplier: 3.5
   GameMessage: {fileID: 0}
@@ -1927,6 +1927,7 @@ MonoBehaviour:
   healthBarController: {fileID: 0}
   currentHp: 0
   maxHp: 100
+  IsHealable: 0
 --- !u!65 &2054707280
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2000,12 +2001,14 @@ MonoBehaviour:
   possibleEnemies:
   - {fileID: 3054070596095771740, guid: 215c6dd64c448a24082f00cdf1a71f39, type: 3}
   - {fileID: 3054070596095771740, guid: 7a4ef9c0599154a418f02d4787dc8642, type: 3}
+  - {fileID: 3054070596095771740, guid: 19851fefc6b596047ac08ca4256f66d9, type: 3}
   whatIsGround:
     serializedVersion: 2
     m_Bits: 128
   nominalSpawnTime: 0.005
   minTimeBetweenSpawnsSeconds: 0
   beaconManager: {fileID: 0}
+  enemySpawnParticlePrefab: {fileID: 6580212678852061256, guid: a9e0c416e588f014a880017e036105ca, type: 3}
 --- !u!1 &2132163267
 GameObject:
   m_ObjectHideFlags: 3
