@@ -80,7 +80,6 @@ public class TrainingStateManager : BaseStateManager
     private Action<ICinemachineCamera> onCameraBlendToPlayerComplete = null;
 
     // CombatStateStuff
-    //private Action onPlayerControlStarted = null;
     private Action<IDamageable, string, int> onCombatCompleted = null;
     private GameObject spawnedBeacon = null;
     private GameObject spawnedEnemy = null;
@@ -89,13 +88,13 @@ public class TrainingStateManager : BaseStateManager
 
     private Dictionary<TrainingState, List<string>> dialogueDictionary = new Dictionary<TrainingState, List<string>>
     {
-        { TrainingState.IntroDialogue, new List<string>() { "Ah, Warden of The Glades! You've arrived just in time.",
-                                                            "These gosh darn aliens are just causing the biggest ruckus.",
-                                                            "I really need you to do me a solid and clear them out of here.",
+        { TrainingState.IntroDialogue, new List<string>() { "Ah, Warden of The Glades! You've arrived just in time!",
+                                                            "These gosh darn aliens are just causing the BIGGEST ruckus!",
+                                                            "I really need you to do me a solid and clear them out of here. Couldya do that for me?",
                                                             "It looks like you brought your SWORD... Good! Do you remember how to use it? I guess it has been awhile.",
-                                                            "When you see one of those pesky ALIENS, make sure you use RB/Left Click to kill the heck out of it!",
+                                                            "When you see one of those pesky ALIENS, make sure you use RB/Left Click to swing that sucker until the alien is good and dead!",
                                                             "Same with the BEACONS! That's how the aliens are getting here I reckon.",
-                                                            "Oh crap, here comes one now! Kill any aliens before you go for the Beacon, or I think you might open yourself to serious danger!",
+                                                            "Oh crap, here comes a Beacon now! Kill any aliens before you go for the Beacon, or I think you might open yourself to serious danger!",
                                                             "But don't worry too much - I'll heal you if your health gets too low! That's what Ancient Tree Spirit friends are for!",
                                                             "Oh, one more thing... Please try not to fall off this very tall and unnecessarily dangerous mesa. Teleporting Wardens back to safety is SO tacky ya know?"}
         },
@@ -107,7 +106,7 @@ public class TrainingStateManager : BaseStateManager
                                                                        "Dang, it looks like the invasion is really getting started down there. You ready to get going? Think 45 seconds of combat training was enough?",
                                                                        "Don't answer that. Anyway, I'll go ahead and teleport you down to the invasion site so you can start clapping more aliens.",
                                                                        "Help me Obi-Warden Kenobi! You're my only hope! Good luck!!!" } 
-        }
+        } // TODO: There should be an explanation of powerups / a state here once that stuff gets merged in.
     };
 
 
@@ -224,7 +223,6 @@ public class TrainingStateManager : BaseStateManager
 
         onCameraBlendToPlayerComplete = (ICinemachineCamera camera) =>
         {
-            Debug.Log($"hit camera {camera.Name}");
             if (camera.Name == playerCameraName)
             {
                 cameraBlendEventDispatcher.CameraBlendCompleted -= onCameraBlendToPlayerComplete;
@@ -245,7 +243,7 @@ public class TrainingStateManager : BaseStateManager
         if (trainingState != TrainingState.EnemyCombat) 
             return;
 
-        spawnedBeacon = Instantiate(beaconPrefab, beaconSpawnPoint, beaconPrefab.transform.rotation); // TODO: Do this with firebolt script?
+        spawnedBeacon = Instantiate(beaconPrefab, beaconSpawnPoint, beaconPrefab.transform.rotation); // TODO: Do this with firebolt script? maybe with a fancy virtual camera follow?
         var spawnedBeaconDamageable = spawnedBeacon.GetComponent<IDamageable>();
         spawnedBeaconDamageable.enabled = false;
 
@@ -282,7 +280,7 @@ public class TrainingStateManager : BaseStateManager
     {
         if (trainingState != TrainingState.End) return;
 
-        GameManager.instance.UpdateGameState(GameState.Level1);
+        GameManager.instance.UpdateGameState(GameState.Level1); // TODO: I'd like the tree spirit to open a portal that the warden can walk through to end the scene
     }
     #endregion
 
