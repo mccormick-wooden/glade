@@ -492,11 +492,7 @@ public class BaseEnemy : MonoBehaviour
         Debug.DrawRay(topOfTransform, topToTopVector, Color.red);
         Debug.DrawRay(topOfTransform, topToCenterVector, Color.blue);
 
-        if (!topToTopHitInfo.transform || topToTopHitInfo.transform != Player.transform)
-        {
-            canSeePlayer = false;
-        }
-        else if (!topToCenterHitInfo.transform || topToCenterHitInfo.transform != Player.transform)
+        if ((!topToTopHitInfo.transform || topToTopHitInfo.transform != Player.transform) && (!topToCenterHitInfo.transform || topToCenterHitInfo.transform != Player.transform))
         {
             canSeePlayer = false;
         }

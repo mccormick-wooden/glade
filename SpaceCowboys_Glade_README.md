@@ -117,10 +117,19 @@ each team member contributed to code written
 ```
 
 #### Chris Dail - cdail7
-- Player control
+- Player control / animations
+  - Player.cs
 - Enemy AI
-- Player model
+  - BaseEnemy.cs
+  - DummyEnemyAOEAttackEnemy.cs
+  - DummyRangedAttackEnemy.cs
+  - DummySpinAttackEnemy.cs
+- Enemy Spawning
+  - EnemySpawner.cs
 - Audio framework
+  - AudioEventManager.cs
+  - PlayMusicEvent.cs
+  - SwordSwingEvent.cs
 
 #### Eric Gilligan - eric.gilligan
 - Crystals and related logic
