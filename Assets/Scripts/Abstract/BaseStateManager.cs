@@ -64,7 +64,7 @@ public abstract class BaseStateManager : MonoBehaviour
 
         enabled = false;
 
-        GameManager.OnStateChanged += GameManagerOnStateChanged;
+        GameManager.OnStateChanged += GameManagerOnStateChanged; 
         SceneManager.sceneLoaded += SceneManagerOnSceneLoaded;
         SceneManager.sceneUnloaded += SceneManagerOnSceneUnloaded;
 
@@ -112,7 +112,7 @@ public abstract class BaseStateManager : MonoBehaviour
             OnSceneLoaded();
 
             if (optionalSceneAudioClip != null)
-                GameManager.PlayLoopedAudio(optionalSceneAudioClip, sceneAudioClipNormalizedMaxVolume);
+                GameManager.instance.PlayLoopedAudio(optionalSceneAudioClip, sceneAudioClipNormalizedMaxVolume);
 
             if (debugOutput)
                 Debug.Log($"{GetType().Name}: ENABLED, {ManagedSceneName}: LOADED");
@@ -136,7 +136,7 @@ public abstract class BaseStateManager : MonoBehaviour
             enabled = false;
             OnSceneUnloaded();
 
-            GameManager.StopLoopedAudio();
+            GameManager.instance.StopLoopedAudio();
 
             if (debugOutput)
                 Debug.Log($"{GetType().Name}: DISABLED, {ManagedSceneName}: UNLOADED");

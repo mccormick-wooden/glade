@@ -24,7 +24,10 @@ public class NewGameStateManager : BaseStateManager
     {
 #if UNITY_EDITOR
         if (skipCrawl)
-            GameManager.UpdateGameState(GameState.Training);
+        {
+            skipCrawl = false;
+            GameManager.instance.UpdateGameState(GameState.Training);
+        }
 
         Time.timeScale = timeScale;
 #endif
@@ -51,6 +54,6 @@ public class NewGameStateManager : BaseStateManager
     private void OnAnimationComplete(string animation)
     {
         if (animation.Equals("NewGameCrawl", StringComparison.OrdinalIgnoreCase))
-            GameManager.UpdateGameState(GameState.Training);
+            GameManager.instance.UpdateGameState(GameState.Training);
     }
 }
