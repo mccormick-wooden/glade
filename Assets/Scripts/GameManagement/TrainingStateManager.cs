@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.Scripts.Interfaces;
 using Cinemachine;
 using UnityEngine;
 
@@ -48,6 +49,7 @@ public class TrainingStateManager : BaseStateManager
     private GameObject playerModel;
     private Vector3 playerModelStartingPos;
     private Player playerScript;
+    private IDamageable playerDamageModel;
     private CameraBlendEventDispatcher cameraBlendEventDispatcher;
 
     /// <summary>
@@ -65,11 +67,25 @@ public class TrainingStateManager : BaseStateManager
     private string dialogueCanvasName = "TreeSpiritDialogueCanvas";
     private Canvas dialogueCanvas;
 
+    [SerializeField]
+    private GameObject beaconPrefab;
+
+    [SerializeField]
+    private GameObject enemyPrefab;
+
     // DialogueStateStuff
     private List<TrainingState> dialogueStates = new List<TrainingState> { TrainingState.IntroDialogue, TrainingState.PostEnemyCombatDialogue, TrainingState.PostBeaconCombatDialogue };
     private Action<ICinemachineCamera> onCameraBlendToTrainingHostComplete = null;
     private Action onDialogueCompleted = null;
     private Action<ICinemachineCamera> onCameraBlendToPlayerComplete = null;
+
+    // CombatStateStuff
+    //private Action onPlayerControlStarted = null;
+    private Action<IDamageable, string, int> onCombatCompleted = null;
+    private GameObject spawnedBeacon = null;
+    private GameObject spawnedEnemy = null;
+    private Vector3 beaconSpawnPoint;
+    private Vector3 enemySpawnPoint;
 
     private Dictionary<TrainingState, List<string>> dialogueDictionary = new Dictionary<TrainingState, List<string>>
     {
@@ -79,11 +95,18 @@ public class TrainingStateManager : BaseStateManager
                                                             "It looks like you brought your SWORD... Good! Do you remember how to use it? I guess it has been awhile.",
                                                             "When you see one of those pesky ALIENS, make sure you use RB/Left Click to kill the heck out of it!",
                                                             "Same with the BEACONS! That's how the aliens are getting here I reckon.",
-                                                            "Oh crap, here comes one now! Kill any aliens before you go for the Beacon, or I think you might open yourself to serious danger!" }
+                                                            "Oh crap, here comes one now! Kill any aliens before you go for the Beacon, or I think you might open yourself to serious danger!",
+                                                            "But don't worry too much - I'll heal you if your health gets too low! That's what Ancient Tree Spirit friends are for!",
+                                                            "Oh, one more thing... Please try not to fall off this very tall and unnecessarily dangerous mesa. Teleporting Wardens back to safety is SO tacky ya know?"}
         },
-        { TrainingState.PostEnemyCombatDialogue, new List<string>() { "PostEnemyCombatDialogue" }
+        { TrainingState.PostEnemyCombatDialogue, new List<string>() { "Wow, you schmacked that fool!",
+                                                                      "I doubt that's the last alien we'll see - kill the Beacon before more aliens come out!",
+                                                                      "You can use your SWORD again - remember, it's RB/Left Click to swing! But I'm sure you know that by now, otherwise we're probably in trouble...."}
         },
-        {TrainingState.PostBeaconCombatDialogue, new List<string>() { "PostBeacoCombatDialogue" } 
+        { TrainingState.PostBeaconCombatDialogue, new List<string>() { "AND STAY OUT!!! Good job, Warden!",
+                                                                       "Dang, it looks like the invasion is really getting started down there. You ready to get going? Think 45 seconds of combat training was enough?",
+                                                                       "Don't answer that. Anyway, I'll go ahead and teleport you down to the invasion site so you can start clapping more aliens.",
+                                                                       "Help me Obi-Warden Kenobi! You're my only hope! Good luck!!!" } 
         }
     };
 
@@ -97,6 +120,12 @@ public class TrainingStateManager : BaseStateManager
             GameManager.instance.UpdateGameState(GameState.Level1);
         }
 #endif
+
+        if (playerDamageModel.CurrentHp < 50)
+        {
+            playerDamageModel.Heal(playerDamageModel.MaxHp - playerDamageModel.CurrentHp);
+            // TODO: Anim tree on heal
+        }
     }
 
     protected override void OnSceneLoaded()
@@ -115,6 +144,9 @@ public class TrainingStateManager : BaseStateManager
         playerScript = playerModel.GetComponent<Player>();
         Utility.LogErrorIfNull(playerScript, nameof(playerScript));
 
+        playerDamageModel = playerModel.GetComponent<IDamageable>();
+        Utility.LogErrorIfNull(playerDamageModel, nameof(playerDamageModel));
+
         outOfBoundsTriggerPlane = GameObject.Find(triggerPlaneGameObjectName)?.GetComponentInChildren<TriggerPlane>();
         Utility.LogErrorIfNull(outOfBoundsTriggerPlane, nameof(outOfBoundsTriggerPlane));
 
@@ -123,6 +155,9 @@ public class TrainingStateManager : BaseStateManager
 
         dialogueCanvas = GameObject.Find(dialogueCanvasName)?.GetComponent<Canvas>();
         Utility.LogErrorIfNull(dialogueCanvas, nameof(dialogueCanvas));
+
+        beaconSpawnPoint = GameObject.Find("BeaconSpawnPoint").transform.position;
+        enemySpawnPoint = GameObject.Find("EnemySpawnPoint").transform.position;
         #endregion
 
         #region helper event subscriptions
@@ -210,7 +245,20 @@ public class TrainingStateManager : BaseStateManager
         if (trainingState != TrainingState.EnemyCombat) 
             return;
 
-        NextTrainingState();
+        spawnedBeacon = Instantiate(beaconPrefab, beaconSpawnPoint, beaconPrefab.transform.rotation); // TODO: Do this with firebolt script?
+        var spawnedBeaconDamageable = spawnedBeacon.GetComponent<IDamageable>();
+        spawnedBeaconDamageable.enabled = false;
+
+        spawnedEnemy = Instantiate(enemyPrefab, enemySpawnPoint, enemyPrefab.transform.rotation);   // TODO: Do this on beacon land?
+        var spawnedEnemyDamageable = spawnedEnemy.GetComponent<IDamageable>();
+
+        onCombatCompleted = (IDamageable damageable, string name, int instanceId) =>
+        {
+            damageable.Died -= onCombatCompleted;
+            NextTrainingState();
+        };
+
+        spawnedEnemyDamageable.Died += onCombatCompleted;
     }
 
     private void OnTrainingStateChanged_BeaconCombat(TrainingState trainingState)
@@ -218,7 +266,16 @@ public class TrainingStateManager : BaseStateManager
         if (trainingState != TrainingState.BeaconCombat) 
             return;
 
-        NextTrainingState();
+        var beaconDamageable = spawnedBeacon.GetComponent<IDamageable>();
+        beaconDamageable.enabled = true;
+
+        onCombatCompleted = (IDamageable damageable, string name, int instanceId) =>
+        {
+            damageable.Died -= onCombatCompleted;
+            NextTrainingState();
+        };
+
+        beaconDamageable.Died += onCombatCompleted;
     }
 
     private void OnTrainingStateChanged_End(TrainingState trainingState)

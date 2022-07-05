@@ -2596,6 +2596,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7369142133607621916, guid: e857263a88f829e47819dbf3106db7ea, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9084432218350635572, guid: e857263a88f829e47819dbf3106db7ea, type: 3}
       propertyPath: m_Name
       value: Hovering Health Bar
@@ -2664,7 +2668,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 518273760588877567, guid: 31b0a14242544f443b567f6ab2b26833, type: 3}
       propertyPath: attackDamage
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 518273760588877567, guid: 31b0a14242544f443b567f6ab2b26833, type: 3}
       propertyPath: TargetTags.Array.data[0]
