@@ -43,8 +43,6 @@ public class PauseMenuManager : MonoBehaviour
 
     private bool playerPrePauseState = true;
 
-    private bool cameraPrePauseState = true;
-
     private void Awake()
     {
         unPauseableStates = new GameState[] { GameState.Invalid, GameState.MainMenu };

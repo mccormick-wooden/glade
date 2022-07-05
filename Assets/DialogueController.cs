@@ -1,9 +1,8 @@
-using UnityEngine;
-using TMPro;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System;
+using TMPro;
+using UnityEngine;
 
 public class DialogueController : MonoBehaviour
 {
@@ -27,12 +26,10 @@ public class DialogueController : MonoBehaviour
     private float interDialogueItemDelayDefaultState = 3f;
     private float interDialogueItemDelay;
 
-    private List<string> dialogueCollection;
+    [SerializeField]
+    private int maxDialogueItemLength = 170;
 
     public Action DialogueCompleted;
-
-    //private bool isActivelyWritingDialogueItem;
-    //private bool isInterDialogueItemDelay;
 
     private void Awake()
     {
@@ -41,51 +38,39 @@ public class DialogueController : MonoBehaviour
         interDialogueItemDelay = interDialogueItemDelayDefaultState;
     }
 
-    public void BeginDialogue(IEnumerable<string> dialogueCollection)
+    private void Update()
     {
-        this.dialogueCollection = new List<string>(dialogueCollection);
-        StartCoroutine(WriteDialogue());
+        // TODO: add user control of dialogue progression
     }
 
-    //// Update is called once per frame
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.Space)) // TODO - proper controller inputs
-    //    {
-    //        NextSentence();
-    //    }
-    //}
+    public void BeginDialogue(List<string> dialogueList)
+    {
+        dialogueList.ForEach(di => ValidateDialogueItem(di));
+        StartCoroutine(WriteDialogue(dialogueList));
+    }
 
-    //private void NextSentence()
-    //{
-    //    DialogueTextBox.text = string.Empty;
-    //    //StartCoroutine(WriteSentence()); 
-    //}
-
-
-    private IEnumerator WriteDialogue()
+    private IEnumerator WriteDialogue(List<string> dialogueList)
     {    
-        foreach (string dialogueItem in dialogueCollection)
+        foreach (string dialogueItem in dialogueList)
         {
-            //isInterDialogueItemDelay = false;
-
             foreach (char character in dialogueItem.ToCharArray())
             {
-                //isActivelyWritingDialogueItem = true;
-
                 DialogueTextBox.text += character;
                 yield return new WaitForSeconds(characterWriteDelay);
             }
-
-            //isActivelyWritingDialogueItem = false;
-            //isInterDialogueItemDelay = true;
 
             yield return new WaitForSeconds(interDialogueItemDelay);
             DialogueTextBox.text = string.Empty;
         }
 
-        //isActivelyWritingDialogueItem = false;
-        //isInterDialogueItemDelay = false;
         DialogueCompleted?.Invoke();
+    }
+    
+    private void ValidateDialogueItem(string dialogueItem)
+    {
+        if (dialogueItem.Length <= maxDialogueItemLength)
+            return;
+
+        Debug.LogError($"Dialogue item is too long for panel bounds. maxlen={maxDialogueItemLength}, itemlen={dialogueItem.Length}, item='{dialogueItem}'");
     }
 }

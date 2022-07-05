@@ -1,9 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 
 public class TrainingStateManager : BaseStateManager
 {
+    enum TrainingState
+    {
+        Invalid = 0,
+        IntroDialogue = 10,
+        EnemyCombat = 20,
+        PostEnemyCombatDialogue = 30,
+        BeaconCombat = 40,
+        PostBeaconCombatDialogue = 50,
+        End = 60
+    }
+
+    private TrainingState currentTrainingState;
+
+    private Action<TrainingState> trainingStateChanged;
+
     /// <summary>
     /// Controls whether the training will be skipped
     /// </summary>
@@ -49,10 +65,11 @@ public class TrainingStateManager : BaseStateManager
     private string dialogueCanvasName = "TreeSpiritDialogueCanvas";
     private Canvas dialogueCanvas;
 
-    private void Update()
-    {
+    // DialogueStateCallbacks
+    private Action<ICinemachineCamera> onCameraBlendToTrainingHostComplete = null;
+    private Action onDialogueCompleted = null;
+    private Action<ICinemachineCamera> onCameraBlendToPlayerComplete = null;
 
-    }
 
     protected void FixedUpdate()
     {
@@ -91,22 +108,25 @@ public class TrainingStateManager : BaseStateManager
         Utility.LogErrorIfNull(dialogueCanvas, nameof(dialogueCanvas));
         #endregion
 
-        #region event subscriptions
+        #region general event subscriptions
         outOfBoundsTriggerPlane.PlaneTriggered += OnOutOfBoundsPlaneTriggered;
         cameraBlendEventDispatcher.CameraBlendStarted += OnBlendToCameraStarted_DisableControlState;
         cameraBlendEventDispatcher.CameraBlendCompleted += OnBlendToCameraCompleted_EnableControlState;
 
-        cameraBlendEventDispatcher.CameraBlendCompleted += BeginDialogue;
+        trainingStateChanged += OnTrainingStateChanged_IntroDialogue;
+        trainingStateChanged += OnTrainingStateChanged_EnemyCombat;
+        trainingStateChanged += OnTrainingstateChanged_PostEnemyCombatDialogue;
+        trainingStateChanged += OnTrainingStateChanged_BeaconCombat;
+        trainingStateChanged += OnTraningStateChanged_PostBeaconCombatDialogue;
+        trainingStateChanged += OnTrainingStateChanged_End;
         #endregion
 
         #region set initial states
         UpdateControlStateGracefully(enableControlState: false); // Don't allow control on scene start
         dialogueCanvas.enabled = false;
         trainingHostVirtualCamera.enabled = false;
+        Invoke("KickItOff", time: 2);
         #endregion
-
-        Invoke("testswitchcamera", 1f);
-
     }
 
     protected override void OnSceneUnloaded()
@@ -115,12 +135,99 @@ public class TrainingStateManager : BaseStateManager
         cameraBlendEventDispatcher.CameraBlendStarted -= OnBlendToCameraStarted_DisableControlState;
         cameraBlendEventDispatcher.CameraBlendCompleted -= OnBlendToCameraCompleted_EnableControlState;
 
-        cameraBlendEventDispatcher.CameraBlendCompleted -= BeginDialogue;
+        trainingStateChanged -= OnTrainingStateChanged_IntroDialogue;
+        trainingStateChanged -= OnTrainingStateChanged_EnemyCombat;
+        trainingStateChanged -= OnTrainingstateChanged_PostEnemyCombatDialogue;
+        trainingStateChanged -= OnTrainingStateChanged_BeaconCombat;
+        trainingStateChanged -= OnTraningStateChanged_PostBeaconCombatDialogue;
+        trainingStateChanged -= OnTrainingStateChanged_End;
 
-
-        CancelInvoke(); // Get Rid of this later
     }
 
+    #region state specific callbacks
+    private void OnTrainingStateChanged_IntroDialogue(TrainingState trainingState)
+    {
+        if (trainingState != TrainingState.IntroDialogue) 
+            return;
+
+        List<string> dialogueList = new List<string>()
+        {
+            "Ah, Warden of The Glades! You've arrived just in time.",
+            "These gosh darn aliens are just causing the biggest ruckus.",
+            "I really need you to do me a solid and clear them out of here.",
+            "It looks like you brought your SWORD... Good! Do you remember how to use it? I guess it has been awhile.",
+            "When you see one of those pesky ALIENS, make sure you use RB/Left Click to kill the heck out of it!",
+            "Same with the BEACONS! That's how the aliens are getting here I reckon.",
+            "Oh crap, here comes one now! Kill any aliens before you go for the Beacon, or I think you might open yourself to serious danger!"
+        };
+
+        onCameraBlendToTrainingHostComplete = (ICinemachineCamera camera) =>
+        {
+            if (camera.Name == trainingHostVirtualCameraName)
+            {
+                dialogueCanvas.enabled = true;
+                dialogueController.BeginDialogue(dialogueList);
+            }
+
+            cameraBlendEventDispatcher.CameraBlendCompleted -= onCameraBlendToTrainingHostComplete;
+        };
+
+        onDialogueCompleted = () =>
+        {
+            trainingHostVirtualCamera.enabled = false;
+            dialogueCanvas.enabled = false;
+            dialogueController.DialogueCompleted -= onDialogueCompleted;
+        };
+
+        onCameraBlendToPlayerComplete = (ICinemachineCamera camera) =>
+        {
+            if (camera.Name == playerCameraName)
+            {
+                // spawn some shit
+            }
+            cameraBlendEventDispatcher.CameraBlendCompleted -= onCameraBlendToPlayerComplete;
+        };
+
+        StartDialogueState(onCameraBlendToTrainingHostComplete, onDialogueCompleted, onCameraBlendToPlayerComplete);
+    }
+
+    private void OnTrainingStateChanged_EnemyCombat(TrainingState trainingState)
+    {
+        if (trainingState != TrainingState.EnemyCombat) return;
+
+        NextTrainingState();
+    }
+
+    private void OnTrainingstateChanged_PostEnemyCombatDialogue(TrainingState trainingState)
+    {
+        if (trainingState != TrainingState.PostEnemyCombatDialogue) return;
+
+        //NextTrainingState();
+    }
+
+    private void OnTrainingStateChanged_BeaconCombat(TrainingState trainingState)
+    {
+        if (trainingState != TrainingState.BeaconCombat) return;
+
+        //NextTrainingState();
+    }
+
+    private void OnTraningStateChanged_PostBeaconCombatDialogue(TrainingState trainingState)
+    {
+        if (trainingState != TrainingState.PostEnemyCombatDialogue) return;
+
+        //NextTrainingState();
+    }
+
+    private void OnTrainingStateChanged_End(TrainingState trainingState)
+    {
+        if (trainingState != TrainingState.End) return;
+
+        GameManager.instance.UpdateGameState(GameState.Level1);
+    }
+    #endregion
+
+    #region general event callbacks
     private void OnOutOfBoundsPlaneTriggered()
     {
         GameManager.instance.InvokeTransition(midTransitionAction: () => playerModel.transform.position = playerModelStartingPos);
@@ -141,22 +248,48 @@ public class TrainingStateManager : BaseStateManager
             UpdateControlStateGracefully(enableControlState: true);
         }
     }
+    #endregion
 
-    private void BeginDialogue(ICinemachineCamera activeCamera)
+    #region helpers
+    private void NextTrainingState()
     {
-        if (activeCamera.Name == trainingHostVirtualCameraName)
+        switch (currentTrainingState)
         {
-            dialogueCanvas.enabled = true;
-            dialogueController.BeginDialogue(new List<string> 
-            { 
-                "Hello mr glade man.", 
-                "I am actually a real live tree",
-                "please water me every day, so that i may grow tall" 
-            });
+            case TrainingState.Invalid:
+                trainingStateChanged.Invoke(currentTrainingState = TrainingState.IntroDialogue);
+                break;
+            case TrainingState.IntroDialogue:
+                trainingStateChanged.Invoke(currentTrainingState = TrainingState.EnemyCombat);
+                break;
+            case TrainingState.EnemyCombat:
+                trainingStateChanged.Invoke(currentTrainingState = TrainingState.PostEnemyCombatDialogue);
+                break;
+            case TrainingState.PostEnemyCombatDialogue:
+                trainingStateChanged.Invoke(currentTrainingState = TrainingState.BeaconCombat);
+                break;
+            case TrainingState.BeaconCombat:
+                trainingStateChanged.Invoke(currentTrainingState = TrainingState.PostBeaconCombatDialogue);
+                break;
+            case TrainingState.PostBeaconCombatDialogue:
+                trainingStateChanged.Invoke(currentTrainingState = TrainingState.End);
+                break;
+            default:
+                break;
         }
     }
 
-    #region helpers
+    private void StartDialogueState(
+    Action<ICinemachineCamera> onCameraBlendToTrainingHostComplete,
+    Action onDialogueCompleted,
+    Action<ICinemachineCamera> onCameraBlendToPlayerComplete)
+    {
+        cameraBlendEventDispatcher.CameraBlendCompleted += onCameraBlendToTrainingHostComplete;
+        dialogueController.DialogueCompleted += onDialogueCompleted;
+        cameraBlendEventDispatcher.CameraBlendCompleted += onCameraBlendToPlayerComplete;
+
+        trainingHostVirtualCamera.enabled = true;
+    }
+
     private void UpdateControlStateGracefully(bool enableControlState)
     {
         if (!enableControlState)
@@ -164,9 +297,9 @@ public class TrainingStateManager : BaseStateManager
         playerScript.UpdateControlState(enableControlState);
     }
 
-    private void testswitchcamera()
+    private void KickItOff()
     {
-        trainingHostVirtualCamera.enabled = true;
+        NextTrainingState();
     }
     #endregion
 }
