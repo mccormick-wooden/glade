@@ -253,6 +253,7 @@ The entirety of the 3rd Party assets that are in use are contained in `Assets/3r
 - [Polygonal Metalon](https://assetstore.unity.com/packages/3d/characters/creatures/meshtint-free-polygonal-metalon-151383) - Used for "Boss" character
 - [Toby Fredson](https://assetstore.unity.com/publishers/11721) - Used for the Terrain textures
 - [BizulkaProduction](https://assetstore.unity.com/packages/3d/characters/creatures/fuga-spiders-with-destructible-eggs-and-mummy-151921) - Used for the crashed beacon model 
+- [SkythianCat](https://assetstore.unity.com/packages/3d/environments/hand-painted-nature-kit-lite-69220#description) - Used for the training interaction stump the ent stands on
 - (where are crystals from?)
 
 
