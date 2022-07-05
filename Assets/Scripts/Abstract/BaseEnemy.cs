@@ -13,6 +13,8 @@ public class BaseEnemy : MonoBehaviour
     Renderer[] renderers;
     protected VelocityReporter velocityReporter;
 
+    protected BaseWeapon weapon;
+
     /// <summary>
     /// The nearest beacon to the transform, located by FindClosestBeacon; 
     /// used when the enemy is in defend beacon mode, or to transition to it
@@ -298,7 +300,7 @@ public class BaseEnemy : MonoBehaviour
         priority = Priority.NeedsRecomputed;
         agent = GetComponent<NavMeshAgent>();
         autoAttackPlayerDistanceToBeacon = 0f;
-        crystalManager = GameObject.Find("CrystalParent").GetComponent<CrystalManager>();
+        crystalManager = GameObject.Find("CrystalParent")?.GetComponent<CrystalManager>();
         renderers = GetComponentsInChildren<Renderer>();
         nextBeaconDefenseNextPositionTime = DateTime.Now;
 
@@ -427,6 +429,9 @@ public class BaseEnemy : MonoBehaviour
         foreach (Transform beaconManager in beaconSpawner.transform)
         {
             // crashed beacon should always be the only child of the manager
+            if (beaconManager.childCount == 0)
+                continue;
+
             GameObject crashedBeacon = beaconManager.GetChild(0)?.gameObject;
 
             if (!crashedBeacon)
@@ -455,6 +460,9 @@ public class BaseEnemy : MonoBehaviour
     /// </summary>
     protected virtual void FindNearestCrystal()
     {
+        if (!crystalManager)
+            return;
+
         closestCrystal = crystalManager.FindNearestCrystal(transform.position);
     }
 
