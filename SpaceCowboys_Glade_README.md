@@ -164,15 +164,16 @@ To regenerate tree for new files:
 │   ├── BaseDevCommand.cs - *(mwooden3)*
 │   ├── BaseEnemy.cs - *(cdail7)*
 │   ├── BaseLevelStateManager.cs - *(mwooden3)*
+│   ├── BasePowerUp.cs - *(tlagrange3)*
 │   ├── BaseStateManager.cs - *(mwooden3, cdail7)*
-│   └── BaseWeapon.cs - *(mwooden3, cdail7)*
+│   └── BaseWeapon.cs - *(mwooden3, cdail7, tlagrange3)*
 ├── AngryChestBump.cs - *(mwooden3)*
 ├── AOEAttack.cs - *(cdail7)*
 ├── AppEvents
 │   ├── PlayMusicEvent.cs - *(cdail7)*
 │   └── SwordSwingEvent.cs - *(cdail7)*
 ├── Arrow.cs - *(cdail7)*
-├── AudioEventManager.cs - *(cdail7)*
+├── AudioEventManager.cs - *(cdail7, tlagrange3)*
 ├── Beacons
 │   ├── BeaconFall.cs - *(tlagrange3)*
 │   ├── BeaconManager.cs - *(tlagrange3, cdail7, eric.gilligan, mwooden3)*
@@ -213,10 +214,10 @@ To regenerate tree for new files:
 │   ├── Level1StateManager.cs - *(mwooden3)*
 │   ├── MainMenuStateManager.cs - *(mwooden3)*
 │   ├── NewGameStateManager.cs - *(mwooden3)*
-│   ├── PauseMenuManager.cs - *(mwooden3)*
+│   ├── PauseMenuManager.cs - *(mwooden3, tlagrange3)*
 │   └── TrainingStateManager.cs - *(mwooden3)*
 │   └── TriggerPlane.cs - *(mwooden3)*
-├── HealthBarController.cs - *(daniel.zuniga, eric.gilligan, mwooden3)*
+├── HealthBarController.cs - *(daniel.zuniga, eric.gilligan, mwooden3, tlagrange3)*
 ├── Helper
 │   ├── AnimationEventDispatcher.cs - *(mwooden3, [inspired by StackOverflow](https://gamedev.stackexchange.com/questions/117423/unity-detect-animations-end))*
 │   ├── CameraBlendEventDispatcher.cs *(mwooden3, [inspired by thread](https://forum.unity.com/threads/oncameratransition-onblendcomplete-event.520056/))*
@@ -230,12 +231,21 @@ To regenerate tree for new files:
 │   ├── IDevCommand.cs - *(mwooden3)*
 │   ├── IDevCommandResult.cs - *(mwooden3)*
 │   └── IWeapon.cs - *(mwooden3)*
-├── Movement
-│   └── CameraRelativeRootMovement.cs - *(cdail7)*
 ├── NPC
 │   └── TreeSpirit.cs - *(mwooden3)*
 ├── Player.cs - *(cdail7, eric.gilligan, tlagrange3, mwooden3, Daniel Zuniga)*
+├── PlayerBehaviors
+│   ├── PlayerDamageable.cs - *(tlagrange3)*
+│   ├── PlayerStats.cs - *(tlagrange3)*
 ├── PlayerControls.cs - *(cdail7)*
+├── PowerUps
+│   ├── DamageIncreasePowerUp.cs - *(tlagrange3)*
+│   ├── DamageResistPowerUp.cs - *(tlagrange3)*
+│   ├── MaxHealthPowerUp.cs - *(tlagrange3)*
+│   ├── PowerUpMenu.cs - *(tlagrange3)*
+│   ├── PowerUpPickup.cs - *(tlagrange3)*
+│   └── dev
+│       └── TogglePowerUpMenu.cs - *(tlagrange3)*
 ├── Shield.cs - *(cdail7)*
 ├── Sword.cs - *(cdail7)*
 ├── ThirdPersonCamera.cs - *(daniel.zuniga)*
@@ -246,12 +256,13 @@ To regenerate tree for new files:
 The entirety of the 3rd Party assets that are in use are contained in `Assets/3rdParty/`:
 
 - [UI Button Pack 2](https://assetstore.unity.com/packages/2d/gui/icons/ui-button-pack-2-1200-button-130422) - Used for main menu and pause menu buttons.
-- [Pyro Particles](need link) - Used for Beacon meteorite effect.
+- [Pyro Particles](https://assetstore.unity.com/packages/vfx/particles/fire-explosions/fire-spell-effects-36825) - Used for Beacon meteorite effect.
 - [Nature Starter Kit 2](https://assetstore.unity.com/packages/3d/environments/nature-starter-kit-2-52977) - Used for environments / terrain.
 - [Casual Fantasy - Ent](https://assetstore.unity.com/packages/3d/characters/creatures/ent-casual-fantasy-206323) - Used for Ancient Tree Spirit character
 - [Polygonal Metalon](https://assetstore.unity.com/packages/3d/characters/creatures/meshtint-free-polygonal-metalon-151383) - Used for "Boss" character
-- [Toby Fredson](need link) - No idea
-- [BizulkaProduction](need link) - No idea
+- [Toby Fredson](https://assetstore.unity.com/publishers/11721) - Used for the Terrain textures
+- [BizulkaProduction](https://assetstore.unity.com/packages/3d/characters/creatures/fuga-spiders-with-destructible-eggs-and-mummy-151921) - Used for the crashed beacon model 
+- [SkythianCat](https://assetstore.unity.com/packages/3d/environments/hand-painted-nature-kit-lite-69220#description) - Used for the training interaction stump the ent stands on
 - (where are crystals from?)
 
 

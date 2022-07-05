@@ -1,5 +1,6 @@
 using System.Linq;
 using Cinemachine;
+using PowerUps;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,12 +19,10 @@ public class PauseMenuManager : MonoBehaviour
     [SerializeField]
     private string pauseExitGameRootName = "PauseExitGame";
 
-    [SerializeField]
-    private string transitionCanvasRootName = "Transitions";
+    [SerializeField] private string transitionCanvasRootName = "Transitions";
     private Canvas transitionCanvas;
 
-    [SerializeField]
-    private string newGameCrawlCanvasRootName = "NewGameCrawl";
+    [SerializeField] private string newGameCrawlCanvasRootName = "NewGameCrawl";
 
     private GameState[] unPauseableStates;
 
@@ -65,8 +64,10 @@ public class PauseMenuManager : MonoBehaviour
         canvasGroup.interactable = false;
 
         Utility.AddButtonCallback(pauseResumeRootName, () => SetPauseState(areWePausing: false));
-        Utility.AddButtonCallback(pauseRestartRootName, () => GameManager.instance.UpdateGameState(GameManager.instance.State));
-        Utility.AddButtonCallback(pauseMainMenuRootName, () => GameManager.instance.UpdateGameState(GameState.MainMenu));
+        Utility.AddButtonCallback(pauseRestartRootName,
+            () => GameManager.instance.UpdateGameState(GameManager.instance.State));
+        Utility.AddButtonCallback(pauseMainMenuRootName,
+            () => GameManager.instance.UpdateGameState(GameState.MainMenu));
         Utility.AddButtonCallback(pauseExitGameRootName, () => Quitter.QuitGame());
     }
 
@@ -84,8 +85,10 @@ public class PauseMenuManager : MonoBehaviour
 
     private void TogglePause()
     {
-        if (GameManager.instance.IsMidTransition) 
+        if (GameManager.instance.IsMidTransition)
+        {
             return;
+        }
 
         if (!IsPaused && !InUnPauseableState())
             SetPauseState(true);
@@ -106,7 +109,9 @@ public class PauseMenuManager : MonoBehaviour
     public void SetPauseState(bool areWePausing)
     {
         if (IsPauseBackgroundAudioState())
+        {
             GameManager.instance.ToggleLoopedAudio(areWePausing);
+        }
 
         canvasGroup.alpha = areWePausing ? 1 : 0;
         canvasGroup.blocksRaycasts = areWePausing;
@@ -131,14 +136,16 @@ public class PauseMenuManager : MonoBehaviour
 
         if (areWePausing)
         {
-            Utility.DisableAllOf(except: new Canvas[] {
+            Utility.DisableAllOf(new Canvas[]
+            {
                 pauseCanvas,
                 transitionCanvas,
-                GameObject.Find(newGameCrawlCanvasRootName)?.GetComponentInChildren<Canvas>()});
+                GameObject.Find(newGameCrawlCanvasRootName)?.GetComponentInChildren<Canvas>()
+            });
         }
         else
         {
-            Utility.EnableAllOf(except: pauseCanvas);
+            Utility.EnableAllOf(pauseCanvas);
         }
 
         if (areWePausing)
@@ -149,7 +156,9 @@ public class PauseMenuManager : MonoBehaviour
 
     private bool InUnPauseableState()
     {
-        return unPauseableStates.Any(s => s == GameManager.instance.State);
+        // Ideally the interaction with the power up menu is a state unto itself
+        // For now it's (active!) presence signals we are interacting with that menu
+        return unPauseableStates.Any(s => s == GameManager.instance.State) || FindObjectOfType<PowerUpMenu>();
     }
 
     private bool IsPauseBackgroundAudioState()

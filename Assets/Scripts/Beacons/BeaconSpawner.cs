@@ -1,6 +1,5 @@
 ﻿using System;
 using Assets.Scripts.Interfaces;
-using DigitalRuby.PyroParticles;
 using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -20,68 +19,56 @@ namespace Beacons
         /// <summary>
         /// The type of beacon that will be spawned by this spawner.
         /// </summary>
-        [Header("Config Settings")]
-        [SerializeField]
+        [Header("Config Settings")] [SerializeField]
         public GameObject beaconToSpawn;
 
         /// <summary>
         /// The time in seconds that will elapse before the first beacon is spawned
         /// </summary>
-        [SerializeField] 
-        private float initialBeaconSpawnTime;
+        [SerializeField] private float initialBeaconSpawnTime;
 
-        [SerializeField]
-        private float minSpawnWaitTime;
+        [SerializeField] private float minSpawnWaitTime;
 
-        [SerializeField]
-        private float maxSpawnWaitTime;
+        [SerializeField] private float maxSpawnWaitTime;
 
         /// <summary>
         /// The maximum number of beacons that will be active at a given time.
         /// The spawner compares currentBeaconCount to maxConcurrentBeacons to determine if a beacon should be spawned.
         /// </summary>
-        [SerializeField]
-        private float maxConcurrentBeacons;
+        [SerializeField] private float maxConcurrentBeacons;
 
         /// <summary>
         /// The maximum number of beacons that will be spawned by the spawner.
         /// </summary>
-        [SerializeField]
-        private float maxTotalBeacons;
+        [SerializeField] private float maxTotalBeacons;
 
         /// <summary>
         /// Provide a TMPro GUI object to display the current beacon count.
         /// </summary>
-        [SerializeField]
-        private TextMeshProUGUI beaconCountText;
+        [SerializeField] private TextMeshProUGUI beaconCountText;
 
         /// <summary>
         /// A runtime record of how many beacons owned by this spawner currently exist.
         /// </summary>
-        [Header("Runtime Values")]
-        [SerializeField]
+        [Header("Runtime Values")] [SerializeField]
         private int currentBeaconCount;
 
         /// <summary>
         /// A runtime record of how many beacons owned by this spawner have been spawned.
         /// </summary>
-        [SerializeField]
-        private int totalBeaconsSpawnedCount;
+        [SerializeField] private int totalBeaconsSpawnedCount;
 
         /// <summary>
         /// A runtime record of how many beacons owned by this spawner have been destroyed.
         /// </summary>
-        [SerializeField]
-        private int totalBeaconsDiedCount;
+        [SerializeField] private int totalBeaconsDiedCount;
 
         /// <summary>
         /// A runtime record of how much time is remaining until the next beacon is spawned
         /// </summary>
-        [SerializeField]
-        private float spawnTimerRemaining;
+        [SerializeField] private float spawnTimerRemaining;
 
-        [SerializeField]
-        private EnemySpawner enemySpawner;
+        [SerializeField] private EnemySpawner enemySpawner;
 
         private void Awake()
         {
@@ -122,10 +109,12 @@ namespace Beacons
                 Utility.LogErrorIfNull(beaconManager, nameof(beaconManager));
 
             beaconManager.BeaconReadyForDamage += OnBeaconReadyForDamage;
-            beaconManager.BeaconReadyForDamage += enemySpawner.NewBeaconEventHandler;
+
+            if (enemySpawner != null)
+                beaconManager.BeaconReadyForDamage += enemySpawner.NewBeaconEventHandler;
 
             IncrementBeaconCount();
-            
+
             Debug.Log("Spawned new beacon!");
         }
 
@@ -135,7 +124,9 @@ namespace Beacons
 
             var beaconDamageModel = beacon.GetComponent<IDamageable>();
             beaconDamageModel.Died += OnBeaconDeath;
-            beaconDamageModel.Died += enemySpawner.BeaconDeathEventHandler;
+
+            if (enemySpawner != null)
+                beaconDamageModel.Died += enemySpawner.BeaconDeathEventHandler;
         }
 
         public void OnBeaconDeath(IDamageable damageModel, string name, int instanceId)
