@@ -1,13 +1,27 @@
 using System;
+using Assets.Scripts.Abstract;
 using UnityEngine;
 using Weapons;
 
 namespace PlayerBehaviors
 {
+    [RequireComponent(typeof(Player))]
     public class PlayerWeaponManager : MonoBehaviour
     {
         [SerializeField] private WeaponSlot leftHand;
         [SerializeField] private WeaponSlot rightHand;
+
+        public BaseWeapon leftHandWeapon;
+        public BaseWeapon rightHandWeapon;
+
+        private Animator animator;
+
+        private void Start()
+        {
+            animator = GetComponent<Animator>();
+            Utility.LogErrorIfNull(animator, "animator",
+                "PlayerWeaponManager expects its game object to have an Animator component");
+        }
 
         private void Awake()
         {
@@ -22,10 +36,13 @@ namespace PlayerBehaviors
             if (shouldLoadLeftHand)
             {
                 leftHand.EquipWeapon(weapon);
+                leftHandWeapon = leftHand.weaponInSlot.GetComponentInChildren<BaseWeapon>();
+                
             }
             else
             {
                 rightHand.EquipWeapon(weapon);
+                rightHandWeapon = rightHand.weaponInSlot.GetComponentInChildren<BaseWeapon>();
             }
         }
     }

@@ -97,6 +97,10 @@ namespace Assets.Scripts.Abstract
                 return false;
 
             bool isWeaponTarget = attackingWeapon.TargetTags.Contains(transform.tag);
+            Debug.Log("---");
+            Debug.Log(isWeaponTarget);
+            Debug.Log(attackingWeapon.InUse);
+            Debug.Log(HasHp);
             return attackingWeapon.InUse && HasHp && isWeaponTarget;
         }
 

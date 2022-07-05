@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd994ec612ae4845ab65fb3aad3407a, type: 3}
   m_Name: PlayerSword
   m_EditorClassIdentifier: 
-  weaponName: Sword
+  weaponName: PlayerSword
   modelPrefab: {fileID: 1002349861236692414, guid: 80f0c9f1ed90c234bbaceaf669f1deab, type: 3}
+  primaryAnimation: OH_Sword_Attack1
+  primaryComboAnimation: OH_Sword_Attack2
+  primaryCombo2Animation: OH_Sword_Attack3

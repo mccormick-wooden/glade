@@ -7,5 +7,9 @@ namespace Weapons
     {
         public string weaponName;
         public GameObject modelPrefab;
+
+        public string primaryAnimation;
+        public string primaryComboAnimation;
+        public string primaryCombo2Animation;
     }
 }
