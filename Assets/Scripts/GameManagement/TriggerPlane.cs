@@ -5,9 +5,19 @@ public class TriggerPlane : MonoBehaviour
 {
     public Action PlaneTriggered;
 
-    private void OnTriggerEnter(Collider other)
+    private bool isTriggered;
+
+    private void OnTriggerEnter()
     {
-        Debug.Log("PlaneTriggered");
+        if (isTriggered) 
+            return;
+
+        isTriggered = true;
         PlaneTriggered?.Invoke();
+    }
+
+    private void OnTriggerExit()
+    {
+        isTriggered = false;
     }
 }
