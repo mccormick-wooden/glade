@@ -58,7 +58,9 @@ public class CrystalManager : MonoBehaviour
 
     private void Awake()
     {
-        Utility.LogErrorIfNull(beaconSpawner, nameof(beaconSpawner), "beaconSpawner reference is required to spawn crystals from landed beacons.");
+        if (null == beaconSpawner)
+            Debug.LogWarning($"{name}: beaconSpawner reference is required to spawn crystals from landed beacons.");
+
         Utility.LogErrorIfNull(crystalPrefab, nameof(crystalPrefab), "crystalPrefab reference is required.");
     }
 

@@ -49,6 +49,9 @@ namespace Assets.Scripts.Abstract
                 var newHp = Mathf.Min(CurrentHp + healAmount, MaxHp);
                 Debug.Log($"Healing {gameObject.name}: currentHp = {CurrentHp}, healAmount: {healAmount}, newHp = {newHp}");
                 CurrentHp = newHp;
+
+                if (healthBarController != null)
+                    healthBarController.CurrentHp = CurrentHp;
             }
         }
 
