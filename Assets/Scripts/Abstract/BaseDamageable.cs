@@ -13,7 +13,7 @@ namespace Assets.Scripts.Abstract
 
         [SerializeField] private float maxHp = 100;
 
-        [SerializeField] public bool IsHealable;
+        public bool IsHealable { get; set; }
 
         public float CurrentHp
         {
@@ -47,7 +47,21 @@ namespace Assets.Scripts.Abstract
                 Debug.Log(
                     $"Healing {gameObject.name}: currentHp = {CurrentHp}, healAmount: {healAmount}, newHp = {newHp}");
                 CurrentHp = newHp;
+
+                if (healthBarController != null)
+                    healthBarController.CurrentHp = CurrentHp;
             }
+        }
+
+        public void HandleAttack(IWeapon attackingWeapon)
+        {
+            ApplyDamage(attackingWeapon);
+
+            if (healthBarController != null)
+                healthBarController.CurrentHp = CurrentHp;
+
+            if (!HasHp)
+                Die();
         }
 
         public Action<IDamageable, string, int> Died { get; set; }
@@ -101,24 +115,13 @@ namespace Assets.Scripts.Abstract
             }
         }
 
-        protected void HandleAttack(BaseWeapon attackingWeapon)
-        {
-            ApplyDamage(attackingWeapon);
-
-            if (healthBarController != null)
-                healthBarController.CurrentHp = CurrentHp;
-
-            if (!HasHp)
-                Die();
-        }
-
         protected virtual bool ShouldHandleCollisionAsAttack(BaseWeapon attackingWeapon)
         {
             bool isWeaponTarget = attackingWeapon.TargetTags.Contains(transform.tag);
             return attackingWeapon.InUse && HasHp && isWeaponTarget;
         }
 
-        protected virtual void ApplyDamage(BaseWeapon attackingWeapon, float modifier = 1f)
+        protected virtual void ApplyDamage(IWeapon attackingWeapon, float modifier = 1f)
         {
             var netAttackDamage = attackingWeapon.AttackDamage * modifier;
             if (attackingWeapon.isDPSType)

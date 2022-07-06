@@ -31,7 +31,7 @@ public class EnemySpawner : MonoBehaviour
     private float minTimeBetweenSpawnsSeconds;
 
     [SerializeField]
-    private BeaconManager beaconManager;
+    private BeaconSpawner beaconSpawner;
 
     [SerializeField]
     private GameObject enemySpawnParticlePrefab;
@@ -47,6 +47,8 @@ public class EnemySpawner : MonoBehaviour
     {
         spawnActive = true;
         lastSpawnTime = DateTime.Now;
+        if (beaconSpawner != null)
+            beaconSpawner.NewBeaconLanded += NewBeaconEventHandler;
     }
 
     // Update is called once per frame
@@ -180,9 +182,12 @@ public class EnemySpawner : MonoBehaviour
 
     }
 
-    public void NewBeaconEventHandler(Beacons.BeaconManager beaconManager, GameObject crashedBeacon)
+    public void NewBeaconEventHandler(Beacons.BeaconSpawner beaconSpawner, GameObject crashedBeacon)
     {
         beacons.Add(crashedBeacon);
+        IDamageable beaconDamageModel = crashedBeacon.GetComponent<IDamageable>();
+        if (beaconDamageModel != null)
+            beaconDamageModel.Died += BeaconDeathEventHandler;
 
         // spawn some enemies directly from the beacon
         // temp variables for now, maybe make this random later?
@@ -192,6 +197,7 @@ public class EnemySpawner : MonoBehaviour
 
     public void BeaconDeathEventHandler(IDamageable damageModel, string name, int instanceId)
     {
+        damageModel.Died -= BeaconDeathEventHandler;
         GameObject deadBeacon = beacons.Find(delegate (GameObject beacon)
            {
                return beacon.GetInstanceID() == instanceId;

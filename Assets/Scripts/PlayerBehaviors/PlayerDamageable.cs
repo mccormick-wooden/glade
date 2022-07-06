@@ -1,4 +1,4 @@
-using Assets.Scripts.Abstract;
+using Assets.Scripts.Interfaces;
 using Assets.Scripts.Damageable;
 using UnityEngine;
 
@@ -13,7 +13,7 @@ namespace PlayerBehaviors
             healthBarController.InitHealthBar(CurrentHp, true);
         }
 
-        protected override void ApplyDamage(BaseWeapon attackingWeapon, float modifier = 1f)
+        protected override void ApplyDamage(IWeapon attackingWeapon, float modifier = 1f)
         {
             base.ApplyDamage(attackingWeapon, 1 / PlayerStats.Instance.DamageResistanceModifier);
         }
