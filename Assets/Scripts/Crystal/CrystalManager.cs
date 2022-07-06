@@ -123,11 +123,10 @@ public class CrystalManager : MonoBehaviour
     }
     private void Update()
     {
-        if (firstCrystalSpawned)
+        if (firstCrystalSpawned && spawner.spawnActive)
         {
             // new crystal will have its own spawner
             spawner.spawnActive = false;
-            Destroy(spawner.gameObject);
         }
     }
 
