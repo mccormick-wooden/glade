@@ -14,8 +14,9 @@ public class CrystalSpawner : MonoBehaviour
     [SerializeField]
     private float minSpawnDelta = 10f;
 
+    // todo; why does this need to be 0?
     [SerializeField]
-    public float spawnColliderRadius { get; private set; }
+    public float spawnColliderRadius = 0f; 
 
     [Tooltip("Spawn chance per second")]
     [SerializeField]

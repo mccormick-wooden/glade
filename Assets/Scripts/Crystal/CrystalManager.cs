@@ -20,6 +20,8 @@ public class CrystalManager : MonoBehaviour
     private int maxSpawnAttempts = 5;
 
     private static float nextCrystalId = 0;
+    private bool firstCrystalSpawned = false;
+    private CrystalSpawner spawner;
 
     /// <summary>
     /// List of all crystals instantiated in the game 
@@ -80,7 +82,7 @@ public class CrystalManager : MonoBehaviour
 
     private void OnNewBeaconLanded(BeaconSpawner beaconSpawner, GameObject beacon)
     {
-        CrystalSpawner spawner = Instantiate(crystalSpawnerPrefab, beacon.transform.position, beacon.transform.rotation, beacon.transform).GetComponent<CrystalSpawner>();
+        spawner = Instantiate(crystalSpawnerPrefab, beacon.transform.position, beacon.transform.rotation, beacon.transform).GetComponent<CrystalSpawner>();
         spawner.name = "BeaconCrystalSpawner";
         spawner.spawnActive = false; // We don't want this continually spawning crystals
         int numAttempts = 0;
@@ -93,11 +95,11 @@ public class CrystalManager : MonoBehaviour
 
         if (!spawned)
         {
+            spawner.spawnActive = true;
             Debug.Log($"Attempt to spawn crystal near {beacon.name} failed. after {numAttempts} attempts.");
         }
-
-        // new crystal will have its own spawner
-        Destroy(spawner.gameObject);
+        else
+            firstCrystalSpawned = true;
     }
 
     private void removeCrystal(IDamageable damageable, string name, int instanceId)
@@ -119,5 +121,15 @@ public class CrystalManager : MonoBehaviour
         crystals.Add(crystal.GetInstanceID(), crystal.GetComponent<CrystalController>());
         crystal.GetComponentInChildren<IDamageable>().Died += removeCrystal;
     }
+    private void Update()
+    {
+        if (firstCrystalSpawned)
+        {
+            // new crystal will have its own spawner
+            spawner.spawnActive = false;
+            Destroy(spawner.gameObject);
+        }
+    }
+
 
 }

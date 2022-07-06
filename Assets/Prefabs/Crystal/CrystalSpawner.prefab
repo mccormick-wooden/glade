@@ -49,5 +49,6 @@ MonoBehaviour:
   maxSpawnSlopeDeg: 20
   maxSpawnHeightDelta: 5
   minSpawnDelta: 10
+  spawnColliderRadius: 0
   spawnChancePerSecond: 0.025
   spawnActive: 1
