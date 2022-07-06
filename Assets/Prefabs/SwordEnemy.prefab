@@ -1174,7 +1174,6 @@ MonoBehaviour:
   healthBarController: {fileID: 0}
   currentHp: 100
   maxHp: 100
-  IsHealable: 0
 --- !u!195 &691763536489525588
 NavMeshAgent:
   m_ObjectHideFlags: 0

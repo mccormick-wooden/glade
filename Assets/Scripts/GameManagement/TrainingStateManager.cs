@@ -29,6 +29,12 @@ public class TrainingStateManager : BaseStateManager
     private bool skipTraining = false;
 
     /// <summary>
+    /// Automatically skip dialogue
+    /// </summary>
+    [SerializeField]
+    private bool skipDialogueStates = false;
+
+    /// <summary>
     /// The trainingHostVirtualCameraName must be the name of the virtual camera focused on the Training Host
     /// </summary>
     [SerializeField]
@@ -200,7 +206,7 @@ public class TrainingStateManager : BaseStateManager
         if (!dialogueStates.Contains(trainingState)) 
             return;
 
-        List<string> dialogueList = dialogueDictionary[trainingState];
+        List<string> dialogueList = !skipDialogueStates ? dialogueDictionary[trainingState] : new List<string>();
 
         onCameraBlendToTrainingHostComplete = (ICinemachineCamera camera) =>
         {
