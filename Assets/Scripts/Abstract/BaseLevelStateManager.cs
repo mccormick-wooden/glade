@@ -23,7 +23,7 @@ public abstract class BaseLevelStateManager : BaseStateManager
     /// This field determines how many seconds it takes for this action to occur automatically. 
     /// </summary>
     [SerializeField]
-    protected int returnToMainMenuCountdownLength = 10; 
+    protected int returnToMainMenuCountdownLength = 10;
 
     protected GameObject player;
     protected IDamageable playerDamageModel;
@@ -60,6 +60,7 @@ public abstract class BaseLevelStateManager : BaseStateManager
         beaconSpawner.AllBeaconsDied += OnAllBeaconsDied;
 
         #endregion
+    
     }
 
     protected override void OnSceneUnloaded()
@@ -108,11 +109,15 @@ public abstract class BaseLevelStateManager : BaseStateManager
 
     private void OnPlayerDiedReturnToMainMenuCountdown()
     {
+        var originalCountdownLen = returnToMainMenuCountdownLength;
         HUDMessageText.fontSize = 50;
-        HUDMessageText.text = $"Ya died, ya dingus.\n\nReturning to Main Menu in {returnToMainMenuCountdownLength} seconds...";
+        HUDMessageText.text = $"Ya died, ya dingus.\n\nRespawning in {returnToMainMenuCountdownLength} seconds...";
         returnToMainMenuCountdownLength -= 1;
         if (returnToMainMenuCountdownLength < 0)
-            ReturnToMainMenu();
+        {
+            returnToMainMenuCountdownLength = originalCountdownLen;
+            Respawn(); // TODO: FIX FIX FIX LATER
+        }
     }
 
     /// <summary>
@@ -122,6 +127,12 @@ public abstract class BaseLevelStateManager : BaseStateManager
     {
         CancelInvoke(); // YOLO
         GameManager.instance.UpdateGameState(GameState.MainMenu);
+    }
+
+    private void Respawn()
+    {
+        CancelInvoke();
+        GameManager.instance.UpdateGameState(GameState.Level1);
     }
 }
 

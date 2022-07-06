@@ -176,13 +176,12 @@ MonoBehaviour:
   minSpawnWaitTime: 30
   maxSpawnWaitTime: 180
   maxConcurrentBeacons: 5
-  maxTotalBeacons: 10
+  maxTotalBeacons: 2
   beaconCountText: {fileID: 0}
   currentBeaconCount: 0
   totalBeaconsSpawnedCount: 0
   totalBeaconsDiedCount: 0
   spawnTimerRemaining: 0
-  enemySpawner: {fileID: 0}
 --- !u!1001 &2883210948712756626
 PrefabInstance:
   m_ObjectHideFlags: 0

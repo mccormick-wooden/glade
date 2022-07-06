@@ -13,11 +13,14 @@ Team Members
   - [Start Scene File](#start-scene-file)
   - [How To Play](#how-to-play)
     - [To Start Game](#to-start-game)
+    - [Play the Game](#play-the-game)
+    - [How to Win the Game](#how-to-win-the-game)
     - [Controls](#controls)
     - [Game Requirements Achieved](#game-requirements-achieved)
   - [Known Problem Areas](#known-problem-areas)
     - [General](#general)
     - [Training Scene](#training-scene)
+    - [Level 1 Scene](#level-1-scene)
   - [Manifest](#manifest)
     - [Features / Non-Script Assets](#features--non-script-assets)
       - [Chris Dail - cdail7](#chris-dail---cdail7)
@@ -30,7 +33,6 @@ Team Members
   - [Internal Team Documentation](#internal-team-documentation)
     - [Beacons](#beacons)
       - [How to Use](#how-to-use)
-      - [Known-Issues](#known-issues)
     - [Camera Sensitivity](#camera-sensitivity)
 
 ## Start Scene File
@@ -52,6 +54,17 @@ ii. How to play and what parts of the level to observe technology requirements
 - Select `New Game` in menu
 - Progress through the story crawl and tutorial
 - Follow the instructions in the story crawl and tutorial to play and win the game - just don't die!
+
+### Play the Game
+- Find beacons as they land (you will hear them rain down from the sky and can see them too)
+- Destroy the beacons with your sword
+- Destroying a beacon drops a purple object - approach to interact automatically
+- Colliding with the purple object opens a power up menu where the player can pick from certain power ups
+- The player must choose a single power up among the three offered
+- Destroying the beacon launched another beacon, find it and repeat!
+
+### How to Win the Game
+- Find and destroy 2 beacons
 
 ### Controls
 - Left Stick, WASD = Warden movement
@@ -90,10 +103,15 @@ ii. How to play and what parts of the level to observe technology requirements
 - Consistent spatial simulation throughout
   - *self explanatory*
 - Your AI agents are not complete prepackaged assets from a 3rd party
+  - *enemy assets are custom prefabs using existing models/animations*
 - Implement a start menu GUI.
+  - *visible from the start of the game*
 - Implement in-game pause menu with ability to quit game
+  - *see controls for pause button - only viable during the main level*
 - Ability to exit software at any time
+  - *pause menu, start menu lets you quit*
 - Transitions between scenes should be done aesthetically
+  - *scenes have a fade in/out transition on load*
 
 ## Known Problem Areas
 *Requirement from assignment pdf:*
@@ -107,6 +125,13 @@ iii. Known problem areas
 - Others??
 ### Training Scene
 - SwordEnemy can't do damage to player
+- SwordEnemy doesn't track the player
+- Pausing during the training scene breaks the dialogue interaction
+- Health bar shows 0/0
+### Level 1 Scene
+- Bridges connecting the mesas in the terrain cannot be traversed by walking/running
+- Bridges can be crossed by spamming the attack button (RB)
+- Game can't yet be won
 
 ## Manifest
 
@@ -265,7 +290,7 @@ The entirety of the 3rd Party assets that are in use are contained in `Assets/3r
 - [Casual Fantasy - Ent](https://assetstore.unity.com/packages/3d/characters/creatures/ent-casual-fantasy-206323) - Used for Ancient Tree Spirit character
 - [Polygonal Metalon](https://assetstore.unity.com/packages/3d/characters/creatures/meshtint-free-polygonal-metalon-151383) - Used for "Boss" character
 - [Toby Fredson](https://assetstore.unity.com/publishers/11721) - Used for the Terrain textures
-- [BizulkaProduction](https://assetstore.unity.com/packages/3d/characters/creatures/fuga-spiders-with-destructible-eggs-and-mummy-151921) - Used for the crashed beacon model 
+- [BizulkaProduction](https://assetstore.unity.com/packages/3d/characters/creatures/fuga-spiders-with-destructible-eggs-and-mummy-151921) - Used for the crashed beacon model
 - [SkythianCat](https://assetstore.unity.com/packages/3d/environments/hand-painted-nature-kit-lite-69220#description) - Used for the training interaction stump the ent stands on
 - [SineVFX - Transluscent Crystals](https://assetstore.unity.com/packages/3d/environments/fantasy/translucent-crystals-106274)
 
@@ -285,10 +310,6 @@ Beacons are spawned in by a `BeaconSpawner` that will spawn an additional beacon
   - Not crashed beacons fly towards the earth at a randomized angle
     - This behavior is defined on the 3rd party `Firebolt` Prefab
   - Crashed beacons turn into gooey eggs that can be destroyed.
-
-#### Known-Issues
-
-- ???
 
 ### Camera Sensitivity
 
