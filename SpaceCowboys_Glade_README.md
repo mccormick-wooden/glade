@@ -30,7 +30,6 @@ Team Members
   - [Internal Team Documentation](#internal-team-documentation)
     - [Beacons](#beacons)
       - [How to Use](#how-to-use)
-      - [Known-Issues](#known-issues)
     - [Camera Sensitivity](#camera-sensitivity)
 
 ## Start Scene File
@@ -101,10 +100,15 @@ ii. How to play and what parts of the level to observe technology requirements
 - Consistent spatial simulation throughout
   - *self explanatory*
 - Your AI agents are not complete prepackaged assets from a 3rd party
+  - *enemy assets are custom prefabs using existing models/animations*
 - Implement a start menu GUI.
+  - *visible from the start of the game*
 - Implement in-game pause menu with ability to quit game
+  - *see controls for pause button - only viable during the main level*
 - Ability to exit software at any time
+  - *pause menu, start menu lets you quit*
 - Transitions between scenes should be done aesthetically
+  - *scenes have a fade in/out transition on load* 
 
 ## Known Problem Areas
 *Requirement from assignment pdf:*
@@ -119,6 +123,11 @@ iii. Known problem areas
 ### Training Scene
 - SwordEnemy can't do damage to player
 - SwordEnemy doesn't track the player
+- Pausing during the training scene breaks the dialogue interaction
+- Health bar shows 0/0
+### Level 1 Scene
+- Bridges connecting the mesas in the terrain cannot be traversed by walking/running
+- Bridges can be crossed by spamming the attack button (RB)
 
 ## Manifest
 
@@ -297,10 +306,6 @@ Beacons are spawned in by a `BeaconSpawner` that will spawn an additional beacon
   - Not crashed beacons fly towards the earth at a randomized angle
     - This behavior is defined on the 3rd party `Firebolt` Prefab
   - Crashed beacons turn into gooey eggs that can be destroyed.
-
-#### Known-Issues
-
-- ???
 
 ### Camera Sensitivity
 
