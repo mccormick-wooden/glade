@@ -53,6 +53,17 @@ ii. How to play and what parts of the level to observe technology requirements
 - Progress through the story crawl and tutorial
 - Follow the instructions in the story crawl and tutorial to play and win the game - just don't die!
 
+### Play the Game
+- Find beacons as they land (you will hear them rain down from the sky and can see them too)
+- Destroy the beacons with your sword
+- Destroying a beacon drops a purple object - approach to interact automatically
+- Colliding with the purple object opens a power up menu where the player can pick from certain power ups
+- The player must choose a single power up among the three offered
+- Destroying the beacon launched another beacon, find it and repeat!
+
+### How to Win the Game
+- Find and destroy 2 beacons
+
 ### Controls
 - Left Stick, WASD = Warden movement
 - Right Stick, Mouse = Camera Control
