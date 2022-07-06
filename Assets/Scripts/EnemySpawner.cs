@@ -153,8 +153,8 @@ public class EnemySpawner : MonoBehaviour
 
     IEnumerator GenerateBeaconEnemies(GameObject crashedBeacon)
     {
-        const int numberOfMeleeEnemies = 5;
-        const int numberOfRangedEnemies = 5;
+        const int numberOfMeleeEnemies = 2;
+        const int numberOfRangedEnemies = 2;
         const int numberOfAOEEnemies = 1;
         
 
