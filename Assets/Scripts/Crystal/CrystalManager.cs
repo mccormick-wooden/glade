@@ -36,7 +36,7 @@ public class CrystalManager : MonoBehaviour
     /// GameObject reference to crystal nearest to provided position.
     /// Null if no crystals exist that are active and enabled.
     /// </returns>
-    public GameObject FindNearest(Vector3 position)
+    public GameObject FindNearestCrystal(Vector3 position)
     {
         float minDistance = float.MaxValue;
         GameObject nearestCrystal = null;

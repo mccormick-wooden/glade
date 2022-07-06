@@ -43,7 +43,7 @@ namespace crystal
             }
             if (Input.GetKeyUp(KeyCode.N))
             {
-                GameObject crystal = crystalManager.FindNearest(transform.position);
+                GameObject crystal = crystalManager.FindNearestCrystal(transform.position);
                 Debug.Log($"Found crystal {crystal.name}");
             }
 

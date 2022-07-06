@@ -11,6 +11,7 @@ TagManager:
   - Weapon
   - Environment
   - Fire
+  - TerrainBridge
   layers:
   - Default
   - TransparentFX
@@ -21,8 +22,8 @@ TagManager:
   - GroundCheck
   - Terrain
   - FireLayer
-  - 
-  - 
+  - Player
+  - Enemy
   - 
   - 
   - 

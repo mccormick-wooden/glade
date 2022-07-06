@@ -10,8 +10,9 @@ namespace Assets.Scripts.Interfaces
         bool HasHp { get; }
         bool IsDead { get; }
         bool IsHealable { get; set; }
-        public void Heal(float healAmount);
-        public void HandleAttack(IWeapon weapon);
+        void Heal(float healAmount);
+        void HandleAttack(IWeapon weapon);
+        bool enabled { get; set; }
         Action<IDamageable, string, int> Died { get; set; }
     }
 }
