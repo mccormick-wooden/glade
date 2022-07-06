@@ -116,7 +116,7 @@ public abstract class BaseLevelStateManager : BaseStateManager
         if (returnToMainMenuCountdownLength < 0)
         {
             returnToMainMenuCountdownLength = originalCountdownLen;
-            ReturnToMainMenu();
+            Respawn(); // TODO: FIX FIX FIX LATER
         }
     }
 
@@ -127,6 +127,12 @@ public abstract class BaseLevelStateManager : BaseStateManager
     {
         CancelInvoke(); // YOLO
         GameManager.instance.UpdateGameState(GameState.MainMenu);
+    }
+
+    private void Respawn()
+    {
+        CancelInvoke();
+        GameManager.instance.UpdateGameState(GameState.Level1);
     }
 }
 
