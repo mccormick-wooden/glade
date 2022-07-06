@@ -13,11 +13,14 @@ Team Members
   - [Start Scene File](#start-scene-file)
   - [How To Play](#how-to-play)
     - [To Start Game](#to-start-game)
+    - [Play the Game](#play-the-game)
+    - [How to Win the Game](#how-to-win-the-game)
     - [Controls](#controls)
     - [Game Requirements Achieved](#game-requirements-achieved)
   - [Known Problem Areas](#known-problem-areas)
     - [General](#general)
     - [Training Scene](#training-scene)
+    - [Level 1 Scene](#level-1-scene)
   - [Manifest](#manifest)
     - [Features / Non-Script Assets](#features--non-script-assets)
       - [Chris Dail - cdail7](#chris-dail---cdail7)
@@ -108,7 +111,7 @@ ii. How to play and what parts of the level to observe technology requirements
 - Ability to exit software at any time
   - *pause menu, start menu lets you quit*
 - Transitions between scenes should be done aesthetically
-  - *scenes have a fade in/out transition on load* 
+  - *scenes have a fade in/out transition on load*
 
 ## Known Problem Areas
 *Requirement from assignment pdf:*
@@ -128,6 +131,7 @@ iii. Known problem areas
 ### Level 1 Scene
 - Bridges connecting the mesas in the terrain cannot be traversed by walking/running
 - Bridges can be crossed by spamming the attack button (RB)
+- Game can't yet be won
 
 ## Manifest
 
