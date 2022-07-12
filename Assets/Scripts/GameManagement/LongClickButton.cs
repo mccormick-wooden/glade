@@ -21,9 +21,25 @@ public class LongClickButton : MonoBehaviour, IPointerDownHandler, IPointerUpHan
 
     private bool longClickCompleted = false;
 
+    private CharacterPlayerControls controls;
+
     private void Awake()
     {
         Reset();
+        controls = new CharacterPlayerControls();
+        controls.SkipScene.Enable();
+    }
+
+    private void Start()
+    {
+        controls.SkipScene.SkipSceneAction.started += _ => OnPointerDown(null);
+        controls.SkipScene.SkipSceneAction.canceled += _ => OnPointerUp(null);
+    }
+
+    private void OnDestroy()
+    {
+        controls.SkipScene.SkipSceneAction.started -= _ => OnPointerDown(null);
+        controls.SkipScene.SkipSceneAction.canceled -= _ => OnPointerUp(null);
     }
 
     public void OnPointerDown(PointerEventData eventData)
