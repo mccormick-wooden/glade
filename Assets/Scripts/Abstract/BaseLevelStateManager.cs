@@ -124,13 +124,13 @@ public abstract class BaseLevelStateManager : BaseStateManager
     private void ReturnToMainMenu()
     {
         CancelInvoke(); // YOLO
-        GameManager.instance.UpdateGameState(GameState.MainMenu);
+        UpdateNextGameState();
     }
 
     private void Respawn()
     {
         CancelInvoke();
-        GameManager.instance.UpdateGameState(GameState.Level1);
+        GameManager.instance.UpdateGameState(GameManager.instance.State);
     }
 }
 

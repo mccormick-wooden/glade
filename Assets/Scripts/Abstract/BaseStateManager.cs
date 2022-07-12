@@ -148,6 +148,8 @@ public abstract class BaseStateManager : MonoBehaviour
     /// </summary>
     protected abstract void OnSceneUnloaded();
 
+    protected abstract void UpdateNextGameState();
+
     #region debug
 
     /// <summary>

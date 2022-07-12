@@ -79,6 +79,9 @@ public class TrainingStateManager : BaseStateManager
     [SerializeField]
     private GameObject enemyPrefab;
 
+    // For skipping
+    private LongClickButton sceneSkipperButton;
+
     // DialogueStateStuff
     private List<TrainingState> dialogueStates = new List<TrainingState> { TrainingState.IntroDialogue, TrainingState.PostEnemyCombatDialogue, TrainingState.PostBeaconCombatDialogue };
     private Action<ICinemachineCamera> onCameraBlendToTrainingHostComplete = null;
@@ -122,7 +125,7 @@ public class TrainingStateManager : BaseStateManager
         if (skipTraining)
         {
             skipTraining = false;
-            GameManager.instance.UpdateGameState(GameState.Level1);
+            UpdateNextGameState();
         }
 #endif
 
@@ -161,6 +164,9 @@ public class TrainingStateManager : BaseStateManager
         dialogueCanvas = GameObject.Find(dialogueCanvasName)?.GetComponent<Canvas>();
         Utility.LogErrorIfNull(dialogueCanvas, nameof(dialogueCanvas));
 
+        sceneSkipperButton = GameObject.Find("SceneSkipperButton").GetComponent<LongClickButton>();
+        Utility.LogErrorIfNull(sceneSkipperButton, nameof(sceneSkipperButton));
+
         beaconSpawnPoint = GameObject.Find("BeaconSpawnPoint").transform.position;
         enemySpawnPoint = GameObject.Find("EnemySpawnPoint").transform.position;
         #endregion
@@ -169,6 +175,7 @@ public class TrainingStateManager : BaseStateManager
         outOfBoundsTriggerPlane.PlaneTriggered += OnOutOfBoundsPlaneTriggered;
         cameraBlendEventDispatcher.CameraBlendStarted += OnBlendToCameraStarted_DisableControlState;
         cameraBlendEventDispatcher.CameraBlendCompleted += OnBlendToCameraCompleted_EnableControlState;
+        sceneSkipperButton.LongClickComplete += UpdateNextGameState;
         #endregion
 
         #region training event subscriptions
@@ -192,12 +199,18 @@ public class TrainingStateManager : BaseStateManager
         outOfBoundsTriggerPlane.PlaneTriggered -= OnOutOfBoundsPlaneTriggered;
         cameraBlendEventDispatcher.CameraBlendStarted -= OnBlendToCameraStarted_DisableControlState;
         cameraBlendEventDispatcher.CameraBlendCompleted -= OnBlendToCameraCompleted_EnableControlState;
+        sceneSkipperButton.LongClickComplete -= UpdateNextGameState;
 
         trainingStateChanged -= OnTrainingStateChanged_DialogueState;
         trainingStateChanged -= OnTrainingStateChanged_EnemyCombat;
         trainingStateChanged -= OnTrainingStateChanged_BeaconCombat;
         trainingStateChanged -= OnTrainingStateChanged_End;
 
+    }
+
+    protected override void UpdateNextGameState()
+    {
+        GameManager.instance.UpdateGameState(GameState.Level1); // TODO: I'd like the tree spirit to open a portal that the warden can walk through to end the scene
     }
 
     #region training state callbacks
@@ -284,9 +297,10 @@ public class TrainingStateManager : BaseStateManager
 
     private void OnTrainingStateChanged_End(TrainingState trainingState)
     {
-        if (trainingState != TrainingState.End) return;
+        if (trainingState != TrainingState.End) 
+            return;
 
-        GameManager.instance.UpdateGameState(GameState.Level1); // TODO: I'd like the tree spirit to open a portal that the warden can walk through to end the scene
+        UpdateNextGameState();
     }
     #endregion
 
