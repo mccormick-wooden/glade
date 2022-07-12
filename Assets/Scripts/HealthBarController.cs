@@ -47,7 +47,7 @@ public class HealthBarController : MonoBehaviour
     }
 
     // Initializes the HP value.
-    public void InitHealthBar(float maxHp, bool useText = false)
+    public void InitHealthBar(float maxHp, bool useText)
     {
         useHealthText = useText;
         MaxHp = maxHp;

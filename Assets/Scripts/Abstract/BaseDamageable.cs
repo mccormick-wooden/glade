@@ -29,6 +29,8 @@ namespace Assets.Scripts.Abstract
 
         public bool HasHp => CurrentHp > 0;
 
+        protected virtual bool UseHealthBarText { get; set; } = false;
+
         public int AttachedInstanceId { get; protected set; }
 
         public virtual bool IsDead { get; protected set; } = false;
@@ -70,10 +72,7 @@ namespace Assets.Scripts.Abstract
         {
             CurrentHp = MaxHp;
 
-            if (healthBarController == null)
-                healthBarController = GetComponentInChildren<HealthBarController>();
-            if (healthBarController != null)
-                healthBarController.InitHealthBar(CurrentHp);
+            InitHealthBarIfExists();
 
             Debug.Log(
                 healthBarController == null
@@ -174,6 +173,18 @@ namespace Assets.Scripts.Abstract
         {
             Died?.Invoke(this, name, AttachedInstanceId);
             IsDead = true;
+        }
+
+        private void InitHealthBarIfExists()
+        {
+            if (healthBarController == null)
+                healthBarController = GetComponentInChildren<HealthBarController>();
+
+            if (healthBarController == null)
+                healthBarController = gameObject.transform.parent?.gameObject?.GetComponentInChildren<HealthBarController>();
+
+            if (healthBarController != null)
+                healthBarController.InitHealthBar(CurrentHp, UseHealthBarText);
         }
     }
 }
