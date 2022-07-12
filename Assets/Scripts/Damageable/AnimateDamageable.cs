@@ -28,12 +28,18 @@ namespace Assets.Scripts.Damageable
 
         protected override void ApplyDamage(IWeapon attackingWeapon, float modifier = 1f)
         {
+            if (IsDead)
+                return;
+
             animator.SetTrigger(applyDamageAnimTrigger);
             base.ApplyDamage(attackingWeapon, modifier);
         }
 
         protected override void Die()
         {
+            if (IsDead)
+                return;
+
             animator.SetTrigger(dieAnimTrigger);
             base.Die();
         }
