@@ -36,7 +36,8 @@ public class Player : MonoBehaviour
     bool hasLanded = true;
 
     // Character movement will be relative to this camera.
-    private Transform cam;
+    public ThirdPersonCamera thirdPersonCamera;
+    private Transform mainCameraTransform;
 
     // Action related stuff
     private float rotationAngle;
@@ -144,8 +145,11 @@ public class Player : MonoBehaviour
 
     private void GetCamera()
     {
-        cam = GameObject.Find("CameraParent/MainCamera").transform;
-        Utility.LogErrorIfNull(cam, "Player Main Camera");
+        thirdPersonCamera = GameObject.Find("CameraParent/3rdPersonCamera")?.GetComponent<ThirdPersonCamera>();
+        Utility.LogErrorIfNull(thirdPersonCamera, "thirdPersonCamera", "Player could not find the thirdPersonCamera");
+        mainCameraTransform = GameObject.Find("CameraParent/MainCamera")?.transform;
+        Utility.LogErrorIfNull(mainCameraTransform, "mainCameraTransform",
+            "Player could not find the mainCameraTransform");
     }
 
     void SetPlayerPhysicalProperties()
@@ -310,7 +314,7 @@ public class Player : MonoBehaviour
             var targetAngle = Mathf.Rad2Deg *
                               Mathf.Atan2(playerOrientation.x, playerOrientation.z);
             // Make the rotation relative to the camera's Y/Vertical position.
-            targetAngle += cam.eulerAngles.y;
+            targetAngle += mainCameraTransform.eulerAngles.y;
 
             // Smooth the angle transition.
             float smoothedAngle = Mathf.SmoothDampAngle(

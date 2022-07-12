@@ -11,22 +11,81 @@ namespace PlayerBehaviors
 
         [SerializeField] private bool canCombo;
 
+        private Player player;
         private PlayerWeaponManager playerWeaponManager;
 
         private Animator animator;
         private static readonly int IsAttacking = Animator.StringToHash("isAttacking");
         private static readonly int CanCombo = Animator.StringToHash("canCombo");
 
+        #region Lock-On Properties
+
+        public bool isLockingOn;
+        public Transform currentLockedOnTarget;
+
+        #endregion
         private void Start()
         {
             animator = GetComponent<Animator>();
+            player = GetComponent<Player>();
             playerWeaponManager = GetComponent<PlayerWeaponManager>();
+
+            // TODO: Handle with input
+            isLockingOn = true;
         }
 
         private void Update()
         {
+            ReadAnimatorParameters();
+            HandleLockOnInput();
+        }
+
+        private void HandleLockOnInput()
+        {
+            if (isLockingOn)
+            {
+                AttemptLockOn();
+            }
+        }
+
+        private void AttemptLockOn()
+        {
+            if (currentLockedOnTarget != null)
+            {
+                return;
+            }
+
+            var hits = Physics.SphereCastAll(transform.position, 10, transform.forward, 30f);
+            foreach (var hit in hits)
+            {
+                var enemy = hit.collider.transform.root.GetComponent<BaseEnemy>();
+                if (enemy != null)
+                {
+                    Debug.Log("Found an enemy");
+                    currentLockedOnTarget = hit.collider.transform.root;
+                }
+            }
+
+            if (currentLockedOnTarget != null)
+            {
+                // TODO: Player keeps a reference to this component
+                player.thirdPersonCamera.EnableLockOn();
+            }
+        }
+
+        private void StopLockOn()
+        {
+            isLockingOn = false;
+            currentLockedOnTarget = null;
+            player.thirdPersonCamera.DisableLockOn();
+        }
+
+        private void ReadAnimatorParameters()
+        {
             var wasAttacking = isAttacking;
             isAttacking = animator.GetBool(IsAttacking);
+
+            // TODO: Remove this with animation events
             if (wasAttacking && !isAttacking)
             {
                 /*
@@ -108,18 +167,23 @@ namespace PlayerBehaviors
             playerWeaponManager.rightHandWeapon.InUse = true;
         }
 
+        // TODO: See update
         // To remove once we transition to dynamic colliders or some other way of knowing when a weapon is "in use"
         public void UnsetRightHandInUse()
         {
             if (playerWeaponManager.rightHandWeapon == null)
             {
                 Utility.LogErrorIfNull(playerWeaponManager.rightHandWeapon, "rightHandWeapon",
-                    "Could not find rightHandWeapon while UNsetting InUse");
+                    "Could not find rightHandWeapon while Unsetting InUse");
                 return;
             }
 
             playerWeaponManager.rightHandWeapon.InUse = false;
         }
+
+        #endregion
+
+        #region Lock-On
 
         #endregion
     }

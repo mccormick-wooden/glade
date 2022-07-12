@@ -1,7 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using Cinemachine;
+using PlayerBehaviors;
 
 public class ThirdPersonCamera : MonoBehaviour
 {
@@ -9,6 +9,9 @@ public class ThirdPersonCamera : MonoBehaviour
     private CharacterCameraControls controls;
     private GameObject cinemachine;
     private CinemachineFreeLook thirdPersonCam;
+
+    private Player player;
+    private PlayerCombat playerCombat;
 
     private float verticalInput;
     private float horizontalInput;
@@ -19,11 +22,43 @@ public class ThirdPersonCamera : MonoBehaviour
     private Vector3 newCamPosition => new Vector3(horizontalInput, verticalInput, 0f).normalized;
     private float rotationMagnitude => newCamPosition.magnitude;
 
+    private bool isLockingOn;
+    
     private void Awake()
     {
+        
         GetCamera();
         SetupControls();
     }
+
+    private void Start()
+    {
+        player = FindObjectOfType<Player>();
+        if (player != null)
+        {
+            playerCombat = player.GetComponent<PlayerCombat>();
+        }
+    }
+
+    # region Lock-On Logic
+
+    public void EnableLockOn()
+    {
+        Debug.Log("Camera is enabling lock on");
+        isLockingOn = true;
+        if (thirdPersonCam != null)
+        {
+            thirdPersonCam.LookAt = playerCombat.currentLockedOnTarget;
+        }
+    }
+
+    public void DisableLockOn()
+    {
+        Debug.Log("Camera is disabling lock on");
+        isLockingOn = false;
+    }
+
+    #endregion
 
     private void GetCamera()
     {
