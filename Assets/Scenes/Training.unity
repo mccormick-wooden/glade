@@ -191,6 +191,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1949689444113631023, guid: f416bfa340eb8d944bb6fdc5fb6a655d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7369251320767351707, guid: f416bfa340eb8d944bb6fdc5fb6a655d, type: 3}
       propertyPath: m_RootOrder
       value: 11
@@ -238,6 +242,10 @@ PrefabInstance:
     - target: {fileID: 7369251320767351708, guid: f416bfa340eb8d944bb6fdc5fb6a655d, type: 3}
       propertyPath: m_Name
       value: SceneSkipper
+      objectReference: {fileID: 0}
+    - target: {fileID: 7369251321477557860, guid: f416bfa340eb8d944bb6fdc5fb6a655d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f416bfa340eb8d944bb6fdc5fb6a655d, type: 3}
@@ -541,11 +549,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 683423951842939091, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.029150058
+      value: -0.02915004
       objectReference: {fileID: 0}
     - target: {fileID: 683423951842939091, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.008787853
+      value: 0.008787848
       objectReference: {fileID: 0}
     - target: {fileID: 683423951991350864, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalRotation.w
@@ -633,11 +641,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 683423952098063494, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.029150058
+      value: -0.02915004
       objectReference: {fileID: 0}
     - target: {fileID: 683423952098063494, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.008787855
+      value: 0.008787849
       objectReference: {fileID: 0}
     - target: {fileID: 683423952098063514, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: field of view

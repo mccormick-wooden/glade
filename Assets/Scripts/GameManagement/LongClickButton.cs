@@ -19,6 +19,13 @@ public class LongClickButton : MonoBehaviour, IPointerDownHandler, IPointerUpHan
 
     public Action LongClickComplete;
 
+    private bool longClickCompleted = false;
+
+    private void Awake()
+    {
+        Reset();
+    }
+
     public void OnPointerDown(PointerEventData eventData)
     {
         pointerDown = true;
@@ -35,18 +42,21 @@ public class LongClickButton : MonoBehaviour, IPointerDownHandler, IPointerUpHan
 
     private void Update()
     {
-
         if (pointerDown)
         {
             pointerDownTimer += Time.deltaTime;
+
             if (pointerDownTimer >= requiredHoldTime)
             {
-                LongClickComplete?.Invoke();
+                if (!longClickCompleted)
+                {
+                    LongClickComplete?.Invoke();
 
-                if (debugOutput)
-                    Debug.Log("LongClickComplete Invoked");
+                    longClickCompleted = true;
 
-                Reset();
+                    if (debugOutput)
+                        Debug.Log("LongClickComplete Invoked");
+                }
             }
 
             AdjustImageFill();
@@ -55,9 +65,12 @@ public class LongClickButton : MonoBehaviour, IPointerDownHandler, IPointerUpHan
 
     private void Reset()
     {
-        pointerDown = false;
-        pointerDownTimer = 0;
-        AdjustImageFill();
+        if (!longClickCompleted)
+        {
+            pointerDown = false;
+            pointerDownTimer = 0;
+            AdjustImageFill();
+        }
     }
 
     private void AdjustImageFill()

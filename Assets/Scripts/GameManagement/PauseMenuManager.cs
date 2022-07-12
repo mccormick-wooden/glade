@@ -28,6 +28,9 @@ public class PauseMenuManager : MonoBehaviour
     [SerializeField]
     private string treeSpiritDialogueCanvasRootName = "TreeSpiritDialogueCanvas"; // possibly have some way of dynamically finding all dialogue canvases
 
+    [SerializeField]
+    private string sceneSkipperCanvasRootName = "SceneSkipper"; // ugh this was so stupid
+
     private GameState[] unPauseableStates;
 
     private GameState[] pauseBackgroundAudioStates;
@@ -145,7 +148,8 @@ public class PauseMenuManager : MonoBehaviour
                 pauseCanvas,
                 transitionCanvas,
                 GameObject.Find(newGameCrawlCanvasRootName)?.GetComponentInChildren<Canvas>(),
-                GameObject.Find(treeSpiritDialogueCanvasRootName)?.GetComponentInChildren<Canvas>()
+                GameObject.Find(treeSpiritDialogueCanvasRootName)?.GetComponentInChildren<Canvas>(),
+                GameObject.Find(sceneSkipperCanvasRootName)?.GetComponentInChildren<Canvas>()
             });
         }
         else
@@ -153,7 +157,8 @@ public class PauseMenuManager : MonoBehaviour
             Utility.EnableAllOf(except: new Canvas[]
             {
                 pauseCanvas,
-                GameObject.Find(treeSpiritDialogueCanvasRootName)?.GetComponentInChildren<Canvas>()
+                GameObject.Find(treeSpiritDialogueCanvasRootName)?.GetComponentInChildren<Canvas>(),
+                GameObject.Find(sceneSkipperCanvasRootName)?.GetComponentInChildren<Canvas>()
             });
         }
 
