@@ -22,7 +22,11 @@ public class PauseMenuManager : MonoBehaviour
     [SerializeField] private string transitionCanvasRootName = "Transitions";
     private Canvas transitionCanvas;
 
-    [SerializeField] private string newGameCrawlCanvasRootName = "NewGameCrawl";
+    [SerializeField] 
+    private string newGameCrawlCanvasRootName = "NewGameCrawl";
+
+    [SerializeField]
+    private string treeSpiritDialogueCanvasRootName = "TreeSpiritDialogueCanvas"; // possibly have some way of dynamically finding all dialogue canvases
 
     private GameState[] unPauseableStates;
 
@@ -135,17 +139,22 @@ public class PauseMenuManager : MonoBehaviour
             TimeScaleToggle.Toggle();
 
         if (areWePausing)
-        {
-            Utility.DisableAllOf(new Canvas[]
+        {   // TODO: This disble/enable stuff was a bad idea. We should replace code that ensures the pause menu is at the closest point of the foreground on top of every canvas
+            Utility.DisableAllOf(except: new Canvas[]
             {
                 pauseCanvas,
                 transitionCanvas,
-                GameObject.Find(newGameCrawlCanvasRootName)?.GetComponentInChildren<Canvas>()
+                GameObject.Find(newGameCrawlCanvasRootName)?.GetComponentInChildren<Canvas>(),
+                GameObject.Find(treeSpiritDialogueCanvasRootName)?.GetComponentInChildren<Canvas>()
             });
         }
         else
         {
-            Utility.EnableAllOf(pauseCanvas);
+            Utility.EnableAllOf(except: new Canvas[]
+            {
+                pauseCanvas,
+                GameObject.Find(treeSpiritDialogueCanvasRootName)?.GetComponentInChildren<Canvas>()
+            });
         }
 
         if (areWePausing)
