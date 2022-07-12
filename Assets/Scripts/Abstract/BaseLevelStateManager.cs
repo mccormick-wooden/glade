@@ -87,6 +87,7 @@ public abstract class BaseLevelStateManager : BaseStateManager
     {
         HUDMessageText.fontSize = 50;
         HUDMessageText.text = $"YOU WON!\n\nReturning to Main Menu in {returnToMainMenuCountdownLength} seconds...";
+
         returnToMainMenuCountdownLength -= 1;
         if (returnToMainMenuCountdownLength < 0)
             ReturnToMainMenu();
@@ -109,15 +110,12 @@ public abstract class BaseLevelStateManager : BaseStateManager
 
     private void OnPlayerDiedReturnToMainMenuCountdown()
     {
-        var originalCountdownLen = returnToMainMenuCountdownLength;
         HUDMessageText.fontSize = 50;
-        HUDMessageText.text = $"Ya died, ya dingus.\n\nRespawning in {returnToMainMenuCountdownLength} seconds...";
+        HUDMessageText.text = $"Ya died, ya dingus.\n\nReturning to Main Menu in {returnToMainMenuCountdownLength} seconds...";
+
         returnToMainMenuCountdownLength -= 1;
         if (returnToMainMenuCountdownLength < 0)
-        {
-            returnToMainMenuCountdownLength = originalCountdownLen;
-            Respawn(); // TODO: FIX FIX FIX LATER
-        }
+            ReturnToMainMenu();
     }
 
     /// <summary>
