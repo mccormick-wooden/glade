@@ -220,7 +220,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2934428657559072652, guid: 796d7e182ad8bad42ab6e1f7cd2ca495, type: 3}
       propertyPath: beaconParentObjectRootName
-      value: BeaconParentAndPowerUpParent
+      value: BeaconAndPowerUpParent
       objectReference: {fileID: 0}
     - target: {fileID: 2934428657559072652, guid: 796d7e182ad8bad42ab6e1f7cd2ca495, type: 3}
       propertyPath: sceneAudioClipNormalizedMaxVolume
