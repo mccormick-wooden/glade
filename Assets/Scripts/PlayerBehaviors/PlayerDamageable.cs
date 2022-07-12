@@ -7,11 +7,7 @@ namespace PlayerBehaviors
     [RequireComponent(typeof(Player))]
     public class PlayerDamageable : DisappearDamageable
     {
-        protected override void Start()
-        {
-            base.Start();
-            healthBarController.InitHealthBar(CurrentHp, true);
-        }
+        protected override bool UseHealthBarText { get; set; } = true;
 
         protected override void ApplyDamage(IWeapon attackingWeapon, float modifier = 1f)
         {

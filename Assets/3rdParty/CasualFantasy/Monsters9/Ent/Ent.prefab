@@ -2771,6 +2771,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4189083855617475531}
   - component: {fileID: 4189083855626546231}
+  - component: {fileID: 4273163240801423157}
   m_Layer: 0
   m_Name: Ent
   m_TagString: Untagged
@@ -2813,6 +2814,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4273163240801423157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4189083855617056747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcb39339168b6e848a90c6e8c53a99ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerModelGameObjectRootName: PlayerModel
 --- !u!1 &4189083855617056749
 GameObject:
   m_ObjectHideFlags: 0
@@ -2858,6 +2872,8 @@ SkinnedMeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 3
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2869,6 +2885,7 @@ SkinnedMeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0

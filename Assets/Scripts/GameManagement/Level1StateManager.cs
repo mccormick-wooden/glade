@@ -4,4 +4,8 @@
 /// </summary>
 public class Level1StateManager : BaseLevelStateManager
 {
+    protected override void UpdateNextGameState()
+    {
+        GameManager.instance.UpdateGameState(GameState.MainMenu);
+    }
 }
