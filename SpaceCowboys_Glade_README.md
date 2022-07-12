@@ -122,12 +122,12 @@ iii. Known problem areas
 - Player slides around, no root motion
 - Defending (LB) doesn't do anything
 - Incidental sword collisions cause damage even if player hasn't attacked.
-- Others??
+
 ### Training Scene
 - SwordEnemy can't do damage to player
 - SwordEnemy doesn't track the player
 - Pausing during the training scene breaks the dialogue interaction
-- Health bar shows 0/0
+
 ### Level 1 Scene
 - Bridges connecting the mesas in the terrain cannot be traversed by walking/running
 - Bridges can be crossed by spamming the attack button (RB)
