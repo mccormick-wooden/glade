@@ -281,6 +281,45 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""SkipScene"",
+            ""id"": ""bdcd5bc2-c8f3-4549-b51c-88f9cfc749b0"",
+            ""actions"": [
+                {
+                    ""name"": ""SkipSceneAction"",
+                    ""type"": ""Button"",
+                    ""id"": ""d7676dcc-4e5d-4e21-80c6-ac26beca9ea1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""70504d48-77ab-4b13-992e-09fc5b96bdf0"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SkipSceneAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""47583645-6ac4-482d-aedc-9642ed132bbd"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SkipSceneAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -322,6 +361,9 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
         // PauseGame
         m_PauseGame = asset.FindActionMap("PauseGame", throwIfNotFound: true);
         m_PauseGame_PauseGameAction = m_PauseGame.FindAction("PauseGameAction", throwIfNotFound: true);
+        // SkipScene
+        m_SkipScene = asset.FindActionMap("SkipScene", throwIfNotFound: true);
+        m_SkipScene_SkipSceneAction = m_SkipScene.FindAction("SkipSceneAction", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -467,7 +509,39 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
         }
     }
     public PauseGameActions @PauseGame => new PauseGameActions(this);
-    
+
+    // SkipScene
+    private readonly InputActionMap m_SkipScene;
+    private ISkipSceneActions m_SkipSceneActionsCallbackInterface;
+    private readonly InputAction m_SkipScene_SkipSceneAction;
+    public struct SkipSceneActions
+    {
+        private @CharacterPlayerControls m_Wrapper;
+        public SkipSceneActions(@CharacterPlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @SkipSceneAction => m_Wrapper.m_SkipScene_SkipSceneAction;
+        public InputActionMap Get() { return m_Wrapper.m_SkipScene; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SkipSceneActions set) { return set.Get(); }
+        public void SetCallbacks(ISkipSceneActions instance)
+        {
+            if (m_Wrapper.m_SkipSceneActionsCallbackInterface != null)
+            {
+                @SkipSceneAction.started -= m_Wrapper.m_SkipSceneActionsCallbackInterface.OnSkipSceneAction;
+                @SkipSceneAction.performed -= m_Wrapper.m_SkipSceneActionsCallbackInterface.OnSkipSceneAction;
+                @SkipSceneAction.canceled -= m_Wrapper.m_SkipSceneActionsCallbackInterface.OnSkipSceneAction;
+            }
+            m_Wrapper.m_SkipSceneActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @SkipSceneAction.started += instance.OnSkipSceneAction;
+                @SkipSceneAction.performed += instance.OnSkipSceneAction;
+                @SkipSceneAction.canceled += instance.OnSkipSceneAction;
+            }
+        }
+    }
+    public SkipSceneActions @SkipScene => new SkipSceneActions(this);
     private int m_GamepadSchemeIndex = -1;
     public InputControlScheme GamepadScheme
     {
@@ -486,7 +560,6 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
             return asset.controlSchemes[m_MouseKeyboardSchemeIndex];
         }
     }
-    
     public interface IGameplayActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -497,5 +570,9 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
     public interface IPauseGameActions
     {
         void OnPauseGameAction(InputAction.CallbackContext context);
+    }
+    public interface ISkipSceneActions
+    {
+        void OnSkipSceneAction(InputAction.CallbackContext context);
     }
 }
