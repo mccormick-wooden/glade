@@ -51,8 +51,8 @@ public class FairyEnemy : BaseEnemy
         bool walkLeft = (speedX < -0.1 && (absSpeedX > absSpeedZ));
         bool walkRight = (speedX > 0.1 && (absSpeedX > absSpeedZ));
 
-        animator.SetBool(RUN_FORWARD, false);
-        animator.SetBool(RUN_BACKWARD, false);
+        animator.SetBool(WALK_FORWARD, false);
+        animator.SetBool(WALK_BACKWARD, false);
         animator.SetBool(STRAFE_LEFT, false);
         animator.SetBool(STRAFE_RIGHT, false);
 
@@ -64,11 +64,11 @@ public class FairyEnemy : BaseEnemy
         }
         else if (walkForward)
         {
-            animator.SetBool(RUN_FORWARD, true);
+            animator.SetBool(WALK_FORWARD, true);
         }
         else if (walkBackward)
         {
-            animator.SetBool(RUN_BACKWARD, true);
+            animator.SetBool(WALK_BACKWARD, true);
         }
         else if (walkLeft)
         {

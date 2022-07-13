@@ -315,6 +315,11 @@ public class BaseEnemy : MonoBehaviour
     protected const string TAKE_DAMAGE = "Take Damage";
     protected const string DIE = "Die";
 
+    /// <summary>
+    /// Capsule collider on the enemy
+    /// </summary>
+    Collider collider;
+
     public string EnemyId => $"{GetType()}:{gameObject.name}:{gameObject.GetInstanceID()}";
 
     // Start is called before the first frame update
@@ -331,6 +336,7 @@ public class BaseEnemy : MonoBehaviour
         crystalManager = GameObject.Find("CrystalParent")?.GetComponent<CrystalManager>();
         renderers = GetComponentsInChildren<Renderer>();
         nextBeaconDefenseNextPositionTime = DateTime.Now;
+        collider = GetComponent<Collider>();
 
         velocityReporter = GetComponent<VelocityReporter>();
         if (velocityReporter == null)
@@ -956,6 +962,15 @@ public class BaseEnemy : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
+        if (damageable && damageable.IsDead)
+        {
+            rigidBody.detectCollisions = false;
+            collider.enabled = false;
+            transform.Find("Hovering Health Bar").gameObject.SetActive(false);
+
+            this.enabled = false;
+        }
+
         if (currentFade < 1f)
             FadeMaterialsIn();
 
