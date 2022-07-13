@@ -8,8 +8,8 @@ using UnityEngine.AI;
 public class BaseEnemy : MonoBehaviour
 {
     protected Animator animator;
-    private Rigidbody rigidBody;
-    NavMeshAgent agent;
+    protected Rigidbody rigidBody;
+    protected NavMeshAgent agent;
     Renderer[] renderers;
     protected VelocityReporter velocityReporter;
 
@@ -111,7 +111,8 @@ public class BaseEnemy : MonoBehaviour
         HealAtCrystal,
         HealOthers,
         NeedsRecomputed,
-        LocatePlayer
+        LocatePlayer,
+        Dead
     }
 
     /// <summary>
@@ -159,6 +160,7 @@ public class BaseEnemy : MonoBehaviour
     /// the AI's decision though, like a damaged beacon
     /// may be chosen more often 
     /// </summary>
+    [SerializeField]
     protected float desireToAttackPlayer;
 
     /// <summary>
@@ -183,6 +185,7 @@ public class BaseEnemy : MonoBehaviour
     /// the AI's decision though, like a damaged beacon
     /// may be chosen more often 
     /// </summary>
+    [SerializeField]
     protected float desireToDefendBeacon;
 
     /// <summary>
@@ -207,6 +210,7 @@ public class BaseEnemy : MonoBehaviour
     /// the AI's decision though, like a damaged beacon
     /// may be chosen more often 
     /// </summary>
+    [SerializeField]
     protected float desireToRunAndHeal;
 
     /// <summary>
@@ -231,6 +235,7 @@ public class BaseEnemy : MonoBehaviour
     /// the AI's decision though, like a damaged beacon
     /// may be chosen more often 
     /// </summary>
+    [SerializeField]
     protected float desireToHealOthers;
 
 
@@ -286,6 +291,34 @@ public class BaseEnemy : MonoBehaviour
     /// </summary>
     bool lostPlayer = true;
 
+    /// <summary>
+    /// Const names for the animation stuff
+    /// </summary>
+    protected const string WALK_FORWARD = "Walk Forward";
+    protected const string WALK_BACKWARD = "Walk Backward";
+    protected const string RUN_FORWARD = "Run Forward";
+    protected const string RUN_BACKWARD = "Run Backward";
+    protected const string STRAFE_LEFT = "Strafe Left";
+    protected const string STRAFE_RIGHT = "Strafe Right";
+    protected const string MELEE_ATTACK = "Melee Attack";
+
+    protected const string BITE_ATTACK = "Bite Attack";
+    protected const string BITE_ATTACK_LOW = "Bite Attack Low";
+    protected const string BITE_ATTACK_HIGH = "Bite Attack High";
+    protected const string STING_ATTACK = "Sting Attack";
+
+    protected const string CHARGING = "Charging";
+    protected const string PROJECTILE_ATTACK = "Projectile Attack";
+    protected const string PROJECTILE_COMBO_ATTACK = "Projectile Combo Attack";
+    protected const string CAST_SPELL = "Cast Spell";
+    protected const string DEFEND = "Defend";
+    protected const string TAKE_DAMAGE = "Take Damage";
+    protected const string DIE = "Die";
+
+    /// <summary>
+    /// Capsule collider on the enemy
+    /// </summary>
+    Collider collider;
 
     public string EnemyId => $"{GetType()}:{gameObject.name}:{gameObject.GetInstanceID()}";
 
@@ -303,6 +336,7 @@ public class BaseEnemy : MonoBehaviour
         crystalManager = GameObject.Find("CrystalParent")?.GetComponent<CrystalManager>();
         renderers = GetComponentsInChildren<Renderer>();
         nextBeaconDefenseNextPositionTime = DateTime.Now;
+        collider = GetComponent<Collider>();
 
         velocityReporter = GetComponent<VelocityReporter>();
         if (velocityReporter == null)
@@ -393,9 +427,16 @@ public class BaseEnemy : MonoBehaviour
                     continue;
                 }
 
-                Color c = m.color;
-                c.a = currentFade;
-                m.color = c;
+                try
+                {
+                    Color c = m.color;
+                    c.a = currentFade;
+                    m.color = c;
+                }
+                catch (Exception e)
+                {
+
+                }
             }
         }
     }
@@ -404,6 +445,7 @@ public class BaseEnemy : MonoBehaviour
 
     protected virtual void UpdateAnimations()
     {
+
     }
 
 
@@ -562,6 +604,9 @@ public class BaseEnemy : MonoBehaviour
     /// </summary>
     protected void DeterminePriority()
     {
+        if (damageable.IsDead)
+            priority = Priority.Dead;
+
         bool couldSeePlayerLastFrame = canSeePlayer;
 
         // First, we need to know what's nearby and what we can see
@@ -917,6 +962,15 @@ public class BaseEnemy : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
+        if (damageable && damageable.IsDead)
+        {
+            rigidBody.detectCollisions = false;
+            collider.enabled = false;
+            transform.Find("Hovering Health Bar").gameObject.SetActive(false);
+
+            this.enabled = false;
+        }
+
         if (currentFade < 1f)
             FadeMaterialsIn();
 
@@ -929,4 +983,17 @@ public class BaseEnemy : MonoBehaviour
         ApplyTransforms();
     }
 
+    protected virtual bool IsInAttackAnimation()
+    {
+        var animationState = animator.GetCurrentAnimatorStateInfo(0);
+
+        return animationState.IsName(MELEE_ATTACK)
+             || animationState.IsName(PROJECTILE_ATTACK)
+             || animationState.IsName(PROJECTILE_COMBO_ATTACK)
+             || animationState.IsName(BITE_ATTACK)
+             || animationState.IsName(BITE_ATTACK_LOW)
+             || animationState.IsName(BITE_ATTACK_HIGH)
+             || animationState.IsName(STING_ATTACK)
+             || animationState.IsName(CAST_SPELL);
+    }
 }
