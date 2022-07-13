@@ -191,8 +191,6 @@ To regenerate tree for new files:
 │   ├── BasePowerUp.cs - *(tlagrange3)*
 │   ├── BaseStateManager.cs - *(mwooden3, cdail7)*
 │   └── BaseWeapon.cs - *(mwooden3, cdail7, tlagrange3)*
-├── AngryChestBump.cs - *(mwooden3)*
-├── AOEAttack.cs - *(cdail7)*
 ├── AppEvents
 │   ├── PlayMusicEvent.cs - *(cdail7)*
 │   └── SwordSwingEvent.cs - *(cdail7)*
@@ -228,11 +226,16 @@ To regenerate tree for new files:
 │   └── DisappearDamageable.cs - *(tlagrange3, mwooden3)*
 ├── Enemy
 │   ├── DummyBeaconDefenderEnemy.cs - *(cdail7)*
-│   ├── DummyAOEAttackEnemy.cs - *(cdail7)*
 │   ├── DummyRangedAttackEnemy.cs - *(cdail7)*
 │   ├── DummySpinAttackEnemy.cs - *(cdail7)*
+│   ├── FairyEnemy.cs - *(cdail7)*
+│   ├── FrightFlyEnemy.cs - *(cdail7)*
 │   ├── HackTestEnemy.cs - *(mwooden3)*
-│   └── SwordEnemy.cs - *(mwooden3)*
+│   ├── MushroomScript.cs - *(cdail7)*
+│   ├── PeaShooterEnemy.cs - *(cdail7)*
+│   ├── PlantEnemy.cs - *(cdail7)*
+│   ├── SwordEnemy.cs - *(mwooden3)*
+│   └── VenusScript.cs - *(cdail7)*
 ├── EnemySpawner.cs - *(cdail7)*
 ├── EventSound3D.cs - *(cdail7)*
 ├── GameManagement
@@ -242,12 +245,12 @@ To regenerate tree for new files:
 │   ├── MainMenuStateManager.cs - *(mwooden3)*
 │   ├── NewGameStateManager.cs - *(mwooden3)*
 │   ├── PauseMenuManager.cs - *(mwooden3, tlagrange3)*
-│   └── TrainingStateManager.cs - *(mwooden3)*
+│   ├── TrainingStateManager.cs - *(mwooden3)*
 │   └── TriggerPlane.cs - *(mwooden3)*
 ├── HealthBarController.cs - *(daniel.zuniga, egilligan3, mwooden3, tlagrange3)*
 ├── Helper
-│   ├── AnimationEventDispatcher.cs - *(mwooden3, [inspired by StackOverflow](https://gamedev.stackexchange.com/questions/117423/unity-detect-animations-end))*
-│   ├── CameraBlendEventDispatcher.cs *(mwooden3, [inspired by thread](https://forum.unity.com/threads/oncameratransition-onblendcomplete-event.520056/))*
+│   └── AnimationEventDispatcher.cs - *(mwooden3, [inspired by StackOverflow](https://gamedev.stackexchange.com/questions/117423/unity-detect-animations-end))*
+│   └── CameraBlendEventDispatcher.cs *(mwooden3, [inspired by thread](https://forum.unity.com/threads/oncameratransition-onblendcomplete-event.520056/))*
 │   ├── DontDestroyThisOnLoad.cs - *(mwooden3)*
 │   ├── Quitter.cs - *(mwooden3)*
 │   ├── SceneLoader.cs - *(mwooden3)*
@@ -263,7 +266,7 @@ To regenerate tree for new files:
 ├── Player.cs - *(cdail7, egilligan3, tlagrange3, mwooden3, Daniel Zuniga)*
 ├── PlayerBehaviors
 │   ├── PlayerDamageable.cs - *(tlagrange3)*
-│   ├── PlayerStats.cs - *(tlagrange3)*
+│   └── PlayerStats.cs - *(tlagrange3)*
 ├── PlayerControls.cs - *(cdail7)*
 ├── PowerUps
 │   ├── DamageIncreasePowerUp.cs - *(tlagrange3)*
@@ -273,8 +276,14 @@ To regenerate tree for new files:
 │   ├── PowerUpPickup.cs - *(tlagrange3)*
 │   └── dev
 │       └── TogglePowerUpMenu.cs - *(tlagrange3)*
+|── WeaponsAndAttacks
+|   ├── AngryChestBump.cs - *(mwooden3)*
+|   ├── AOEAttack.cs - *(cdail7)*
+|   ├── BiteAttack.cs - *(cdail7)*
+|   ├── MushroomExplosion.cs - *(cdail7)*
+|   ├── PeaWeapon.cs - *(cdail7)*
+|   └── Sword.cs - *(cdail7)*
 ├── Shield.cs - *(cdail7)*
-├── Sword.cs - *(cdail7)*
 ├── ThirdPersonCamera.cs - *(daniel.zuniga)*
 └── VelocityReporter.cs - (from course)
 
