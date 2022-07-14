@@ -30,22 +30,29 @@ namespace PlayerBehaviors
             player = GetComponent<Player>();
             playerWeaponManager = GetComponent<PlayerWeaponManager>();
 
-            // TODO: Handle with input
-            isLockingOn = true;
+            isLockingOn = false;
         }
 
         private void Update()
         {
             ReadAnimatorParameters();
-            HandleLockOnInput();
         }
 
-        private void HandleLockOnInput()
+        public void HandleLockOnInput()
         {
+            Debug.Log("Handling lock on toggle");
             if (isLockingOn)
             {
+                isLockingOn = false;
+                currentLockedOnTarget = null;
+                player.playerLockOnCamera.DisableLockOnCamera();
+            }
+            else
+            {
+                isLockingOn = true;
                 AttemptLockOn();
             }
+            
         }
 
         private void AttemptLockOn()
@@ -69,15 +76,8 @@ namespace PlayerBehaviors
             if (currentLockedOnTarget != null)
             {
                 // TODO: Player keeps a reference to this component
-                player.thirdPersonCamera.EnableLockOn();
+                player.playerLockOnCamera.EnableLockOnCamera(currentLockedOnTarget);
             }
-        }
-
-        private void StopLockOn()
-        {
-            isLockingOn = false;
-            currentLockedOnTarget = null;
-            player.thirdPersonCamera.DisableLockOn();
         }
 
         private void ReadAnimatorParameters()

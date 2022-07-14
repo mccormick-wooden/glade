@@ -62,6 +62,15 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Lock On Toggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""c119bf23-8759-4930-97be-094691f57ad5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -240,6 +249,28 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cb6fc53b-cba4-465b-9c35-fdddbd89e9dd"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lock On Toggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d8f804aa-ba5d-4f47-9fce-235069f0fd42"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lock On Toggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -319,6 +350,7 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
         m_Gameplay_Slash = m_Gameplay.FindAction("Slash", throwIfNotFound: true);
         m_Gameplay_Shield = m_Gameplay.FindAction("Shield", throwIfNotFound: true);
         m_Gameplay_Cast = m_Gameplay.FindAction("Cast", throwIfNotFound: true);
+        m_Gameplay_LockOnToggle = m_Gameplay.FindAction("Lock On Toggle", throwIfNotFound: true);
         // PauseGame
         m_PauseGame = asset.FindActionMap("PauseGame", throwIfNotFound: true);
         m_PauseGame_PauseGameAction = m_PauseGame.FindAction("PauseGameAction", throwIfNotFound: true);
@@ -385,6 +417,7 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
     private readonly InputAction m_Gameplay_Slash;
     private readonly InputAction m_Gameplay_Shield;
     private readonly InputAction m_Gameplay_Cast;
+    private readonly InputAction m_Gameplay_LockOnToggle;
     public struct GameplayActions
     {
         private @CharacterPlayerControls m_Wrapper;
@@ -393,6 +426,7 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
         public InputAction @Slash => m_Wrapper.m_Gameplay_Slash;
         public InputAction @Shield => m_Wrapper.m_Gameplay_Shield;
         public InputAction @Cast => m_Wrapper.m_Gameplay_Cast;
+        public InputAction @LockOnToggle => m_Wrapper.m_Gameplay_LockOnToggle;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -414,6 +448,9 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                 @Cast.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCast;
                 @Cast.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCast;
                 @Cast.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCast;
+                @LockOnToggle.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLockOnToggle;
+                @LockOnToggle.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLockOnToggle;
+                @LockOnToggle.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLockOnToggle;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -430,6 +467,9 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                 @Cast.started += instance.OnCast;
                 @Cast.performed += instance.OnCast;
                 @Cast.canceled += instance.OnCast;
+                @LockOnToggle.started += instance.OnLockOnToggle;
+                @LockOnToggle.performed += instance.OnLockOnToggle;
+                @LockOnToggle.canceled += instance.OnLockOnToggle;
             }
         }
     }
@@ -467,7 +507,6 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
         }
     }
     public PauseGameActions @PauseGame => new PauseGameActions(this);
-    
     private int m_GamepadSchemeIndex = -1;
     public InputControlScheme GamepadScheme
     {
@@ -486,13 +525,13 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
             return asset.controlSchemes[m_MouseKeyboardSchemeIndex];
         }
     }
-    
     public interface IGameplayActions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnSlash(InputAction.CallbackContext context);
         void OnShield(InputAction.CallbackContext context);
         void OnCast(InputAction.CallbackContext context);
+        void OnLockOnToggle(InputAction.CallbackContext context);
     }
     public interface IPauseGameActions
     {

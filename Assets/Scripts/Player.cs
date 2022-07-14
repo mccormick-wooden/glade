@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
     bool hasLanded = true;
 
     // Character movement will be relative to this camera.
-    public ThirdPersonCamera thirdPersonCamera;
+    public PlayerLockOnCamera playerLockOnCamera;
     private Transform mainCameraTransform;
 
     // Action related stuff
@@ -145,8 +145,7 @@ public class Player : MonoBehaviour
 
     private void GetCamera()
     {
-        thirdPersonCamera = GameObject.Find("CameraParent/3rdPersonCamera")?.GetComponent<ThirdPersonCamera>();
-        Utility.LogErrorIfNull(thirdPersonCamera, "thirdPersonCamera", "Player could not find the thirdPersonCamera");
+        playerLockOnCamera = GetComponentInChildren<PlayerLockOnCamera>();
         mainCameraTransform = GameObject.Find("CameraParent/MainCamera")?.transform;
         Utility.LogErrorIfNull(mainCameraTransform, "mainCameraTransform",
             "Player could not find the mainCameraTransform");
@@ -184,6 +183,7 @@ public class Player : MonoBehaviour
 
     private void SetupAttackControls()
     {
+        controls.Gameplay.LockOnToggle.performed += ctx => playerCombat.HandleLockOnInput();
         controls.Gameplay.Slash.performed += ctx => playerCombat.PerformSlashAttack(primaryWeapon);
     }
 
