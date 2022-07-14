@@ -213,23 +213,6 @@ public class Player : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
     }
 
-
-    void ApplyTransforms()
-    {
-        var transformForward = transform.forward;
-
-        if (isGrounded)
-        {
-            rigidBody.drag = 5;
-
-            rigidBody.AddForce(transformForward * verticalInput * playerSpeedForce, ForceMode.Force);
-        }
-        else
-        {
-            rigidBody.drag = 0;
-        }
-    }
-
     public bool CheckGroundNear(
         Vector3 charPos,
         out bool isJumpable
@@ -294,47 +277,58 @@ public class Player : MonoBehaviour
 
     private void ApplyCharacterMovement()
     {
-        // The player movement is relative to the position of the camera:
+        // The player movement is relative to the position of the camera when not locked on:
         //
         //  - Forward   : Player moves in the direction the camera is facing
         //                (i.e. away from the camera).
         //  - Backward  : Player moves towards the camera.
         //  - Left      : Player moves towards the camera's left.
         //  - Right     : Player moves towards the camera's right.
-        //
-        //  - The player cannot move whilst attacking/blocking, but can rotate
-        //    to reorient itself towards the target.
 
+        /*
+         * While locked on we should expect to always face the lock on target and our movements to be relative to it
+         */
+
+       
         if (movementMagnitude >= 0.1)
         {
-            // ROTATION --------------------------------------------------------
+            if (playerCombat.isLockingOn)
+            {
+                // Look at the target
+                var lockOnTarget = playerCombat.currentLockedOnTarget.transform.position;
+                transform.LookAt(new Vector3(lockOnTarget.x, transform.position.y, lockOnTarget.z));
+            }
+            else
+            {
+                // ROTATION --------------------------------------------------------
 
-            // Compute how much the player needs to rotate around its own
-            // Y/Vertical axis to align itself with the desired orientation.
-            var targetAngle = Mathf.Rad2Deg *
-                              Mathf.Atan2(playerOrientation.x, playerOrientation.z);
-            // Make the rotation relative to the camera's Y/Vertical position.
-            targetAngle += mainCameraTransform.eulerAngles.y;
+                // Compute how much the player needs to rotate around its own
+                // Y/Vertical axis to align itself with the desired orientation.
+                var targetAngle = Mathf.Rad2Deg *
+                                  Mathf.Atan2(playerOrientation.x, playerOrientation.z);
 
-            // Smooth the angle transition.
-            float smoothedAngle = Mathf.SmoothDampAngle(
-                transform.eulerAngles.y, // Original player orientation.
-                targetAngle, // Desired player orientation.
-                ref rotationVelocity,
-                rotationSmoothTime);
+                // Make the rotation relative to the camera's Y/Vertical position.
+                targetAngle += mainCameraTransform.eulerAngles.y;
 
-            // Compute the player's angular and linear movements:
-            // Rotation: Around its own Y/Vertical axis.
-            Quaternion sharpRotation = Quaternion.Euler(0f, targetAngle, 0f);
-            Quaternion smoothedRotation = Quaternion.Euler(0f, smoothedAngle, 0f);
+                // Smooth the angle transition.
+                var smoothedAngle = Mathf.SmoothDampAngle(
+                    transform.eulerAngles.y, // Original player orientation.
+                    targetAngle, // Desired player orientation.
+                    ref rotationVelocity,
+                    rotationSmoothTime);
 
-            // Apply the rotation.
-            //transform.rotation = smoothedRotation; // Also works.
-            transform.rotation = Quaternion.Lerp(
-                transform.rotation,
-                smoothedRotation,
-                Time.fixedDeltaTime * 100f);
+                // Compute the player's angular and linear movements:
+                // Rotation: Around its own Y/Vertical axis.
+                var sharpRotation = Quaternion.Euler(0f, targetAngle, 0f);
+                var smoothedRotation = Quaternion.Euler(0f, smoothedAngle, 0f);
 
+                // Apply the rotation.
+                //transform.rotation = smoothedRotation; // Also works.
+                transform.rotation = Quaternion.Lerp(
+                    transform.rotation,
+                    smoothedRotation,
+                    Time.fixedDeltaTime * 100f);
+            }
             // TRANSLATION -----------------------------------------------------
 
             // Determine whether the player is going uphill or downhill:
@@ -380,17 +374,38 @@ public class Player : MonoBehaviour
                 }
             }
 
-            var newDirection = new Vector3(
-                transform.forward.x * horizontalMultiplier,
-                downpullForce,
-                transform.forward.z * horizontalMultiplier);
+            if (playerCombat.isLockingOn)
+            {
+                var direction = (playerLockOnCamera.transform.forward * verticalInput + playerLockOnCamera.transform.right * horizontalInput).normalized;
+                direction.y = 0;
+                
+                var newDirection = new Vector3(
+                    direction.x * horizontalMultiplier,
+                    downpullForce,
+                    direction.z * horizontalMultiplier);
 
-            // Apply the translastion.
-            // Note: Subtract the current velocity to get constant
-            // velocity (i.e. no acceleration).
-            rigidBody.AddForce(
-                newDirection * movementSpeed - rigidBody.velocity,
-                ForceMode.VelocityChange);
+                // Apply the translation.
+                // Note: Subtract the current velocity to get constant
+                // velocity (i.e. no acceleration).
+                rigidBody.AddForce(
+                    newDirection * movementSpeed - rigidBody.velocity,
+                    ForceMode.VelocityChange);
+            }
+            else
+            {
+                var newDirection = new Vector3(
+                    transform.forward.x * horizontalMultiplier,
+                    downpullForce,
+                    transform.forward.z * horizontalMultiplier);
+
+                // Apply the translastion.
+                // Note: Subtract the current velocity to get constant
+                // velocity (i.e. no acceleration).
+                rigidBody.AddForce(
+                    newDirection * movementSpeed - rigidBody.velocity,
+                    ForceMode.VelocityChange);
+            }
+
         }
     }
     
