@@ -162,6 +162,7 @@ Transform:
   - {fileID: 425040528509874452}
   - {fileID: 6676486123645953092}
   - {fileID: 7522626300334238938}
+  - {fileID: 9155045854319602569}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -210,6 +211,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EffectMultiplier: 1
+  LightningPrefab: {fileID: 106988, guid: a9892f6a83fd8d4468ce0c8a3d09d3cd, type: 3}
+  LightningSource: {fileID: 9155045854319602569}
   effectRadius: 5
 --- !u!114 &2231281949063299370
 MonoBehaviour:
@@ -229,6 +232,7 @@ MonoBehaviour:
   maxSpawnSlopeDeg: 20
   maxSpawnHeightDelta: 5
   minSpawnDelta: 10
+  spawnColliderRadius: 0
   spawnChancePerSecond: 0.025
   spawnActive: 1
 --- !u!1 &3882675033452885823
@@ -390,6 +394,36 @@ CapsuleCollider:
   m_Height: 0.6
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &5345775504685414118
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9155045854319602569}
+  m_Layer: 0
+  m_Name: LightningRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9155045854319602569
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5345775504685414118}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.1, y: 1.856, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3195626198634527304}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3195626198197401714
 PrefabInstance:
   m_ObjectHideFlags: 0

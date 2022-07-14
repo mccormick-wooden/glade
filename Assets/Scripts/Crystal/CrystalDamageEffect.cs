@@ -12,8 +12,12 @@ public class CrystalDamageEffect : BaseCrystalEffect
 
     private IDamageable health;
 
+    public GameObject LightningTarget;
+
     void Awake()
     {
+        if (LightningTarget == null) LightningTarget = gameObject;
+
         // Need to be damageable for effect
         Utility.LogErrorIfNull(health = GetComponent<IDamageable>(),
             "IDamageable",

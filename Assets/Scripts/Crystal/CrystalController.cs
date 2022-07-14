@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using DigitalRuby.LightningBolt;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(SphereCollider))]
@@ -9,6 +11,10 @@ public class CrystalController : MonoBehaviour
     public float EffectMultiplier = 1;
     public bool effectActive { get; private set; }
 
+    public GameObject LightningPrefab;
+
+    public Transform LightningSource;
+
     [SerializeField]
     private float effectRadius = 5;
 
@@ -17,8 +23,13 @@ public class CrystalController : MonoBehaviour
     private Animator anim;
     private int activatorsClose = 0;
 
+    private Dictionary<int, GameObject> lightningById = new Dictionary<int, GameObject>();
+
     private void Awake()
     {
+        Utility.LogErrorIfNull(LightningPrefab, "LightningPrefab", "Requires lightning prefab for generating lightning effects.");
+        if (LightningSource == null) LightningSource = transform;
+
         anim = GetComponent<Animator>();
         Utility.LogErrorIfNull(anim, "animator", "Crystal Controller requires an animator.");
 
@@ -42,12 +53,37 @@ public class CrystalController : MonoBehaviour
         anim.Play("Growing");
     }
 
+    private void CreateLightning(GameObject target)
+    {
+        Debug.Log($"creating lihgtning at target {target.name}");
+        GameObject lightningObj = Instantiate(LightningPrefab, LightningSource);
+        lightningObj.name = $"Lightning{lightningObj.GetInstanceID()}";
+        LightningBoltScript lightning = lightningObj.GetComponent<LightningBoltScript>();
+        lightning.StartObject = LightningSource.gameObject;
+        lightning.EndObject = target.GetComponent<CrystalDamageEffect>().LightningTarget;
+        lightningById[target.gameObject.GetInstanceID()] = lightningObj;
+    }
+
+    private void DestroyLightning(GameObject target)
+    {
+        int instanceId = target.gameObject.GetInstanceID();
+        if (lightningById.ContainsKey(instanceId))
+        {
+            Destroy(lightningById[instanceId]);
+            lightningById.Remove(instanceId);
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (null != other.GetComponent<BaseCrystalEffect>())
         {
             activatorsClose++;
             Debug.Log($"{name}: Activator arrived. {activatorsClose} in vicinity");
+            if (null != other.GetComponent<CrystalDamageEffect>())
+            {
+                CreateLightning(other.gameObject);
+            }
         }
         if (activatorsClose > 0) effectActive = true;
     }
@@ -58,6 +94,7 @@ public class CrystalController : MonoBehaviour
         {
             activatorsClose--;
             Debug.Log($"{name}: Activator left. {activatorsClose} in vicinity.");
+            DestroyLightning(other.gameObject);
         }
         if (activatorsClose <= 0)
         {

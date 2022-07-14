@@ -542,6 +542,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Crystal
       objectReference: {fileID: 0}
+    - target: {fileID: 5345775504685414118, guid: 7772123ee301b3041bd95e81fad5427c, type: 3}
+      propertyPath: m_Name
+      value: LightningSource
+      objectReference: {fileID: 0}
+    - target: {fileID: 7893711320080822340, guid: 7772123ee301b3041bd95e81fad5427c, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7893711320080822340, guid: 7772123ee301b3041bd95e81fad5427c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7772123ee301b3041bd95e81fad5427c, type: 3}
 --- !u!1 &695145486
@@ -643,7 +655,7 @@ MonoBehaviour:
   healthBarController: {fileID: 0}
   currentHp: 0
   maxHp: 100
-  IsHealable: 0
+  animator: {fileID: 0}
   applyDamageAnimTrigger: Damage
   dieAnimTrigger: Die
 --- !u!1 &1185447611
@@ -676,9 +688,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crystalPrefab: {fileID: 3195626198634527305, guid: 7772123ee301b3041bd95e81fad5427c, type: 3}
+  crystalSpawnerPrefab: {fileID: 0}
   beaconSpawner: {fileID: 0}
-  startingSearchRadius: 6
-  searchIncreaseFactor: 2
+  maxSpawnAttempts: 5
 --- !u!4 &1185447613
 Transform:
   m_ObjectHideFlags: 0
@@ -751,6 +763,14 @@ PrefabInstance:
     - target: {fileID: 3195626198634527305, guid: 7772123ee301b3041bd95e81fad5427c, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7893711320080822340, guid: 7772123ee301b3041bd95e81fad5427c, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7893711320080822340, guid: 7772123ee301b3041bd95e81fad5427c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7772123ee301b3041bd95e81fad5427c, type: 3}
@@ -894,7 +914,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1640573782}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d821ef289d0582b4ba2ab9c19c2a7ad0, type: 3}
+  m_Script: {fileID: 11500000, guid: 4b0bcdbb616946f49802225b024de021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hpPerSecond: 0
@@ -913,7 +933,7 @@ MonoBehaviour:
   healthBarController: {fileID: 0}
   currentHp: 0
   maxHp: 100
-  IsHealable: 0
+  animator: {fileID: 0}
   applyDamageAnimTrigger: 
   dieAnimTrigger: 
 --- !u!1 &1924631958
