@@ -212,6 +212,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EffectMultiplier: 1
   LightningPrefab: {fileID: 106988, guid: a9892f6a83fd8d4468ce0c8a3d09d3cd, type: 3}
+  eventSound3DPrefab: {fileID: 4439039625866004102, guid: a2f8d3d38d23eb846930e66846874d49, type: 3}
+  lightningSound: {fileID: 8300000, guid: 79277b50f3c23b74aa1833db5ccb1496, type: 3}
   LightningSource: {fileID: 9155045854319602569}
   effectRadius: 5
 --- !u!114 &2231281949063299370

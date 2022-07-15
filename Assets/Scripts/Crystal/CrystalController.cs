@@ -12,6 +12,8 @@ public class CrystalController : MonoBehaviour
     public bool effectActive { get; private set; }
 
     public GameObject LightningPrefab;
+    public EventSound3D eventSound3DPrefab;
+    public AudioClip lightningSound;
 
     public Transform LightningSource;
 
@@ -55,13 +57,17 @@ public class CrystalController : MonoBehaviour
 
     private void CreateLightning(GameObject target)
     {
-        Debug.Log($"creating lihgtning at target {target.name}");
         GameObject lightningObj = Instantiate(LightningPrefab, LightningSource);
         lightningObj.name = $"Lightning{lightningObj.GetInstanceID()}";
         LightningBoltScript lightning = lightningObj.GetComponent<LightningBoltScript>();
         lightning.StartObject = LightningSource.gameObject;
         lightning.EndObject = target.GetComponent<CrystalDamageEffect>().LightningTarget;
         lightningById[target.gameObject.GetInstanceID()] = lightningObj;
+        EventSound3D sound = Instantiate(eventSound3DPrefab, transform.position, Quaternion.identity, lightningObj.transform);
+        sound.name = $"{name}-LightningSound-{target.name}";
+        sound.audioSrc.clip = lightningSound;
+        sound.audioSrc.loop = true;
+        sound.audioSrc.Play();
     }
 
     private void DestroyLightning(GameObject target)
