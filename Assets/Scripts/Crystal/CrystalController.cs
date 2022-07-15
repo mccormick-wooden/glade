@@ -85,7 +85,6 @@ public class CrystalController : MonoBehaviour
         if (null != other.GetComponent<BaseCrystalEffect>())
         {
             activatorsClose++;
-            Debug.Log($"{name}: Activator arrived. {activatorsClose} in vicinity");
             if (null != other.GetComponent<CrystalDamageEffect>())
             {
                 CreateLightning(other.gameObject);
@@ -99,7 +98,6 @@ public class CrystalController : MonoBehaviour
         if (null != other.GetComponent<BaseCrystalEffect>())
         {
             activatorsClose--;
-            Debug.Log($"{name}: Activator left. {activatorsClose} in vicinity.");
             DestroyLightning(other.gameObject);
         }
         if (activatorsClose <= 0)

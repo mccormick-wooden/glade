@@ -28,7 +28,6 @@ public class CrystalHealEffect : BaseCrystalEffect
         // For each nearby crystal, apply healing
         foreach (KeyValuePair<int, float> crystal in nearbyCrystalIDs)
         {
-            Debug.Log($"Crystal {crystal.Key} healing");
             float multiplier = crystal.Value;
             health.Heal(hpPerSecond * multiplier);
         }
@@ -36,13 +35,13 @@ public class CrystalHealEffect : BaseCrystalEffect
 
     protected override void CrystalEffectStart()
     {
-        Debug.Log($"{name}: Heal buff active.");
+        Debug.Log($"{name}: Crystal heal buff active.");
         InvokeRepeating("Heal", 0f, 1f);
     }
 
     protected override void CrystalEffectStop()
     {
-        Debug.Log($"{name}: Heal buff stopping.");
+        Debug.Log($"{name}: Crystal heal buff stopping.");
         CancelInvoke("Heal");
     }
 }
