@@ -122,4 +122,3 @@ public class Utility : MonoBehaviour
         button.onClick.RemoveAllListeners();
     }
 }
-

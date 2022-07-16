@@ -1,3 +1,4 @@
+using System;
 using Cinemachine;
 using PlayerBehaviors;
 using UnityEngine;
@@ -8,6 +9,8 @@ namespace PowerUps
 {
     public class PowerUpMenu : MonoBehaviour
     {
+        public Action<BasePowerUp> PowerUpApplied;
+
         private Canvas _canvas;
 
         public GameObject firstOptionButton;
@@ -56,6 +59,8 @@ namespace PowerUps
             powerUpToApply?.ApplyPowerUp();
 
             gameObject.SetActive(false);
+
+            PowerUpApplied?.Invoke(powerUpToApply);
         }
 
         private void PrepareOptions()
@@ -73,7 +78,6 @@ namespace PowerUps
         private void SetPauseState(bool areWePausing)
         {
             if (Player != null) Player.enabled = !areWePausing;
-            if (PlayerCamera != null) PlayerCamera.enabled = !areWePausing;
 
             if (areWePausing && !TimeScaleToggle.IsTimePaused || !areWePausing && TimeScaleToggle.IsTimePaused)
                 TimeScaleToggle.Toggle();
@@ -84,7 +88,7 @@ namespace PowerUps
                 _canvas.enabled = true;
             }
             else
-                Utility.EnableAllOf(except: _canvas);
+                Utility.EnableAllOf(except: new Canvas[] { _canvas, GameObject.Find("TreeSpiritDialogueCanvas")?.GetComponentInChildren<Canvas>() });
         }
     }
 }
