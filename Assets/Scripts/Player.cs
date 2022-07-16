@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     private float movementMagnitude => playerOrientation.magnitude;
 
     // Controls how fast the character moves and turns.
-    public float movementSpeed = 10f;
+    public float movementSpeed = 1.2f;
     public float rotationSmoothTime = 0.1f;
     float rotationVelocity = 0f;
 
@@ -80,9 +80,8 @@ public class Player : MonoBehaviour
 
     private void GetTerrainInfo()
     {
-        /// \todo Find a way to dynamically load the terrain data of the active
-        /// scene.
-        terrainData = (TerrainData)Resources.Load("Assets/Terrain/Terrain_0_0_1e9bf6a0-0e4a-41f6-9cb7-c6586c914a9a");
+        terrainData = GameObject.Find("Level1 Terrain").GetComponent<TerrainData>();
+        Utility.LogErrorIfNull(terrainData, "Terrain Data not found");
         terrainSize = Terrain.activeTerrain.terrainData.size;
     }
 
@@ -156,7 +155,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        animator.speed = 1f;
+        animator.speed = movementSpeed;
         animator.applyRootMotion = true;
         isGrounded = true;
         isJumping = false;
@@ -346,7 +345,7 @@ public class Player : MonoBehaviour
             newRootPosition = Vector3.LerpUnclamped(
                     transform.position,
                     newRootPosition,
-                    1f); /// \todo Try out different speed factors.
+                    movementSpeed);
 
             // Apply the translastion.
             rigidBody.MovePosition(newRootPosition);
