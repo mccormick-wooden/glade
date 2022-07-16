@@ -63,13 +63,11 @@ public abstract class BaseCrystalEffect : MonoBehaviour
         if (nearbyCrystalIDs.ContainsKey(crystalID))
             return;
 
-        Debug.Log($"{name}: Adding Crystal {crystalID} effect.");
         nearbyCrystalIDs.Add(crystalID, multiplier);
     }
 
     protected void RemoveCrystalEffect(int crystalID)
     {
-        Debug.Log($"{name}: Removing Crystal {crystalID} effect.");
         nearbyCrystalIDs.Remove(crystalID);
 
         // If we have no more nearby crystals, stop the effect

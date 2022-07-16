@@ -14,6 +14,10 @@ lands.
 ### How to use
 
 1. Add a CrystalEffect script to anything you want to be affected by the crystals. 
+   * For CrystalDamageEffect with a lightning effect, set a lightning target if
+   you want the lightning effect from a crystal to hit a certain spot on the
+   GameObject, such as an empty game object at the location on the model you
+   want it to hit.
 2. Add a CrystalManager prefab in the scene and optionally provide it a
 reference to the BeaconSpawner to have a crystal spawn whenever a new beacon
 lands.

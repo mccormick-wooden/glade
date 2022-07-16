@@ -12,8 +12,12 @@ public class CrystalDamageEffect : BaseCrystalEffect
 
     private IDamageable health;
 
+    public GameObject LightningTarget;
+
     void Awake()
     {
+        if (LightningTarget == null) LightningTarget = gameObject;
+
         // Need to be damageable for effect
         Utility.LogErrorIfNull(health = GetComponent<IDamageable>(),
             "IDamageable",
@@ -25,7 +29,6 @@ public class CrystalDamageEffect : BaseCrystalEffect
         // For each nearby crystal, apply damage
         foreach (KeyValuePair<int, float> crystal in nearbyCrystalIDs)
         {
-            Debug.Log($"{name} taking damage from {crystal.Key}");
             float multiplier = crystal.Value;
             CrystalWeapon crystalWeapon = new CrystalWeapon(hpPerSecond * multiplier);
             health.HandleAttack(crystalWeapon);
@@ -34,13 +37,13 @@ public class CrystalDamageEffect : BaseCrystalEffect
 
     protected override void CrystalEffectStart()
     {
-        Debug.Log($"{name}: Damage effect active.");
+        Debug.Log($"{name}: Crystal damage effect starting.");
         InvokeRepeating("Damage", 0f, 1f);
     }
 
     protected override void CrystalEffectStop()
     {
-        Debug.Log($"{name}: Damage effect stopping.");
+        Debug.Log($"{name}: Crystal damage effect stopping.");
         CancelInvoke("Damage");
     }
 }
