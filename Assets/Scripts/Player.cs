@@ -195,11 +195,6 @@ public class Player : MonoBehaviour
         if (isGrounded)
         {
             rigidBody.drag = 5;
-
-            if (!doBlock)
-            {
-                rigidBody.AddForce(transformForward * verticalInput * playerSpeedForce, ForceMode.Force);
-            }
         }
         else
         {
