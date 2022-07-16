@@ -188,6 +188,7 @@ public class Player : MonoBehaviour
     {
         controls.Gameplay.LockOnToggle.performed += ctx => playerCombat.HandleLockOnInput();
         controls.Gameplay.Slash.performed += ctx => playerCombat.PerformSlashAttack(primaryWeapon);
+        controls.Gameplay.SpecialAttack.performed += ctx => playerCombat.PerformHeavyAttack(primaryWeapon);
     }
 
     private void OnEnable()

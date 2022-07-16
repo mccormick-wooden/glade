@@ -210,6 +210,10 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.0000000011399076
       objectReference: {fileID: 0}
+    - target: {fileID: 1155908435136971191, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
+      propertyPath: specialEffectPrefab
+      value: 
+      objectReference: {fileID: 1861938134193064, guid: 808ed80abac09c242b89485425208927, type: 3}
     - target: {fileID: 4792565020728687562, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

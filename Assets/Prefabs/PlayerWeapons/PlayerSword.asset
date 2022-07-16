@@ -17,3 +17,4 @@ MonoBehaviour:
   primaryAnimation: OH_Sword_Attack1
   primaryComboAnimation: OH_Sword_Attack2
   primaryCombo2Animation: OH_Sword_Attack3
+  specialAnimation: Spin Attack

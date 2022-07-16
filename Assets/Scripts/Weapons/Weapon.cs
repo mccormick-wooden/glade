@@ -11,5 +11,7 @@ namespace Weapons
         public string primaryAnimation;
         public string primaryComboAnimation;
         public string primaryCombo2Animation;
+
+        public string specialAnimation;
     }
 }

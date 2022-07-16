@@ -55,7 +55,7 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Cast"",
+                    ""name"": ""Special Attack"",
                     ""type"": ""Button"",
                     ""id"": ""2672c397-b0f9-4571-abbf-8458abee1f37"",
                     ""expectedControlType"": ""Button"",
@@ -136,7 +136,7 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Cast"",
+                    ""action"": ""Special Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -147,7 +147,7 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Cast"",
+                    ""action"": ""Special Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -349,7 +349,7 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
         m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
         m_Gameplay_Slash = m_Gameplay.FindAction("Slash", throwIfNotFound: true);
         m_Gameplay_Shield = m_Gameplay.FindAction("Shield", throwIfNotFound: true);
-        m_Gameplay_Cast = m_Gameplay.FindAction("Cast", throwIfNotFound: true);
+        m_Gameplay_SpecialAttack = m_Gameplay.FindAction("Special Attack", throwIfNotFound: true);
         m_Gameplay_LockOnToggle = m_Gameplay.FindAction("Lock On Toggle", throwIfNotFound: true);
         // PauseGame
         m_PauseGame = asset.FindActionMap("PauseGame", throwIfNotFound: true);
@@ -416,7 +416,7 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
     private readonly InputAction m_Gameplay_Move;
     private readonly InputAction m_Gameplay_Slash;
     private readonly InputAction m_Gameplay_Shield;
-    private readonly InputAction m_Gameplay_Cast;
+    private readonly InputAction m_Gameplay_SpecialAttack;
     private readonly InputAction m_Gameplay_LockOnToggle;
     public struct GameplayActions
     {
@@ -425,7 +425,7 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
         public InputAction @Move => m_Wrapper.m_Gameplay_Move;
         public InputAction @Slash => m_Wrapper.m_Gameplay_Slash;
         public InputAction @Shield => m_Wrapper.m_Gameplay_Shield;
-        public InputAction @Cast => m_Wrapper.m_Gameplay_Cast;
+        public InputAction @SpecialAttack => m_Wrapper.m_Gameplay_SpecialAttack;
         public InputAction @LockOnToggle => m_Wrapper.m_Gameplay_LockOnToggle;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
@@ -445,9 +445,9 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                 @Shield.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShield;
                 @Shield.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShield;
                 @Shield.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShield;
-                @Cast.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCast;
-                @Cast.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCast;
-                @Cast.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCast;
+                @SpecialAttack.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSpecialAttack;
+                @SpecialAttack.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSpecialAttack;
+                @SpecialAttack.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSpecialAttack;
                 @LockOnToggle.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLockOnToggle;
                 @LockOnToggle.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLockOnToggle;
                 @LockOnToggle.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLockOnToggle;
@@ -464,9 +464,9 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                 @Shield.started += instance.OnShield;
                 @Shield.performed += instance.OnShield;
                 @Shield.canceled += instance.OnShield;
-                @Cast.started += instance.OnCast;
-                @Cast.performed += instance.OnCast;
-                @Cast.canceled += instance.OnCast;
+                @SpecialAttack.started += instance.OnSpecialAttack;
+                @SpecialAttack.performed += instance.OnSpecialAttack;
+                @SpecialAttack.canceled += instance.OnSpecialAttack;
                 @LockOnToggle.started += instance.OnLockOnToggle;
                 @LockOnToggle.performed += instance.OnLockOnToggle;
                 @LockOnToggle.canceled += instance.OnLockOnToggle;
@@ -530,7 +530,7 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
         void OnMove(InputAction.CallbackContext context);
         void OnSlash(InputAction.CallbackContext context);
         void OnShield(InputAction.CallbackContext context);
-        void OnCast(InputAction.CallbackContext context);
+        void OnSpecialAttack(InputAction.CallbackContext context);
         void OnLockOnToggle(InputAction.CallbackContext context);
     }
     public interface IPauseGameActions

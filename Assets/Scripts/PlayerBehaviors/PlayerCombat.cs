@@ -109,7 +109,6 @@ namespace PlayerBehaviors
                 return;
             }
 
-            animator.applyRootMotion = false;
             animator.SetBool(IsAttacking, true);
 
             var animationString = "";
@@ -138,6 +137,24 @@ namespace PlayerBehaviors
             SetRightHandInUse();
             animator.CrossFade(animationString, 0.2f);
             lastAttackPerformed = animationString;
+        }
+
+        public void PerformHeavyAttack(Weapon weapon)
+        {
+            if (isAttacking)
+            {
+                return;
+            }
+
+            animator.SetBool(IsAttacking, true);
+
+            var animationString = weapon.specialAnimation;
+            SetRightHandInUse();
+            animator.CrossFade(animationString, 0.2f);
+            lastAttackPerformed = animationString;
+
+            // TODO: Fix where this is
+            playerWeaponManager.HandleSpecialEffect(weapon);
         }
 
         #endregion

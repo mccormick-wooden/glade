@@ -33,7 +33,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Cast",
+                    "name": "Special Attack",
                     "type": "Button",
                     "id": "2672c397-b0f9-4571-abbf-8458abee1f37",
                     "expectedControlType": "Button",
@@ -114,7 +114,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Cast",
+                    "action": "Special Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -125,7 +125,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Cast",
+                    "action": "Special Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

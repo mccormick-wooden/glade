@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using Assets.Scripts.Abstract;
 using UnityEngine;
 using Weapons;
@@ -13,6 +13,8 @@ namespace PlayerBehaviors
 
         public BaseWeapon leftHandWeapon;
         public BaseWeapon rightHandWeapon;
+
+        public GameObject specialEffectPrefab;
 
         private Animator animator;
 
@@ -37,13 +39,32 @@ namespace PlayerBehaviors
             {
                 leftHand.EquipWeapon(weapon);
                 leftHandWeapon = leftHand.weaponInSlot.GetComponentInChildren<BaseWeapon>();
-                
+
             }
             else
             {
                 rightHand.EquipWeapon(weapon);
                 rightHandWeapon = rightHand.weaponInSlot.GetComponentInChildren<BaseWeapon>();
             }
+        }
+
+        public void HandleSpecialEffect(Weapon weapon)
+        {
+            if (weapon.specialAnimation == null)
+            {
+                return;
+            }
+
+            Debug.Log("instantiating");
+
+            var specialEffectInstance = Instantiate(specialEffectPrefab, transform.position, transform.rotation);
+            StartCoroutine(DestroySpecialEffect(specialEffectInstance));
+        }
+
+        private IEnumerator DestroySpecialEffect(GameObject instance)
+        {
+            yield return new WaitForSeconds(3);
+            Destroy(instance);
         }
     }
 }
