@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Interfaces;
 using Cinemachine;
 using UnityEngine;
@@ -70,12 +71,6 @@ public class TrainingStateManager : BaseStateManager
     private Canvas dialogueCanvas;
     private DialogueController dialogueController;
 
-    [SerializeField]
-    private GameObject beaconPrefab;
-
-    [SerializeField]
-    private GameObject enemyPrefab;
-
     // For skipping
     private LongClickButton sceneSkipperButton;
 
@@ -87,10 +82,13 @@ public class TrainingStateManager : BaseStateManager
 
     // CombatStateStuff
     private Action<IDamageable, string, int> onCombatCompleted = null;
-    private GameObject spawnedBeacon = null;
-    private GameObject spawnedEnemy = null;
-    private Vector3 beaconSpawnPoint;
-    private Vector3 enemySpawnPoint;
+    private List<IDamageable> NextStateKillList = null;
+
+    private GameObject beacon;
+    private GameObject crystal;
+    private GameObject enemy1;
+    private GameObject enemy2;
+    private GameObject enemy3;
 
     private Dictionary<TrainingState, List<string>> dialogueDictionary = new Dictionary<TrainingState, List<string>>
     {
@@ -104,8 +102,8 @@ public class TrainingStateManager : BaseStateManager
                                                             "But don't worry too much - I'll heal you if your health gets too low! That's what Ancient Tree Spirit friends are for!",
                                                             "Oh, one more thing... Please try not to fall off this very tall and unnecessarily dangerous mesa. Teleporting Wardens back to safety is SO tacky ya know?"}
         },
-        { TrainingState.PostEnemyCombatDialogue, new List<string>() { "Wow, you schmacked that fool!",
-                                                                      "I doubt that's the last alien we'll see - kill the Beacon before more aliens come out!",
+        { TrainingState.PostEnemyCombatDialogue, new List<string>() { "Wow, you schmacked those fools!",
+                                                                      "I doubt those are the last aliens we'll see - kill the Beacon before more aliens come out!",
                                                                       "You can use your SWORD again - remember, it's RB/Left Click to swing! But I'm sure you know that by now, otherwise we're probably in trouble...."}
         },
         { TrainingState.PostBeaconCombatDialogue, new List<string>() { "AND STAY OUT!!! Good job, Warden!",
@@ -164,8 +162,18 @@ public class TrainingStateManager : BaseStateManager
         sceneSkipperButton = GameObject.Find("SceneSkipperButton").GetComponent<LongClickButton>();
         Utility.LogErrorIfNull(sceneSkipperButton, nameof(sceneSkipperButton));
 
-        beaconSpawnPoint = GameObject.Find("BeaconSpawnPoint").transform.position;
-        enemySpawnPoint = GameObject.Find("EnemySpawnPoint").transform.position;
+        beacon = GameObject.Find("CrashedBeacon");
+        beacon.GetComponentInChildren<IDamageable>().enabled = false;
+        crystal = GameObject.Find("Crystal");
+        crystal.GetComponentInChildren<IDamageable>().enabled = false;
+        enemy1 = GameObject.Find("Enemy1");
+        enemy1.GetComponentInChildren<IDamageable>().enabled = false;
+        enemy2 = GameObject.Find("Enemy2");
+        enemy2.GetComponentInChildren<IDamageable>().enabled = false;
+        enemy3 = GameObject.Find("Enemy3");
+        enemy3.GetComponentInChildren<IDamageable>().enabled = false;
+
+        SetEnemiesActiveInScene(false);
         #endregion
 
         #region helper event subscriptions
@@ -202,7 +210,6 @@ public class TrainingStateManager : BaseStateManager
         trainingStateChanged -= OnTrainingStateChanged_EnemyCombat;
         trainingStateChanged -= OnTrainingStateChanged_BeaconCombat;
         trainingStateChanged -= OnTrainingStateChanged_End;
-
     }
 
     protected override void UpdateNextGameState()
@@ -259,20 +266,16 @@ public class TrainingStateManager : BaseStateManager
         if (trainingState != TrainingState.EnemyCombat) 
             return;
 
-        spawnedBeacon = Instantiate(beaconPrefab, beaconSpawnPoint, beaconPrefab.transform.rotation); // TODO: Do this with firebolt script? maybe with a fancy virtual camera follow?
-        var spawnedBeaconDamageable = spawnedBeacon.GetComponent<IDamageable>();
-        spawnedBeaconDamageable.enabled = false;
-
-        spawnedEnemy = Instantiate(enemyPrefab, enemySpawnPoint, enemyPrefab.transform.rotation);   // TODO: Do this on beacon land?
-        var spawnedEnemyDamageable = spawnedEnemy.GetComponent<IDamageable>();
-
         onCombatCompleted = (IDamageable damageable, string name, int instanceId) =>
         {
             damageable.Died -= onCombatCompleted;
-            NextTrainingState();
+
+            if (NextStateKillList.All(d => d.IsDead))
+                NextTrainingState();
         };
 
-        spawnedEnemyDamageable.Died += onCombatCompleted;
+        SetEnemiesActiveInScene(true);
+        SetupNextStateKillList(enemy1.GetComponentInChildren<IDamageable>(), enemy2.GetComponentInChildren<IDamageable>(), enemy3.GetComponentInChildren<IDamageable>());
     }
 
     private void OnTrainingStateChanged_BeaconCombat(TrainingState trainingState)
@@ -280,16 +283,15 @@ public class TrainingStateManager : BaseStateManager
         if (trainingState != TrainingState.BeaconCombat) 
             return;
 
-        var beaconDamageable = spawnedBeacon.GetComponent<IDamageable>();
-        beaconDamageable.enabled = true;
-
         onCombatCompleted = (IDamageable damageable, string name, int instanceId) =>
         {
             damageable.Died -= onCombatCompleted;
-            NextTrainingState();
+
+            if (NextStateKillList.All(d => d.IsDead))
+                NextTrainingState();
         };
 
-        beaconDamageable.Died += onCombatCompleted;
+        SetupNextStateKillList(beacon.GetComponentInChildren<IDamageable>(), crystal.GetComponentInChildren<IDamageable>());
     }
 
     private void OnTrainingStateChanged_End(TrainingState trainingState)
@@ -371,6 +373,25 @@ public class TrainingStateManager : BaseStateManager
     private void KickItOff()
     {
         NextTrainingState();
+    }
+
+    private void SetEnemiesActiveInScene(bool value)
+    {
+        beacon.SetActive(value);
+        crystal.SetActive(value);
+        enemy1.SetActive(value);
+        enemy2.SetActive(value);
+        enemy3.SetActive(value);
+    }
+
+    private void SetupNextStateKillList(params IDamageable[] toKill)
+    {
+        NextStateKillList = new List<IDamageable>(toKill);
+        NextStateKillList.ForEach(k =>
+        {
+            k.enabled = true;
+            k.Died += onCombatCompleted;
+        });
     }
     #endregion
 }

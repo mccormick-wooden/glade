@@ -229,7 +229,7 @@ PrefabInstance:
     - target: {fileID: 3080000963284719836, guid: 796d7e182ad8bad42ab6e1f7cd2ca495, type: 3}
       propertyPath: enemyPrefab
       value: 
-      objectReference: {fileID: 3054070596095771740, guid: 0a02c4f4582639948b95ac3ca2d828a5, type: 3}
+      objectReference: {fileID: 7704693247559123115, guid: 27eb6e80ee2136f418a62865ed2fea71, type: 3}
     - target: {fileID: 3080000963284719836, guid: 796d7e182ad8bad42ab6e1f7cd2ca495, type: 3}
       propertyPath: beaconPrefab
       value: 

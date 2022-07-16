@@ -37,13 +37,15 @@ public class CrystalDamageEffect : BaseCrystalEffect
 
     protected override void CrystalEffectStart()
     {
-        Debug.Log($"{name}: Crystal damage effect starting.");
+        if (debugOutput)
+            Debug.Log($"{name}: Crystal damage effect starting.");
         InvokeRepeating("Damage", 0f, 1f);
     }
 
     protected override void CrystalEffectStop()
     {
-        Debug.Log($"{name}: Crystal damage effect stopping.");
+        if (debugOutput)
+            Debug.Log($"{name}: Crystal damage effect stopping.");
         CancelInvoke("Damage");
     }
 }

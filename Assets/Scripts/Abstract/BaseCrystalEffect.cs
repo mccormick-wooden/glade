@@ -11,6 +11,9 @@ public abstract class BaseCrystalEffect : MonoBehaviour
 
     private bool effectActive;
 
+    [SerializeField]
+    protected bool debugOutput = true;
+
     void Awake()
     {
         // Need to have a collider in order to know when within effect radius
@@ -44,7 +47,9 @@ public abstract class BaseCrystalEffect : MonoBehaviour
 
     private void OnDiedCrystalRemoveEffect(IDamageable damageable, string name, int crystalID)
     {
-        Debug.Log($"{name}: Nearby Crystal {crystalID} died.");
+        if (debugOutput)
+            Debug.Log($"{name}: Nearby Crystal {crystalID} died.");
+
         damageable.Died -= OnDiedCrystalRemoveEffect;
         RemoveCrystalEffect(crystalID);
     }
