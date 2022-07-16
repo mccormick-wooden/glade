@@ -27,7 +27,7 @@ public abstract class BaseCrystalEffect : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         CrystalController crystal;
-        if (null != (crystal = other.GetComponent<CrystalController>()))
+        if (!effectActive && (null != (crystal = other.GetComponent<CrystalController>())))
         {
             // If it's a damageable crystal, add a callback function for when it dies
             BaseDamageable crystalDamageable = other.GetComponent<BaseDamageable>();
@@ -60,13 +60,14 @@ public abstract class BaseCrystalEffect : MonoBehaviour
 
     protected void AddCrystalEffect(int crystalID, float multiplier)
     {
-        Debug.Log($"{name}: Adding Crystal {crystalID} effect.");
+        if (nearbyCrystalIDs.ContainsKey(crystalID))
+            return;
+
         nearbyCrystalIDs.Add(crystalID, multiplier);
     }
 
     protected void RemoveCrystalEffect(int crystalID)
     {
-        Debug.Log($"{name}: Removing Crystal {crystalID} effect.");
         nearbyCrystalIDs.Remove(crystalID);
 
         // If we have no more nearby crystals, stop the effect

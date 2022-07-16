@@ -52,17 +52,13 @@ public class Player : MonoBehaviour
     private Rigidbody rigidBody;
     private Animator animator;
 
-    [SerializeField]
-    private TextMeshProUGUI GameMessage = null;
-
     // Helpers
     private bool IsAnimStateSwordSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("SwordSlash");
     private bool IsAnimStateSwordBackSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("SwordBackSlash");
     private bool IsAnimStateJumpSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("JumpSlash");
 
     // Stuff to help us know when we're in contact with the ground
-    [SerializeField] 
-    private LayerMask whatIsGround;
+    [SerializeField] private LayerMask whatIsGround;
 
     public float playerSpeedForce;
 
@@ -240,20 +236,18 @@ public class Player : MonoBehaviour
 
         foreach (RaycastHit hit in hits)
         {
-
             //if (hit.collider.gameObject.CompareTag("Walkable"))
             //{
 
-                ret = true;
+            ret = true;
 
-                groundHit = hit;
+            groundHit = hit;
 
-                _isJumpable = Vector3.Angle(Vector3.up, hit.normal) < MAX_JUMPABLE_ANGLE;
+            _isJumpable = Vector3.Angle(Vector3.up, hit.normal) < MAX_JUMPABLE_ANGLE;
 
-                break; //only need to find the ground once
+            break; //only need to find the ground once
 
             //}
-
         }
 
         isJumpable = _isJumpable;
@@ -418,34 +412,6 @@ public class Player : MonoBehaviour
             animator.SetBool(IsStrafing, false);
         }
     }
-    
-    private void ShowMessage(string message, uint timeout = 3)
-    {
-        GameMessage.SetText(message);
-
-        if (timeout > 0)
-        {
-            StartCoroutine(DestroyMessage(timeout));
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("AbilityPickup"))
-        {
-            ShowMessage("You acquired a new ability!");
-            other.gameObject.SetActive(false);
-        }
-    }
-    private IEnumerator DestroyMessage(float waitTime)
-    {
-        Debug.Log($"Destroying message in {waitTime.ToString()} seconds...");
-        yield return new WaitForSeconds(waitTime);
-
-        Debug.Log("Destroying message");
-        GameMessage.SetText("");
-    }
-
     public void EmitFirstSwordSlash()
     {
         EventManager.TriggerEvent<SwordSwingEvent, Vector3, int>(transform.position, 0);
@@ -459,5 +425,34 @@ public class Player : MonoBehaviour
     public void EmitThirdSwordSlash()
     {
         EventManager.TriggerEvent<SwordSwingEvent, Vector3, int>(transform.position, 2);
+    }
+
+    public bool ControlsEnabled => controls.Gameplay.enabled;
+
+    /// <summary>
+    /// External API to update control state
+    /// </summary>
+    /// <param name="isEnabled"></param>
+    public void UpdateControlState(bool enableControlState)
+    {
+        if (enableControlState)
+        {
+            controls.Gameplay.Enable();
+        }
+        else
+        {
+            controls.Gameplay.Disable();
+        }
+    }
+
+    /// <summary>
+    /// External API to halt animation motion
+    /// TODO: replace with some kind of graceful slowdown eventually
+    /// </summary>
+    public void StopAnimMotion()
+    {
+        animator.SetFloat("Speed", 0f);
+        horizontalInput = 0;
+        verticalInput = 0;
     }
 }

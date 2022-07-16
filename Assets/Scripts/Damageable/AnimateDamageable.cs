@@ -1,35 +1,45 @@
-﻿using Assets.Scripts.Abstract;
+﻿using Assets.Scripts.Interfaces;
+using Assets.Scripts.Abstract;
 using UnityEngine;
 
 namespace Assets.Scripts.Damageable
 {
     public class AnimateDamageable : BaseDamageable
     {
-        private Animator animator;
-
         [SerializeField]
-        private string applyDamageAnimTrigger;
+        private Animator animator = null;
 
-        [SerializeField]
-        private string dieAnimTrigger;
+        [SerializeField] private string applyDamageAnimTrigger;
+
+        [SerializeField] private string dieAnimTrigger;
 
         protected override void Start()
         {
             base.Start();
 
-            animator = GetComponent<Animator>();
+            // If we haven't defined an animator in the unity editor, try finding one
             if (animator == null)
-                Debug.Log($"{gameObject.name}.{GetType().Name}.{nameof(animator)} is null.");
+                animator = GetComponent<Animator>();
+
+            // If still null, call for help
+            if (animator == null)
+                Debug.LogError($"{gameObject.name}.{GetType().Name}.{nameof(animator)} is null.");
         }
 
-        protected override void ApplyDamage(BaseWeapon attackingWeapon)
+        protected override void ApplyDamage(IWeapon attackingWeapon, float modifier = 1f)
         {
+            if (IsDead)
+                return;
+
             animator.SetTrigger(applyDamageAnimTrigger);
-            base.ApplyDamage(attackingWeapon);
+            base.ApplyDamage(attackingWeapon, modifier);
         }
 
         protected override void Die()
         {
+            if (IsDead)
+                return;
+
             animator.SetTrigger(dieAnimTrigger);
             base.Die();
         }

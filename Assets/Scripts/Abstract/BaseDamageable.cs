@@ -7,17 +7,13 @@ namespace Assets.Scripts.Abstract
 {
     public abstract class BaseDamageable : MonoBehaviour, IDamageable
     {
-        [SerializeField]
-        protected HealthBarController healthBarController;
+        [SerializeField] protected HealthBarController healthBarController;
 
-        [SerializeField]
-        private float currentHp;
+        [SerializeField] private float currentHp;
 
-        [SerializeField]
-        private float maxHp = 100;
+        [SerializeField] private float maxHp = 100;
 
-        [SerializeField]
-        public bool IsHealable;
+        public bool IsHealable { get; set; }
 
         public float CurrentHp
         {
@@ -33,6 +29,8 @@ namespace Assets.Scripts.Abstract
 
         public bool HasHp => CurrentHp > 0;
 
+        protected virtual bool UseHealthBarText { get; set; } = false;
+
         public int AttachedInstanceId { get; protected set; }
 
         public virtual bool IsDead { get; protected set; } = false;
@@ -45,12 +43,27 @@ namespace Assets.Scripts.Abstract
                 return;
             }
 
-            if (!IsDead && IsHealable) 
+            if (!IsDead && IsHealable)
             {
                 var newHp = Mathf.Min(CurrentHp + healAmount, MaxHp);
-                Debug.Log($"Healing {gameObject.name}: currentHp = {CurrentHp}, healAmount: {healAmount}, newHp = {newHp}");
+                Debug.Log(
+                    $"Healing {gameObject.name}: currentHp = {CurrentHp}, healAmount: {healAmount}, newHp = {newHp}");
                 CurrentHp = newHp;
+
+                if (healthBarController != null)
+                    healthBarController.CurrentHp = CurrentHp;
             }
+        }
+
+        public void HandleAttack(IWeapon attackingWeapon)
+        {
+            ApplyDamage(attackingWeapon);
+
+            if (healthBarController != null)
+                healthBarController.CurrentHp = CurrentHp;
+
+            if (!HasHp)
+                Die();
         }
 
         public Action<IDamageable, string, int> Died { get; set; }
@@ -59,10 +72,7 @@ namespace Assets.Scripts.Abstract
         {
             CurrentHp = MaxHp;
 
-            if (healthBarController == null)
-                healthBarController = GetComponentInChildren<HealthBarController>();
-            if (healthBarController != null)
-                healthBarController.InitHealthBar(CurrentHp);
+            InitHealthBarIfExists();
 
             Debug.Log(
                 healthBarController == null
@@ -75,40 +85,87 @@ namespace Assets.Scripts.Abstract
 
         protected virtual void OnTriggerEnter(Collider other)
         {
-            if (ShouldHandleCollisionAsAttack(other))
-                HandleAttack(other.GetComponent<BaseWeapon>());
+            var attackingWeapon = other.GetComponent<BaseWeapon>();
+
+            if (!attackingWeapon || attackingWeapon.isDPSType)
+            {
+                return;
+            }
+
+            if (ShouldHandleCollisionAsAttack(attackingWeapon))
+            {
+                HandleAttack(attackingWeapon);
+            }
         }
 
-        protected void HandleAttack(BaseWeapon attackingWeapon)
-        {
-            ApplyDamage(attackingWeapon);
-
-            if (healthBarController != null)
-                healthBarController.CurrentHp = CurrentHp;
-
-            if (!HasHp)
-                Die();
-        }
-
-        protected virtual bool ShouldHandleCollisionAsAttack(Collider other)
+        protected virtual void OnTriggerStay(Collider other)
         {
             var attackingWeapon = other.GetComponent<BaseWeapon>();
-            if (attackingWeapon == null)
-                return false;
 
+            if (!attackingWeapon)
+            {
+                return;
+            }
+
+            // short circuit on AOEType to get out quick if not AOE
+            if (attackingWeapon && attackingWeapon.isDPSType && ShouldHandleCollisionAsAttack(attackingWeapon))
+            {
+                HandleAttack(attackingWeapon);
+            }
+        }
+
+        protected virtual bool ShouldHandleCollisionAsAttack(BaseWeapon attackingWeapon)
+        {
             bool isWeaponTarget = attackingWeapon.TargetTags.Contains(transform.tag);
             return attackingWeapon.InUse && HasHp && isWeaponTarget;
         }
 
-        protected virtual void ApplyDamage(BaseWeapon attackingWeapon)
+        protected virtual void ApplyDamage(IWeapon attackingWeapon, float modifier = 1f)
         {
-            var newHp = Mathf.Max(CurrentHp - attackingWeapon.AttackDamage, 0f);
+            var netAttackDamage = attackingWeapon.AttackDamage * modifier;
+            if (attackingWeapon.isDPSType)
+            {
+                netAttackDamage *= Time.deltaTime;
+            }
+
+            var newHp = Mathf.Max(CurrentHp - netAttackDamage, 0f);
             Debug.Log(
-                $"Applying damage to {gameObject.name}: currentHp = {CurrentHp}, damage = {attackingWeapon.AttackDamage}, newHp = {newHp}"
+                $"Applying damage to {gameObject.name}: currentHp = {CurrentHp}, damage = {netAttackDamage}, newHp = {newHp}"
             );
             CurrentHp = newHp;
         }
 
+        public void UpdateMaxHealth(float scalar)
+        {
+            var oldMaxHp = MaxHp;
+            var newMaxHp = Mathf.Floor(oldMaxHp * scalar);
+            MaxHp = newMaxHp < 1 ? 1 : newMaxHp;
+
+            healthBarController.MaxHp = MaxHp;
+            Debug.Log("Changed Max HP from " + oldMaxHp + " to " + MaxHp);
+
+            var oldCurrentHp = CurrentHp;
+            if (scalar >= 1f)
+            {
+                // This is opinionated so this can change:
+                // but the health points "gained" from the new MaxHp are applied as healing
+                var diff = MaxHp - oldMaxHp;
+                CurrentHp += diff;
+            }
+            else
+            {
+                // Also opinionated:
+                // Losing max health only lowers our existing health if the max is lower than current hp
+                if (CurrentHp > MaxHp)
+                {
+                    CurrentHp = MaxHp;
+                }
+            }
+
+            healthBarController.CurrentHp = CurrentHp;
+            Debug.Log("Changed Current HP from " + oldCurrentHp + " to " + CurrentHp);
+        }
+        
         /// <summary>
         /// If overridden, base implementation MUST be called
         /// </summary>
@@ -116,6 +173,18 @@ namespace Assets.Scripts.Abstract
         {
             Died?.Invoke(this, name, AttachedInstanceId);
             IsDead = true;
+        }
+
+        private void InitHealthBarIfExists()
+        {
+            if (healthBarController == null)
+                healthBarController = GetComponentInChildren<HealthBarController>();
+
+            if (healthBarController == null)
+                healthBarController = gameObject.transform.parent?.gameObject?.GetComponentInChildren<HealthBarController>();
+
+            if (healthBarController != null)
+                healthBarController.InitHealthBar(CurrentHp, UseHealthBarText);
         }
     }
 }

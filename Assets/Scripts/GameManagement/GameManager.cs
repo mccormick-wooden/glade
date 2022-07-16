@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public enum GameState
@@ -12,11 +13,15 @@ public enum GameState
 
 public class GameManager : MonoBehaviour
 {
-    private static GameManager instance;
+    public static GameManager instance;
 
-    public static GameState State { get; private set; }
+    public GameState State { get; private set; }
 
-    private static AudioSource backgroundAudioSource;
+    public bool IsMidTransition { get; private set; }
+
+    private AudioSource backgroundAudioSource;
+
+    private Animator transitionCanvasAnimationController;
 
     [SerializeField]
     private GameState startingState = GameState.MainMenu;
@@ -42,6 +47,9 @@ public class GameManager : MonoBehaviour
 
         backgroundAudioSource = GetComponent<AudioSource>();
         Utility.LogErrorIfNull(backgroundAudioSource, nameof(backgroundAudioSource), "No background audio source component on game manager!");
+
+        transitionCanvasAnimationController = GameObject.Find("Transitions")?.GetComponentInChildren<Animator>();
+        Utility.LogErrorIfNull(transitionCanvasAnimationController, nameof(transitionCanvasAnimationController), "Missing transition animator!");
     }
 
     private void Start()
@@ -49,12 +57,15 @@ public class GameManager : MonoBehaviour
         UpdateGameState(startingState);
     }
 
-    public static void UpdateGameState(GameState newState)
+    public void UpdateGameState(GameState newState, bool withTransition = true)
     {
-        OnStateChanged?.Invoke(State = newState);
+        if (withTransition)
+            instance.InvokeTransition(midTransitionAction: () => OnStateChanged?.Invoke(State = newState));
+        else
+            OnStateChanged?.Invoke(State = newState);
     }
 
-    public static void PlayLoopedAudio(AudioClip audioClip, float normalizedMaxVolume)
+    public void PlayLoopedAudio(AudioClip audioClip, float normalizedMaxVolume)
     {
         backgroundAudioSource.clip = audioClip;
         backgroundAudioSource.volume = normalizedMaxVolume * instance.globalMaxVolume;
@@ -62,9 +73,38 @@ public class GameManager : MonoBehaviour
         backgroundAudioSource.Play();
     }
 
-    public static void StopLoopedAudio()
+    public void StopLoopedAudio()
     {
         backgroundAudioSource.Stop();
+    }
+
+    public void ToggleLoopedAudio(bool areWePausing)
+    {
+        if (areWePausing)
+            backgroundAudioSource.Pause();
+        else
+            backgroundAudioSource.Play();
+    }
+
+    public void InvokeTransition(Action midTransitionAction = null)
+    {
+        StartCoroutine(Transition(midTransitionAction));
+    }
+
+    private IEnumerator Transition(Action midTransitionAction)
+    {
+        IsMidTransition = true;
+
+        transitionCanvasAnimationController.SetTrigger("FadeOut");
+        yield return new WaitForSecondsRealtime(1);
+
+        if (midTransitionAction != null)
+            midTransitionAction();
+
+        transitionCanvasAnimationController.SetTrigger("FadeIn");
+        yield return new WaitForSecondsRealtime(1);
+
+        IsMidTransition = false;
     }
 }
 

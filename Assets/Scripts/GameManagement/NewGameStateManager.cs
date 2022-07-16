@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(AnimationEventDispatcher))]
 public class NewGameStateManager : BaseStateManager
@@ -19,12 +20,16 @@ public class NewGameStateManager : BaseStateManager
     private float timeScale = 1;
 
     private AnimationEventDispatcher animationEventDispatcher;
+    private LongClickButton sceneSkipperButton;
 
     protected void FixedUpdate()
     {
 #if UNITY_EDITOR
         if (skipCrawl)
-            GameManager.UpdateGameState(GameState.Training);
+        {
+            skipCrawl = false;
+            UpdateNextGameState();
+        }
 
         Time.timeScale = timeScale;
 #endif
@@ -35,12 +40,17 @@ public class NewGameStateManager : BaseStateManager
         animationEventDispatcher = GameObject.Find("CrawlText").GetComponent<AnimationEventDispatcher>();
         Utility.LogErrorIfNull(animationEventDispatcher, nameof(animationEventDispatcher));
 
+        sceneSkipperButton = GameObject.Find("SceneSkipperButton").GetComponent<LongClickButton>();
+        Utility.LogErrorIfNull(sceneSkipperButton, nameof(sceneSkipperButton));
+
         animationEventDispatcher.OnAnimationComplete += OnAnimationComplete;
+        sceneSkipperButton.LongClickComplete += UpdateNextGameState;
     }
 
     protected override void OnSceneUnloaded()
     {
         animationEventDispatcher.OnAnimationComplete -= OnAnimationComplete;
+        sceneSkipperButton.LongClickComplete -= UpdateNextGameState;
         Time.timeScale = 1;
     }
 
@@ -51,6 +61,11 @@ public class NewGameStateManager : BaseStateManager
     private void OnAnimationComplete(string animation)
     {
         if (animation.Equals("NewGameCrawl", StringComparison.OrdinalIgnoreCase))
-            GameManager.UpdateGameState(GameState.Training);
+            UpdateNextGameState();
+    }
+
+    protected override void UpdateNextGameState()
+    {
+        GameManager.instance.UpdateGameState(GameState.Training);
     }
 }

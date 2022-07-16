@@ -7,13 +7,15 @@ namespace Assets.Scripts.Abstract
     {
         [SerializeField] protected float baseAttackDamage;
         [SerializeField] protected float currentAttackDamage;
-        
+
+        [SerializeField] public bool isDPSType { get; protected set; } = false;
+
         public string[] TargetTags;
-        
+
         public virtual float AttackDamage
         {
             get => currentAttackDamage;
-            protected set => currentAttackDamage = value;
+            set => currentAttackDamage = value;
         }
 
         public virtual bool InUse { get; set; }

@@ -2,7 +2,7 @@
 
 Team Members
 - Chris Dail - cdail7@gatech.edu
-- Eric Gilligan - eric.gilligan@gatech.edu
+- Eric Gilligan - egilligan3@gatech.edu
 - Thomas Lagrange - tlagrange3@gatech.edu
 - McCormick Wooden - mwooden3@gatech.edu
 - Daniel Zuniga - daniel.zuniga@gatech.edu
@@ -13,13 +13,18 @@ Team Members
   - [Start Scene File](#start-scene-file)
   - [How To Play](#how-to-play)
     - [To Start Game](#to-start-game)
+    - [Play the Game](#play-the-game)
+    - [How to Win the Game](#how-to-win-the-game)
     - [Controls](#controls)
     - [Game Requirements Achieved](#game-requirements-achieved)
   - [Known Problem Areas](#known-problem-areas)
+    - [General](#general)
+    - [Training Scene](#training-scene)
+    - [Level 1 Scene](#level-1-scene)
   - [Manifest](#manifest)
     - [Features / Non-Script Assets](#features--non-script-assets)
       - [Chris Dail - cdail7](#chris-dail---cdail7)
-      - [Eric Gilligan - eric.gilligan](#eric-gilligan---ericgilligan)
+      - [Eric Gilligan - egilligan3](#eric-gilligan---egilligan3)
       - [Thomas Lagrange - tlagrange3](#thomas-lagrange---tlagrange3)
       - [McCormick Wooden - mwooden3](#mccormick-wooden---mwooden3)
       - [Daniel Zuniga](#daniel-zuniga)
@@ -28,7 +33,6 @@ Team Members
   - [Internal Team Documentation](#internal-team-documentation)
     - [Beacons](#beacons)
       - [How to Use](#how-to-use)
-      - [Known-Issues](#known-issues)
     - [Camera Sensitivity](#camera-sensitivity)
 
 ## Start Scene File
@@ -50,6 +54,17 @@ ii. How to play and what parts of the level to observe technology requirements
 - Select `New Game` in menu
 - Progress through the story crawl and tutorial
 - Follow the instructions in the story crawl and tutorial to play and win the game - just don't die!
+
+### Play the Game
+- Find beacons as they land (you will hear them rain down from the sky and can see them too)
+- Destroy the beacons with your sword
+- Destroying a beacon drops a purple object - approach to interact automatically
+- Colliding with the purple object opens a power up menu where the player can pick from certain power ups
+- The player must choose a single power up among the three offered
+- Destroying the beacon launched another beacon, find it and repeat!
+
+### How to Win the Game
+- Find and destroy 2 beacons
 
 ### Controls
 - Left Stick, WASD = Warden movement
@@ -88,18 +103,33 @@ ii. How to play and what parts of the level to observe technology requirements
 - Consistent spatial simulation throughout
   - *self explanatory*
 - Your AI agents are not complete prepackaged assets from a 3rd party
+  - *enemy assets are custom prefabs using existing models/animations*
 - Implement a start menu GUI.
+  - *visible from the start of the game*
 - Implement in-game pause menu with ability to quit game
+  - *see controls for pause button - only viable during the main level*
 - Ability to exit software at any time
+  - *pause menu, start menu lets you quit*
+- Transitions between scenes should be done aesthetically
+  - *scenes have a fade in/out transition on load*
 
 ## Known Problem Areas
 *Requirement from assignment pdf:*
 ```
 iii. Known problem areas
 ```
+### General
 - Player slides around, no root motion
 - Defending (LB) doesn't do anything
-- Others??
+- Incidental sword collisions cause damage even if player hasn't attacked.
+
+### Training Scene
+- SwordEnemy can't do damage to player
+- SwordEnemy doesn't track the player
+
+### Level 1 Scene
+- Bridges connecting the mesas in the terrain cannot be traversed by walking/running
+- Bridges can be crossed by spamming the attack button (RB)
 
 ## Manifest
 
@@ -117,12 +147,12 @@ each team member contributed to code written
 ```
 
 #### Chris Dail - cdail7
-- Player control
+- Player control / animations
 - Enemy AI
-- Player model
+- Enemy Spawning
 - Audio framework
 
-#### Eric Gilligan - eric.gilligan
+#### Eric Gilligan - egilligan3
 - Crystals and related logic
 - Enemy health bars
 
@@ -133,11 +163,12 @@ each team member contributed to code written
 
 #### McCormick Wooden - mwooden3
 - Menus - Main Menu + Pause Menu
+- Story introduction crawl
+- Tutorial / Training scene
 - Game state management
 - Win / Loss conditions
 - Damage / Combat framework
-- Story introduction crawl
-- Tutorial
+- Scene Transitions
 
 #### Daniel Zuniga
 - Camera
@@ -152,28 +183,28 @@ To regenerate tree for new files:
 
 .
 ├── Abstract
-│   ├── BaseCrystalEffect.cs - *(eric.gilligan)*
-│   ├── BaseDamageable.cs - *(mwooden3, cdail7, eric.gilligan, tlagrange3)*
+│   ├── BaseCrystalEffect.cs - *(egilligan3)*
+│   ├── BaseDamageable.cs - *(mwooden3, cdail7, egilligan3, tlagrange3)*
 │   ├── BaseDevCommand.cs - *(mwooden3)*
 │   ├── BaseEnemy.cs - *(cdail7)*
 │   ├── BaseLevelStateManager.cs - *(mwooden3)*
+│   ├── BasePowerUp.cs - *(tlagrange3)*
 │   ├── BaseStateManager.cs - *(mwooden3, cdail7)*
-│   └── BaseWeapon.cs - *(mwooden3, cdail7)*
-├── AngryChestBump.cs - *(mwooden3)*
+│   └── BaseWeapon.cs - *(mwooden3, cdail7, tlagrange3)*
 ├── AppEvents
 │   ├── PlayMusicEvent.cs - *(cdail7)*
 │   └── SwordSwingEvent.cs - *(cdail7)*
 ├── Arrow.cs - *(cdail7)*
-├── AudioEventManager.cs - *(cdail7)*
+├── AudioEventManager.cs - *(cdail7, tlagrange3)*
 ├── Beacons
 │   ├── BeaconFall.cs - *(tlagrange3)*
-│   ├── BeaconManager.cs - *(tlagrange3, cdail7, eric.gilligan, mwooden3)*
+│   ├── BeaconManager.cs - *(tlagrange3, cdail7, egilligan3, mwooden3)*
 │   ├── BeaconOrbiter.cs - *(tlagrange3)*
-│   ├── BeaconSpawner.cs - *(tlagrange3, mwooden3)*
+│   ├── BeaconSpawner.cs - *(tlagrange3, mwooden3, egilligan3)*
 │   ├── CrashedBeacon.cs - *(tlagrange3, mwooden3)*
 │   └── dev
 │       └── TriggerBeaconSpawn.cs - *(tlagrange3)*
-├── BillboardController.cs - *(daniel.zuniga, mwooden3, eric.gilligan)*
+├── BillboardController.cs - *(daniel.zuniga, mwooden3, egilligan3)*
 ├── Boss.cs - *(tlagrange3)*
 ├── BossRootMotion.cs - *(tlagrange3)*
 ├── Console
@@ -185,8 +216,11 @@ To regenerate tree for new files:
 │   ├── LoadSceneCommand.asset - *(mwooden3)*
 │   └── LoadSceneCommand.cs - *(mwooden3)*
 ├── Crystal
-│   ├── CrystalController.cs - *(eric.gilligan)*
-│   └── CrystalHealEffect.cs - *(eric.gilligan)*
+│   ├── CrystalController.cs - *(egilligan3)*
+│   ├── CrystalDamageEffect.cs - *(egilligan3)*
+│   ├── CrystalHealEffect.cs - *(egilligan3)*
+│   ├── CrystalManager.cs - *(egilligan3)*
+│   └── CrystalSpawner.cs - *(egilligan3)*
 ├── Damageable
 │   ├── AnimateDamageable.cs - *(tlagrange3, mwooden3)*
 │   └── DisappearDamageable.cs - *(tlagrange3, mwooden3)*
@@ -194,39 +228,63 @@ To regenerate tree for new files:
 │   ├── DummyBeaconDefenderEnemy.cs - *(cdail7)*
 │   ├── DummyRangedAttackEnemy.cs - *(cdail7)*
 │   ├── DummySpinAttackEnemy.cs - *(cdail7)*
+│   ├── FairyEnemy.cs - *(cdail7)*
+│   ├── FrightFlyEnemy.cs - *(cdail7)*
 │   ├── HackTestEnemy.cs - *(mwooden3)*
-│   └── SwordEnemy.cs - *(mwooden3)*
+│   ├── MushroomScript.cs - *(cdail7)*
+│   ├── PeaShooterEnemy.cs - *(cdail7)*
+│   ├── PlantEnemy.cs - *(cdail7)*
+│   ├── SwordEnemy.cs - *(mwooden3)*
+│   └── VenusScript.cs - *(cdail7)*
 ├── EnemySpawner.cs - *(cdail7)*
 ├── EventSound3D.cs - *(cdail7)*
-├── FootIK.cs - *(cdail7)*
 ├── GameManagement
 │   ├── EventManager.cs - (from course)
 │   ├── GameManager.cs - *(mwooden3)*
 │   ├── Level1StateManager.cs - *(mwooden3)*
 │   ├── MainMenuStateManager.cs - *(mwooden3)*
 │   ├── NewGameStateManager.cs - *(mwooden3)*
-│   ├── PauseMenuManager.cs - *(mwooden3)*
-│   └── TrainingStateManager.cs - *(mwooden3)*
-├── HealthBarController.cs - *(daniel.zuniga, eric.gilligan, mwooden3)*
+│   ├── PauseMenuManager.cs - *(mwooden3, tlagrange3)*
+│   ├── TrainingStateManager.cs - *(mwooden3)*
+│   └── TriggerPlane.cs - *(mwooden3)*
+│   └── LongClickButton.cs - *(mwooden3)*
+├── HealthBarController.cs - *(daniel.zuniga, egilligan3, mwooden3, tlagrange3)*
 ├── Helper
-│   ├── AnimationEventDispatcher.cs - ([from StackOverflow](https://gamedev.stackexchange.com/questions/117423/unity-detect-animations-end))
+│   └── AnimationEventDispatcher.cs - *(mwooden3, [inspired by StackOverflow](https://gamedev.stackexchange.com/questions/117423/unity-detect-animations-end))*
+│   └── CameraBlendEventDispatcher.cs *(mwooden3, [inspired by thread](https://forum.unity.com/threads/oncameratransition-onblendcomplete-event.520056/))*
 │   ├── DontDestroyThisOnLoad.cs - *(mwooden3)*
 │   ├── Quitter.cs - *(mwooden3)*
 │   ├── SceneLoader.cs - *(mwooden3)*
 │   ├── TimeScaleToggle.cs - *(mwooden3)*
 │   └── Utility.cs - *(mwooden3)*
-├── IKFootPlacement.cs - *(cdail7)*
 ├── Interfaces
-│   ├── IDamageable.cs - *(mwooden3)*
+│   ├── IDamageable.cs - *(mwooden3, egilligan3)*
 │   ├── IDevCommand.cs - *(mwooden3)*
 │   ├── IDevCommandResult.cs - *(mwooden3)*
 │   └── IWeapon.cs - *(mwooden3)*
-├── Movement
-│   └── CameraRelativeRootMovement.cs - *(cdail7)*
-├── Player.cs - *(cdail7, eric.gilligan, tlagrange3, mwooden3, Daniel Zuniga)*
+├── NPC
+│   └── TreeSpirit.cs - *(mwooden3)*
+├── Player.cs - *(cdail7, egilligan3, tlagrange3, mwooden3, Daniel Zuniga)*
+├── PlayerBehaviors
+│   ├── PlayerDamageable.cs - *(tlagrange3)*
+│   └── PlayerStats.cs - *(tlagrange3)*
 ├── PlayerControls.cs - *(cdail7)*
+├── PowerUps
+│   ├── DamageIncreasePowerUp.cs - *(tlagrange3)*
+│   ├── DamageResistPowerUp.cs - *(tlagrange3)*
+│   ├── MaxHealthPowerUp.cs - *(tlagrange3)*
+│   ├── PowerUpMenu.cs - *(tlagrange3)*
+│   ├── PowerUpPickup.cs - *(tlagrange3)*
+│   └── dev
+│       └── TogglePowerUpMenu.cs - *(tlagrange3)*
+|── WeaponsAndAttacks
+|   ├── AngryChestBump.cs - *(mwooden3)*
+|   ├── AOEAttack.cs - *(cdail7)*
+|   ├── BiteAttack.cs - *(cdail7)*
+|   ├── MushroomExplosion.cs - *(cdail7)*
+|   ├── PeaWeapon.cs - *(cdail7)*
+|   └── Sword.cs - *(cdail7)*
 ├── Shield.cs - *(cdail7)*
-├── Sword.cs - *(cdail7)*
 ├── ThirdPersonCamera.cs - *(daniel.zuniga)*
 └── VelocityReporter.cs - (from course)
 
@@ -235,13 +293,14 @@ To regenerate tree for new files:
 The entirety of the 3rd Party assets that are in use are contained in `Assets/3rdParty/`:
 
 - [UI Button Pack 2](https://assetstore.unity.com/packages/2d/gui/icons/ui-button-pack-2-1200-button-130422) - Used for main menu and pause menu buttons.
-- [Pyro Particles](need link) - Used for Beacon meteorite effect.
+- [Pyro Particles](https://assetstore.unity.com/packages/vfx/particles/fire-explosions/fire-spell-effects-36825) - Used for Beacon meteorite effect.
 - [Nature Starter Kit 2](https://assetstore.unity.com/packages/3d/environments/nature-starter-kit-2-52977) - Used for environments / terrain.
 - [Casual Fantasy - Ent](https://assetstore.unity.com/packages/3d/characters/creatures/ent-casual-fantasy-206323) - Used for Ancient Tree Spirit character
 - [Polygonal Metalon](https://assetstore.unity.com/packages/3d/characters/creatures/meshtint-free-polygonal-metalon-151383) - Used for "Boss" character
-- [Toby Fredson](need link) - No idea
-- [BizulkaProduction](need link) - No idea
-- (where are crystals from?)
+- [Toby Fredson](https://assetstore.unity.com/publishers/11721) - Used for the Terrain textures
+- [BizulkaProduction](https://assetstore.unity.com/packages/3d/characters/creatures/fuga-spiders-with-destructible-eggs-and-mummy-151921) - Used for the crashed beacon model
+- [SkythianCat](https://assetstore.unity.com/packages/3d/environments/hand-painted-nature-kit-lite-69220#description) - Used for the training interaction stump the ent stands on
+- [SineVFX - Transluscent Crystals](https://assetstore.unity.com/packages/3d/environments/fantasy/translucent-crystals-106274)
 
 
 ## Internal Team Documentation
@@ -259,10 +318,6 @@ Beacons are spawned in by a `BeaconSpawner` that will spawn an additional beacon
   - Not crashed beacons fly towards the earth at a randomized angle
     - This behavior is defined on the 3rd party `Firebolt` Prefab
   - Crashed beacons turn into gooey eggs that can be destroyed.
-
-#### Known-Issues
-
-- ???
 
 ### Camera Sensitivity
 

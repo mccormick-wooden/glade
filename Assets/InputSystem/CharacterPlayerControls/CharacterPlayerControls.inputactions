@@ -290,6 +290,45 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "SkipScene",
+            "id": "bdcd5bc2-c8f3-4549-b51c-88f9cfc749b0",
+            "actions": [
+                {
+                    "name": "SkipSceneAction",
+                    "type": "Button",
+                    "id": "d7676dcc-4e5d-4e21-80c6-ac26beca9ea1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "70504d48-77ab-4b13-992e-09fc5b96bdf0",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SkipSceneAction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "47583645-6ac4-482d-aedc-9642ed132bbd",
+                    "path": "<Keyboard>/b",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SkipSceneAction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
