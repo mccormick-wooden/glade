@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using PlayerBehaviors;
 using TMPro;
@@ -25,6 +26,7 @@ public class Player : MonoBehaviour
 
     // Controls how fast the character moves and turns.
     public float movementSpeed = 10f;
+    public float strafeMovementSpeedModifier = 0.6f;
     public float rotationSmoothTime = 0.1f;
     float rotationVelocity = 0f;
 
@@ -73,6 +75,9 @@ public class Player : MonoBehaviour
     private PlayerWeaponManager playerWeaponManager;
     [SerializeField] private Weapon primaryWeapon;
     [SerializeField] private Weapon secondaryWeapon;
+    private static readonly int HorizontalInput = Animator.StringToHash("horizontalInput");
+    private static readonly int VerticalInput = Animator.StringToHash("verticalInput");
+    private static readonly int IsStrafing = Animator.StringToHash("isStrafing");
 
     #endregion
 
@@ -128,11 +133,9 @@ public class Player : MonoBehaviour
     {
         ApplyForcesAndDrag();
         ApplyCharacterMovement();
-    }
 
-    private void Update()
-    {
-        // ApplyTransforms();
+        animator.SetFloat(HorizontalInput, horizontalInput);
+        animator.SetFloat(VerticalInput, verticalInput);
     }
     
     private void GetTerrainInfo()
@@ -374,21 +377,24 @@ public class Player : MonoBehaviour
                 }
             }
 
+            // When locking on, we face the lock on target and strafe
             if (playerCombat.isLockingOn)
             {
-                var direction = (playerLockOnCamera.transform.forward * verticalInput + playerLockOnCamera.transform.right * horizontalInput).normalized;
-                direction.y = 0;
-                
-                var newDirection = new Vector3(
-                    direction.x * horizontalMultiplier,
-                    downpullForce,
-                    direction.z * horizontalMultiplier);
+                animator.SetBool(IsStrafing, true);
 
-                // Apply the translation.
-                // Note: Subtract the current velocity to get constant
-                // velocity (i.e. no acceleration).
-                rigidBody.AddForce(
-                    newDirection * movementSpeed - rigidBody.velocity,
+                var lockOnDirection = (playerLockOnCamera.transform.forward * verticalInput +
+                                       playerLockOnCamera.transform.right * horizontalInput).normalized;
+
+                var strafeSpeed = movementSpeed * strafeMovementSpeedModifier;
+
+                var inputMagnitude = Mathf.Sqrt(horizontalInput * horizontalInput + verticalInput * verticalInput);
+                var newForce = new Vector3(
+                    lockOnDirection.x * strafeSpeed * horizontalMultiplier * inputMagnitude, downpullForce,
+                    lockOnDirection.z * strafeSpeed * horizontalMultiplier * inputMagnitude);
+
+
+                var currentVelocity = rigidBody.velocity;
+                rigidBody.AddForce(newForce - new Vector3(currentVelocity.x, 0, currentVelocity.z),
                     ForceMode.VelocityChange);
             }
             else
@@ -405,7 +411,10 @@ public class Player : MonoBehaviour
                     newDirection * movementSpeed - rigidBody.velocity,
                     ForceMode.VelocityChange);
             }
-
+        }
+        else
+        {
+            animator.SetBool(IsStrafing, false);
         }
     }
     
