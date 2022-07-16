@@ -215,7 +215,7 @@ MonoBehaviour:
   LightningPrefab: {fileID: 106988, guid: a9892f6a83fd8d4468ce0c8a3d09d3cd, type: 3}
   LightningSource: {fileID: 9155045854319602569}
   lightningAudio: {fileID: 6325348495379813592}
-  effectRadius: 5
+  effectRadius: 8
 --- !u!114 &2231281949063299370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,8 +229,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crystalPrefab: {fileID: 3195626198634527305}
-  minSpawnDistance: 3
-  maxSpawnDistance: 20
+  minSpawnDistance: 2
+  maxSpawnDistance: 10
   maxSpawnSlopeDeg: 20
   maxSpawnHeightDelta: 5
   minSpawnDelta: 10
