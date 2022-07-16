@@ -654,6 +654,7 @@ GameObject:
   - component: {fileID: 312595738542151838}
   - component: {fileID: 312595738542151839}
   - component: {fileID: 312595738542151834}
+  - component: {fileID: -165830402330818442}
   m_Layer: 0
   m_Name: Polygonal Pea Shooter Green
   m_TagString: Enemy
@@ -812,6 +813,20 @@ MonoBehaviour:
   animator: {fileID: 0}
   applyDamageAnimTrigger: Take Damage
   dieAnimTrigger: Die
+--- !u!114 &-165830402330818442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 311366642087818606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d821ef289d0582b4ba2ab9c19c2a7ad0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpPerSecond: 2
+  healParticlePrefab: {fileID: 1819198237917253673, guid: 38633e7e9ae8aea4f861cee1e5c7a830, type: 3}
 --- !u!1 &311424453305273888
 GameObject:
   m_ObjectHideFlags: 0
