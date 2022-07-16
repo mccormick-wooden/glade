@@ -66,12 +66,9 @@ public class TrainingStateManager : BaseStateManager
     private TriggerPlane outOfBoundsTriggerPlane;
 
     [SerializeField]
-    private string dialogueControllerName = "DialogueController";
-    private DialogueController dialogueController;
-
-    [SerializeField]
     private string dialogueCanvasName = "TreeSpiritDialogueCanvas";
     private Canvas dialogueCanvas;
+    private DialogueController dialogueController;
 
     [SerializeField]
     private GameObject beaconPrefab;
@@ -85,7 +82,7 @@ public class TrainingStateManager : BaseStateManager
     // DialogueStateStuff
     private List<TrainingState> dialogueStates = new List<TrainingState> { TrainingState.IntroDialogue, TrainingState.PostEnemyCombatDialogue, TrainingState.PostBeaconCombatDialogue };
     private Action<ICinemachineCamera> onCameraBlendToTrainingHostComplete = null;
-    private Action onDialogueCompleted = null;
+    private Action onAllDialogueCompleted = null;
     private Action<ICinemachineCamera> onCameraBlendToPlayerComplete = null;
 
     // CombatStateStuff
@@ -158,11 +155,11 @@ public class TrainingStateManager : BaseStateManager
         outOfBoundsTriggerPlane = GameObject.Find(triggerPlaneGameObjectName)?.GetComponentInChildren<TriggerPlane>();
         Utility.LogErrorIfNull(outOfBoundsTriggerPlane, nameof(outOfBoundsTriggerPlane));
 
-        dialogueController = GameObject.Find(dialogueControllerName)?.GetComponent<DialogueController>();
-        Utility.LogErrorIfNull(dialogueController, nameof(dialogueController));
-
         dialogueCanvas = GameObject.Find(dialogueCanvasName)?.GetComponent<Canvas>();
         Utility.LogErrorIfNull(dialogueCanvas, nameof(dialogueCanvas));
+
+        dialogueController = dialogueCanvas.GetComponentInChildren<DialogueController>();
+        Utility.LogErrorIfNull(dialogueController, nameof(dialogueController));
 
         sceneSkipperButton = GameObject.Find("SceneSkipperButton").GetComponent<LongClickButton>();
         Utility.LogErrorIfNull(sceneSkipperButton, nameof(sceneSkipperButton));
@@ -232,9 +229,9 @@ public class TrainingStateManager : BaseStateManager
             }
         };
 
-        onDialogueCompleted = () =>
+        onAllDialogueCompleted = () =>
         {
-            dialogueController.DialogueCompleted -= onDialogueCompleted;
+            dialogueController.AllDialogueCompleted -= onAllDialogueCompleted;
 
             trainingHostVirtualCamera.enabled = false;
             dialogueCanvas.enabled = false;
@@ -251,7 +248,7 @@ public class TrainingStateManager : BaseStateManager
         };
 
         cameraBlendEventDispatcher.CameraBlendCompleted += onCameraBlendToTrainingHostComplete;
-        dialogueController.DialogueCompleted += onDialogueCompleted;
+        dialogueController.AllDialogueCompleted += onAllDialogueCompleted;
         cameraBlendEventDispatcher.CameraBlendCompleted += onCameraBlendToPlayerComplete;
 
         StartDialogueState();
