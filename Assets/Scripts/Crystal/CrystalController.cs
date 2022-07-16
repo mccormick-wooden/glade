@@ -11,11 +11,10 @@ public class CrystalController : MonoBehaviour
     public float EffectMultiplier = 1;
     public bool effectActive { get; private set; }
 
+    [Header("Lightning Effect")]
     public GameObject LightningPrefab;
-    public EventSound3D eventSound3DPrefab;
-    public AudioClip lightningSound;
-
     public Transform LightningSource;
+    public AudioSource lightningAudio;
 
     [SerializeField]
     private float effectRadius = 5;
@@ -61,13 +60,9 @@ public class CrystalController : MonoBehaviour
         lightningObj.name = $"Lightning{lightningObj.GetInstanceID()}";
         LightningBoltScript lightning = lightningObj.GetComponent<LightningBoltScript>();
         lightning.StartObject = LightningSource.gameObject;
-        lightning.EndObject = target.GetComponent<CrystalDamageEffect>().LightningTarget;
+        lightning.EndObject = target.GetComponent<CrystalDamageEffect>()?.LightningTarget;
         lightningById[target.gameObject.GetInstanceID()] = lightningObj;
-        EventSound3D sound = Instantiate(eventSound3DPrefab, transform.position, Quaternion.identity, lightningObj.transform);
-        sound.name = $"{name}-LightningSound-{target.name}";
-        sound.audioSrc.clip = lightningSound;
-        sound.audioSrc.loop = true;
-        sound.audioSrc.Play();
+        lightningAudio.Play();
     }
 
     private void DestroyLightning(GameObject target)
@@ -77,6 +72,7 @@ public class CrystalController : MonoBehaviour
         {
             Destroy(lightningById[instanceId]);
             lightningById.Remove(instanceId);
+            lightningAudio.Stop();
         }
     }
 
