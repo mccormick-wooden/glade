@@ -14,7 +14,6 @@ public class Sword : BaseWeapon
     {
         base.Start();
         TargetTags = new string[] { "Enemy", "Damageable" };  
-
         trails = transform.Find("HitTrails").GetComponent<ParticleSystem>();
         trails.Stop();
     }
@@ -43,6 +42,7 @@ public class Sword : BaseWeapon
 
             int whichHitEffect = Random.Range(0, hitEffectPrefabs.Length-1);
             GameObject hitEffect = Instantiate(hitEffectPrefabs[whichHitEffect], other.ClosestPoint(transform.position), Quaternion.identity, null);
+            trails.Play();
         }
     }
 }
