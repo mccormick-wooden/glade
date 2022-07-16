@@ -7,7 +7,7 @@ on:
 jobs:
   build-deploy:
     name: Web Deploy 🚀
-    runs-on: [self-hosted, ubuntu-latest]
+    runs-on: self-hosted
     strategy:
       fail-fast: true
       matrix:
