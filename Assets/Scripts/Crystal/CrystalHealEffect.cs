@@ -12,6 +12,9 @@ public class CrystalHealEffect : BaseCrystalEffect
 
     private IDamageable health;
 
+    public GameObject healParticlePrefab;
+    private HealingParticles aura;
+
     void Awake()
     {
         // Need to be damageable/healable for healh effect
@@ -21,6 +24,21 @@ public class CrystalHealEffect : BaseCrystalEffect
 
         if (health != null)
             health.IsHealable = true;
+
+        if (healParticlePrefab != null)
+        {
+            GameObject healParticles = Instantiate(healParticlePrefab, transform);
+            healParticles.name = $"{name}HealAura";
+            aura = healParticles.GetComponent<HealingParticles>();
+        }
+    }
+
+    private void Update()
+    {
+        if (effectActive && !aura.Active)
+            aura.EffectStart();
+        else if (!effectActive && aura.Active)
+            aura.EffectStop();
     }
 
     private void Heal()
@@ -31,6 +49,8 @@ public class CrystalHealEffect : BaseCrystalEffect
             float multiplier = crystal.Value;
             health.Heal(hpPerSecond * multiplier);
         }
+        
+
     }
 
     protected override void CrystalEffectStart()

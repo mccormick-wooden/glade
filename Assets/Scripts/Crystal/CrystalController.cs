@@ -8,13 +8,20 @@ public class CrystalController : MonoBehaviour
 {
     public int CrystalID => gameObject.GetInstanceID();
 
+    [Header("Crystal Effect")]
     public float EffectMultiplier = 1;
     public bool effectActive { get; private set; }
+    public AudioSource crystalAudio;
 
     [Header("Lightning Effect")]
     public GameObject LightningPrefab;
     public Transform LightningSource;
     public AudioSource lightningAudio;
+
+    [Header("Healing Effect")]
+    public GameObject Prefab;
+    public Transform Source;
+    public AudioSource Audio;
 
     [SerializeField]
     private float effectRadius = 5;
