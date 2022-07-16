@@ -178,15 +178,14 @@ public class TrainingStateManager : BaseStateManager
         },
         { TrainingState.PostBeaconCombatDialogue, new List<string>() 
             { 
-                "AND STAY OUT!!! Good job, Warden!",
-                "Dang, it looks like the invasion is really getting started down there. You ready to get going? Think 45 seconds of combat training was enough?",
-                "Don't answer that. Anyway, I'll go ahead and teleport you down to the invasion site so you can start clapping more aliens.",
-                "Help me Obi-Warden Kenobi! You're my only hope! Good luck!!!" 
+                $"{TrainingState.PostBeaconCombatDialogue} placeholder",
             } 
         },
         { TrainingState.PostPowerUpDialogue, new List<string>()
             {
-                $"{TrainingState.PostPowerUpDialogue} placeholder"
+                "Dang, it looks like the invasion is really getting started down there. You ready to get going? Think 45 seconds of combat training was enough?",
+                "Don't answer that. Anyway, I'll go ahead and teleport you down to the invasion site so you can start clapping more aliens.",
+                "Help me Obi-Warden Kenobi! You're my only hope! Good luck!!!" 
             }
         }
     };
@@ -529,6 +528,7 @@ public class TrainingStateManager : BaseStateManager
 
             if (NextStateKillList.All(d => d.IsDead))
             {
+                playerCrystalDamageEffect.enabled = false;
                 Destroy(crystal); // it can still zap even after its dead, idk why
                 Invoke("NextTrainingState", postCombatWait);
             }
