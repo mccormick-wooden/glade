@@ -221,6 +221,7 @@ To regenerate tree for new files:
 │   ├── CrystalHealEffect.cs - *(egilligan3)*
 │   ├── CrystalManager.cs - *(egilligan3)*
 │   └── CrystalSpawner.cs - *(egilligan3)*
+│   └── CrystalWeapon.cs - *(egilligan3)*
 ├── Damageable
 │   ├── AnimateDamageable.cs - *(tlagrange3, mwooden3)*
 │   └── DisappearDamageable.cs - *(tlagrange3, mwooden3)*
@@ -256,6 +257,7 @@ To regenerate tree for new files:
 │   ├── Quitter.cs - *(mwooden3)*
 │   ├── SceneLoader.cs - *(mwooden3)*
 │   ├── TimeScaleToggle.cs - *(mwooden3)*
+│   ├── SyncWithCameraRotation.cs - *(egilligan3)*
 │   └── Utility.cs - *(mwooden3)*
 ├── Interfaces
 │   ├── IDamageable.cs - *(mwooden3, egilligan3)*
@@ -287,6 +289,7 @@ To regenerate tree for new files:
 ├── Shield.cs - *(cdail7)*
 ├── ThirdPersonCamera.cs - *(daniel.zuniga)*
 └── VelocityReporter.cs - (from course)
+
 
 ### 3rd Party Assets
 

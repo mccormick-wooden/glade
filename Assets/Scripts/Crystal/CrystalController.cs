@@ -12,16 +12,12 @@ public class CrystalController : MonoBehaviour
     public float EffectMultiplier = 1;
     public bool effectActive { get; private set; }
     public AudioSource crystalAudio;
+    public AudioSource growAudio;
 
     [Header("Lightning Effect")]
     public GameObject LightningPrefab;
     public Transform LightningSource;
     public AudioSource lightningAudio;
-
-    [Header("Healing Effect")]
-    public GameObject Prefab;
-    public Transform Source;
-    public AudioSource Audio;
 
     [SerializeField]
     private float effectRadius = 5;
@@ -59,6 +55,7 @@ public class CrystalController : MonoBehaviour
         // Let the activators retrigger the crystal
         activatorsClose = 0;
         anim.Play("Growing");
+        growAudio.Play();
     }
 
     private void CreateLightning(GameObject target)
