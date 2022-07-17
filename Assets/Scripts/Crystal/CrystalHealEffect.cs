@@ -12,6 +12,9 @@ public class CrystalHealEffect : BaseCrystalEffect
 
     private IDamageable health;
 
+    public GameObject healParticlePrefab;
+    private HealingParticles aura;
+
     void Awake()
     {
         // Need to be damageable/healable for healh effect
@@ -21,16 +24,49 @@ public class CrystalHealEffect : BaseCrystalEffect
 
         if (health != null)
             health.IsHealable = true;
+
+        if (healParticlePrefab != null)
+        {
+            GameObject healParticles = Instantiate(healParticlePrefab, transform);
+            healParticles.name = $"{name}HealAura";
+            aura = healParticles.GetComponent<HealingParticles>();
+        }
+    }
+
+    protected override void CrystalEffectUpdate()
+    {
+        if (aura != null)
+        {
+            if (!aura.Active)
+            {
+                if (isActiveAndEnabled && EffectActive && health.CurrentHp < health.MaxHp)
+                    aura.EffectStart();
+            }
+            else
+            {
+                if (!isActiveAndEnabled || !EffectActive || health.CurrentHp >= health.MaxHp)
+                    aura.EffectStop();
+            }
+        }
     }
 
     private void Heal()
     {
         // For each nearby crystal, apply healing
-        foreach (KeyValuePair<int, float> crystal in nearbyCrystalIDs)
+        foreach (KeyValuePair<string, float> crystal in nearbyCrystals)
         {
-            float multiplier = crystal.Value;
-            health.Heal(hpPerSecond * multiplier);
+            GameObject thisCrystal = GameObject.Find(crystal.Key);
+            if (thisCrystal != null && thisCrystal.activeInHierarchy && health.CurrentHp <= health.MaxHp)
+            {
+                float multiplier = crystal.Value;
+                health.Heal(hpPerSecond * multiplier);
+            }
         }
+    }
+
+    private void OnDisable()
+    {
+        aura.EffectStop();
     }
 
     protected override void CrystalEffectStart()

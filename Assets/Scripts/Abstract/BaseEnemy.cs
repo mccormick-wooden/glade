@@ -333,7 +333,7 @@ public class BaseEnemy : MonoBehaviour
         priority = Priority.NeedsRecomputed;
         agent = GetComponent<NavMeshAgent>();
         autoAttackPlayerDistanceToBeacon = 0f;
-        crystalManager = GameObject.Find("CrystalParent")?.GetComponent<CrystalManager>();
+        crystalManager = GameObject.Find("CrystalManager")?.GetComponent<CrystalManager>();
         renderers = GetComponentsInChildren<Renderer>();
         nextBeaconDefenseNextPositionTime = DateTime.Now;
         collider = GetComponent<Collider>();

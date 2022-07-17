@@ -7,9 +7,11 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public abstract class BaseCrystalEffect : MonoBehaviour
 {
-    protected Dictionary<int, float> nearbyCrystalIDs = new Dictionary<int, float>();
+    protected Dictionary<string, float> nearbyCrystals = new Dictionary<string, float>();
 
     private bool effectActive;
+
+    public bool EffectActive { get => effectActive; }
 
     void Awake()
     {
@@ -24,29 +26,37 @@ public abstract class BaseCrystalEffect : MonoBehaviour
         BaseCrystalEffectStop();
     }
 
+    protected void Update()
+    {
+        if (effectActive)
+        {
+            if (nearbyCrystals.Count <= 0 || !isActiveAndEnabled)
+                BaseCrystalEffectStop();
+        }
+        else
+        {
+            if (nearbyCrystals.Count > 0 && isActiveAndEnabled)
+                BaseCrystalEffectStart();
+        }
+
+        CrystalEffectUpdate();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         CrystalController crystal;
-        if (!effectActive && (null != (crystal = other.GetComponent<CrystalController>())))
+        if (null != (crystal = (other.GetComponent<CrystalController>())))
         {
-            // If it's a damageable crystal, add a callback function for when it dies
-            BaseDamageable crystalDamageable = other.GetComponent<BaseDamageable>();
-            if (crystalDamageable != null)
-                crystalDamageable.Died += OnDiedCrystalRemoveEffect;
-
             // Add its ID to our list of nearby crystals
-            AddCrystalEffect(crystal.CrystalID, crystal.EffectMultiplier);
-
-            // Start the effect, but only if it isn't already started
-            if (!effectActive) BaseCrystalEffectStart();
+            AddNearbyCrystal(crystal);
         }
     }
 
-    private void OnDiedCrystalRemoveEffect(IDamageable damageable, string name, int crystalID)
+    private void OnDiedRemoveCrystal(IDamageable damageable, string crystalName, int crystalID)
     {
-        Debug.Log($"{name}: Nearby Crystal {crystalID} died.");
-        damageable.Died -= OnDiedCrystalRemoveEffect;
-        RemoveCrystalEffect(crystalID);
+        Debug.Log($"{name}: Nearby Crystal {crystalName} died.");
+        damageable.Died -= OnDiedRemoveCrystal;
+        RemoveNearbyCrystal(crystalName);
     }
 
     private void OnTriggerExit(Collider other)
@@ -54,29 +64,28 @@ public abstract class BaseCrystalEffect : MonoBehaviour
         CrystalController crystal;
         if (null != (crystal = other.GetComponent<CrystalController>()))
         {
-            RemoveCrystalEffect(crystal.CrystalID);
+            RemoveNearbyCrystal(crystal.name);
         }
     }
 
-    protected void AddCrystalEffect(int crystalID, float multiplier)
+    protected void AddNearbyCrystal(CrystalController crystal)
     {
-        if (nearbyCrystalIDs.ContainsKey(crystalID))
-            return;
+        int crystalID = crystal.CrystalID;
+        nearbyCrystals[crystal.name] = crystal.EffectMultiplier;
 
-        nearbyCrystalIDs.Add(crystalID, multiplier);
+        // If it's a damageable crystal, add a callback function to remove it when it dies
+        BaseDamageable crystalDamageable = crystal.GetComponent<BaseDamageable>();
+        if (crystalDamageable != null)
+            crystalDamageable.Died += OnDiedRemoveCrystal;
     }
 
-    protected void RemoveCrystalEffect(int crystalID)
+    protected void RemoveNearbyCrystal(string name)
     {
-        nearbyCrystalIDs.Remove(crystalID);
-
-        // If we have no more nearby crystals, stop the effect
-        if (nearbyCrystalIDs.Count <= 0)
-            BaseCrystalEffectStop();
+        nearbyCrystals.Remove(name);
     }
 
+    protected virtual void CrystalEffectUpdate() { }
     protected abstract void CrystalEffectStart();
-
     protected abstract void CrystalEffectStop();
 
     private void BaseCrystalEffectStart()
@@ -87,9 +96,6 @@ public abstract class BaseCrystalEffect : MonoBehaviour
 
     private void BaseCrystalEffectStop()
     {
-        // Just in case, clear out the nearby crystal IDs dictionary
-        nearbyCrystalIDs.Clear();
-
         effectActive = false;
         CrystalEffectStop();
     }
