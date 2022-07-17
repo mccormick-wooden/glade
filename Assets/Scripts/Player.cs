@@ -80,7 +80,7 @@ public class Player : MonoBehaviour
 
     private void GetTerrainInfo()
     {
-        terrainData = GameObject.Find("Level1 Terrain").GetComponent<TerrainData>();
+        terrainData = (TerrainData)Resources.Load("Assets/Terrain/Terrain_0_0_1e9bf6a0-0e4a-41f6-9cb7-c6586c914a9a");
         Utility.LogErrorIfNull(terrainData, "Terrain Data not found");
         terrainSize = Terrain.activeTerrain.terrainData.size;
     }
