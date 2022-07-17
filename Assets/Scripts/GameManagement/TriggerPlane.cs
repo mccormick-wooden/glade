@@ -3,17 +3,17 @@ using UnityEngine;
 
 public class TriggerPlane : MonoBehaviour
 {
-    public Action PlaneTriggered;
+    public Action<Collider> PlaneTriggered;
 
     private bool isTriggered;
 
-    private void OnTriggerEnter()
+    private void OnTriggerEnter(Collider other)
     {
         if (isTriggered) 
             return;
 
         isTriggered = true;
-        PlaneTriggered?.Invoke();
+        PlaneTriggered?.Invoke(other);
     }
 
     private void OnTriggerExit()

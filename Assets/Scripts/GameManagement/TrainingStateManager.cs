@@ -143,47 +143,63 @@ public class TrainingStateManager : BaseStateManager
                 "These gosh darn aliens are just causing the BIGGEST ruckus!",
                 "I really need you to do me a solid and clear them out of here. Couldya do that for me?",
                 "It looks like you brought your SWORD... Good! Do you remember how to use it? I guess it has been awhile.",
-                "When you see on of those pesky ALIENS, just run right up to it! Use the LEFT STICK or WASD to move. Don't be shy!",
-                "Then once you're close, make sure you use RB or LEFT CLICK to swing that sucker until the alien is good and dead!",
-                "Same with the BEACONS! That's how the aliens are getting here I reckon.",
-                "Oh crap, here comes a Beacon now!"
+                "When you see those pesky ALIENS, just run right up to 'em! Use the LEFT STICK or the W/A/S/D keys to move. Don't be shy!",
+                "Then once you're close, make sure you use RB or LEFT CLICK (on your mouse) to swing that sword until the aliens are good and dead!",
+                "If you need a quick second to collect your thoughts, use START or the ESC key to pause! Mental health is important!",
+                "Oh crap, ALIENS INCOMING!!!"
             }
         },
         { TrainingState.EnemyIntroDialogue, new List<string>()
             {
-                $"{TrainingState.EnemyIntroDialogue} placeholder"
+                "Yup, those are \"aliens\" alright (just go with it).",
+                "The THREE-HEADED HELLION (on the right) and the FLYING FEASTER (on the left) are both gonna just straight up try to eat you. I mean just look at 'em.",
+                "Be especially careful around the MUSHROOM BOI - those ones have an explosive spore attack, and it is VERY deadly!",
+                "There are other types of aliens I've seen, too - but don't have intel for ya. Sorry! You're gonna have to figure those out on your own!"
             } 
         },
         { TrainingState.CrystalIntroDialogue, new List<string>()
             {
-                $"{TrainingState.CrystalIntroDialogue} placeholder"
+                "These CRYSTALS are being brought by the aliens to help them colonize the Glades!",
+                "They work by weaponizing Glade Energy at those that threaten the alien colonization areas!",
+                "Try not to get too close if you can help it - unless you're trying to kill the sucker!",
+                "Don't worry too much about damage, though - I'll heal you if your health gets too low! That's what Ancient Tree Spirit friends are for!"
             }
         },
         { TrainingState.BeaconIntroDialogue, new List<string>()
             {
-                $"{TrainingState.BeaconIntroDialogue} placeholder"
+                "Ah, a BEACON! These things are falling from the sky, and that's how the aliens are getting here I reckon.",
+                "Until you kill the BEACON, the aliens will keep flooding the area. I don't get it either. How do they all fit in that thing? It's not even that big.",
+                "Anyway, the aliens will defend the BEACONS with their lives - be careful, Warden!",
+                "Kill the aliens first, and we'll deal with the CRYSTAL and BEACON next."
             }
         },
         { TrainingState.PostEnemyCombatDialogue, new List<string>() 
             { 
                 "Wow, you schmacked those fools!",
-                "I doubt those are the last aliens we'll see - kill the Beacon before more aliens come out!",
-                "You can use your SWORD again - remember, it's RB/Left Click to swing! But I'm sure you know that by now, otherwise we're probably in trouble...."
+                "I doubt those are the last aliens we'll see - we need to kill the BEACON to stop them, but that CRYSTAL needs to go first.",
+                "You can use your SWORD again - remember, it's RB/Left Click to swing! But I'm sure you know that by now, otherwise we're probably in trouble....",
+                "Kill the CRYSTAL, Warden!"
             }
         },
         { TrainingState.PostCrystalCombatDialogue, new List<string>()
             {
-                $"{TrainingState.PostCrystalCombatDialogue} placeholder"
+                "Man, that CRYSTAL lightning bolt is pretty sick. I mean, uhh, good job!",
+                "I didn't even realize it was possible to harness the Glade-ergy like that...",
+                "I'll send some saplings later to pick up the CRYSTAL scraps for research - write that down, it'll be a major plot point in Glade 2.",
+                "In the meantime, go on ahead and kill the heck out of that BEACON!"
             }
         },
         { TrainingState.PostBeaconCombatDialogue, new List<string>() 
             { 
-                $"{TrainingState.PostBeaconCombatDialogue} placeholder",
+               "Huzzah! Great work, Warden.",
+               "You'll see a lot more BEACONS soon - killing them is how I (uhh, I mean we) win!",
+               "Also, you might be wondering what that Purple Thing is - just so happens, it's a present from me to you! Yep!",
+               "Go on ahead and pick it up - it'll let you enhance your abilities, and the best part is you get to choose how!",
             } 
         },
         { TrainingState.PostPowerUpDialogue, new List<string>()
             {
-                "Dang, it looks like the invasion is really getting started down there. You ready to get going? Think 45 seconds of combat training was enough?",
+                "Dang, it looks like the invasion is really getting started down there. You ready to get going? Think 2 minutes of combat training was enough?",
                 "Don't answer that. Anyway, I'll go ahead and teleport you down to the invasion site so you can start clapping more aliens.",
                 "Help me Obi-Warden Kenobi! You're my only hope! Good luck!!!" 
             }
@@ -646,9 +662,10 @@ public class TrainingStateManager : BaseStateManager
     #endregion
 
     #region general event callbacks
-    private void OnOutOfBoundsPlaneTriggered()
+    private void OnOutOfBoundsPlaneTriggered(Collider collider)
     {
-        GameManager.instance.InvokeTransition(midTransitionAction: () => playerModel.transform.position = playerModelStartingPos);
+        if (collider.gameObject == playerModel)
+            GameManager.instance.InvokeTransition(midTransitionAction: () => playerModel.transform.position = playerModelStartingPos);
     }
 
     private void OnBlendToCameraStarted_DisableControlState(ICinemachineCamera activeCamera)
