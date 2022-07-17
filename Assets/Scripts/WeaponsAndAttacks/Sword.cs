@@ -25,7 +25,6 @@ public class Sword : BaseWeapon
         {
             if (TargetTags.Contains(collision.gameObject.tag))
             {
-                Debug.Log("hit a thing!  do trail!");
                 trails.Play();
             }
 
@@ -37,9 +36,7 @@ public class Sword : BaseWeapon
     {
         if (InUse && TargetTags.Contains(other.gameObject.tag))
         {
-            Debug.Log("hit a thing!  do trail!");
             trails.Play();
-
 
             int whichHitSound = Random.Range(0, 2);  // yes this should go pull the event manager # of clips, const for now
             EventManager.TriggerEvent<SwordHitEvent, Vector3, int>(transform.position, whichHitSound);
