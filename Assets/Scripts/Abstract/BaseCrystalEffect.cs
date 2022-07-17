@@ -9,7 +9,9 @@ public abstract class BaseCrystalEffect : MonoBehaviour
 {
     protected Dictionary<string, float> nearbyCrystals = new Dictionary<string, float>();
 
-    protected bool effectActive;
+    private bool effectActive;
+
+    public bool EffectActive { get => effectActive; }
 
     void Awake()
     {

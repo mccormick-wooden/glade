@@ -37,16 +37,16 @@ public class CrystalHealEffect : BaseCrystalEffect
     {
         if (aura != null)
         {
-            if (effectActive && isActiveAndEnabled && !aura.Active && health.CurrentHp < health.MaxHp)
-                aura.EffectStart();
-
-            if (!effectActive && aura.Active)
-                aura.EffectStop();
-            else if (effectActive && aura.Active && health.CurrentHp >= health.MaxHp)
-                aura.EffectStop();
-
-            if (!isActiveAndEnabled)
-                aura.EffectStop();
+            if (!aura.Active)
+            {
+                if (isActiveAndEnabled && EffectActive && health.CurrentHp < health.MaxHp)
+                    aura.EffectStart();
+            }
+            else
+            {
+                if (!isActiveAndEnabled || !EffectActive || health.CurrentHp >= health.MaxHp)
+                    aura.EffectStop();
+            }
         }
     }
 
@@ -62,6 +62,11 @@ public class CrystalHealEffect : BaseCrystalEffect
                 health.Heal(hpPerSecond * multiplier);
             }
         }
+    }
+
+    private void OnDisable()
+    {
+        aura.EffectStop();
     }
 
     protected override void CrystalEffectStart()
