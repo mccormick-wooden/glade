@@ -173,6 +173,7 @@ each team member contributed to code written
 #### Daniel Zuniga
 - Camera
 - Player Health Bar
+- Player control/root motion
 
 ### Scripts
 
@@ -181,6 +182,7 @@ To regenerate tree for new files:
 - `cd <projectdir>/Assets/Scripts && tree -I '*.meta'`
 - Copy the specific part of the tree that's new, and insert into existing tree (don't overwrite existing manifest)
 
+```
 .
 ├── Abstract
 │   ├── BaseCrystalEffect.cs - *(egilligan3)*
@@ -287,6 +289,7 @@ To regenerate tree for new files:
 ├── Shield.cs - *(cdail7)*
 ├── ThirdPersonCamera.cs - *(daniel.zuniga)*
 └── VelocityReporter.cs - (from course)
+```
 
 ### 3rd Party Assets
 
