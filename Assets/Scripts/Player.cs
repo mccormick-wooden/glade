@@ -26,7 +26,6 @@ public class Player : MonoBehaviour
     float rotationVelocity = 0f;
 
     // Used for slope handling and falling off cliffs.
-    TerrainData terrainData;
     Vector3 terrainSize;
     float downpullForce = 0f;
     float horizontalMultiplier = 1f;
@@ -80,9 +79,11 @@ public class Player : MonoBehaviour
 
     private void GetTerrainInfo()
     {
-        terrainData = (TerrainData)Resources.Load("Assets/Terrain/Terrain_0_0_1e9bf6a0-0e4a-41f6-9cb7-c6586c914a9a");
-        Utility.LogErrorIfNull(terrainData, "Terrain Data not found");
         terrainSize = Terrain.activeTerrain.terrainData.size;
+        if (terrainSize.Equals(Vector3.zero))
+        {
+            Debug.LogError("Terrain Data not found");
+        }
     }
 
     private void GetCamera()
