@@ -62,11 +62,19 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private void OnEnable()
     {
+        if (controls == null)
+        {
+            controls = new CharacterCameraControls();
+        }
         controls.Gameplay.Enable();
     }
 
     private void OnDisable()
     {
+        if (controls == null)
+        {
+            controls = new CharacterCameraControls();
+        }
         controls.Gameplay.Disable();
     }
 }

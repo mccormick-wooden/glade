@@ -67,7 +67,7 @@ public class Player : MonoBehaviour
 
     #region CombatProperties
 
-    private PlayerCombat playerCombat;
+    public PlayerCombat PlayerCombat { get; private set; }
     private PlayerWeaponManager playerWeaponManager;
     [SerializeField] private Weapon primaryWeapon;
     [SerializeField] private Weapon secondaryWeapon;
@@ -81,8 +81,8 @@ public class Player : MonoBehaviour
     {
         # region CombatAwake
 
-        playerCombat = GetComponent<PlayerCombat>();
-        Utility.LogErrorIfNull(playerCombat, "playerCombat",
+        PlayerCombat = GetComponent<PlayerCombat>();
+        Utility.LogErrorIfNull(PlayerCombat, "playerCombat",
             "Player game object must have a PlayerCombat component");
         
         playerWeaponManager = GetComponent<PlayerWeaponManager>();
@@ -182,18 +182,27 @@ public class Player : MonoBehaviour
 
     private void SetupAttackControls()
     {
-        controls.Gameplay.LockOnToggle.performed += ctx => playerCombat.HandleLockOnInput();
-        controls.Gameplay.Slash.performed += ctx => playerCombat.PerformSlashAttack(primaryWeapon);
-        controls.Gameplay.SpecialAttack.performed += ctx => playerCombat.PerformHeavyAttack(primaryWeapon);
+        controls.Gameplay.LockOnToggle.performed += ctx => PlayerCombat.HandleLockOnInput();
+        controls.Gameplay.Slash.performed += ctx => PlayerCombat.PerformSlashAttack(primaryWeapon);
+        controls.Gameplay.SpecialAttack.performed += ctx => PlayerCombat.PerformHeavyAttack(primaryWeapon);
     }
 
     private void OnEnable()
     {
+        if (controls == null)
+        {
+            controls = new CharacterPlayerControls();
+        }
         controls.Gameplay.Enable();
     }
+    
 
     private void OnDisable()
     {
+        if (controls == null)
+        {
+            controls = new CharacterPlayerControls();
+        }
         controls.Gameplay.Disable();
     }
 
@@ -204,8 +213,7 @@ public class Player : MonoBehaviour
             hasLanded = true;
         }
     }
-
-
+    
     void GatherComponents()
     {
         animator = GetComponent<Animator>();
@@ -290,10 +298,10 @@ public class Player : MonoBehaviour
        
         if (movementMagnitude >= 0.1)
         {
-            if (playerCombat.isLockingOn)
+            if (PlayerCombat.isLockingOn)
             {
                 // Look at the target
-                var lockOnTarget = playerCombat.currentLockedOnTarget.transform.position;
+                var lockOnTarget = PlayerCombat.currentLockedOnTarget.transform.position;
                 transform.LookAt(new Vector3(lockOnTarget.x, transform.position.y, lockOnTarget.z));
             }
             else
@@ -373,7 +381,7 @@ public class Player : MonoBehaviour
             }
 
             // When locking on, we face the lock on target and strafe
-            if (playerCombat.isLockingOn)
+            if (PlayerCombat.isLockingOn)
             {
                 animator.SetBool(IsStrafing, true);
 
@@ -411,20 +419,6 @@ public class Player : MonoBehaviour
         {
             animator.SetBool(IsStrafing, false);
         }
-    }
-    public void EmitFirstSwordSlash()
-    {
-        EventManager.TriggerEvent<SwordSwingEvent, Vector3, int>(transform.position, 0);
-    }
-
-    public void EmitSecondSwordSlash()
-    {
-        EventManager.TriggerEvent<SwordSwingEvent, Vector3, int>(transform.position, 1);
-    }
-
-    public void EmitThirdSwordSlash()
-    {
-        EventManager.TriggerEvent<SwordSwingEvent, Vector3, int>(transform.position, 2);
     }
 
     public bool ControlsEnabled => controls.Gameplay.enabled;

@@ -18,12 +18,9 @@ namespace PlayerBehaviors
         private static readonly int IsAttacking = Animator.StringToHash("isAttacking");
         private static readonly int CanCombo = Animator.StringToHash("canCombo");
 
-        #region Lock-On Properties
-
         public bool isLockingOn;
         public Transform currentLockedOnTarget;
-
-        #endregion
+        
         private void Start()
         {
             animator = GetComponent<Animator>();
@@ -38,6 +35,8 @@ namespace PlayerBehaviors
             ReadAnimatorParameters();
         }
 
+        #region Lock On
+        
         public void HandleLockOnInput()
         {
             Debug.Log("Handling lock on toggle");
@@ -49,7 +48,6 @@ namespace PlayerBehaviors
             }
             else
             {
-                isLockingOn = true;
                 AttemptLockOn();
             }
             
@@ -65,40 +63,27 @@ namespace PlayerBehaviors
             var hits = Physics.SphereCastAll(transform.position, 10, transform.forward, 30f);
             foreach (var hit in hits)
             {
+                // Maybe switch to damageable?
                 var enemy = hit.collider.transform.root.GetComponent<BaseEnemy>();
                 if (enemy != null)
                 {
-                    Debug.Log("Found an enemy");
                     currentLockedOnTarget = hit.collider.transform.root;
                 }
             }
 
-            if (currentLockedOnTarget != null)
+            if (currentLockedOnTarget == null)
             {
+                isLockingOn = false;
+            }
+            else
+            {
+                isLockingOn = true;
                 // TODO: Player keeps a reference to this component
                 player.playerLockOnCamera.EnableLockOnCamera(currentLockedOnTarget);
             }
         }
 
-        private void ReadAnimatorParameters()
-        {
-            var wasAttacking = isAttacking;
-            isAttacking = animator.GetBool(IsAttacking);
-
-            // TODO: Remove this with animation events
-            if (wasAttacking && !isAttacking)
-            {
-                /*
-                 * Workaround because of the InUse requirement for BaseWeapon and BaseDamageable
-                 * Fine to leave for now, but we could replace it with a dynamic collider:
-                 *  - use animation events to enable/disable the collider on the weapon only during appropriate frames
-                 *  - makes it so it only collides when it would make sense to based on the animation
-                 */
-                UnsetRightHandInUse();
-            }
-
-            canCombo = animator.GetBool(CanCombo);
-        }
+        #endregion
 
         #region Sword Attacks
 
@@ -161,6 +146,26 @@ namespace PlayerBehaviors
 
         #region Animator Handling
 
+        private void ReadAnimatorParameters()
+        {
+            var wasAttacking = isAttacking;
+            isAttacking = animator.GetBool(IsAttacking);
+
+            // TODO: Remove this with animation events
+            if (wasAttacking && !isAttacking)
+            {
+                /*
+                 * Workaround because of the InUse requirement for BaseWeapon and BaseDamageable
+                 * Fine to leave for now, but we could replace it with a dynamic collider:
+                 *  - use animation events to enable/disable the collider on the weapon only during appropriate frames
+                 *  - makes it so it only collides when it would make sense to based on the animation
+                 */
+                UnsetRightHandInUse();
+            }
+
+            canCombo = animator.GetBool(CanCombo);
+        }
+        
         // Set an animation event calling this function at the keyframe you would like to start accepting a combo attack
         public void OpenComboWindow()
         {
@@ -200,7 +205,23 @@ namespace PlayerBehaviors
 
         #endregion
 
-        #region Lock-On
+        #region Combat Feedback
+
+        // Sounds are triggered by animation events
+        public void EmitFirstSwordSlash()
+        {
+            EventManager.TriggerEvent<SwordSwingEvent, Vector3, int>(transform.position, 0);
+        }
+
+        public void EmitSecondSwordSlash()
+        {
+            EventManager.TriggerEvent<SwordSwingEvent, Vector3, int>(transform.position, 1);
+        }
+
+        public void EmitThirdSwordSlash()
+        {
+            EventManager.TriggerEvent<SwordSwingEvent, Vector3, int>(transform.position, 2);
+        }
 
         #endregion
     }

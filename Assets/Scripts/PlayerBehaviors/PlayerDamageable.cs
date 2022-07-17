@@ -1,3 +1,4 @@
+using System;
 using Assets.Scripts.Interfaces;
 using Assets.Scripts.Damageable;
 using UnityEngine;
@@ -7,7 +8,11 @@ namespace PlayerBehaviors
     [RequireComponent(typeof(Player))]
     public class PlayerDamageable : DisappearDamageable
     {
-        protected override bool UseHealthBarText { get; set; } = true;
+        protected override void Start()
+        {
+            UseHealthBarText = true;
+            base.Start();
+        }
 
         protected override void ApplyDamage(IWeapon attackingWeapon, float modifier = 1f)
         {

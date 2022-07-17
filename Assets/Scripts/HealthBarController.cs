@@ -43,7 +43,7 @@ public class HealthBarController : MonoBehaviour
     {
         if (!useHealthText || healthText == null) return;
 
-        healthText.text = $"{CurrentHp} / {MaxHp}";
+        healthText.text = $"{Mathf.RoundToInt(CurrentHp)} / {MaxHp}";
     }
 
     // Initializes the HP value.

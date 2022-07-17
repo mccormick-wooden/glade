@@ -110,6 +110,7 @@ namespace Assets.Scripts.Abstract
             // short circuit on AOEType to get out quick if not AOE
             if (attackingWeapon && attackingWeapon.isDPSType && ShouldHandleCollisionAsAttack(attackingWeapon))
             {
+                Debug.Log("hit!");
                 HandleAttack(attackingWeapon);
             }
         }
@@ -129,9 +130,9 @@ namespace Assets.Scripts.Abstract
             }
 
             var newHp = Mathf.Max(CurrentHp - netAttackDamage, 0f);
-            Debug.Log(
-                $"Applying damage to {gameObject.name}: currentHp = {CurrentHp}, damage = {netAttackDamage}, newHp = {newHp}"
-            );
+            //Debug.Log(
+            //  $"Applying damage to {gameObject.name}: currentHp = {CurrentHp}, damage = {netAttackDamage}, newHp = {newHp}"
+            //);
             CurrentHp = newHp;
         }
 
