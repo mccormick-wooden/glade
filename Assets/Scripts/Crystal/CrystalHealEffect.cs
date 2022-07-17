@@ -33,24 +33,35 @@ public class CrystalHealEffect : BaseCrystalEffect
         }
     }
 
-    private void Update()
+    protected override void CrystalEffectUpdate()
     {
-        if (effectActive && !aura.Active)
-            aura.EffectStart();
-        else if (!effectActive && aura.Active)
-            aura.EffectStop();
+        if (aura != null)
+        {
+            if (effectActive && isActiveAndEnabled && !aura.Active && health.CurrentHp < health.MaxHp)
+                aura.EffectStart();
+
+            if (!effectActive && aura.Active)
+                aura.EffectStop();
+            else if (effectActive && aura.Active && health.CurrentHp >= health.MaxHp)
+                aura.EffectStop();
+
+            if (!isActiveAndEnabled)
+                aura.EffectStop();
+        }
     }
 
     private void Heal()
     {
         // For each nearby crystal, apply healing
-        foreach (KeyValuePair<int, float> crystal in nearbyCrystalIDs)
+        foreach (KeyValuePair<string, float> crystal in nearbyCrystals)
         {
-            float multiplier = crystal.Value;
-            health.Heal(hpPerSecond * multiplier);
+            GameObject thisCrystal = GameObject.Find(crystal.Key);
+            if (thisCrystal != null && thisCrystal.activeInHierarchy && health.CurrentHp <= health.MaxHp)
+            {
+                float multiplier = crystal.Value;
+                health.Heal(hpPerSecond * multiplier);
+            }
         }
-        
-
     }
 
     protected override void CrystalEffectStart()

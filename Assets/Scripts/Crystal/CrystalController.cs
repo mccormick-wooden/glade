@@ -27,7 +27,7 @@ public class CrystalController : MonoBehaviour
     private Animator anim;
     private int activatorsClose = 0;
 
-    private Dictionary<int, GameObject> lightningById = new Dictionary<int, GameObject>();
+    private Dictionary<string, GameObject> lightningByName = new Dictionary<string, GameObject>();
 
     private void Awake()
     {
@@ -43,11 +43,43 @@ public class CrystalController : MonoBehaviour
         if (effectEnableCollider != null)
             effectEnableCollider.radius = effectRadius;
     }
+    private void FixedUpdate()
+    {
+        /* Reset activators close before OnTriggerStay
+         * The reason I need to recalculate this every cycle is to properly
+         * keep track of activators if effect scripts are disabled
+         */
+        activatorsClose = 0;
+    }
 
     // Update is called once per frame
     void Update()
     {
+        if (activatorsClose == 0)
+            effectActive = false;
+
         anim.SetInteger("ActivatorsClose", activatorsClose);
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        BaseCrystalEffect crystalEffect = other.GetComponent<BaseCrystalEffect>();
+        if (crystalEffect != null && crystalEffect.enabled)
+        {
+            activatorsClose++;
+        }
+
+        CrystalDamageEffect damageEffect = other.GetComponent<CrystalDamageEffect>();
+        if (damageEffect != null)
+        {
+            /* If the damageEffect script has been disabled, stop zapping it */
+            if (!damageEffect.enabled)
+                DestroyLightning(other.gameObject);
+
+            /* If the damageEffect is enabled and it isn't already being zapped, zap it */
+            if (damageEffect.enabled && !lightningByName.ContainsKey(damageEffect.name))
+                CreateLightning(damageEffect.gameObject);
+        }
     }
 
     private void OnEnable()
@@ -58,52 +90,46 @@ public class CrystalController : MonoBehaviour
         growAudio.Play();
     }
 
+    private void OnDisable()
+    {
+        DestroyAllLightning();
+    }
+
     private void CreateLightning(GameObject target)
     {
         GameObject lightningObj = Instantiate(LightningPrefab, LightningSource);
-        lightningObj.name = $"Lightning{lightningObj.GetInstanceID()}";
+        lightningObj.name = $"Lightning-{target.name}";
         LightningBoltScript lightning = lightningObj.GetComponent<LightningBoltScript>();
         lightning.StartObject = LightningSource.gameObject;
         lightning.EndObject = target.GetComponent<CrystalDamageEffect>()?.LightningTarget;
-        lightningById[target.gameObject.GetInstanceID()] = lightningObj;
+        lightningByName[target.gameObject.name] = lightningObj;
         lightningAudio.Play();
+    }
+
+    private void DestroyAllLightning()
+    {
+        foreach (string targetName in lightningByName.Keys)
+        {
+            GameObject target = GameObject.Find(targetName);
+            DestroyLightning(target);
+        }
     }
 
     private void DestroyLightning(GameObject target)
     {
-        int instanceId = target.gameObject.GetInstanceID();
-        if (lightningById.ContainsKey(instanceId))
+        string targetName = target.gameObject.name;
+        if (lightningByName.ContainsKey(targetName))
         {
-            Destroy(lightningById[instanceId]);
-            lightningById.Remove(instanceId);
+            Destroy(lightningByName[targetName]);
+            lightningByName.Remove(targetName);
             lightningAudio.Stop();
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (null != other.GetComponent<BaseCrystalEffect>())
-        {
-            activatorsClose++;
-            if (null != other.GetComponent<CrystalDamageEffect>())
-            {
-                CreateLightning(other.gameObject);
-            }
-        }
-        if (activatorsClose > 0) effectActive = true;
-    }
-
     private void OnTriggerExit(Collider other)
     {
-        if (null != other.GetComponent<BaseCrystalEffect>())
-        {
-            activatorsClose--;
+        CrystalDamageEffect damageEffect = other.GetComponent<CrystalDamageEffect>();
+        if (damageEffect != null)
             DestroyLightning(other.gameObject);
-        }
-        if (activatorsClose <= 0)
-        {
-            activatorsClose = 0;
-            effectActive = false;
-        }
     }
 }
