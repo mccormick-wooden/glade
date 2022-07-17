@@ -46,6 +46,8 @@ public class Player : MonoBehaviour
     private bool isJumping;
     private bool isGrounded;
 
+    private bool tryPickup;
+
     // Components of the player GameObject we reference
     private Rigidbody rigidBody;
     private Animator animator;
@@ -69,6 +71,10 @@ public class Player : MonoBehaviour
     private static readonly int HorizontalInput = Animator.StringToHash("horizontalInput");
     private static readonly int VerticalInput = Animator.StringToHash("verticalInput");
     private static readonly int IsStrafing = Animator.StringToHash("isStrafing");
+
+    Transform touchToPickup;
+    Transform leftHand;
+    FruitDetector fruitDetector;
 
     private void Awake()
     {
@@ -208,6 +214,8 @@ public class Player : MonoBehaviour
         controls.Gameplay.LockOnCycleRight.performed += ctx => PlayerCombat.HandleLockOnCycle(false);
         controls.Gameplay.Slash.performed += ctx => PlayerCombat.PerformSlashAttack(primaryWeapon);
         controls.Gameplay.SpecialAttack.performed += ctx => PlayerCombat.PerformSpecialAttack(primaryWeapon);
+
+        controls.Gameplay.Pickup.performed += ctx => { tryPickup = true; };
     }
 
     private void OnEnable()
@@ -242,7 +250,12 @@ public class Player : MonoBehaviour
         animator = GetComponent<Animator>();
         capsuleCollider = GetComponent<CapsuleCollider>();
         rigidBody = GetComponent<Rigidbody>();
+        //sword = GameObject.Find("Sword").GetComponent<Sword>();
+        fruitDetector = GameObject.Find("FruitDetector").GetComponent<FruitDetector>();
+        leftHand = GameObject.Find("HoldInLeftHand").transform;
+        touchToPickup = GameObject.Find("TouchToPickupPosition").transform;
     }
+
 
     public bool CheckGroundNear(
         Vector3 charPos,
@@ -376,6 +389,30 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        AnimatorPickupLogic();
+    }
+
+    void AnimatorPickupLogic()
+    {
+        var animState = animator.GetCurrentAnimatorStateInfo(0);
+
+        if (!tryPickup || !fruitDetector.FruitNearby() || !animState.IsName("MovementTree"))
+        {
+            tryPickup = false;
+            return;
+        }
+
+        Debug.Log("Trying pickup!");
+
+        animator.SetTrigger("DoPickup");
+        tryPickup = false;
+
+        // do IK stuff here!
+    }
+
+
     public bool ControlsEnabled => controls.Gameplay.enabled;
 
     /// <summary>
@@ -403,5 +440,45 @@ public class Player : MonoBehaviour
         animator.SetFloat("Speed", 0f);
         horizontalInput = 0;
         verticalInput = 0;
+    }
+
+
+
+    private void OnAnimatorIK(int layerIndex)
+    {
+        if (!animator)
+            return;
+
+        AnimatorStateInfo astate = animator.GetCurrentAnimatorStateInfo(0);
+        if (astate.IsName("Picking Up"))
+        {
+            float fruitContactWeight = animator.GetFloat("fruitClose");
+
+            Transform nearbyFruit = fruitDetector.GetClosestFruit();
+
+            Vector3 targetPosition = nearbyFruit.GetComponent<SphereCollider>().ClosestPoint(touchToPickup.position);
+
+            Debug.Log("trying to get hand to go to:  " + nearbyFruit.position);
+
+            if (nearbyFruit != null)
+            {
+                animator.SetLookAtWeight(fruitContactWeight);
+                animator.SetLookAtPosition(targetPosition);
+                animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, fruitContactWeight);
+                animator.SetIKPosition(AvatarIKGoal.LeftHand, targetPosition);
+
+                if (fruitContactWeight > 0.9f)
+                {
+                    nearbyFruit.SetParent(leftHand);
+                    nearbyFruit.position = Vector3.Lerp(leftHand.position, nearbyFruit.position, 0.01f);
+                }
+            }
+        }
+        else
+        {
+            //In the else -clause, add the following:
+            animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0);
+            animator.SetLookAtWeight(0);
+        }
     }
 }
