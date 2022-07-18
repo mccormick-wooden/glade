@@ -341,7 +341,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 683423951842939100}
-  m_LocalRotation: {x: 0.15545379, y: 0.000000019003455, z: -0.0000000029905143, w: 0.9878432}
+  m_LocalRotation: {x: 0.15545379, y: -0.000000019003451, z: 0.0000000029905136, w: 0.9878432}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -415,7 +415,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 683423951991350865}
-  m_LocalRotation: {x: 0.1784248, y: 0.000000008465139, z: -0.0000000015350228, w: 0.98395354}
+  m_LocalRotation: {x: 0.1784248, y: -0.000000008465139, z: 0.0000000015350228, w: 0.98395354}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -524,7 +524,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 683423952098063495}
-  m_LocalRotation: {x: 0.15545382, y: 0.000000019007285, z: -0.0000000029897813, w: 0.9878432}
+  m_LocalRotation: {x: 0.15545382, y: -0.00000001900729, z: 0.000000002989861, w: 0.9878432}
   m_LocalPosition: {x: 0, y: 4.549, z: -8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1493,7 +1493,7 @@ MonoBehaviour:
   canCombo: 0
   isLockingOn: 1
   currentLockedOnTarget: {fileID: 0}
-  hitMarkerPrefab: {fileID: 1949876679914232, guid: bae34dde1e1d6f943be9429ba898281e, type: 3}
+  maxLockOnDistance: 0
 --- !u!114 &1155908435136971191
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using PlayerBehaviors;
 using UnityEngine;
 
 public class PlayerLockOnCamera : MonoBehaviour
@@ -22,10 +23,10 @@ public class PlayerLockOnCamera : MonoBehaviour
         thirdPersonCamera = FindObjectOfType<CinemachineFreeLook>();
         Utility.LogErrorIfNull(thirdPersonCamera, "thirdPersonCamera");
     }
-
+    
     private void FixedUpdate()
     {
-        UpdateVisualizer();
+        UpdateVisualizerPosition();
     }
 
     public void EnableLockOnCamera(Transform newLockOnTarget)
@@ -80,7 +81,7 @@ public class PlayerLockOnCamera : MonoBehaviour
         lockOnIndicatorInstance.SetActive(false);
     }
 
-    private void UpdateVisualizer()
+    private void UpdateVisualizerPosition()
     {
         if (!isLockingOn)
         {

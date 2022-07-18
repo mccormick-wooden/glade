@@ -182,7 +182,7 @@ public class Player : MonoBehaviour
 
     private void SetupAttackControls()
     {
-        controls.Gameplay.LockOnToggle.performed += ctx => PlayerCombat.HandleLockOnToggle();
+        controls.Gameplay.LockOnToggle.performed += ctx => PlayerCombat.ToggleLockOn();
         controls.Gameplay.LockOnCycleLeft.performed += ctx => PlayerCombat.HandleLockOnCycle(true);
         controls.Gameplay.LockOnCycleRight.performed += ctx => PlayerCombat.HandleLockOnCycle(false);
         controls.Gameplay.Slash.performed += ctx => PlayerCombat.PerformSlashAttack(primaryWeapon);

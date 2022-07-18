@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
+using Assets.Scripts.Abstract;
+using Assets.Scripts.Interfaces;
 using UnityEngine;
 using Weapons;
 
@@ -22,8 +25,7 @@ namespace PlayerBehaviors
         public bool isLockingOn;
         public Transform currentLockedOnTarget;
 
-        private int currentLockedOnTargetIndex = -1;
-        private List<Transform> lockOnCandidates;
+        [SerializeField] private float maxLockOnDistance;
         
         private void Start()
         {
@@ -33,24 +35,30 @@ namespace PlayerBehaviors
 
             isLockingOn = false;
             currentLockedOnTarget = null;
-            lockOnCandidates = new List<Transform>();
+
+            if (maxLockOnDistance == 0)
+            {
+                maxLockOnDistance = 30f;
+            }
         }
 
         private void Update()
         {
             ReadAnimatorParameters();
+            DetectLockOnOutOfRange();
+            // DetectLockOnOutOfSight(); Reintroduce if we want to break lock-on when losing line of sight
         }
 
         #region Lock On
 
-        public void HandleLockOnToggle()
+        public void ToggleLockOn()
         {
-            Debug.Log("Handling lock on toggle");
             if (isLockingOn)
             {
                 isLockingOn = false;
+                StopListeningToTargetDeath();
+
                 currentLockedOnTarget = null;
-                lockOnCandidates = new List<Transform>();
                 player.playerLockOnCamera.DisableLockOnCamera();
             }
             else
@@ -62,66 +70,181 @@ namespace PlayerBehaviors
 
         private void AttemptLockOn()
         {
-            if (currentLockedOnTarget != null)
+            if (isLockingOn)
             {
                 return;
             }
 
-            var seen = new HashSet<GameObject>();
-            var hits = Physics.SphereCastAll(transform.position, 10, transform.forward, 30f);
-            foreach (var hit in hits)
-            {
-                // Maybe switch to damageable?
-                var enemy = hit.collider.transform.GetComponent<BaseEnemy>();
-                if (enemy != null)
-                {
-                    var hitTransform = hit.collider.transform;
-                    currentLockedOnTarget = hitTransform;
+            // Get the closest
+            var target = GetClosestLockOnTarget();
 
-                    Debug.Log(hitTransform.gameObject.name);
-
-                    if (seen.Add(hitTransform.gameObject))
-                    {
-                        lockOnCandidates.Add(hit.collider.transform);
-                    }
-                }
-            }
-
-            if (currentLockedOnTarget == null)
+            if (target == null)
             {
                 isLockingOn = false;
             }
             else
             {
-                Debug.Log(lockOnCandidates.Count);
-                
+                currentLockedOnTarget = target;
                 isLockingOn = true;
-                // TODO: Player keeps a reference to this component
+                var damageable = currentLockedOnTarget.GetComponent<BaseDamageable>();
+                if (damageable != null)
+                {
+                    damageable.Died += HandleDeadLockOnTarget;
+                }
                 player.playerLockOnCamera.EnableLockOnCamera(currentLockedOnTarget);
             }
         }
 
+        private Transform GetClosestLockOnTarget()
+        {
+            var minDistance = Mathf.Infinity;
+            Transform closestTarget = null;
+
+            var hits = Physics.SphereCastAll(transform.position, 10, transform.forward, 30f);
+            foreach (var hit in hits)
+            {
+                // Maybe switch to damageable to include beacons, crystals?
+                var enemy = hit.collider.transform.GetComponent<BaseEnemy>();
+                if (enemy != null)
+                {
+                    // Handle finding a potential target
+                    var distance = Vector3.Distance(transform.position, enemy.transform.position);
+                    if (distance < minDistance)
+                    {
+                        minDistance = distance;
+                        closestTarget = enemy.transform;
+                    }
+                }
+            }
+
+            return closestTarget;
+        }
+
+        private Transform GetRelativeLockOnTarget(bool isLeft)
+        {
+            var lockOnCandidates = new List<Transform>();
+            var hits = Physics.SphereCastAll(transform.position, 10, transform.forward, 30f);
+            foreach (var hit in hits)
+            {
+                // Maybe switch to damageable to include beacons, crystals?
+                var enemy = hit.collider.transform.GetComponent<BaseEnemy>();
+                if (enemy != null)
+                {
+                    // Handle finding a potential target
+                    lockOnCandidates.Add(hit.collider.transform);
+                }
+            }
+
+            // If there's only one option we'll take it
+            if (lockOnCandidates.Count == 1)
+            {
+                return lockOnCandidates[0].transform;
+            }
+
+            // If we fail to find any candidates, stick with the one we have
+            if (lockOnCandidates.Count == 0)
+            {
+                return currentLockedOnTarget;
+            }
+
+            lockOnCandidates.Sort(SortTransformsByRelativeX);
+
+            var indexOfCurrentLockOnTarget = lockOnCandidates.FindIndex(t =>
+                t.gameObject.GetInstanceID() == currentLockedOnTarget.gameObject.GetInstanceID());
+
+            var adjustment = isLeft ? -1 : 1;
+            var adjustedIndex = indexOfCurrentLockOnTarget + adjustment;
+
+            if (isLeft && adjustedIndex < 0)
+            {
+                adjustedIndex = lockOnCandidates.Count - 1;
+            }
+
+            if (!isLeft && adjustedIndex == lockOnCandidates.Count())
+            {
+                adjustedIndex = 0;
+            }
+
+            return lockOnCandidates[adjustedIndex];
+        }
+
+        private void HandleDeadLockOnTarget(IDamageable damageable, string objectName, int id)
+        {
+            if (isLockingOn)
+            {
+                ToggleLockOn();
+            }
+        }
+
+        private int SortTransformsByRelativeX(Transform a, Transform b)
+        {
+            var relativePositionToPlayerA = transform.InverseTransformPoint(a.position);
+            var relativePositionToPlayerB = transform.InverseTransformPoint(b.position);
+
+            if (relativePositionToPlayerB.x == relativePositionToPlayerA.x)
+            {
+                return 0;
+            }
+
+            if (relativePositionToPlayerA.x > relativePositionToPlayerB.x)
+            {
+                return 1;
+            }
+
+            return -1;
+        }
+        
         public void HandleLockOnCycle(bool isLeft)
         {
-            if (lockOnCandidates.Count <= 1 || !isLockingOn)
+            if (!isLockingOn)
             {
                 return;
             }
 
-            var tempCandidateIndex = currentLockedOnTargetIndex;
-            tempCandidateIndex += isLeft ? -1 : 1;
+            var newTarget = GetRelativeLockOnTarget(isLeft);
 
-            currentLockedOnTargetIndex = tempCandidateIndex < 0
-                ? lockOnCandidates.Count - 1
-                : tempCandidateIndex >= lockOnCandidates.Count
-                    ? 0
-                    : tempCandidateIndex;
+            if (newTarget != null)
+            {
+                StopListeningToTargetDeath();
+                currentLockedOnTarget = newTarget;
+                var damageable = currentLockedOnTarget.GetComponent<BaseDamageable>();
+                if (damageable != null)
+                {
+                    damageable.Died += HandleDeadLockOnTarget;
+                }
 
-            currentLockedOnTarget = lockOnCandidates[currentLockedOnTargetIndex];
+                // This rotation should be smoothed at a minimum, animated would be even better
+                player.transform.LookAt(currentLockedOnTarget);
+                player.playerLockOnCamera.UpdateLockOnCameraLookAt(currentLockedOnTarget);
+            }
+        }
 
-            // This rotation should be smoothed at a minimum, animated would be even better
-            player.transform.LookAt(currentLockedOnTarget);
-            player.playerLockOnCamera.UpdateLockOnCameraLookAt(currentLockedOnTarget);
+        // We should stop locking on if the lock on target gets to far away
+        private void DetectLockOnOutOfRange()
+        {
+            if (!isLockingOn)
+            {
+                return;
+            }
+
+            var distance = Vector3.Distance(transform.position, currentLockedOnTarget.position);
+            if (distance > maxLockOnDistance)
+            {
+                Debug.LogWarning("LockOn Exit Due to Out of Range");
+                ToggleLockOn();
+            }
+        }
+
+        private void StopListeningToTargetDeath()
+        {
+            if (currentLockedOnTarget != null)
+            {
+                var damageable = currentLockedOnTarget.GetComponent<BaseDamageable>();
+                if (damageable != null)
+                {
+                    damageable.Died -= HandleDeadLockOnTarget;
+                }
+            }
         }
 
         #endregion
