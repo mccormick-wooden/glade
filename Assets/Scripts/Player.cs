@@ -59,8 +59,13 @@ public class Player : MonoBehaviour
     
     public PlayerCombat PlayerCombat { get; private set; }
     private PlayerWeaponManager playerWeaponManager;
-    [SerializeField] private PlayerWeapon primaryWeapon;
-    [SerializeField] private PlayerWeapon secondaryWeapon;
+
+    // These refer to the scriptable objects that should be used as primary and secondary
+    // Scriptable objects let us separate the Player prefab from the weapons and lets us do things 
+    // like swap weapons at run-time if we want to produce different effects, models, damage, animations, etc
+    public PlayerWeapon primaryWeapon;
+    private PlayerWeapon secondaryWeapon;
+    
     private static readonly int HorizontalInput = Animator.StringToHash("horizontalInput");
     private static readonly int VerticalInput = Animator.StringToHash("verticalInput");
     private static readonly int IsStrafing = Animator.StringToHash("isStrafing");
@@ -294,8 +299,7 @@ public class Player : MonoBehaviour
         /*
          * While locked on we should expect to always face the lock on target and our movements to be relative to it
          */
-
-       
+        
         if (movementMagnitude >= 0.1)
         {
             if (PlayerCombat.isLockingOn)
@@ -355,7 +359,8 @@ public class Player : MonoBehaviour
                 var currentVelocity = rigidBody.velocity;
                 rigidBody.AddForce(newForce - new Vector3(currentVelocity.x, 0, currentVelocity.z),
                     ForceMode.VelocityChange);
-            } else {    
+            } else {
+                animator.SetBool(IsStrafing, false);
                 Vector3 newRootPosition = animator.rootPosition;
 
                 // Smooth the translation.

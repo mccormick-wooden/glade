@@ -4981,7 +4981,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1015248825211168}
   serializedVersion: 7
-  lengthInSec: 3
+  lengthInSec: 4
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 1
@@ -9834,7 +9834,7 @@ MonoBehaviour:
   effect: {fileID: 198379148210225472}
   speed: 30
   drug: 0.99
-  repeatingTime: 3
+  repeatingTime: 4
 --- !u!136 &9172175547506949357
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -19704,7 +19704,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1127297447389340}
   serializedVersion: 7
-  lengthInSec: 3
+  lengthInSec: 4
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 1
@@ -24557,7 +24557,7 @@ MonoBehaviour:
   effect: {fileID: 198776523554445286}
   speed: 30
   drug: 0.99
-  repeatingTime: 3
+  repeatingTime: 4
 --- !u!136 &6944668992497162188
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -58835,7 +58835,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1413858425479080}
   serializedVersion: 7
-  lengthInSec: 3
+  lengthInSec: 4
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 1
@@ -63688,7 +63688,7 @@ MonoBehaviour:
   effect: {fileID: 198240252530160060}
   speed: 30
   drug: 0.99
-  repeatingTime: 3
+  repeatingTime: 4
 --- !u!136 &1230906329073819881
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -415,7 +415,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 683423951991350865}
-  m_LocalRotation: {x: 0.1784248, y: 0.000000008465139, z: -0.0000000015350228, w: 0.98395354}
+  m_LocalRotation: {x: 0.1784248, y: -0.000000008465139, z: 0.0000000015350228, w: 0.98395354}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -524,7 +524,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 683423952098063495}
-  m_LocalRotation: {x: 0.15545382, y: -0.00000001900728, z: 0.0000000029897809, w: 0.9878432}
+  m_LocalRotation: {x: 0.15545382, y: -0.00000001900729, z: 0.000000002989861, w: 0.9878432}
   m_LocalPosition: {x: 0, y: 4.549, z: -8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -640,7 +640,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 683423952174336692}
-  m_LocalRotation: {x: 0.13249825, y: 0.000000008527339, z: -0.0000000011399077, w: 0.9911833}
+  m_LocalRotation: {x: 0.13249825, y: -0.000000008527338, z: 0.0000000011399076, w: 0.9911833}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1383,19 +1383,14 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: -4728426434207774260, guid: a4837675e0934b24e8594980e2773da6, type: 3}
   m_PrefabInstance: {fileID: 6067665533583041178}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &8407160689630084267 stripped
+--- !u!4 &6034283480876336497 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: -6874584590210671055, guid: a4837675e0934b24e8594980e2773da6, type: 3}
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a4837675e0934b24e8594980e2773da6, type: 3}
   m_PrefabInstance: {fileID: 6067665533583041178}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &8186150931359797147 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2715566404302941441, guid: a4837675e0934b24e8594980e2773da6, type: 3}
-  m_PrefabInstance: {fileID: 6067665533583041178}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &6034283480876336497 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a4837675e0934b24e8594980e2773da6, type: 3}
   m_PrefabInstance: {fileID: 6067665533583041178}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &6410245657010118603 stripped
@@ -1433,43 +1428,6 @@ CapsuleCollider:
   m_Height: 1.79
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
---- !u!65 &5325947304348852931
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6410245657010118603}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 0.5, y: 1, z: 0.5}
-  m_Center: {x: 0, y: 0.5, z: 0}
---- !u!114 &61357483377458794
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6410245657010118603}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e8bfbd307976894fa80b2060b271785, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IkActive: 1
-  WeightPositionRight: 1
-  WeightRotationRight: 1
-  WeightPositionLeft: 1
-  WeightRotationLeft: 1
-  offsetFoot: {x: 0, y: 0, z: 0}
-  RayMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  DebugEnable: 1
-  FootRight: {fileID: 0}
-  FootLeft: {fileID: 8407160689630084267}
 --- !u!114 &853225848788648966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1541,7 +1499,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c28f83def5e8544a295a199c3817ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  strafeMovementSpeedModifier: 0.8
+  strafeMovementSpeedModifier: 8
   movementSpeed: 1.2
   rotationSmoothTime: 0.1
   playerLockOnCamera: {fileID: 0}
@@ -1550,7 +1508,6 @@ MonoBehaviour:
     m_Bits: 128
   playerSpeedForce: 1250
   primaryWeapon: {fileID: 11400000, guid: 1706509712f279445bc0016b041f8b3f, type: 2}
-  secondaryWeapon: {fileID: 0}
 --- !u!114 &8854435921431612587
 MonoBehaviour:
   m_ObjectHideFlags: 0

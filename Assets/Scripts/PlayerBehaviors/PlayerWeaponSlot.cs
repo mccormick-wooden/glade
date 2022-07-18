@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace PlayerBehaviors
 {
+    // Place this behavior on a GameObject that should "hold" the weapon, like a model's hand
     public class PlayerWeaponSlot : MonoBehaviour
     {
         public GameObject weaponInSlot;
