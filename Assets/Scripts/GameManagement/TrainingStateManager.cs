@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Assets.Scripts.Abstract;
 using Assets.Scripts.Interfaces;
+using Beacons;
 using Cinemachine;
+using PowerUps;
 using UnityEngine;
 
 public class TrainingStateManager : BaseStateManager
@@ -9,11 +13,18 @@ public class TrainingStateManager : BaseStateManager
     enum TrainingState
     {
         Invalid = 0,
-        IntroDialogue = 10,
+        GeneralIntroDialogue = 10,
+        EnemyIntroDialogue = 11,
+        CrystalIntroDialogue = 12,
+        BeaconIntroDialogue = 13,
         EnemyCombat = 20,
         PostEnemyCombatDialogue = 30,
+        CrystalCombat = 31,
+        PostCrystalCombatDialogue = 32,
         BeaconCombat = 40,
         PostBeaconCombatDialogue = 50,
+        PowerUp = 51,
+        PostPowerUpDialogue = 52,
         End = 60
     }
 
@@ -22,24 +33,32 @@ public class TrainingStateManager : BaseStateManager
     private Action<TrainingState> trainingStateChanged;
 
     /// <summary>
-    /// Controls whether the training will be skipped
-    /// </summary>
-    [Header("Scene Settings")]
-    [SerializeField]
-    private bool skipTraining = false;
-
-    /// <summary>
-    /// Automatically skip dialogue
-    /// </summary>
-    [SerializeField]
-    private bool skipDialogueStates = false;
-
-    /// <summary>
     /// The trainingHostVirtualCameraName must be the name of the virtual camera focused on the Training Host
     /// </summary>
     [SerializeField]
     private string trainingHostVirtualCameraName = "TrainingHostVirtualCamera";
     private CinemachineVirtualCamera trainingHostVirtualCamera;
+
+    /// <summary>
+    /// The enemyVirtualCameraName must be the name of the virtual camera focused on the Training enemies
+    /// </summary>
+    [SerializeField]
+    private string enemyVirtualCameraName = "EnemyVirtualCamera";
+    private CinemachineVirtualCamera enemyVirtualCamera;
+
+    /// <summary>
+    /// The crystalVirtualCameraName must be the name of the virtual camera focused on the Crystal enemies
+    /// </summary>
+    [SerializeField]
+    private string crystalVirtualCameraName = "CrystalVirtualCamera";
+    private CinemachineVirtualCamera crystalVirtualCamera;
+
+    /// <summary>
+    /// The beaconVirtualCameraName must be the name of the virtual camera focused on the Beacon enemies
+    /// </summary>
+    [SerializeField]
+    private string beaconVirtualCameraName = "BeaconVirtualCamera";
+    private CinemachineVirtualCamera beaconVirtualCamera;
 
     /// <summary>
     /// The playerCameraName must be the name of the main camera that follows the player
@@ -56,6 +75,7 @@ public class TrainingStateManager : BaseStateManager
     private Vector3 playerModelStartingPos;
     private Player playerScript;
     private IDamageable playerDamageModel;
+    private CrystalDamageEffect playerCrystalDamageEffect;
     private CameraBlendEventDispatcher cameraBlendEventDispatcher;
 
     /// <summary>
@@ -66,74 +86,132 @@ public class TrainingStateManager : BaseStateManager
     private TriggerPlane outOfBoundsTriggerPlane;
 
     [SerializeField]
-    private string dialogueControllerName = "DialogueController";
-    private DialogueController dialogueController;
-
-    [SerializeField]
     private string dialogueCanvasName = "TreeSpiritDialogueCanvas";
     private Canvas dialogueCanvas;
+    private DialogueController dialogueController;
 
+    /// <summary>
+    /// Beacon land audio
+    /// </summary>
     [SerializeField]
-    private GameObject beaconPrefab;
-
-    [SerializeField]
-    private GameObject enemyPrefab;
+    protected AudioClip beaconLandAudio;
 
     // For skipping
     private LongClickButton sceneSkipperButton;
 
     // DialogueStateStuff
-    private List<TrainingState> dialogueStates = new List<TrainingState> { TrainingState.IntroDialogue, TrainingState.PostEnemyCombatDialogue, TrainingState.PostBeaconCombatDialogue };
-    private Action<ICinemachineCamera> onCameraBlendToTrainingHostComplete = null;
-    private Action onDialogueCompleted = null;
-    private Action<ICinemachineCamera> onCameraBlendToPlayerComplete = null;
+    private List<TrainingState> genericDialogueStates = new List<TrainingState> { TrainingState.PostEnemyCombatDialogue, TrainingState.PostCrystalCombatDialogue, TrainingState.PostBeaconCombatDialogue };
+    private Action<ICinemachineCamera> onCurrentStateCameraBlendComplete = null;
+    private Action onAllDialogueCompleted = null;
+    private Action<ICinemachineCamera> onNextStateCameraBlendComplete = null;
 
     // CombatStateStuff
+    private float postCombatWait = 1f; // let combat animations finish before blending camera
     private Action<IDamageable, string, int> onCombatCompleted = null;
-    private GameObject spawnedBeacon = null;
-    private GameObject spawnedEnemy = null;
-    private Vector3 beaconSpawnPoint;
-    private Vector3 enemySpawnPoint;
+    private List<IDamageable> NextStateKillList = null;
+
+    private GameObject beacon;
+    private GameObject crystal;
+    private GameObject enemy1;
+    private GameObject enemy2;
+    private GameObject enemy3;
+    private List<GameObject> AllEnemies;
+    private List<GameObject> DynamicEnemies;
+    private List<GameObject> StaticEnemies;
+
+    // Pickup
+    private Action<BasePowerUp> onPowerUpApplied = null;
+    private BasePowerUp appliedPowerUp = null;
+    private PowerUpMenu powerUpMenu;
 
     private Dictionary<TrainingState, List<string>> dialogueDictionary = new Dictionary<TrainingState, List<string>>
     {
-        { TrainingState.IntroDialogue, new List<string>() { "Ah, Warden of The Glades! You've arrived just in time!",
-                                                            "These gosh darn aliens are just causing the BIGGEST ruckus!",
-                                                            "I really need you to do me a solid and clear them out of here. Couldya do that for me?",
-                                                            "It looks like you brought your SWORD... Good! Do you remember how to use it? I guess it has been awhile.",
-                                                            "When you see one of those pesky ALIENS, make sure you use RB/Left Click to swing that sucker until the alien is good and dead!",
-                                                            "Same with the BEACONS! That's how the aliens are getting here I reckon.",
-                                                            "Oh crap, here comes a Beacon now! Kill any aliens before you go for the Beacon, or I think you might open yourself to serious danger!",
-                                                            "But don't worry too much - I'll heal you if your health gets too low! That's what Ancient Tree Spirit friends are for!",
-                                                            "Oh, one more thing... Please try not to fall off this very tall and unnecessarily dangerous mesa. Teleporting Wardens back to safety is SO tacky ya know?"}
+        //{ TrainingState.IntroDialogue, new List<string>() { "Ah, Warden of The Glades! You've arrived just in time!",
+        //                                                    "These gosh darn aliens are just causing the BIGGEST ruckus!",
+        //                                                    "I really need you to do me a solid and clear them out of here. Couldya do that for me?",
+        //                                                    "It looks like you brought your SWORD... Good! Do you remember how to use it? I guess it has been awhile.",
+        //                                                    "When you see on of those pesky ALIENS, just run right up to it! Use the left stick or WASD to move. Don't be shy!",
+        //                                                    "Then once you're close, make sure you use RB/Left Click to swing that sucker until the alien is good and dead!",
+        //                                                    "Same with the BEACONS! That's how the aliens are getting here I reckon.",
+        //                                                    "Oh crap, here comes a Beacon now! Kill any aliens before you go for the Beacon, or I think you might open yourself to serious danger!",
+        //                                                    "But don't worry too much - I'll heal you if your health gets too low! That's what Ancient Tree Spirit friends are for!",
+        //                                                    "Oh, one more thing... Please try not to fall off this very tall and unnecessarily dangerous mesa. Teleporting Wardens back to safety is SO tacky ya know?"}
+        //},
+        { TrainingState.GeneralIntroDialogue, new List<string>() 
+            { 
+                "Ah, Warden of The Glades! You've arrived just in time!",
+                "These gosh darn aliens are just causing the BIGGEST ruckus!",
+                "I really need you to do me a solid and clear them out of here. Couldya do that for me?",
+                "It looks like you brought your SWORD... Good! Do you remember how to use it? I guess it has been awhile.",
+                "When you see those pesky ALIENS, just run right up to 'em! Use the LEFT STICK or the W/A/S/D keys to move. Don't be shy!",
+                "Then once you're close, make sure you use RB or LEFT CLICK (on your mouse) to swing that sword until the aliens are good and dead!",
+                "If you need a quick second to collect your thoughts, use START or the ESC key to pause! Mental health is important!",
+                "Oh crap, ALIENS INCOMING!!!"
+            }
         },
-        { TrainingState.PostEnemyCombatDialogue, new List<string>() { "Wow, you schmacked that fool!",
-                                                                      "I doubt that's the last alien we'll see - kill the Beacon before more aliens come out!",
-                                                                      "You can use your SWORD again - remember, it's RB/Left Click to swing! But I'm sure you know that by now, otherwise we're probably in trouble...."}
+        { TrainingState.EnemyIntroDialogue, new List<string>()
+            {
+                "Yup, those are \"aliens\" alright (just go with it).",
+                "The THREE-HEADED HELLION (on the right) and the FLYING FEASTER (on the left) are both gonna just straight up try to eat you. I mean just look at 'em.",
+                "Be especially careful around the MUSHROOM BOI - those ones have an explosive spore attack, and it is VERY deadly!",
+                "There are other types of aliens I've seen, too - but don't have intel for ya. Sorry! You're gonna have to figure those out on your own!"
+            } 
         },
-        { TrainingState.PostBeaconCombatDialogue, new List<string>() { "AND STAY OUT!!! Good job, Warden!",
-                                                                       "Dang, it looks like the invasion is really getting started down there. You ready to get going? Think 45 seconds of combat training was enough?",
-                                                                       "Don't answer that. Anyway, I'll go ahead and teleport you down to the invasion site so you can start clapping more aliens.",
-                                                                       "Help me Obi-Warden Kenobi! You're my only hope! Good luck!!!" } 
-        } // TODO: There should be an explanation of powerups / a state here once that stuff gets merged in.
+        { TrainingState.CrystalIntroDialogue, new List<string>()
+            {
+                "These CRYSTALS are being brought by the aliens to help them colonize the Glades!",
+                "They work by weaponizing Glade Energy at those that threaten the alien colonization areas!",
+                "Try not to get too close if you can help it - unless you're trying to kill the sucker!",
+                "Don't worry too much about damage, though - I'll heal you if your health gets too low! That's what Ancient Tree Spirit friends are for!"
+            }
+        },
+        { TrainingState.BeaconIntroDialogue, new List<string>()
+            {
+                "Ah, a BEACON! These things are falling from the sky, and that's how the aliens are getting here I reckon.",
+                "Until you kill the BEACON, the aliens will keep flooding the area. I don't get it either. How do they all fit in that thing? It's not even that big.",
+                "Anyway, the aliens will defend the BEACONS with their lives - be careful, Warden!",
+                "Kill the aliens first, and we'll deal with the CRYSTAL and BEACON next."
+            }
+        },
+        { TrainingState.PostEnemyCombatDialogue, new List<string>() 
+            { 
+                "Wow, you schmacked those fools!",
+                "I doubt those are the last aliens we'll see - we need to kill the BEACON to stop them, but that CRYSTAL needs to go first.",
+                "You can use your SWORD again - remember, it's RB/Left Click to swing! But I'm sure you know that by now, otherwise we're probably in trouble....",
+                "Kill the CRYSTAL, Warden!"
+            }
+        },
+        { TrainingState.PostCrystalCombatDialogue, new List<string>()
+            {
+                "Man, that CRYSTAL lightning bolt is pretty sick. I mean, uhh, good job!",
+                "I didn't even realize it was possible to harness the Glade-ergy like that...",
+                "I'll send some saplings later to pick up the CRYSTAL scraps for research - write that down, it'll be a major plot point in Glade 2.",
+                "In the meantime, go on ahead and kill the heck out of that BEACON!"
+            }
+        },
+        { TrainingState.PostBeaconCombatDialogue, new List<string>() 
+            { 
+               "Huzzah! Great work, Warden.",
+               "You'll see a lot more BEACONS soon - killing them is how I (uhh, I mean we) win!",
+               "Also, you might be wondering what that Purple Thing is - just so happens, it's a present from me to you! Yep!",
+               "Go on ahead and pick it up - it'll let you enhance your abilities, and the best part is you get to choose how!",
+            } 
+        },
+        { TrainingState.PostPowerUpDialogue, new List<string>()
+            {
+                "Dang, it looks like the invasion is really getting started down there. You ready to get going? Think 2 minutes of combat training was enough?",
+                "Don't answer that. Anyway, I'll go ahead and teleport you down to the invasion site so you can start clapping more aliens.",
+                "Help me Obi-Warden Kenobi! You're my only hope! Good luck!!!" 
+            }
+        }
     };
 
-
-    protected void FixedUpdate()
+    private void DisableVirtualCameras()
     {
-#if UNITY_EDITOR
-        if (skipTraining)
-        {
-            skipTraining = false;
-            UpdateNextGameState();
-        }
-#endif
-
-        if (playerDamageModel.CurrentHp < 50)
-        {
-            playerDamageModel.Heal(playerDamageModel.MaxHp - playerDamageModel.CurrentHp);
-            // TODO: Anim tree on heal
-        }
+        trainingHostVirtualCamera.enabled = false;
+        enemyVirtualCamera.enabled = false;
+        crystalVirtualCamera.enabled = false;
+        beaconVirtualCamera.enabled = false;
     }
 
     protected override void OnSceneLoaded()
@@ -142,9 +220,19 @@ public class TrainingStateManager : BaseStateManager
         trainingHostVirtualCamera = GameObject.Find(trainingHostVirtualCameraName)?.GetComponent<CinemachineVirtualCamera>();
         Utility.LogErrorIfNull(trainingHostVirtualCamera, nameof(trainingHostVirtualCamera));
 
+        enemyVirtualCamera = GameObject.Find(enemyVirtualCameraName)?.GetComponent<CinemachineVirtualCamera>();
+        Utility.LogErrorIfNull(enemyVirtualCamera, nameof(enemyVirtualCamera));
+
+        crystalVirtualCamera = GameObject.Find(crystalVirtualCameraName)?.GetComponent<CinemachineVirtualCamera>();
+        Utility.LogErrorIfNull(crystalVirtualCamera, nameof(crystalVirtualCamera));
+
+        beaconVirtualCamera = GameObject.Find(beaconVirtualCameraName)?.GetComponent<CinemachineVirtualCamera>();
+        Utility.LogErrorIfNull(beaconVirtualCamera, nameof(beaconVirtualCamera));
+
         playerModel = GameObject.Find(playerModelGameObjectRootName);
         Utility.LogErrorIfNull(playerModel, nameof(playerModel));
         playerModelStartingPos = playerModel.transform.position;
+        playerCrystalDamageEffect = playerModel.GetComponentInChildren<CrystalDamageEffect>();
 
         cameraBlendEventDispatcher = playerModel.transform.parent.GetComponentInChildren<CameraBlendEventDispatcher>();
         Utility.LogErrorIfNull(cameraBlendEventDispatcher, nameof(cameraBlendEventDispatcher), "Need a camera blend event dispatcher somewhere");
@@ -158,17 +246,33 @@ public class TrainingStateManager : BaseStateManager
         outOfBoundsTriggerPlane = GameObject.Find(triggerPlaneGameObjectName)?.GetComponentInChildren<TriggerPlane>();
         Utility.LogErrorIfNull(outOfBoundsTriggerPlane, nameof(outOfBoundsTriggerPlane));
 
-        dialogueController = GameObject.Find(dialogueControllerName)?.GetComponent<DialogueController>();
-        Utility.LogErrorIfNull(dialogueController, nameof(dialogueController));
-
         dialogueCanvas = GameObject.Find(dialogueCanvasName)?.GetComponent<Canvas>();
         Utility.LogErrorIfNull(dialogueCanvas, nameof(dialogueCanvas));
+
+        dialogueController = dialogueCanvas.GetComponentInChildren<DialogueController>();
+        Utility.LogErrorIfNull(dialogueController, nameof(dialogueController));
 
         sceneSkipperButton = GameObject.Find("SceneSkipperButton").GetComponent<LongClickButton>();
         Utility.LogErrorIfNull(sceneSkipperButton, nameof(sceneSkipperButton));
 
-        beaconSpawnPoint = GameObject.Find("BeaconSpawnPoint").transform.position;
-        enemySpawnPoint = GameObject.Find("EnemySpawnPoint").transform.position;
+        var powerUpMenuParent = GameObject.Find("PowerUpMenu");
+        powerUpMenu = powerUpMenuParent.GetComponentInChildren<PowerUpMenu>();
+        Utility.LogErrorIfNull(powerUpMenu, nameof(powerUpMenu));
+        powerUpMenuParent.SetActive(false);
+
+        beacon = GameObject.Find("CrashedBeacon");
+        crystal = GameObject.Find("Crystal");
+        enemy1 = GameObject.Find("Enemy1");
+        enemy2 = GameObject.Find("Enemy2");
+        enemy3 = GameObject.Find("Enemy3");
+
+        AllEnemies = new List<GameObject> { beacon, crystal, enemy1, enemy2, enemy3 };
+        DynamicEnemies = new List<GameObject> { enemy1, enemy2, enemy3 };
+        StaticEnemies = new List<GameObject> { beacon, crystal };
+
+        SetBehaviorActiveInScene<BaseEnemy>(DynamicEnemies, value: false);
+        SetBehaviorActiveInScene<BaseDamageable>(AllEnemies, value: false);
+        SetActiveInScene(AllEnemies, value: false);
         #endregion
 
         #region helper event subscriptions
@@ -179,9 +283,16 @@ public class TrainingStateManager : BaseStateManager
         #endregion
 
         #region training event subscriptions
-        trainingStateChanged += OnTrainingStateChanged_DialogueState;
+        trainingStateChanged += OnTrainingStateChanged_IntroDialogueState;
+        trainingStateChanged += OnTrainingStateChanged_EnemyIntroDialogueState;
+        trainingStateChanged += OnTrainingStateChanged_CrystalIntroDialogueState;
+        trainingStateChanged += OnTrainingStateChanged_BeaconIntroDialogueState;
+        trainingStateChanged += OnTrainingStateChanged_GenericDialogueState;
         trainingStateChanged += OnTrainingStateChanged_EnemyCombat;
+        trainingStateChanged += OnTrainingStateChanged_CrystalCombat;
         trainingStateChanged += OnTrainingStateChanged_BeaconCombat;
+        trainingStateChanged += OnTrainingStateChanged_PowerUp;
+        trainingStateChanged += OnTrainingStateChanged_PostPowerUpDialogue;
         trainingStateChanged += OnTrainingStateChanged_End;
         #endregion
 
@@ -189,8 +300,8 @@ public class TrainingStateManager : BaseStateManager
         currentTrainingState = TrainingState.Invalid;
         UpdateControlStateGracefully(enableControlState: false); // Don't allow control on scene start
         dialogueCanvas.enabled = false;
-        trainingHostVirtualCamera.enabled = false;
-        Invoke("KickItOff", time: 2);
+        DisableVirtualCameras();
+        Invoke(methodName: "NextTrainingState", time: 2);
         #endregion
     }
 
@@ -201,11 +312,17 @@ public class TrainingStateManager : BaseStateManager
         cameraBlendEventDispatcher.CameraBlendCompleted -= OnBlendToCameraCompleted_EnableControlState;
         sceneSkipperButton.LongClickComplete -= UpdateNextGameState;
 
-        trainingStateChanged -= OnTrainingStateChanged_DialogueState;
+        trainingStateChanged -= OnTrainingStateChanged_IntroDialogueState;
+        trainingStateChanged -= OnTrainingStateChanged_EnemyIntroDialogueState;
+        trainingStateChanged -= OnTrainingStateChanged_CrystalIntroDialogueState;
+        trainingStateChanged -= OnTrainingStateChanged_BeaconIntroDialogueState;
+        trainingStateChanged -= OnTrainingStateChanged_GenericDialogueState;
         trainingStateChanged -= OnTrainingStateChanged_EnemyCombat;
+        trainingStateChanged -= OnTrainingStateChanged_CrystalCombat;
         trainingStateChanged -= OnTrainingStateChanged_BeaconCombat;
+        trainingStateChanged -= OnTrainingStateChanged_PowerUp;
+        trainingStateChanged -= OnTrainingStateChanged_PostPowerUpDialogue;
         trainingStateChanged -= OnTrainingStateChanged_End;
-
     }
 
     protected override void UpdateNextGameState()
@@ -214,47 +331,190 @@ public class TrainingStateManager : BaseStateManager
     }
 
     #region training state callbacks
-    private void OnTrainingStateChanged_DialogueState(TrainingState trainingState)
+    private void OnTrainingStateChanged_IntroDialogueState(TrainingState trainingState)
     {
-        if (!dialogueStates.Contains(trainingState)) 
+        if (!trainingState.Equals(TrainingState.GeneralIntroDialogue))
             return;
 
-        List<string> dialogueList = !skipDialogueStates ? dialogueDictionary[trainingState] : new List<string>();
+        List<string> dialogueList = dialogueDictionary[trainingState] ?? new List<string> { "missing dialogue for state" };
 
-        onCameraBlendToTrainingHostComplete = (ICinemachineCamera camera) =>
+        onCurrentStateCameraBlendComplete = (ICinemachineCamera camera) =>
         {
             if (camera.Name == trainingHostVirtualCameraName)
             {
-                cameraBlendEventDispatcher.CameraBlendCompleted -= onCameraBlendToTrainingHostComplete;
+                cameraBlendEventDispatcher.CameraBlendCompleted -= onCurrentStateCameraBlendComplete;
 
                 dialogueCanvas.enabled = true;
                 dialogueController.BeginDialogue(dialogueList);
             }
         };
 
-        onDialogueCompleted = () =>
+        onAllDialogueCompleted = () =>
         {
-            dialogueController.DialogueCompleted -= onDialogueCompleted;
+            dialogueController.AllDialogueCompleted -= onAllDialogueCompleted;
 
-            trainingHostVirtualCamera.enabled = false;
+            DisableVirtualCameras();
+            SetActiveInScene(AllEnemies, true);
+            SetBehaviorActiveInScene<BaseEnemy>(DynamicEnemies, false);
+            PlayCrashAudio();
+            enemyVirtualCamera.enabled = true;
             dialogueCanvas.enabled = false;
         };
 
-        onCameraBlendToPlayerComplete = (ICinemachineCamera camera) =>
+        onNextStateCameraBlendComplete = (ICinemachineCamera camera) =>
         {
-            if (camera.Name == playerCameraName)
+            if (camera.Name == enemyVirtualCameraName)
             {
-                cameraBlendEventDispatcher.CameraBlendCompleted -= onCameraBlendToPlayerComplete;
+                cameraBlendEventDispatcher.CameraBlendCompleted -= onNextStateCameraBlendComplete;
 
                 NextTrainingState();
             }
         };
 
-        cameraBlendEventDispatcher.CameraBlendCompleted += onCameraBlendToTrainingHostComplete;
-        dialogueController.DialogueCompleted += onDialogueCompleted;
-        cameraBlendEventDispatcher.CameraBlendCompleted += onCameraBlendToPlayerComplete;
+        cameraBlendEventDispatcher.CameraBlendCompleted += onCurrentStateCameraBlendComplete;
+        dialogueController.AllDialogueCompleted += onAllDialogueCompleted;
+        cameraBlendEventDispatcher.CameraBlendCompleted += onNextStateCameraBlendComplete;
 
-        StartDialogueState();
+        StartDialogueState(trainingHostVirtualCamera);
+    }
+
+    private void OnTrainingStateChanged_EnemyIntroDialogueState(TrainingState trainingState)
+    {
+        if (!trainingState.Equals(TrainingState.EnemyIntroDialogue))
+            return;
+
+        List<string> dialogueList = dialogueDictionary[trainingState] ?? new List<string> { "missing dialogue for state" };
+
+        dialogueCanvas.enabled = true;
+        dialogueController.BeginDialogue(dialogueList);
+
+        onAllDialogueCompleted = () =>
+        {
+            dialogueController.AllDialogueCompleted -= onAllDialogueCompleted;
+
+            DisableVirtualCameras();
+            crystalVirtualCamera.enabled = true;
+            dialogueCanvas.enabled = false;
+        };
+
+        onNextStateCameraBlendComplete = (ICinemachineCamera camera) =>
+        {
+            if (camera.Name == crystalVirtualCameraName)
+            {
+                cameraBlendEventDispatcher.CameraBlendCompleted -= onNextStateCameraBlendComplete;
+                NextTrainingState();
+            }
+        };
+
+        dialogueController.AllDialogueCompleted += onAllDialogueCompleted;
+        cameraBlendEventDispatcher.CameraBlendCompleted += onNextStateCameraBlendComplete;
+    }
+
+    private void OnTrainingStateChanged_CrystalIntroDialogueState(TrainingState trainingState)
+    {
+        if (!trainingState.Equals(TrainingState.CrystalIntroDialogue))
+            return;
+
+        List<string> dialogueList = dialogueDictionary[trainingState] ?? new List<string> { "missing dialogue for state" };
+
+        dialogueCanvas.enabled = true;
+        dialogueController.BeginDialogue(dialogueList);
+
+        onAllDialogueCompleted = () =>
+        {
+            dialogueController.AllDialogueCompleted -= onAllDialogueCompleted;
+
+            DisableVirtualCameras();
+            beaconVirtualCamera.enabled = true;
+            dialogueCanvas.enabled = false;
+        };
+
+        onNextStateCameraBlendComplete = (ICinemachineCamera camera) =>
+        {
+            if (camera.Name == beaconVirtualCameraName)
+            {
+                cameraBlendEventDispatcher.CameraBlendCompleted -= onNextStateCameraBlendComplete;
+                NextTrainingState();
+            }
+        };
+
+        dialogueController.AllDialogueCompleted += onAllDialogueCompleted;
+        cameraBlendEventDispatcher.CameraBlendCompleted += onNextStateCameraBlendComplete;
+    }
+
+    private void OnTrainingStateChanged_BeaconIntroDialogueState(TrainingState trainingState)
+    {
+        if (!trainingState.Equals(TrainingState.BeaconIntroDialogue))
+            return;
+
+        List<string> dialogueList = dialogueDictionary[trainingState] ?? new List<string> { "missing dialogue for state" };
+
+        dialogueCanvas.enabled = true;
+        dialogueController.BeginDialogue(dialogueList);
+
+        onAllDialogueCompleted = () =>
+        {
+            dialogueController.AllDialogueCompleted -= onAllDialogueCompleted;
+
+            DisableVirtualCameras();
+            dialogueCanvas.enabled = false;
+        };
+
+        onNextStateCameraBlendComplete = (ICinemachineCamera camera) =>
+        {
+            if (camera.Name == playerCameraName)
+            {
+                cameraBlendEventDispatcher.CameraBlendCompleted -= onNextStateCameraBlendComplete;
+                SetBehaviorActiveInScene<BaseEnemy>(DynamicEnemies, true);
+                NextTrainingState();
+            }
+        };
+
+        dialogueController.AllDialogueCompleted += onAllDialogueCompleted;
+        cameraBlendEventDispatcher.CameraBlendCompleted += onNextStateCameraBlendComplete;
+    }
+
+    private void OnTrainingStateChanged_GenericDialogueState(TrainingState trainingState)
+    {
+        if (!genericDialogueStates.Contains(trainingState)) 
+            return;
+
+        List<string> dialogueList = dialogueDictionary[trainingState] ?? new List<string> { "missing dialogue for state" };
+
+        onCurrentStateCameraBlendComplete = (ICinemachineCamera camera) =>
+        {
+            if (camera.Name == trainingHostVirtualCameraName)
+            {
+                cameraBlendEventDispatcher.CameraBlendCompleted -= onCurrentStateCameraBlendComplete;
+
+                dialogueCanvas.enabled = true;
+                dialogueController.BeginDialogue(dialogueList);
+            }
+        };
+
+        onAllDialogueCompleted = () =>
+        {
+            dialogueController.AllDialogueCompleted -= onAllDialogueCompleted;
+
+            DisableVirtualCameras();
+            dialogueCanvas.enabled = false;
+        };
+
+        onNextStateCameraBlendComplete = (ICinemachineCamera camera) =>
+        {
+            if (camera.Name == playerCameraName)
+            {
+                cameraBlendEventDispatcher.CameraBlendCompleted -= onNextStateCameraBlendComplete;
+
+                NextTrainingState();
+            }
+        };
+
+        cameraBlendEventDispatcher.CameraBlendCompleted += onCurrentStateCameraBlendComplete;
+        dialogueController.AllDialogueCompleted += onAllDialogueCompleted;
+        cameraBlendEventDispatcher.CameraBlendCompleted += onNextStateCameraBlendComplete;
+
+        StartDialogueState(trainingHostVirtualCamera);
     }
 
     private void OnTrainingStateChanged_EnemyCombat(TrainingState trainingState)
@@ -262,37 +522,134 @@ public class TrainingStateManager : BaseStateManager
         if (trainingState != TrainingState.EnemyCombat) 
             return;
 
-        spawnedBeacon = Instantiate(beaconPrefab, beaconSpawnPoint, beaconPrefab.transform.rotation); // TODO: Do this with firebolt script? maybe with a fancy virtual camera follow?
-        var spawnedBeaconDamageable = spawnedBeacon.GetComponent<IDamageable>();
-        spawnedBeaconDamageable.enabled = false;
+        onCombatCompleted = (IDamageable damageable, string name, int instanceId) =>
+        {
+            damageable.Died -= onCombatCompleted;
 
-        spawnedEnemy = Instantiate(enemyPrefab, enemySpawnPoint, enemyPrefab.transform.rotation);   // TODO: Do this on beacon land?
-        var spawnedEnemyDamageable = spawnedEnemy.GetComponent<IDamageable>();
+            if (NextStateKillList.All(d => d.IsDead))
+                Invoke("NextTrainingState", postCombatWait);           
+        };
+
+        SetupNextStateKillList(DynamicEnemies);
+    }
+
+    private void OnTrainingStateChanged_CrystalCombat(TrainingState trainingState)
+    {
+        if (trainingState != TrainingState.CrystalCombat)
+            return;
 
         onCombatCompleted = (IDamageable damageable, string name, int instanceId) =>
         {
             damageable.Died -= onCombatCompleted;
-            NextTrainingState();
+
+            if (NextStateKillList.All(d => d.IsDead))
+            {
+                playerCrystalDamageEffect.enabled = false;
+                Destroy(crystal); // it can still zap even after its dead, idk why
+                Invoke("NextTrainingState", postCombatWait);
+            }
         };
 
-        spawnedEnemyDamageable.Died += onCombatCompleted;
+        SetupNextStateKillList(StaticEnemies.Where(o => o == crystal).ToList());
     }
+
+    private string pickupName = "PowerUpPickup(Clone)";
 
     private void OnTrainingStateChanged_BeaconCombat(TrainingState trainingState)
     {
         if (trainingState != TrainingState.BeaconCombat) 
             return;
 
-        var beaconDamageable = spawnedBeacon.GetComponent<IDamageable>();
-        beaconDamageable.enabled = true;
-
         onCombatCompleted = (IDamageable damageable, string name, int instanceId) =>
         {
             damageable.Died -= onCombatCompleted;
+
+            if (NextStateKillList.All(d => d.IsDead))
+            {
+                GameObject.Find(pickupName).GetComponent<Collider>().isTrigger = false;
+                Invoke("NextTrainingState", postCombatWait);
+            }
+        };
+
+        SetupNextStateKillList(StaticEnemies.Where(o => o == beacon).ToList());
+    }
+    private void OnTrainingStateChanged_PowerUp(TrainingState trainingState)
+    {
+        if (trainingState != TrainingState.PowerUp)
+            return;
+
+        GameObject.Find(pickupName).GetComponent<Collider>().isTrigger = true;
+
+        onPowerUpApplied = (BasePowerUp powerUp) =>
+        {
+            powerUpMenu.PowerUpApplied -= onPowerUpApplied;
+            appliedPowerUp = powerUp;
             NextTrainingState();
         };
 
-        beaconDamageable.Died += onCombatCompleted;
+        powerUpMenu.PowerUpApplied += onPowerUpApplied;
+    }
+
+    private void OnTrainingStateChanged_PostPowerUpDialogue(TrainingState trainingState)
+    {
+        if (trainingState != TrainingState.PostPowerUpDialogue)
+            return;
+
+        List<string> dialogueList = dialogueDictionary[trainingState] ?? new List<string> { "missing dialogue for state" };
+
+        string specialDialogue = string.Empty;
+        switch (appliedPowerUp)
+        {
+            case DamageIncreasePowerUp t1:
+                specialDialogue = "Wow, Warden you look JACKED now! That damage increase should definitely help.";
+                break;
+            case DamageResistPowerUp t2:
+                specialDialogue = "Ooooo damage resistance! Get all damage spongey and whatnot, I like it!";
+                break;
+            case MaxHealthPowerUp t3:
+                specialDialogue = "Increasing health is a good choice! Your skin looks healthier already!";
+                break;
+            default:
+                specialDialogue = "Hmmm... That's a weird choice! Whatever, your funeral!";
+                break;
+        }
+
+        dialogueList.Insert(0, specialDialogue);
+
+        onCurrentStateCameraBlendComplete = (ICinemachineCamera camera) =>
+        {
+            if (camera.Name == trainingHostVirtualCameraName)
+            {
+                cameraBlendEventDispatcher.CameraBlendCompleted -= onCurrentStateCameraBlendComplete;
+
+                dialogueCanvas.enabled = true;
+                dialogueController.BeginDialogue(dialogueList);
+            }
+        };
+
+        onAllDialogueCompleted = () =>
+        {
+            dialogueController.AllDialogueCompleted -= onAllDialogueCompleted;
+
+            DisableVirtualCameras();
+            dialogueCanvas.enabled = false;
+        };
+
+        onNextStateCameraBlendComplete = (ICinemachineCamera camera) =>
+        {
+            if (camera.Name == playerCameraName)
+            {
+                cameraBlendEventDispatcher.CameraBlendCompleted -= onNextStateCameraBlendComplete;
+
+                NextTrainingState();
+            }
+        };
+
+        cameraBlendEventDispatcher.CameraBlendCompleted += onCurrentStateCameraBlendComplete;
+        dialogueController.AllDialogueCompleted += onAllDialogueCompleted;
+        cameraBlendEventDispatcher.CameraBlendCompleted += onNextStateCameraBlendComplete;
+
+        StartDialogueState(trainingHostVirtualCamera);
     }
 
     private void OnTrainingStateChanged_End(TrainingState trainingState)
@@ -305,9 +662,10 @@ public class TrainingStateManager : BaseStateManager
     #endregion
 
     #region general event callbacks
-    private void OnOutOfBoundsPlaneTriggered()
+    private void OnOutOfBoundsPlaneTriggered(Collider collider)
     {
-        GameManager.instance.InvokeTransition(midTransitionAction: () => playerModel.transform.position = playerModelStartingPos);
+        if (collider.gameObject == playerModel)
+            GameManager.instance.InvokeTransition(midTransitionAction: () => playerModel.transform.position = playerModelStartingPos);
     }
 
     private void OnBlendToCameraStarted_DisableControlState(ICinemachineCamera activeCamera)
@@ -330,38 +688,12 @@ public class TrainingStateManager : BaseStateManager
     #region helpers
     private void NextTrainingState()
     {
-        TrainingState nextState;
-
-        switch (currentTrainingState)
-        {
-            case TrainingState.Invalid:
-                nextState = TrainingState.IntroDialogue;
-                break;
-            case TrainingState.IntroDialogue:
-                nextState = TrainingState.EnemyCombat;
-                break;
-            case TrainingState.EnemyCombat:
-                nextState = TrainingState.PostEnemyCombatDialogue;
-                break;
-            case TrainingState.PostEnemyCombatDialogue:
-                nextState = TrainingState.BeaconCombat;
-                break;
-            case TrainingState.BeaconCombat:
-                nextState = TrainingState.PostBeaconCombatDialogue;
-                break;
-            case TrainingState.PostBeaconCombatDialogue:
-                nextState = TrainingState.End;
-                break;
-            default:
-                throw new NotImplementedException("Training broke!"); 
-        }
-
-        trainingStateChanged.Invoke(currentTrainingState = nextState);
+        trainingStateChanged.Invoke(currentTrainingState = currentTrainingState.Next());
     }
 
-    private void StartDialogueState()
+    private void StartDialogueState(CinemachineVirtualCamera dialogueCamera)
     {
-        trainingHostVirtualCamera.enabled = true;
+        dialogueCamera.enabled = true;
     }
 
     private void UpdateControlStateGracefully(bool enableControlState)
@@ -371,9 +703,34 @@ public class TrainingStateManager : BaseStateManager
         playerScript.UpdateControlState(enableControlState);
     }
 
-    private void KickItOff()
+    private void SetActiveInScene(List<GameObject> objs, bool value)
     {
-        NextTrainingState();
+        objs.ForEach(e => e.SetActive(value));
     }
+
+    private void SetBehaviorActiveInScene<T>(List<GameObject> objs, bool value) where T : MonoBehaviour
+    {
+        objs.ForEach(e => e.GetComponentInChildren<T>().enabled = value);
+    }
+
+    private void SetupNextStateKillList(List<GameObject> enemiesToKill)
+    {
+        NextStateKillList = enemiesToKill.Select(e => e.GetComponentInChildren<IDamageable>()).ToList();
+        NextStateKillList.ForEach(k =>
+        {
+            k.enabled = true;
+            k.Died += onCombatCompleted;
+        });
+    }
+
+    private void PlayCrashAudio()
+    {
+        var audioSource = GetFreeAudioSource();
+        audioSource.clip = beaconLandAudio;
+        audioSource.volume = 1;
+        audioSource.Play();
+        StartCoroutine(FreeAudioSource(beaconLandAudio.length, audioSource));
+    }
+
     #endregion
 }

@@ -173,6 +173,7 @@ each team member contributed to code written
 #### Daniel Zuniga
 - Camera
 - Player Health Bar
+- Player control/root motion
 
 ### Scripts
 
@@ -181,6 +182,7 @@ To regenerate tree for new files:
 - `cd <projectdir>/Assets/Scripts && tree -I '*.meta'`
 - Copy the specific part of the tree that's new, and insert into existing tree (don't overwrite existing manifest)
 
+```
 .
 ├── Abstract
 │   ├── BaseCrystalEffect.cs - *(egilligan3)*
@@ -221,6 +223,7 @@ To regenerate tree for new files:
 │   ├── CrystalHealEffect.cs - *(egilligan3)*
 │   ├── CrystalManager.cs - *(egilligan3)*
 │   └── CrystalSpawner.cs - *(egilligan3)*
+│   └── CrystalWeapon.cs - *(egilligan3)*
 ├── Damageable
 │   ├── AnimateDamageable.cs - *(tlagrange3, mwooden3)*
 │   └── DisappearDamageable.cs - *(tlagrange3, mwooden3)*
@@ -256,6 +259,7 @@ To regenerate tree for new files:
 │   ├── Quitter.cs - *(mwooden3)*
 │   ├── SceneLoader.cs - *(mwooden3)*
 │   ├── TimeScaleToggle.cs - *(mwooden3)*
+│   ├── SyncWithCameraRotation.cs - *(egilligan3)*
 │   └── Utility.cs - *(mwooden3)*
 ├── Interfaces
 │   ├── IDamageable.cs - *(mwooden3, egilligan3)*
@@ -287,6 +291,10 @@ To regenerate tree for new files:
 ├── Shield.cs - *(cdail7)*
 ├── ThirdPersonCamera.cs - *(daniel.zuniga)*
 └── VelocityReporter.cs - (from course)
+|__ Extensions.cs *(mwooden3)*
+
+```
+
 
 ### 3rd Party Assets
 

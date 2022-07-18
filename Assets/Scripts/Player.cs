@@ -21,17 +21,16 @@ public class Player : MonoBehaviour
     // New player orientation and movement magnitude based on player input. We
     // only care about changes in the horizontal plane (thus, zero out the
     // Y/Vertical axis).
-    private Vector3 playerOrientation => new Vector3(horizontalInput, 0f, verticalInput).normalized;
+    private Vector3 playerOrientation => new Vector3(horizontalInput, 0f, verticalInput);
     private float movementMagnitude => playerOrientation.magnitude;
 
     // Controls how fast the character moves and turns.
-    public float movementSpeed = 10f;
     public float strafeMovementSpeedModifier = 0.6f;
+    public float movementSpeed = 1.2f;
     public float rotationSmoothTime = 0.1f;
     float rotationVelocity = 0f;
 
     // Used for slope handling and falling off cliffs.
-    TerrainData terrainData;
     Vector3 terrainSize;
     float downpullForce = 0f;
     float horizontalMultiplier = 1f;
@@ -136,10 +135,11 @@ public class Player : MonoBehaviour
     
     private void GetTerrainInfo()
     {
-        /// \todo Find a way to dynamically load the terrain data of the active
-        /// scene.
-        terrainData = (TerrainData)Resources.Load("Assets/Terrain/Terrain_0_0_1e9bf6a0-0e4a-41f6-9cb7-c6586c914a9a");
         terrainSize = Terrain.activeTerrain.terrainData.size;
+        if (terrainSize.Equals(Vector3.zero))
+        {
+            Debug.LogError("Terrain Data not found");
+        }
     }
 
     private void GetCamera()
@@ -168,15 +168,15 @@ public class Player : MonoBehaviour
             horizontalInput = leftStick.x;
             verticalInput = leftStick.y;
 
+            // Update animation.
+            animator.SetFloat("Speed", movementMagnitude);
+
             // Ignore any negligible motion.
             if (movementMagnitude < 0.1)
             {
                 horizontalInput = 0f;
                 verticalInput = 0f;
             }
-
-            // Update animation.
-            animator.SetFloat("Speed", movementMagnitude);
         };
     }
 
@@ -215,7 +215,17 @@ public class Player : MonoBehaviour
             hasLanded = true;
         }
     }
-    
+
+
+    private void Start()
+    {
+        animator.speed = movementSpeed;
+        animator.applyRootMotion = true;
+        isGrounded = true;
+        isJumping = false;
+    }
+
+
     void GatherComponents()
     {
         animator = GetComponent<Animator>();
@@ -283,7 +293,20 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void ApplyCharacterMovement()
+    // Called before Update(). All physics calculations occur immediately after.
+    private void FixedUpdate()
+    {
+        ApplyTransforms();
+        ApplyForcesAndDrag();
+        UpdateAnimator();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+    }
+
+    private void OnAnimatorMove()
     {
         // The player movement is relative to the position of the camera when not locked on:
         //
@@ -339,50 +362,6 @@ public class Player : MonoBehaviour
             }
             // TRANSLATION -----------------------------------------------------
 
-            // Determine whether the player is going uphill or downhill:
-            // 1. Get the player's position on the map (horizontal plane).
-            var normalizedXposition = transform.position.x / terrainSize.x;
-            var normalizedZposition = transform.position.z / terrainSize.z;
-            // 2. Get the terrain's Normal on that point.
-            var groundNormal = Terrain.activeTerrain.terrainData.GetInterpolatedNormal(
-                normalizedXposition, normalizedZposition);
-            // 3. Get the angular difference between the terrain's Normal
-            // and the player's forward component.
-            // Note: Use an offset of -90 degrees to make a perfect
-            // alignment equal to 0.
-            // Uphill: positive angles.
-            // Downhill: negative angles.
-            var slopeAngle = Vector3.Angle(groundNormal, transform.forward) - 90f;
-            //Debug.Log("groundNormal: " + groundNormal);
-            //Debug.Log("slopeAngle: " + slopeAngle);
-
-            if (hasLanded)
-            {
-                // Apply an appropriate downpull force in order to handle
-                // downhill slopes (and avoid keep walking on air when
-                // jumping off cliffs).
-                if (slopeAngle > -5f)
-                {
-                    // Mild downhill slopes.
-                    downpullForce = 0f;
-                    horizontalMultiplier = 1f;
-                }
-                else if (slopeAngle > -30f)
-                {
-                    // Pronounced downhill slopes.
-                    downpullForce = -0.5f;
-                    horizontalMultiplier = 1f;
-                }
-                else
-                {
-                    // Very steep downhill slopes/cliffs.
-                    downpullForce = -0.8f;
-                    horizontalMultiplier = 0.8f;
-                    hasLanded = false;
-                }
-            }
-
-            // When locking on, we face the lock on target and strafe
             if (PlayerCombat.isLockingOn)
             {
                 animator.SetBool(IsStrafing, true);
@@ -401,25 +380,19 @@ public class Player : MonoBehaviour
                 var currentVelocity = rigidBody.velocity;
                 rigidBody.AddForce(newForce - new Vector3(currentVelocity.x, 0, currentVelocity.z),
                     ForceMode.VelocityChange);
-            }
-            else
-            {
-                var newDirection = new Vector3(
-                    transform.forward.x * horizontalMultiplier,
-                    downpullForce,
-                    transform.forward.z * horizontalMultiplier);
+            } else {    
+                Vector3 newRootPosition = animator.rootPosition;
+
+                // Smooth the translation.
+                newRootPosition = Vector3.LerpUnclamped(
+                    transform.position,
+                    newRootPosition,
+                    movementSpeed
+                );
 
                 // Apply the translastion.
-                // Note: Subtract the current velocity to get constant
-                // velocity (i.e. no acceleration).
-                rigidBody.AddForce(
-                    newDirection * movementSpeed - rigidBody.velocity,
-                    ForceMode.VelocityChange);
+                rigidBody.MovePosition(newRootPosition);
             }
-        }
-        else
-        {
-            animator.SetBool(IsStrafing, false);
         }
     }
 

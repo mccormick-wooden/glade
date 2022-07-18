@@ -100,11 +100,19 @@ public class Utility : MonoBehaviour
     public static void AddButtonCallback(string buttonRootName, UnityAction lambda)
     {
         var buttonRoot = GameObject.Find(buttonRootName);
-        Utility.LogErrorIfNull(buttonRoot, nameof(buttonRootName));
+        LogErrorIfNull(buttonRoot, nameof(buttonRootName));
 
-        var button = buttonRoot.GetComponentInChildren<Button>();
-        Utility.LogErrorIfNull(button, nameof(button));
+        AddButtonCallback(buttonRoot.GetComponentInChildren<Button>(), lambda);
+    }
 
+    /// <summary>
+    /// Helper to add onClick callback to buttons.
+    /// </summary>
+    /// <param name="button">button.</param>
+    /// <param name="lambda">The callback, an arrow function works.</param>
+    public static void AddButtonCallback(Button button, UnityAction lambda)
+    {
+        LogErrorIfNull(button, nameof(button));
         button.onClick.AddListener(lambda);
     }
 
@@ -120,3 +128,9 @@ public class Utility : MonoBehaviour
     }
 }
 
+    public static void ClearButtonAllCallbacks(Button button)
+    {
+        LogErrorIfNull(button, nameof(button));
+        button.onClick.RemoveAllListeners();
+    }
+}

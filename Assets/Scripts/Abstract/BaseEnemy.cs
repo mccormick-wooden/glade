@@ -318,7 +318,7 @@ public class BaseEnemy : MonoBehaviour
     /// <summary>
     /// Capsule collider on the enemy
     /// </summary>
-    Collider collider;
+    private new Collider collider;
 
     public string EnemyId => $"{GetType()}:{gameObject.name}:{gameObject.GetInstanceID()}";
 
@@ -333,7 +333,7 @@ public class BaseEnemy : MonoBehaviour
         priority = Priority.NeedsRecomputed;
         agent = GetComponent<NavMeshAgent>();
         autoAttackPlayerDistanceToBeacon = 0f;
-        crystalManager = GameObject.Find("CrystalParent")?.GetComponent<CrystalManager>();
+        crystalManager = GameObject.Find("CrystalManager")?.GetComponent<CrystalManager>();
         renderers = GetComponentsInChildren<Renderer>();
         nextBeaconDefenseNextPositionTime = DateTime.Now;
         collider = GetComponent<Collider>();
@@ -433,10 +433,7 @@ public class BaseEnemy : MonoBehaviour
                     c.a = currentFade;
                     m.color = c;
                 }
-                catch (Exception e)
-                {
-
-                }
+                catch { } // TODO: was added to get to the bottom of weird enemy console errors but we don't think this helps, leaving it anyway
             }
         }
     }
