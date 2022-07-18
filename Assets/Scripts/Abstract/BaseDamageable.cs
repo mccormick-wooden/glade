@@ -120,7 +120,6 @@ namespace Assets.Scripts.Abstract
             // short circuit on AOEType to get out quick if not AOE
             if (attackingWeapon && attackingWeapon.isDPSType && ShouldHandleCollisionAsAttack(attackingWeapon))
             {
-                Debug.Log("hit!");
                 HandleAttack(attackingWeapon);
             }
         }

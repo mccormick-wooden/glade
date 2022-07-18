@@ -1,11 +1,11 @@
+using Assets.Scripts.Abstract;
 using UnityEngine;
 
-namespace Weapons
+namespace PlayerBehaviors
 {
-    [CreateAssetMenu(menuName = "Weapon")]
-    public class Weapon : ScriptableObject
+    [CreateAssetMenu(menuName = "PlayerWeapon")]
+    public class PlayerWeapon : ScriptableObject
     {
-        public string weaponName;
         public GameObject modelPrefab;
 
         public string primaryAnimation;
@@ -13,5 +13,6 @@ namespace Weapons
         public string primaryCombo2Animation;
 
         public string specialAnimation;
+        public GameObject specialAttackPrefab;
     }
 }

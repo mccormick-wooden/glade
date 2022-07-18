@@ -1,9 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Abstract;
 using Assets.Scripts.Interfaces;
 using UnityEngine;
-using Weapons;
 
 namespace PlayerBehaviors
 {
@@ -251,7 +251,7 @@ namespace PlayerBehaviors
 
         #region Sword Attacks
 
-        public void PerformSlashAttack(Weapon weapon)
+        public void PerformSlashAttack(PlayerWeapon weapon)
         {
             if (isAttacking && !canCombo)
             {
@@ -288,7 +288,7 @@ namespace PlayerBehaviors
             lastAttackPerformed = animationString;
         }
 
-        public void PerformHeavyAttack(Weapon weapon)
+        public void PerformSpecialAttack(PlayerWeapon weapon)
         {
             if (isAttacking)
             {
@@ -302,8 +302,18 @@ namespace PlayerBehaviors
             animator.CrossFade(animationString, 0.2f);
             lastAttackPerformed = animationString;
 
-            // TODO: Fix where this is
-            playerWeaponManager.HandleSpecialEffect(weapon);
+            if (weapon.specialAttackPrefab != null)
+            {
+                var specialEffectInstance =
+                    Instantiate(weapon.specialAttackPrefab, transform.position, transform.rotation);
+                StartCoroutine(DestroySpecialEffect(specialEffectInstance));
+            }
+        }
+
+        private IEnumerator DestroySpecialEffect(GameObject instance)
+        {
+            yield return new WaitForSeconds(3);
+            Destroy(instance);
         }
 
         #endregion

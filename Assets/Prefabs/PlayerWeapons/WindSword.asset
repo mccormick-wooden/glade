@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fd994ec612ae4845ab65fb3aad3407a, type: 3}
-  m_Name: PlayerSword
+  m_Script: {fileID: 11500000, guid: 8d6a7bcce778dfe4c93223d6061f381d, type: 3}
+  m_Name: WindSword
   m_EditorClassIdentifier: 
-  weaponName: PlayerSword
   modelPrefab: {fileID: 1002349861236692414, guid: 80f0c9f1ed90c234bbaceaf669f1deab, type: 3}
   primaryAnimation: OH_Sword_Attack1
   primaryComboAnimation: OH_Sword_Attack2
   primaryCombo2Animation: OH_Sword_Attack3
   specialAnimation: Spin Attack
+  specialAttackPrefab: {fileID: 1861938134193064, guid: 808ed80abac09c242b89485425208927, type: 3}

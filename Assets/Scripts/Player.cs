@@ -4,7 +4,6 @@ using PlayerBehaviors;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
-using Weapons;
 
 public class Player : MonoBehaviour
 {
@@ -51,30 +50,20 @@ public class Player : MonoBehaviour
     private Rigidbody rigidBody;
     private Animator animator;
 
-    // Helpers
-    private bool IsAnimStateSwordSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("SwordSlash");
-    private bool IsAnimStateSwordBackSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("SwordBackSlash");
-    private bool IsAnimStateJumpSlash => animator.GetCurrentAnimatorStateInfo(0).IsName("JumpSlash");
-
     // Stuff to help us know when we're in contact with the ground
     [SerializeField] private LayerMask whatIsGround;
 
     public float playerSpeedForce;
-
-    CharacterController characterController;
+    
     CapsuleCollider capsuleCollider;
-
-    #region CombatProperties
-
+    
     public PlayerCombat PlayerCombat { get; private set; }
     private PlayerWeaponManager playerWeaponManager;
-    [SerializeField] private Weapon primaryWeapon;
-    [SerializeField] private Weapon secondaryWeapon;
+    [SerializeField] private PlayerWeapon primaryWeapon;
+    [SerializeField] private PlayerWeapon secondaryWeapon;
     private static readonly int HorizontalInput = Animator.StringToHash("horizontalInput");
     private static readonly int VerticalInput = Animator.StringToHash("verticalInput");
     private static readonly int IsStrafing = Animator.StringToHash("isStrafing");
-
-    #endregion
 
     private void Awake()
     {
@@ -105,6 +94,8 @@ public class Player : MonoBehaviour
 
         Utility.LogErrorIfNull(primaryWeapon, "primaryWeapon",
             "Please add a Weapon to the primaryWeapon variable on Player in the Editor");
+
+        // Uncomment when we're ready for an offhand weapon
         // Utility.LogErrorIfNull(secondaryWeapon, "secondaryWeapon",
         // "Please add a Weapon to the secondaryWeapon variable on Player in the Editor");
 
@@ -120,6 +111,8 @@ public class Player : MonoBehaviour
 
         #endregion
 
+        animator.speed = movementSpeed;
+        animator.applyRootMotion = true;
         isGrounded = true;
         isJumping = false;
     }
@@ -127,10 +120,33 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         ApplyForcesAndDrag();
-        ApplyCharacterMovement();
+        ApplyTransforms();
 
         animator.SetFloat(HorizontalInput, horizontalInput);
         animator.SetFloat(VerticalInput, verticalInput);
+    }
+
+    private void ApplyForcesAndDrag()
+    {
+        var halfHeight = capsuleCollider.height / 2f;
+        var groundInterceptRayStart = transform.position + new Vector3(0, halfHeight, 0);
+        var groundInterceptRayLength = halfHeight + 0.25f;
+
+        // just a dummy thing for now because we don't have jump
+
+        var isJumpable = false;
+        isGrounded = CheckGroundNear(transform.position, out isJumpable);
+
+        if (isJumping && isGrounded)
+        {
+            rigidBody.AddForce(Vector3.up * 5, ForceMode.VelocityChange);
+            isJumping = false;
+        }
+    }
+
+    private void ApplyTransforms()
+    {
+        rigidBody.drag = isGrounded ? 5 : 0;
     }
     
     private void GetTerrainInfo()
@@ -186,7 +202,7 @@ public class Player : MonoBehaviour
         controls.Gameplay.LockOnCycleLeft.performed += ctx => PlayerCombat.HandleLockOnCycle(true);
         controls.Gameplay.LockOnCycleRight.performed += ctx => PlayerCombat.HandleLockOnCycle(false);
         controls.Gameplay.Slash.performed += ctx => PlayerCombat.PerformSlashAttack(primaryWeapon);
-        controls.Gameplay.SpecialAttack.performed += ctx => PlayerCombat.PerformHeavyAttack(primaryWeapon);
+        controls.Gameplay.SpecialAttack.performed += ctx => PlayerCombat.PerformSpecialAttack(primaryWeapon);
     }
 
     private void OnEnable()
@@ -215,16 +231,6 @@ public class Player : MonoBehaviour
             hasLanded = true;
         }
     }
-
-
-    private void Start()
-    {
-        animator.speed = movementSpeed;
-        animator.applyRootMotion = true;
-        isGrounded = true;
-        isJumping = false;
-    }
-
 
     void GatherComponents()
     {
@@ -274,38 +280,7 @@ public class Player : MonoBehaviour
 
         return ret;
     }
-
-    void ApplyForcesAndDrag()
-    {
-        float halfHeight = capsuleCollider.height / 2f;
-        Vector3 groundInterceptRayStart = transform.position + new Vector3(0, halfHeight, 0);
-        float groundInterceptRayLength = halfHeight + 0.25f;
-
-        // just a dummy thing for now because we don't have jump
-
-        bool isJumpable = false;
-        isGrounded = CheckGroundNear(transform.position, out isJumpable);
-
-        if (isJumping && isGrounded)
-        {
-            rigidBody.AddForce(Vector3.up * 5, ForceMode.VelocityChange);
-            isJumping = false;
-        }
-    }
-
-    // Called before Update(). All physics calculations occur immediately after.
-    private void FixedUpdate()
-    {
-        ApplyTransforms();
-        ApplyForcesAndDrag();
-        UpdateAnimator();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
+    
     private void OnAnimatorMove()
     {
         // The player movement is relative to the position of the camera when not locked on:

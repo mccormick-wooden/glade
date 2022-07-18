@@ -126,7 +126,6 @@ public class Utility : MonoBehaviour
         transform.localRotation = Quaternion.identity;
         transform.localScale = Vector3.one;
     }
-}
 
     public static void ClearButtonAllCallbacks(Button button)
     {
