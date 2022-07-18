@@ -291,6 +291,8 @@ To regenerate tree for new files:
 ├── Shield.cs - *(cdail7)*
 ├── ThirdPersonCamera.cs - *(daniel.zuniga)*
 └── VelocityReporter.cs - (from course)
+|__ Extensions.cs *(mwooden3)*
+
 ```
 
 

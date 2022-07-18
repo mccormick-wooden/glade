@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using Assets.Scripts.Interfaces;
 using UnityEngine;
 
 public class TreeSpirit : MonoBehaviour
@@ -11,6 +10,7 @@ public class TreeSpirit : MonoBehaviour
     private string playerModelGameObjectRootName = "PlayerModel";
 
     private GameObject playerModel;
+    private IDamageable playerDamageable;
     private GameObject ent;
     private Animator animator;
     
@@ -18,6 +18,10 @@ public class TreeSpirit : MonoBehaviour
     {
         playerModel = GameObject.Find(playerModelGameObjectRootName);
         Utility.LogErrorIfNull(playerModel, nameof(playerModel));
+
+        playerDamageable = playerModel.GetComponent<IDamageable>();
+        Utility.LogErrorIfNull(playerDamageable, nameof(playerDamageable));
+        playerDamageable.IsHealable = true;
 
         ent = GameObject.Find("Ent");
         Utility.LogErrorIfNull(ent, nameof(ent));
@@ -28,22 +32,22 @@ public class TreeSpirit : MonoBehaviour
 
     private void Update()
     {
+        OrientTowardsPlayer();
+
+        if (playerDamageable.CurrentHp <= playerDamageable.MaxHp / 2)
+            HealPlayer();
+    }
+
+    private void OrientTowardsPlayer()
+    {
         var lookAtThis = new Vector3 { x = playerModel.transform.position.x, y = transform.position.y, z = playerModel.transform.position.z };
         transform.LookAt(lookAtThis);
         ent.transform.LookAt(lookAtThis);
+    }
 
-        // TODO: If time, consider adding animation
-        //var lookRotation = Quaternion.LookRotation((playerModel.transform.position - transform.position).normalized);
-
-        //transform.rotation = lookRotation;
-
-        //if (lookRotation.x > 0)
-        //{
-        //    animator.SetTrigger("Move");
-        //}
-        //else
-        //{
-        //    animator.SetTrigger("Idle");
-        //}
+    private void HealPlayer()
+    {
+        playerDamageable.Heal(playerDamageable.MaxHp - playerDamageable.CurrentHp);
+        animator.SetTrigger("Heal");
     }
 }

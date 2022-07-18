@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -149,6 +150,17 @@ public abstract class BaseStateManager : MonoBehaviour
     protected abstract void OnSceneUnloaded();
 
     protected abstract void UpdateNextGameState();
+
+    protected AudioSource GetFreeAudioSource()
+    {
+        return GameManager.instance.GetFreeAudioSource();
+    }
+
+    protected IEnumerator FreeAudioSource(float wait, AudioSource src)
+    {
+        yield return new WaitForSeconds(wait);
+        GameManager.instance.FreeAudioSource(src);
+    }
 
     #region debug
 

@@ -45,9 +45,6 @@ public class GameManager : MonoBehaviour
             instance = this;
         }
 
-        backgroundAudioSource = GetComponent<AudioSource>();
-        Utility.LogErrorIfNull(backgroundAudioSource, nameof(backgroundAudioSource), "No background audio source component on game manager!");
-
         transitionCanvasAnimationController = GameObject.Find("Transitions")?.GetComponentInChildren<Animator>();
         Utility.LogErrorIfNull(transitionCanvasAnimationController, nameof(transitionCanvasAnimationController), "Missing transition animator!");
     }
@@ -67,6 +64,7 @@ public class GameManager : MonoBehaviour
 
     public void PlayLoopedAudio(AudioClip audioClip, float normalizedMaxVolume)
     {
+        backgroundAudioSource = GetFreeAudioSource();
         backgroundAudioSource.clip = audioClip;
         backgroundAudioSource.volume = normalizedMaxVolume * instance.globalMaxVolume;
         backgroundAudioSource.loop = true;
@@ -76,6 +74,7 @@ public class GameManager : MonoBehaviour
     public void StopLoopedAudio()
     {
         backgroundAudioSource.Stop();
+        FreeAudioSource(backgroundAudioSource);
     }
 
     public void ToggleLoopedAudio(bool areWePausing)
@@ -105,6 +104,25 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(1);
 
         IsMidTransition = false;
+    }
+
+    public AudioSource GetFreeAudioSource()
+    {
+        var audioSources = GetComponents<AudioSource>();
+
+        foreach (var src in audioSources)
+        {
+            if (src.clip == null)
+                return src;
+        }
+
+        Debug.LogError("No free audio source!");
+        return null;
+    }
+
+    public void FreeAudioSource(AudioSource src)
+    {
+        src.clip = null;
     }
 }
 

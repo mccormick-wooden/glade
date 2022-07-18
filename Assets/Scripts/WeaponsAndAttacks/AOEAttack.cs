@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Assets.Scripts.Abstract;
 using UnityEngine;
 
@@ -7,7 +6,7 @@ public class AOEAttack : BaseWeapon
 {
     private string[] validCollideTags = new string[] { "Player" };
     DateTime creationTime;
-    Collider collider;
+    private new Collider collider;
 
     protected override void Start()
     {
