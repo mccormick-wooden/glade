@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Weapons;
 
@@ -20,6 +21,9 @@ namespace PlayerBehaviors
 
         public bool isLockingOn;
         public Transform currentLockedOnTarget;
+
+        private int currentLockedOnTargetIndex = -1;
+        private List<Transform> lockOnCandidates;
         
         private void Start()
         {
@@ -28,6 +32,8 @@ namespace PlayerBehaviors
             playerWeaponManager = GetComponent<PlayerWeaponManager>();
 
             isLockingOn = false;
+            currentLockedOnTarget = null;
+            lockOnCandidates = new List<Transform>();
         }
 
         private void Update()
@@ -36,14 +42,15 @@ namespace PlayerBehaviors
         }
 
         #region Lock On
-        
-        public void HandleLockOnInput()
+
+        public void HandleLockOnToggle()
         {
             Debug.Log("Handling lock on toggle");
             if (isLockingOn)
             {
                 isLockingOn = false;
                 currentLockedOnTarget = null;
+                lockOnCandidates = new List<Transform>();
                 player.playerLockOnCamera.DisableLockOnCamera();
             }
             else
@@ -60,14 +67,23 @@ namespace PlayerBehaviors
                 return;
             }
 
+            var seen = new HashSet<GameObject>();
             var hits = Physics.SphereCastAll(transform.position, 10, transform.forward, 30f);
             foreach (var hit in hits)
             {
                 // Maybe switch to damageable?
-                var enemy = hit.collider.transform.root.GetComponent<BaseEnemy>();
+                var enemy = hit.collider.transform.GetComponent<BaseEnemy>();
                 if (enemy != null)
                 {
-                    currentLockedOnTarget = hit.collider.transform.root;
+                    var hitTransform = hit.collider.transform;
+                    currentLockedOnTarget = hitTransform;
+
+                    Debug.Log(hitTransform.gameObject.name);
+
+                    if (seen.Add(hitTransform.gameObject))
+                    {
+                        lockOnCandidates.Add(hit.collider.transform);
+                    }
                 }
             }
 
@@ -77,10 +93,35 @@ namespace PlayerBehaviors
             }
             else
             {
+                Debug.Log(lockOnCandidates.Count);
+                
                 isLockingOn = true;
                 // TODO: Player keeps a reference to this component
                 player.playerLockOnCamera.EnableLockOnCamera(currentLockedOnTarget);
             }
+        }
+
+        public void HandleLockOnCycle(bool isLeft)
+        {
+            if (lockOnCandidates.Count <= 1 || !isLockingOn)
+            {
+                return;
+            }
+
+            var tempCandidateIndex = currentLockedOnTargetIndex;
+            tempCandidateIndex += isLeft ? -1 : 1;
+
+            currentLockedOnTargetIndex = tempCandidateIndex < 0
+                ? lockOnCandidates.Count - 1
+                : tempCandidateIndex >= lockOnCandidates.Count
+                    ? 0
+                    : tempCandidateIndex;
+
+            currentLockedOnTarget = lockOnCandidates[currentLockedOnTargetIndex];
+
+            // This rotation should be smoothed at a minimum, animated would be even better
+            player.transform.LookAt(currentLockedOnTarget);
+            player.playerLockOnCamera.UpdateLockOnCameraLookAt(currentLockedOnTarget);
         }
 
         #endregion

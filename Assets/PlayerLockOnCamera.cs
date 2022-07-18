@@ -56,6 +56,12 @@ public class PlayerLockOnCamera : MonoBehaviour
         DisableVisualizer();
     }
 
+    public void UpdateLockOnCameraLookAt(Transform updatedLockOnTarget)
+    {
+        lockOnCamera.LookAt = updatedLockOnTarget;
+        lockOnIndicatorYOffset = updatedLockOnTarget.localPosition.y * 2f;
+    }
+
     private void EnableVisualizer()
     {
         if (lockOnIndicatorInstance == null)
