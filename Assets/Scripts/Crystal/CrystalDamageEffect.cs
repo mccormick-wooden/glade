@@ -27,11 +27,15 @@ public class CrystalDamageEffect : BaseCrystalEffect
     private void Damage()
     {
         // For each nearby crystal, apply damage
-        foreach (KeyValuePair<int, float> crystal in nearbyCrystalIDs)
+        foreach (KeyValuePair<string, float> crystal in nearbyCrystals)
         {
-            float multiplier = crystal.Value;
-            CrystalWeapon crystalWeapon = new CrystalWeapon(hpPerSecond * multiplier);
-            health.HandleAttack(crystalWeapon);
+            GameObject thisCrystal = GameObject.Find(crystal.Key);
+            if (thisCrystal != null && thisCrystal.activeInHierarchy)
+            {
+                float multiplier = crystal.Value;
+                CrystalWeapon crystalWeapon = new CrystalWeapon(hpPerSecond * multiplier);
+                health.HandleAttack(crystalWeapon);
+            }
         }
     }
 

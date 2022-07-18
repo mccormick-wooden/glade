@@ -33,7 +33,6 @@ lands.
    * Requires that the GameObject have a Damageable script added, since it depends on that to update the HP.
 
 ## Known Issues
-* Crystal does not yet have any audio attached.
 * Crystals will all be clones of the prefab, but eventually want to have a way
 to set various parameters on dynamically spawned crystals to change their size,
 strength, effect radius, health, etc.
@@ -44,4 +43,8 @@ strength, effect radius, health, etc.
 
 This prefab uses modified model and shader assets from SineVFX's
 [TransluscentCrystals](https://assetstore.unity.com/packages/3d/environments/fantasy/translucent-crystals-106274).
+
+### ZapSplat Sounds
+
+Uses audio clips from Zapsplat.com, one of which has been modified into a loopable.
 
