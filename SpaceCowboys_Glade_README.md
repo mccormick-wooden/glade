@@ -193,6 +193,11 @@ To regenerate tree for new files:
 │   ├── BasePowerUp.cs - *(tlagrange3)*
 │   ├── BaseStateManager.cs - *(mwooden3, cdail7)*
 │   └── BaseWeapon.cs - *(mwooden3, cdail7, tlagrange3)*
+├───Animation
+│   ├── EnterStrafeBlendTree.cs - *(tlagrange3)*
+│   ├── ExitCombatLayerAnimation.cs - *(tlagrange3)*
+│   ├── ExitLockedOnLayer.cs - *(tlagrange3)*
+│   └── StartComboAnimation.cs - *(tlagrange3)*
 ├── AppEvents
 │   ├── PlayMusicEvent.cs - *(cdail7)*
 │   └── SwordSwingEvent.cs - *(cdail7)*
@@ -249,7 +254,7 @@ To regenerate tree for new files:
 │   ├── NewGameStateManager.cs - *(mwooden3)*
 │   ├── PauseMenuManager.cs - *(mwooden3, tlagrange3)*
 │   ├── TrainingStateManager.cs - *(mwooden3)*
-│   └── TriggerPlane.cs - *(mwooden3)*
+│   ├── TriggerPlane.cs - *(mwooden3)*
 │   └── LongClickButton.cs - *(mwooden3)*
 ├── HealthBarController.cs - *(daniel.zuniga, egilligan3, mwooden3, tlagrange3)*
 ├── Helper
@@ -266,12 +271,17 @@ To regenerate tree for new files:
 │   ├── IDevCommand.cs - *(mwooden3)*
 │   ├── IDevCommandResult.cs - *(mwooden3)*
 │   └── IWeapon.cs - *(mwooden3)*
+├── LockOnIndicatorAnimation.cs - *(tlagrange3)*
 ├── NPC
 │   └── TreeSpirit.cs - *(mwooden3)*
 ├── Player.cs - *(cdail7, egilligan3, tlagrange3, mwooden3, Daniel Zuniga)*
 ├── PlayerBehaviors
+│   ├── PlayerCombat.cs - *(tlagrange3)*
 │   ├── PlayerDamageable.cs - *(tlagrange3)*
-│   └── PlayerStats.cs - *(tlagrange3)*
+|   ├── PlayerStats.cs - *(tlagrange3)*
+│   ├── PlayerWeapon.cs - *(tlagrange3)*
+│   ├── PlayerWeaponManager.cs - *(tlagrange3)*
+│   └── PlayerWeaponSlot.cs - *(tlagrange3)*
 ├── PlayerControls.cs - *(cdail7)*
 ├── PowerUps
 │   ├── DamageIncreasePowerUp.cs - *(tlagrange3)*
@@ -287,9 +297,11 @@ To regenerate tree for new files:
 |   ├── BiteAttack.cs - *(cdail7)*
 |   ├── MushroomExplosion.cs - *(cdail7)*
 |   ├── PeaWeapon.cs - *(cdail7)*
-|   └── Sword.cs - *(cdail7)*
+|   └── Sword.cs - *(cdail7, tlagrange3)*
 ├── Shield.cs - *(cdail7)*
-├── ThirdPersonCamera.cs - *(daniel.zuniga)*
+├── SpecialEffectWeapon.cs - *(tlagrange3)*
+├── PlayerLockOnCamera.cs - *(tlagrange3)*
+├── ThirdPersonCamera.cs - *(daniel.zuniga, tlagrange3)*
 └── VelocityReporter.cs - (from course)
 |__ Extensions.cs *(mwooden3)*
 
@@ -309,7 +321,7 @@ The entirety of the 3rd Party assets that are in use are contained in `Assets/3r
 - [BizulkaProduction](https://assetstore.unity.com/packages/3d/characters/creatures/fuga-spiders-with-destructible-eggs-and-mummy-151921) - Used for the crashed beacon model
 - [SkythianCat](https://assetstore.unity.com/packages/3d/environments/hand-painted-nature-kit-lite-69220#description) - Used for the training interaction stump the ent stands on
 - [SineVFX - Transluscent Crystals](https://assetstore.unity.com/packages/3d/environments/fantasy/translucent-crystals-106274)
-
+- [Hovl Studio](https://assetstore.unity.com/packages/vfx/particles/spells/epic-toon-vfx-2-157651) - Used for wind sword tornado particle effect, model, and textures
 
 ## Internal Team Documentation
 ### Beacons
