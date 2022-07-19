@@ -7,7 +7,7 @@ public class LockOnIndicatorAnimation : MonoBehaviour
 {
     [SerializeField] private float rotationSpeed = 150f;
     [SerializeField] private float hoverFrequency;
-    [SerializeField] private float hoverAmplitude;
+    public float hoverAmplitude;
 
     private void FixedUpdate()
     {

@@ -1,4 +1,3 @@
-using System;
 using Assets.Scripts.Interfaces;
 using Assets.Scripts.Damageable;
 using UnityEngine;
@@ -23,7 +22,7 @@ namespace PlayerBehaviors
 
         public override void HandleAttack(IWeapon attackingWeapon)
         {
-            animator.CrossFade("Knocked Back from Hit", 0.2f);
+            animator.CrossFade("Head Back From Hit", 0.2f);
             base.HandleAttack(attackingWeapon);
         }
 

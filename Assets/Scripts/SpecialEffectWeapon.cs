@@ -7,7 +7,7 @@ public class SpecialEffectWeapon : BaseWeapon
     protected override void Start()
     {
         InUse = true;
-        isDPSType = true;
+        isDPSType = false;
         TargetTags = _specialEffectTargetTags;
     }
 }
