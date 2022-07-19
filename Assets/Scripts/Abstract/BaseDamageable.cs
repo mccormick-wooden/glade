@@ -205,5 +205,11 @@ namespace Assets.Scripts.Abstract
             if (healthBarController != null)
                 healthBarController.InitHealthBar(CurrentHp, UseHealthBarText);
         }
+
+        public virtual void InstantKill()
+        {
+            currentHp = 0;
+            Die();
+        }
     }
 }
