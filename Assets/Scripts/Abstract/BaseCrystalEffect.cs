@@ -11,6 +11,9 @@ public abstract class BaseCrystalEffect : MonoBehaviour
 
     private bool effectActive;
 
+    [SerializeField]
+    protected bool debugOutput = true;
+    
     public bool EffectActive { get => effectActive; }
 
     void Awake()
@@ -54,7 +57,8 @@ public abstract class BaseCrystalEffect : MonoBehaviour
 
     private void OnDiedRemoveCrystal(IDamageable damageable, string crystalName, int crystalID)
     {
-        Debug.Log($"{name}: Nearby Crystal {crystalName} died.");
+        if (debugOutput)
+          Debug.Log($"{name}: Nearby Crystal {crystalName} died.");
         damageable.Died -= OnDiedRemoveCrystal;
         RemoveNearbyCrystal(crystalName);
     }

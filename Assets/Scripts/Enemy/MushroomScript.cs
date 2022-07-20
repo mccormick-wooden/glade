@@ -89,5 +89,7 @@ public class MushroomScript : BaseEnemy
 
         GameObject aboutToBlow = Instantiate(explosionPrefab, transform);
         aboutToBlow.transform.position = transform.GetComponent<Collider>().bounds.center;
+
+        damageable.InstantKill();
     }
 }

@@ -318,7 +318,7 @@ public class BaseEnemy : MonoBehaviour
     /// <summary>
     /// Capsule collider on the enemy
     /// </summary>
-    Collider collider;
+    private new Collider collider;
 
     public string EnemyId => $"{GetType()}:{gameObject.name}:{gameObject.GetInstanceID()}";
 
@@ -433,10 +433,7 @@ public class BaseEnemy : MonoBehaviour
                     c.a = currentFade;
                     m.color = c;
                 }
-                catch (Exception e)
-                {
-
-                }
+                catch { } // TODO: was added to get to the bottom of weird enemy console errors but we don't think this helps, leaving it anyway
             }
         }
     }

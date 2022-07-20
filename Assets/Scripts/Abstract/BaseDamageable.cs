@@ -13,6 +13,8 @@ namespace Assets.Scripts.Abstract
 
         [SerializeField] private float maxHp = 100;
 
+        [SerializeField] protected bool debugOutput = true;
+
         public bool IsHealable { get; set; }
 
         public float CurrentHp
@@ -46,8 +48,13 @@ namespace Assets.Scripts.Abstract
             if (!IsDead && IsHealable)
             {
                 var newHp = Mathf.Min(CurrentHp + healAmount, MaxHp);
-                Debug.Log(
-                    $"Healing {gameObject.name}: currentHp = {CurrentHp}, healAmount: {healAmount}, newHp = {newHp}");
+
+                if (debugOutput)
+                {
+                    Debug.Log(
+                       $"Healing {gameObject.name}: currentHp = {CurrentHp}, healAmount: {healAmount}, newHp = {newHp}");
+                }
+
                 CurrentHp = newHp;
 
                 if (healthBarController != null)
@@ -74,11 +81,14 @@ namespace Assets.Scripts.Abstract
 
             InitHealthBarIfExists();
 
-            Debug.Log(
-                healthBarController == null
-                    ? $"{gameObject.name} HP set to {CurrentHp}/{MaxHp}"
-                    : $"{gameObject.name} HP set to {CurrentHp}/{MaxHp} with health bar at {healthBarController.CurrentHp}/{healthBarController.MaxHp}"
-            );
+            if (debugOutput)
+            {
+                Debug.Log(
+                    healthBarController == null
+                        ? $"{gameObject.name} HP set to {CurrentHp}/{MaxHp}"
+                        : $"{gameObject.name} HP set to {CurrentHp}/{MaxHp} with health bar at {healthBarController.CurrentHp}/{healthBarController.MaxHp}"
+);
+            }
 
             AttachedInstanceId = gameObject.GetInstanceID();
         }
@@ -129,9 +139,14 @@ namespace Assets.Scripts.Abstract
             }
 
             var newHp = Mathf.Max(CurrentHp - netAttackDamage, 0f);
-            Debug.Log(
-                $"Applying damage to {gameObject.name}: currentHp = {CurrentHp}, damage = {netAttackDamage}, newHp = {newHp}"
-            );
+
+            if (debugOutput)
+            {
+                Debug.Log(
+                    $"Applying damage to {gameObject.name}: currentHp = {CurrentHp}, damage = {netAttackDamage}, newHp = {newHp}"
+                );
+            }
+
             CurrentHp = newHp;
         }
 
@@ -142,7 +157,9 @@ namespace Assets.Scripts.Abstract
             MaxHp = newMaxHp < 1 ? 1 : newMaxHp;
 
             healthBarController.MaxHp = MaxHp;
-            Debug.Log("Changed Max HP from " + oldMaxHp + " to " + MaxHp);
+
+            if (debugOutput)
+                Debug.Log("Changed Max HP from " + oldMaxHp + " to " + MaxHp);
 
             var oldCurrentHp = CurrentHp;
             if (scalar >= 1f)
@@ -163,7 +180,9 @@ namespace Assets.Scripts.Abstract
             }
 
             healthBarController.CurrentHp = CurrentHp;
-            Debug.Log("Changed Current HP from " + oldCurrentHp + " to " + CurrentHp);
+
+            if (debugOutput)
+                Debug.Log("Changed Current HP from " + oldCurrentHp + " to " + CurrentHp);
         }
         
         /// <summary>
@@ -171,8 +190,8 @@ namespace Assets.Scripts.Abstract
         /// </summary>
         protected virtual void Die()
         {
-            Died?.Invoke(this, name, AttachedInstanceId);
             IsDead = true;
+            Died?.Invoke(this, name, AttachedInstanceId);
         }
 
         private void InitHealthBarIfExists()
@@ -185,6 +204,12 @@ namespace Assets.Scripts.Abstract
 
             if (healthBarController != null)
                 healthBarController.InitHealthBar(CurrentHp, UseHealthBarText);
+        }
+
+        public virtual void InstantKill()
+        {
+            currentHp = 0;
+            Die();
         }
     }
 }

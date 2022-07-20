@@ -320,6 +320,45 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""DialogueControl"",
+            ""id"": ""a3944762-98a8-45d2-9510-b8d07b903394"",
+            ""actions"": [
+                {
+                    ""name"": ""ProgressDialogueAction"",
+                    ""type"": ""Button"",
+                    ""id"": ""4f5087c2-be38-439c-a3d8-4e3df5c92ede"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""10ba6aa9-f409-471a-a944-3cef6f04c69d"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ProgressDialogueAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5530eeec-55ce-45f7-8612-88b9b7bab108"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ProgressDialogueAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -364,6 +403,9 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
         // SkipScene
         m_SkipScene = asset.FindActionMap("SkipScene", throwIfNotFound: true);
         m_SkipScene_SkipSceneAction = m_SkipScene.FindAction("SkipSceneAction", throwIfNotFound: true);
+        // DialogueControl
+        m_DialogueControl = asset.FindActionMap("DialogueControl", throwIfNotFound: true);
+        m_DialogueControl_ProgressDialogueAction = m_DialogueControl.FindAction("ProgressDialogueAction", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -542,6 +584,39 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
         }
     }
     public SkipSceneActions @SkipScene => new SkipSceneActions(this);
+
+    // DialogueControl
+    private readonly InputActionMap m_DialogueControl;
+    private IDialogueControlActions m_DialogueControlActionsCallbackInterface;
+    private readonly InputAction m_DialogueControl_ProgressDialogueAction;
+    public struct DialogueControlActions
+    {
+        private @CharacterPlayerControls m_Wrapper;
+        public DialogueControlActions(@CharacterPlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ProgressDialogueAction => m_Wrapper.m_DialogueControl_ProgressDialogueAction;
+        public InputActionMap Get() { return m_Wrapper.m_DialogueControl; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DialogueControlActions set) { return set.Get(); }
+        public void SetCallbacks(IDialogueControlActions instance)
+        {
+            if (m_Wrapper.m_DialogueControlActionsCallbackInterface != null)
+            {
+                @ProgressDialogueAction.started -= m_Wrapper.m_DialogueControlActionsCallbackInterface.OnProgressDialogueAction;
+                @ProgressDialogueAction.performed -= m_Wrapper.m_DialogueControlActionsCallbackInterface.OnProgressDialogueAction;
+                @ProgressDialogueAction.canceled -= m_Wrapper.m_DialogueControlActionsCallbackInterface.OnProgressDialogueAction;
+            }
+            m_Wrapper.m_DialogueControlActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ProgressDialogueAction.started += instance.OnProgressDialogueAction;
+                @ProgressDialogueAction.performed += instance.OnProgressDialogueAction;
+                @ProgressDialogueAction.canceled += instance.OnProgressDialogueAction;
+            }
+        }
+    }
+    public DialogueControlActions @DialogueControl => new DialogueControlActions(this);
     private int m_GamepadSchemeIndex = -1;
     public InputControlScheme GamepadScheme
     {
@@ -574,5 +649,9 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
     public interface ISkipSceneActions
     {
         void OnSkipSceneAction(InputAction.CallbackContext context);
+    }
+    public interface IDialogueControlActions
+    {
+        void OnProgressDialogueAction(InputAction.CallbackContext context);
     }
 }
