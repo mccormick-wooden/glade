@@ -244,6 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b0bcdbb616946f49802225b024de021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugOutput: 1
   hpPerSecond: 2
   LightningTarget: {fileID: 1712857272}
 --- !u!1 &488985318
@@ -488,10 +489,6 @@ PrefabInstance:
     - target: {fileID: 1329001185117756349, guid: 2859a471d3fd30f459e2541a457ebb92, type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2563888855997836564, guid: 2859a471d3fd30f459e2541a457ebb92, type: 3}
-      propertyPath: m_EnableTreeColliders
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2563888855997836565, guid: 2859a471d3fd30f459e2541a457ebb92, type: 3}
       propertyPath: m_RootOrder
