@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 3a5650f176a0e8647875399b94ce876a, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 3d7668e5b2842444c975cf3b7f60118c, type: 2}
 --- !u!1 &65424301
 GameObject:
   m_ObjectHideFlags: 0
@@ -456,11 +456,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 683423951842939091, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.029150058
+      value: -0.02915004
       objectReference: {fileID: 0}
     - target: {fileID: 683423951842939091, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.008787853
+      value: 0.008787848
       objectReference: {fileID: 0}
     - target: {fileID: 683423951991350864, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalRotation.w
@@ -548,11 +548,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 683423952098063494, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.029150058
+      value: -0.02915004
       objectReference: {fileID: 0}
     - target: {fileID: 683423952098063494, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.008787855
+      value: 0.008787849
       objectReference: {fileID: 0}
     - target: {fileID: 683423952098063514, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: field of view
@@ -779,6 +779,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stump
       objectReference: {fileID: 0}
+    - target: {fileID: 1456703055220044, guid: b71e387166e4ce648849bbd6b762b736, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4556984811349870, guid: b71e387166e4ce648849bbd6b762b736, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -996,6 +1000,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: mushroom02_group_large (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 112684, guid: 8584526ad2dc01546a00f23d3b3b2549, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967287
+      objectReference: {fileID: 0}
     - target: {fileID: 490858, guid: 8584526ad2dc01546a00f23d3b3b2549, type: 3}
       propertyPath: m_RootOrder
       value: 41
@@ -1135,6 +1143,10 @@ PrefabInstance:
     - target: {fileID: 127338, guid: 83330fc5493b0e344bc931f126b0242e, type: 3}
       propertyPath: m_Name
       value: mushroom05_e
+      objectReference: {fileID: 0}
+    - target: {fileID: 127338, guid: 83330fc5493b0e344bc931f126b0242e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967287
       objectReference: {fileID: 0}
     - target: {fileID: 421610, guid: 83330fc5493b0e344bc931f126b0242e, type: 3}
       propertyPath: m_RootOrder
@@ -1585,6 +1597,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: mushroom02_group_small
       objectReference: {fileID: 0}
+    - target: {fileID: 168142, guid: 050bf261ab7fc4a42824c7d886f39651, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967287
+      objectReference: {fileID: 0}
     - target: {fileID: 453638, guid: 050bf261ab7fc4a42824c7d886f39651, type: 3}
       propertyPath: m_RootOrder
       value: 43
@@ -1708,6 +1724,10 @@ PrefabInstance:
     - target: {fileID: 168142, guid: 050bf261ab7fc4a42824c7d886f39651, type: 3}
       propertyPath: m_Name
       value: mushroom02_group_small
+      objectReference: {fileID: 0}
+    - target: {fileID: 168142, guid: 050bf261ab7fc4a42824c7d886f39651, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967287
       objectReference: {fileID: 0}
     - target: {fileID: 453638, guid: 050bf261ab7fc4a42824c7d886f39651, type: 3}
       propertyPath: m_RootOrder
@@ -3506,6 +3526,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: mushroom04_group
       objectReference: {fileID: 0}
+    - target: {fileID: 135126, guid: 9bdcdf94c8d5dd34dbbb34e45f2a29b3, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967287
+      objectReference: {fileID: 0}
     - target: {fileID: 477836, guid: 9bdcdf94c8d5dd34dbbb34e45f2a29b3, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -3568,6 +3592,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: mushroom01_group_small
       objectReference: {fileID: 0}
+    - target: {fileID: 138662, guid: d0f2864e8e0af5047b3142618e98b62c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967287
+      objectReference: {fileID: 0}
     - target: {fileID: 421638, guid: d0f2864e8e0af5047b3142618e98b62c, type: 3}
       propertyPath: m_RootOrder
       value: 40
@@ -3629,6 +3657,10 @@ PrefabInstance:
     - target: {fileID: 112684, guid: 8584526ad2dc01546a00f23d3b3b2549, type: 3}
       propertyPath: m_Name
       value: mushroom02_group_large
+      objectReference: {fileID: 0}
+    - target: {fileID: 112684, guid: 8584526ad2dc01546a00f23d3b3b2549, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967287
       objectReference: {fileID: 0}
     - target: {fileID: 490858, guid: 8584526ad2dc01546a00f23d3b3b2549, type: 3}
       propertyPath: m_RootOrder
@@ -4390,6 +4422,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: mushroom_5_group (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 137332, guid: b8ad5d5a6b21775479c3c1e8cefa9198, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967287
+      objectReference: {fileID: 0}
     - target: {fileID: 496160, guid: b8ad5d5a6b21775479c3c1e8cefa9198, type: 3}
       propertyPath: m_RootOrder
       value: 14
@@ -4575,6 +4611,10 @@ PrefabInstance:
     - target: {fileID: 180010, guid: e989a0018bd9b004b88b525769337586, type: 3}
       propertyPath: m_Name
       value: mushroom03_group
+      objectReference: {fileID: 0}
+    - target: {fileID: 180010, guid: e989a0018bd9b004b88b525769337586, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967287
       objectReference: {fileID: 0}
     - target: {fileID: 415154, guid: e989a0018bd9b004b88b525769337586, type: 3}
       propertyPath: m_RootOrder
@@ -5146,6 +5186,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: mushroom03_a
       objectReference: {fileID: 0}
+    - target: {fileID: 139954, guid: fb8e217f72b8a4044acf6fe3edd66df1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967287
+      objectReference: {fileID: 0}
     - target: {fileID: 420960, guid: fb8e217f72b8a4044acf6fe3edd66df1, type: 3}
       propertyPath: m_RootOrder
       value: 44
@@ -5471,6 +5515,10 @@ PrefabInstance:
     - target: {fileID: 137332, guid: b8ad5d5a6b21775479c3c1e8cefa9198, type: 3}
       propertyPath: m_Name
       value: mushroom_5_group
+      objectReference: {fileID: 0}
+    - target: {fileID: 137332, guid: b8ad5d5a6b21775479c3c1e8cefa9198, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967287
       objectReference: {fileID: 0}
     - target: {fileID: 496160, guid: b8ad5d5a6b21775479c3c1e8cefa9198, type: 3}
       propertyPath: m_RootOrder
