@@ -244,6 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b0bcdbb616946f49802225b024de021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugOutput: 1
   hpPerSecond: 2
   LightningTarget: {fileID: 0}
 --- !u!1001 &341657837
