@@ -137,14 +137,15 @@ public class TrainingStateManager : BaseStateManager
         //                                                    "But don't worry too much - I'll heal you if your health gets too low! That's what Ancient Tree Spirit friends are for!",
         //                                                    "Oh, one more thing... Please try not to fall off this very tall and unnecessarily dangerous mesa. Teleporting Wardens back to safety is SO tacky ya know?"}
         //},
-        { TrainingState.GeneralIntroDialogue, new List<string>() 
-            { 
+        { TrainingState.GeneralIntroDialogue, new List<string>()
+            {
                 "Ah, Warden of The Glades! You've arrived just in time!",
                 "These gosh darn aliens are just causing the BIGGEST ruckus!",
                 "I really need you to do me a solid and clear them out of here. Couldya do that for me?",
                 "It looks like you brought your SWORD... Good! Do you remember how to use it? I guess it has been awhile.",
                 "When you see those pesky ALIENS, just run right up to 'em! Use the LEFT STICK or the W/A/S/D keys to move. Don't be shy!",
                 "Then once you're close, make sure you use RB or LEFT CLICK (on your mouse) to swing that sword until the aliens are good and dead!",
+                "When at range, you can also use your WIND ATTACK - use RT / R key to send a couple deadly twisters at those aliens from a safe distance!",
                 "If you need a quick second to collect your thoughts, use START or the ESC key to pause! Mental health is important!",
                 "Oh crap, ALIENS INCOMING!!!"
             }
@@ -154,8 +155,10 @@ public class TrainingStateManager : BaseStateManager
                 "Yup, those are \"aliens\" alright (just go with it).",
                 "The THREE-HEADED HELLION (on the right) and the FLYING FEASTER (on the left) are both gonna just straight up try to eat you. I mean just look at 'em.",
                 "Be especially careful around the MUSHROOM BOI - those ones have an explosive spore attack, and it is VERY deadly!",
-                "There are other types of aliens I've seen, too - but don't have intel for ya. Sorry! You're gonna have to figure those out on your own!"
-            } 
+                "There are other types of aliens I've seen, too - but don't have intel for ya. Sorry! You're gonna have to figure those out on your own!",
+                "One tip - you can lock on to enemies by clicking the LEFT STICK or F key, and cycle through enemies using LEFT/RIGHT DPAD or Q / E keys!",
+                "Super helpful if you're getting swarmed and you're tryna drop 'em one at a time!"
+            }
         },
         { TrainingState.CrystalIntroDialogue, new List<string>()
             {
@@ -173,12 +176,14 @@ public class TrainingStateManager : BaseStateManager
                 "Kill the aliens first, and we'll deal with the CRYSTAL and BEACON next."
             }
         },
-        { TrainingState.PostEnemyCombatDialogue, new List<string>() 
-            { 
+        { TrainingState.PostEnemyCombatDialogue, new List<string>()
+            {
                 "Wow, you schmacked those fools!",
                 "I doubt those are the last aliens we'll see - we need to kill the BEACON to stop them, but that CRYSTAL needs to go first.",
-                "You can use your SWORD again - remember, it's RB/Left Click to swing! But I'm sure you know that by now, otherwise we're probably in trouble....",
-                "Kill the CRYSTAL, Warden!"
+                "Remember, the CRYSTAL can hurt you at range, so this might be a good opportunity to use your WIND ATTACK with RT / R key!",
+                "Of course, you can use your SWORD again too - remember, it's RB/Left Click to swing!",
+                "But I'm sure you know that by now, otherwise we're probably in trouble....",
+                "However you decide to do it, destroy the CRYSTAL now!"
             }
         },
         { TrainingState.PostCrystalCombatDialogue, new List<string>()
@@ -189,19 +194,19 @@ public class TrainingStateManager : BaseStateManager
                 "In the meantime, go on ahead and kill the heck out of that BEACON!"
             }
         },
-        { TrainingState.PostBeaconCombatDialogue, new List<string>() 
-            { 
+        { TrainingState.PostBeaconCombatDialogue, new List<string>()
+            {
                "Huzzah! Great work, Warden.",
                "You'll see a lot more BEACONS soon - killing them is how I (uhh, I mean we) win!",
                "Also, you might be wondering what that Purple Thing is - just so happens, it's a present from me to you! Yep!",
                "Go on ahead and pick it up - it'll let you enhance your abilities, and the best part is you get to choose how!",
-            } 
+            }
         },
         { TrainingState.PostPowerUpDialogue, new List<string>()
             {
                 "Dang, it looks like the invasion is really getting started down there. You ready to get going? Think 2 minutes of combat training was enough?",
                 "Don't answer that. Anyway, I'll go ahead and teleport you down to the invasion site so you can start clapping more aliens.",
-                "Help me Obi-Warden Kenobi! You're my only hope! Good luck!!!" 
+                "Help me Obi-Warden Kenobi! You're my only hope! Good luck!!!"
             }
         }
     };
@@ -476,7 +481,7 @@ public class TrainingStateManager : BaseStateManager
 
     private void OnTrainingStateChanged_GenericDialogueState(TrainingState trainingState)
     {
-        if (!genericDialogueStates.Contains(trainingState)) 
+        if (!genericDialogueStates.Contains(trainingState))
             return;
 
         List<string> dialogueList = dialogueDictionary[trainingState] ?? new List<string> { "missing dialogue for state" };
@@ -519,7 +524,7 @@ public class TrainingStateManager : BaseStateManager
 
     private void OnTrainingStateChanged_EnemyCombat(TrainingState trainingState)
     {
-        if (trainingState != TrainingState.EnemyCombat) 
+        if (trainingState != TrainingState.EnemyCombat)
             return;
 
         onCombatCompleted = (IDamageable damageable, string name, int instanceId) =>
@@ -527,7 +532,7 @@ public class TrainingStateManager : BaseStateManager
             damageable.Died -= onCombatCompleted;
 
             if (NextStateKillList.All(d => d.IsDead))
-                Invoke("NextTrainingState", postCombatWait);           
+                Invoke("NextTrainingState", postCombatWait);
         };
 
         SetupNextStateKillList(DynamicEnemies);
@@ -557,7 +562,7 @@ public class TrainingStateManager : BaseStateManager
 
     private void OnTrainingStateChanged_BeaconCombat(TrainingState trainingState)
     {
-        if (trainingState != TrainingState.BeaconCombat) 
+        if (trainingState != TrainingState.BeaconCombat)
             return;
 
         onCombatCompleted = (IDamageable damageable, string name, int instanceId) =>
@@ -654,7 +659,7 @@ public class TrainingStateManager : BaseStateManager
 
     private void OnTrainingStateChanged_End(TrainingState trainingState)
     {
-        if (trainingState != TrainingState.End) 
+        if (trainingState != TrainingState.End)
             return;
 
         UpdateNextGameState();
@@ -678,7 +683,7 @@ public class TrainingStateManager : BaseStateManager
 
     private void OnBlendToCameraCompleted_EnableControlState(ICinemachineCamera activeCamera)
     {
-        if (activeCamera.Name == playerCameraName) 
+        if (activeCamera.Name == playerCameraName)
         {
             UpdateControlStateGracefully(enableControlState: true);
         }
