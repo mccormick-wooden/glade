@@ -37,9 +37,6 @@ namespace Assets.Scripts.Damageable
 
         protected override void Die()
         {
-            if (IsDead)
-                return;
-
             animator.SetTrigger(dieAnimTrigger);
             base.Die();
         }
