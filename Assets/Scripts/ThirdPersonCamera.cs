@@ -1,7 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using Cinemachine;
+using PlayerBehaviors;
 
 public class ThirdPersonCamera : MonoBehaviour
 {
@@ -21,10 +21,11 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private void Awake()
     {
+        
         GetCamera();
         SetupControls();
     }
-
+    
     private void GetCamera()
     {
         cinemachine = GameObject.Find("CameraParent/3rdPersonCamera");
@@ -38,6 +39,11 @@ public class ThirdPersonCamera : MonoBehaviour
 
         controls.Gameplay.Look.performed += ctx =>
         {
+            if (!thirdPersonCam.enabled)
+            {
+                return;
+            }
+
             Vector2 rightStick = ctx.ReadValue<Vector2>();
             horizontalInput = rightStick.x;
             verticalInput = rightStick.y;
@@ -56,11 +62,19 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private void OnEnable()
     {
+        if (controls == null)
+        {
+            controls = new CharacterCameraControls();
+        }
         controls.Gameplay.Enable();
     }
 
     private void OnDisable()
     {
+        if (controls == null)
+        {
+            controls = new CharacterCameraControls();
+        }
         controls.Gameplay.Disable();
     }
 }

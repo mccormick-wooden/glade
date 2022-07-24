@@ -62,7 +62,7 @@ namespace Assets.Scripts.Abstract
             }
         }
 
-        public void HandleAttack(IWeapon attackingWeapon)
+        public virtual void HandleAttack(IWeapon attackingWeapon)
         {
             ApplyDamage(attackingWeapon);
 

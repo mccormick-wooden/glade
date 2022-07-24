@@ -33,9 +33,36 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Cast",
+                    "name": "Special Attack",
                     "type": "Button",
                     "id": "2672c397-b0f9-4571-abbf-8458abee1f37",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Lock On Toggle",
+                    "type": "Button",
+                    "id": "c119bf23-8759-4930-97be-094691f57ad5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Lock On Cycle Left",
+                    "type": "Button",
+                    "id": "cf990f7a-2400-4806-b8f4-40ed076f5bff",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Lock On Cycle Right",
+                    "type": "Button",
+                    "id": "3b58555e-1431-4311-8eb6-65c5b7a8a1e9",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -105,18 +132,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Cast",
+                    "action": "Special Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "2ef2907b-7eab-4b85-81c3-5a9b7f6b737b",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Cast",
+                    "action": "Special Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -218,6 +245,72 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "cb6fc53b-cba4-465b-9c35-fdddbd89e9dd",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Lock On Toggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d8f804aa-ba5d-4f47-9fce-235069f0fd42",
+                    "path": "<Gamepad>/leftStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Lock On Toggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a6f5f523-96b5-4205-ac01-611655a00f64",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Lock On Cycle Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6329cf3f-59e9-4421-b872-ad3ca12cafb9",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Lock On Cycle Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "872d9b36-711a-437e-8458-3312fce66db3",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Lock On Cycle Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c5b1af06-f24f-4615-be45-51437b878a4c",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Lock On Cycle Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

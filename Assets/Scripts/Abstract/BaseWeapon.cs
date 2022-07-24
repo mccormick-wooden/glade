@@ -5,18 +5,17 @@ namespace Assets.Scripts.Abstract
 {
     public abstract class BaseWeapon : MonoBehaviour, IWeapon
     {
-        [SerializeField] protected float attackDamage;
+        [SerializeField] protected float baseAttackDamage;
+        [SerializeField] protected float currentAttackDamage;
 
-        [SerializeField]
-        public bool isDPSType { get; protected set; } = false;
+        [SerializeField] public bool isDPSType { get; protected set; } = false;
 
         public string[] TargetTags;
 
         public virtual float AttackDamage
         {
-            get => attackDamage;
-            /* Not ideal to be public, should be changed with combat overhaul */
-            set => attackDamage = value;
+            get => currentAttackDamage;
+            set => currentAttackDamage = value;
         }
 
         public virtual bool InUse { get; set; }

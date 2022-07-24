@@ -55,9 +55,36 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Cast"",
+                    ""name"": ""Special Attack"",
                     ""type"": ""Button"",
                     ""id"": ""2672c397-b0f9-4571-abbf-8458abee1f37"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Lock On Toggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""c119bf23-8759-4930-97be-094691f57ad5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Lock On Cycle Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""cf990f7a-2400-4806-b8f4-40ed076f5bff"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Lock On Cycle Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""3b58555e-1431-4311-8eb6-65c5b7a8a1e9"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -127,18 +154,18 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Cast"",
+                    ""action"": ""Special Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""2ef2907b-7eab-4b85-81c3-5a9b7f6b737b"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Cast"",
+                    ""action"": ""Special Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -240,6 +267,72 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cb6fc53b-cba4-465b-9c35-fdddbd89e9dd"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lock On Toggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d8f804aa-ba5d-4f47-9fce-235069f0fd42"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lock On Toggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a6f5f523-96b5-4205-ac01-611655a00f64"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lock On Cycle Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6329cf3f-59e9-4421-b872-ad3ca12cafb9"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lock On Cycle Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""872d9b36-711a-437e-8458-3312fce66db3"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lock On Cycle Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c5b1af06-f24f-4615-be45-51437b878a4c"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lock On Cycle Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -396,7 +489,10 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
         m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
         m_Gameplay_Slash = m_Gameplay.FindAction("Slash", throwIfNotFound: true);
         m_Gameplay_Shield = m_Gameplay.FindAction("Shield", throwIfNotFound: true);
-        m_Gameplay_Cast = m_Gameplay.FindAction("Cast", throwIfNotFound: true);
+        m_Gameplay_SpecialAttack = m_Gameplay.FindAction("Special Attack", throwIfNotFound: true);
+        m_Gameplay_LockOnToggle = m_Gameplay.FindAction("Lock On Toggle", throwIfNotFound: true);
+        m_Gameplay_LockOnCycleLeft = m_Gameplay.FindAction("Lock On Cycle Left", throwIfNotFound: true);
+        m_Gameplay_LockOnCycleRight = m_Gameplay.FindAction("Lock On Cycle Right", throwIfNotFound: true);
         // PauseGame
         m_PauseGame = asset.FindActionMap("PauseGame", throwIfNotFound: true);
         m_PauseGame_PauseGameAction = m_PauseGame.FindAction("PauseGameAction", throwIfNotFound: true);
@@ -468,7 +564,10 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
     private readonly InputAction m_Gameplay_Move;
     private readonly InputAction m_Gameplay_Slash;
     private readonly InputAction m_Gameplay_Shield;
-    private readonly InputAction m_Gameplay_Cast;
+    private readonly InputAction m_Gameplay_SpecialAttack;
+    private readonly InputAction m_Gameplay_LockOnToggle;
+    private readonly InputAction m_Gameplay_LockOnCycleLeft;
+    private readonly InputAction m_Gameplay_LockOnCycleRight;
     public struct GameplayActions
     {
         private @CharacterPlayerControls m_Wrapper;
@@ -476,7 +575,10 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
         public InputAction @Move => m_Wrapper.m_Gameplay_Move;
         public InputAction @Slash => m_Wrapper.m_Gameplay_Slash;
         public InputAction @Shield => m_Wrapper.m_Gameplay_Shield;
-        public InputAction @Cast => m_Wrapper.m_Gameplay_Cast;
+        public InputAction @SpecialAttack => m_Wrapper.m_Gameplay_SpecialAttack;
+        public InputAction @LockOnToggle => m_Wrapper.m_Gameplay_LockOnToggle;
+        public InputAction @LockOnCycleLeft => m_Wrapper.m_Gameplay_LockOnCycleLeft;
+        public InputAction @LockOnCycleRight => m_Wrapper.m_Gameplay_LockOnCycleRight;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -495,9 +597,18 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                 @Shield.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShield;
                 @Shield.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShield;
                 @Shield.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShield;
-                @Cast.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCast;
-                @Cast.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCast;
-                @Cast.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCast;
+                @SpecialAttack.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSpecialAttack;
+                @SpecialAttack.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSpecialAttack;
+                @SpecialAttack.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSpecialAttack;
+                @LockOnToggle.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLockOnToggle;
+                @LockOnToggle.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLockOnToggle;
+                @LockOnToggle.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLockOnToggle;
+                @LockOnCycleLeft.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLockOnCycleLeft;
+                @LockOnCycleLeft.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLockOnCycleLeft;
+                @LockOnCycleLeft.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLockOnCycleLeft;
+                @LockOnCycleRight.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLockOnCycleRight;
+                @LockOnCycleRight.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLockOnCycleRight;
+                @LockOnCycleRight.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLockOnCycleRight;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -511,9 +622,18 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                 @Shield.started += instance.OnShield;
                 @Shield.performed += instance.OnShield;
                 @Shield.canceled += instance.OnShield;
-                @Cast.started += instance.OnCast;
-                @Cast.performed += instance.OnCast;
-                @Cast.canceled += instance.OnCast;
+                @SpecialAttack.started += instance.OnSpecialAttack;
+                @SpecialAttack.performed += instance.OnSpecialAttack;
+                @SpecialAttack.canceled += instance.OnSpecialAttack;
+                @LockOnToggle.started += instance.OnLockOnToggle;
+                @LockOnToggle.performed += instance.OnLockOnToggle;
+                @LockOnToggle.canceled += instance.OnLockOnToggle;
+                @LockOnCycleLeft.started += instance.OnLockOnCycleLeft;
+                @LockOnCycleLeft.performed += instance.OnLockOnCycleLeft;
+                @LockOnCycleLeft.canceled += instance.OnLockOnCycleLeft;
+                @LockOnCycleRight.started += instance.OnLockOnCycleRight;
+                @LockOnCycleRight.performed += instance.OnLockOnCycleRight;
+                @LockOnCycleRight.canceled += instance.OnLockOnCycleRight;
             }
         }
     }
@@ -640,7 +760,10 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
         void OnMove(InputAction.CallbackContext context);
         void OnSlash(InputAction.CallbackContext context);
         void OnShield(InputAction.CallbackContext context);
-        void OnCast(InputAction.CallbackContext context);
+        void OnSpecialAttack(InputAction.CallbackContext context);
+        void OnLockOnToggle(InputAction.CallbackContext context);
+        void OnLockOnCycleLeft(InputAction.CallbackContext context);
+        void OnLockOnCycleRight(InputAction.CallbackContext context);
     }
     public interface IPauseGameActions
     {
