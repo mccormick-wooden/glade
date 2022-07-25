@@ -257,6 +257,7 @@ To regenerate tree for new files:
 │   ├── TrainingStateManager.cs - *(mwooden3)*
 │   ├── TriggerPlane.cs - *(mwooden3)*
 │   └── LongClickButton.cs - *(mwooden3)*
+│   └── DialogueController.cs - *(mwooden3)*
 ├── HealthBarController.cs - *(daniel.zuniga, egilligan3, mwooden3, tlagrange3)*
 ├── Helper
 │   └── AnimationEventDispatcher.cs - *(mwooden3, [inspired by StackOverflow](https://gamedev.stackexchange.com/questions/117423/unity-detect-animations-end))*
