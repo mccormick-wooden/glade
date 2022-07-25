@@ -19,7 +19,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: {x: 0.00000756979, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -137,7 +137,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: 
+    path: Crystalsv05
   m_PositionCurves: []
   m_ScaleCurves: []
   m_FloatCurves: []
@@ -150,7 +150,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 0
+      path: 2399150993
       attribute: 4
       script: {fileID: 0}
       typeID: 4
@@ -183,7 +183,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.00000756979
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -302,7 +302,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.x
-    path: 
+    path: Crystalsv05
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -330,7 +330,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.y
-    path: 
+    path: Crystalsv05
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -358,7 +358,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.z
-    path: 
+    path: Crystalsv05
     classID: 4
     script: {fileID: 0}
   m_EulerEditorCurves:
@@ -368,8 +368,8 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.x
-    path: 
+    attribute: m_LocalEulerAngles.z
+    path: Crystalsv05
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -379,7 +379,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: 
+    path: Crystalsv05
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -388,10 +388,17 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.z
-    path: 
+    attribute: m_LocalEulerAngles.x
+    path: Crystalsv05
     classID: 4
     script: {fileID: 0}
-  m_HasGenericRootTransform: 1
+  m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0
+    functionName: PlayDamageNoise
+    data: 
+    objectReferenceParameter: {fileID: 11500000, guid: c53222c4a69813845b6f25f24efc5462, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

@@ -6,22 +6,22 @@ public class AudioEventManager : MonoBehaviour
 {
     public EventSound3D eventSound3DPrefab;
 
-    // sword 
+    [Header("Sword")]
     public AudioClip[] swordSwingAudio = null;
     private UnityAction<Vector3, int> swordSwingEventListener;
     public float[] swordSwingSoundDelays = null;
     public float[] swordSwingPitches = null;
 
-    // walking 
-
-
-    // running
+    [Header("Crystal")]
+    public AudioClip crystalCollisionAudio = null;
+    private UnityAction<Vector3> crystalCollisionEventListener;
 
 
     void Awake()
     {
         // sword 
         swordSwingEventListener = new UnityAction<Vector3, int>(swordSwingEventHandler);
+        crystalCollisionEventListener = new UnityAction<Vector3>(crystalCollisionEventHandler);
     }
 
 
@@ -35,12 +35,31 @@ public class AudioEventManager : MonoBehaviour
     void OnEnable()
     {
         EventManager.StartListening<SwordSwingEvent, Vector3, int>(swordSwingEventListener);
+        EventManager.StartListening<CrystalCollisionEvent, Vector3>(crystalCollisionEventListener);
+    }
+
+    void OnDisable()
+    {
+        EventManager.StopListening<SwordSwingEvent, Vector3, int>(swordSwingEventListener);
+        EventManager.StopListening<CrystalCollisionEvent, Vector3>(crystalCollisionEventListener);
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    void crystalCollisionEventHandler(Vector3 worldPos)
+    {
+        EventSound3D snd = Instantiate(eventSound3DPrefab, worldPos, Quaternion.identity, null);
+
+        snd.audioSrc.minDistance = 1f;
+        snd.audioSrc.maxDistance = 500f;
+        snd.audioSrc.spatialBlend = 1f;
+        snd.audioSrc.pitch = 1f;
+        snd.audioSrc.volume = 0.5f;
+        snd.audioSrc.PlayOneShot(crystalCollisionAudio);
     }
 
     void swordSwingEventHandler(Vector3 worldPos, int whichSwing)

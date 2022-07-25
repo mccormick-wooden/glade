@@ -9,6 +9,9 @@ namespace Assets.Scripts.Abstract
     {
         [SerializeField] protected HealthBarController healthBarController;
 
+        [Tooltip("Optional GameObject to use as name/id for death event invokation.")]
+        [SerializeField] private GameObject attachedObject = null;
+
         [SerializeField] private float currentHp;
 
         [SerializeField] private float maxHp = 100;
@@ -34,6 +37,7 @@ namespace Assets.Scripts.Abstract
         protected virtual bool UseHealthBarText { get; set; } = false;
 
         public int AttachedInstanceId { get; protected set; }
+        public string AttachedName { get; protected set; }
 
         public virtual bool IsDead { get; protected set; } = false;
 
@@ -91,12 +95,18 @@ namespace Assets.Scripts.Abstract
             }
 
             AttachedInstanceId = gameObject.GetInstanceID();
+            AttachedName = gameObject.name;
+            if (attachedObject != null)
+            {
+                AttachedInstanceId = attachedObject.GetInstanceID();
+                AttachedName = attachedObject.name;
+            }
         }
 
         protected virtual void OnTriggerEnter(Collider other)
         {
             var attackingWeapon = other.GetComponent<BaseWeapon>();
-
+            
             if (!attackingWeapon || attackingWeapon.isDPSType)
             {
                 return;
@@ -191,7 +201,7 @@ namespace Assets.Scripts.Abstract
         protected virtual void Die()
         {
             IsDead = true;
-            Died?.Invoke(this, name, AttachedInstanceId);
+            Died?.Invoke(this, AttachedName, AttachedInstanceId);
         }
 
         private void InitHealthBarIfExists()

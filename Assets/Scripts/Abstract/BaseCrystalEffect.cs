@@ -74,13 +74,18 @@ public abstract class BaseCrystalEffect : MonoBehaviour
 
     protected void AddNearbyCrystal(CrystalController crystal)
     {
-        int crystalID = crystal.CrystalID;
-        nearbyCrystals[crystal.name] = crystal.EffectMultiplier;
+        if (!nearbyCrystals.ContainsKey(crystal.name))
+        {
+            nearbyCrystals[crystal.name] = crystal.EffectMultiplier;
 
-        // If it's a damageable crystal, add a callback function to remove it when it dies
-        BaseDamageable crystalDamageable = crystal.GetComponent<BaseDamageable>();
-        if (crystalDamageable != null)
-            crystalDamageable.Died += OnDiedRemoveCrystal;
+            // If it's a damageable crystal, add a callback function to remove it when it dies
+            BaseDamageable crystalDamageable = crystal.GetComponentInChildren<BaseDamageable>();
+            if (crystalDamageable != null)
+            {
+                Debug.Log($"Subscribing to {crystalDamageable.AttachedName} death");
+                crystalDamageable.Died += OnDiedRemoveCrystal;
+            }
+        }
     }
 
     protected void RemoveNearbyCrystal(string name)
