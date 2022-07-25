@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6898334554661418232}
   - component: {fileID: 221157379129744951}
-  m_Layer: 8
+  m_Layer: 20
   m_Name: MinimapIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8210387048990740961}
-  m_Layer: 8
+  m_Layer: 20
   m_Name: BeaconMinimapIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}

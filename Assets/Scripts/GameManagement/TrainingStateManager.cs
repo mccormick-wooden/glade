@@ -198,6 +198,7 @@ public class TrainingStateManager : BaseStateManager
             {
                "Huzzah! Great work, Warden.",
                "You'll see a lot more BEACONS soon - killing them is how I (uhh, I mean we) win!",
+               "They'll show up as BLUE on your minimap - I'll give you your minimap before I send you off to the frontlines, don't worry!",
                "Also, you might be wondering what that Purple Thing is - just so happens, it's a present from me to you! Yep!",
                "Go on ahead and pick it up - it'll let you enhance your abilities, and the best part is you get to choose how!",
             }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2641489656385891991}
   - component: {fileID: 2491304574728020022}
   - component: {fileID: 7033139087726289872}
-  m_Layer: 8
+  m_Layer: 20
   m_Name: MinimapIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5896861013667876648}
-  m_Layer: 8
+  m_Layer: 20
   m_Name: EnemyMinimapIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}

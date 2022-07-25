@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4692288950219100273}
   - component: {fileID: 238674596}
   m_Layer: 0
-  m_Name: Minimap Camera
+  m_Name: MinimapCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63,7 +63,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 1048576
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: fe515f2c146da0c459d29ad841165498, type: 2}
   m_TargetDisplay: 0

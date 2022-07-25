@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3982228277840875416}
-  m_Layer: 8
+  m_Layer: 20
   m_Name: PlayerMinimapIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3982228279484738681}
   - component: {fileID: 3982228279484738680}
-  m_Layer: 8
+  m_Layer: 20
   m_Name: MinimapIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
