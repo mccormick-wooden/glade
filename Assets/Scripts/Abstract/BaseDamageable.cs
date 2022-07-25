@@ -215,7 +215,7 @@ namespace Assets.Scripts.Abstract
             minimapIcon = GetComponentInChildren<MinimapIcon>();
 
             if (minimapIcon == null)
-                gameObject.transform.parent.GetComponentInChildren<MinimapIcon>();
+                gameObject.transform.parent?.GetComponentInChildren<MinimapIcon>();
         }
 
         public virtual void InstantKill()
