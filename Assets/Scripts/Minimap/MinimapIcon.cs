@@ -8,6 +8,6 @@ public class MinimapIcon : MonoBehaviour
 
     public void Disable()
     {
-        sprite.enabled = false;//.SetActive(false);
+        sprite.enabled = false;
     }
 }
