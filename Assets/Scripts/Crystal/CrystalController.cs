@@ -103,9 +103,6 @@ public class CrystalController : MonoBehaviour
         DestroyAllLightning();
         effectActive = false;
         crystalAudio.Stop();
-
-        // Self destruct in disableDelay seconds
-        SelfDestruct(disableDelay);
     }
 
     private void SelfDestruct(float destructDelay)
@@ -122,6 +119,9 @@ public class CrystalController : MonoBehaviour
 
         // Set crystal pieces to RB and shoot them off
         ExplodeCrystals();
+
+        // Self destruct in disableDelay seconds
+        SelfDestruct(disableDelay);
     }
 
     private void FixedUpdate()
