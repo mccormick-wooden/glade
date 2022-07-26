@@ -5,6 +5,7 @@ using UnityEngine;
 public class AppleTreeScript : MonoBehaviour
 {
     //Transform apple;
+    [SerializeField]
     Rigidbody apple;
 
     [SerializeField]
@@ -24,14 +25,14 @@ public class AppleTreeScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.tag != "Weapon")
+            return;
+
         ParticleSystem hit = Instantiate(treeHitParticles);
         hit.transform.position = other.transform.position;
         hit.Play();
 
         if (apple.isKinematic == false)
-            return;
-
-        if (other.name != "Sword")
             return;
 
         Debug.Log("Apple fall!");

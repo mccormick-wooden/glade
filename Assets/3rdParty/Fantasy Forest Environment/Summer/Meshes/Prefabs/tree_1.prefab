@@ -505,6 +505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cc016bbb44e9f84a97c9c2bac5f3e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  apple: {fileID: 4166482574449667289}
   treeHitParticles: {fileID: 0}
 --- !u!1 &6476020532062781251
 GameObject:
@@ -615,6 +616,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cc016bbb44e9f84a97c9c2bac5f3e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  apple: {fileID: 0}
   treeHitParticles: {fileID: 6402874200098941367, guid: 38f31ff6569ae2a43bb2ea3683bdf4bf, type: 3}
 --- !u!1 &7878834981648014401
 GameObject:
@@ -1824,6 +1826,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 88f0ba8e82b45b44482fa8acbd37b600, type: 3}
+--- !u!54 &4166482574449667289 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 1028946781324527712, guid: 88f0ba8e82b45b44482fa8acbd37b600, type: 3}
+  m_PrefabInstance: {fileID: 4005349847095583929}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6790597120365241638 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7613564335052620191, guid: 88f0ba8e82b45b44482fa8acbd37b600, type: 3}
