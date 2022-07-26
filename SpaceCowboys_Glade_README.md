@@ -200,7 +200,8 @@ To regenerate tree for new files:
 │   └── StartComboAnimation.cs - *(tlagrange3)*
 ├── AppEvents
 │   ├── PlayMusicEvent.cs - *(cdail7)*
-│   └── SwordSwingEvent.cs - *(cdail7)*
+│   ├── SwordSwingEvent.cs - *(cdail7)*
+│   └── SwordHitEvent.cs - *(cdail7)*
 ├── Arrow.cs - *(cdail7)*
 ├── AudioEventManager.cs - *(cdail7, tlagrange3)*
 ├── Beacons
@@ -322,6 +323,7 @@ The entirety of the 3rd Party assets that are in use are contained in `Assets/3r
 - [SkythianCat](https://assetstore.unity.com/packages/3d/environments/hand-painted-nature-kit-lite-69220#description) - Used for the training interaction stump the ent stands on
 - [SineVFX - Transluscent Crystals](https://assetstore.unity.com/packages/3d/environments/fantasy/translucent-crystals-106274)
 - [Hovl Studio](https://assetstore.unity.com/packages/vfx/particles/spells/epic-toon-vfx-2-157651) - Used for wind sword tornado particle effect, model, and textures
+- [Hit Impact Effects](https://assetstore.unity.com/packages/vfx/particles/hit-impact-effects-free-218385) - Used for visualizing hit impacts in combat
 
 ## Internal Team Documentation
 ### Beacons
