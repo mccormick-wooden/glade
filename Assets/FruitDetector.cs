@@ -76,4 +76,9 @@ public class FruitDetector : MonoBehaviour
 
         return closestFruit;
     }
+
+    public void RemoveFruit(Transform fruit)
+    {
+        nearbyFruit.Remove(fruit);
+    }
 }

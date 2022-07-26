@@ -20,12 +20,15 @@ public class HealingApple : MonoBehaviour
         
     }
 
-    void BeConsumed(Transform consumer)
+    public void BeConsumed(Transform consumer)
     {
         IDamageable damageable = consumer.GetComponent<IDamageable>();
         if (damageable != null)
+        {
+            Instantiate(healParticleEffect, consumer);
             damageable.Heal(25);
+            Destroy(gameObject);
+        }
 
-        Instantiate(healParticleEffect, consumer);
     }
 }

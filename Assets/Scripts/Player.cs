@@ -75,6 +75,8 @@ public class Player : MonoBehaviour
     Transform touchToPickup;
     Transform leftHand;
     FruitDetector fruitDetector;
+    Transform fruitInHand;
+    Transform targetFruitForPickup;
 
     private void Awake()
     {
@@ -408,8 +410,7 @@ public class Player : MonoBehaviour
 
         animator.SetTrigger("DoPickup");
         tryPickup = false;
-
-        // do IK stuff here!
+        targetFruitForPickup = fruitDetector.GetClosestFruit();
     }
 
 
@@ -450,35 +451,44 @@ public class Player : MonoBehaviour
             return;
 
         AnimatorStateInfo astate = animator.GetCurrentAnimatorStateInfo(0);
-        if (astate.IsName("Picking Up"))
+        if (astate.IsName("Picking Up") && targetFruitForPickup)
         {
             float fruitContactWeight = animator.GetFloat("fruitClose");
 
-            Transform nearbyFruit = fruitDetector.GetClosestFruit();
 
-            Vector3 targetPosition = nearbyFruit.GetComponent<SphereCollider>().ClosestPoint(touchToPickup.position);
+            Vector3 targetPosition = targetFruitForPickup.GetComponent<SphereCollider>().ClosestPoint(touchToPickup.position);
 
-            Debug.Log("trying to get hand to go to:  " + nearbyFruit.position);
-
-            if (nearbyFruit != null)
+            if (targetFruitForPickup != null)
             {
                 animator.SetLookAtWeight(fruitContactWeight);
                 animator.SetLookAtPosition(targetPosition);
                 animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, fruitContactWeight);
                 animator.SetIKPosition(AvatarIKGoal.LeftHand, targetPosition);
 
-                if (fruitContactWeight > 0.9f)
+                if (fruitContactWeight > 0.95f)
                 {
-                    nearbyFruit.SetParent(leftHand);
-                    nearbyFruit.position = Vector3.Lerp(leftHand.position, nearbyFruit.position, 0.01f);
+                    targetFruitForPickup.SetParent(leftHand);
+                    targetFruitForPickup.position = Vector3.Lerp(leftHand.position, targetFruitForPickup.position, 0.01f);
+                    targetFruitForPickup.GetComponent<Rigidbody>().isKinematic = true;
+                    targetFruitForPickup.GetComponent<BoxCollider>().enabled = false;
+
+                    // we have it now, it's not a nearby fruit anymore
+                    fruitInHand = targetFruitForPickup;
+                    fruitDetector.RemoveFruit(fruitInHand);
                 }
             }
         }
         else
         {
-            //In the else -clause, add the following:
             animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0);
             animator.SetLookAtWeight(0);
         }
+    }
+
+
+    protected void EatFruit()
+    {
+        fruitInHand.GetComponent<HealingApple>().BeConsumed(transform);
+        fruitInHand = null;
     }
 }
