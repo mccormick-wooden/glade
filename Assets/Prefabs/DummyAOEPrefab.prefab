@@ -60,8 +60,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd31f88aeab3cd64481ccb9e9da11573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackDamage: 2
-  TargetTags: []
+  baseAttackDamage: 2
+  currentAttackDamage: 2
+  TargetTags:
+  - Player
 --- !u!1 &4554370378471722779
 GameObject:
   m_ObjectHideFlags: 0

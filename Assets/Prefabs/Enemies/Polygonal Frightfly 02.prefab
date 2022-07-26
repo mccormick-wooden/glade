@@ -2453,6 +2453,7 @@ MonoBehaviour:
   healthBarController: {fileID: 0}
   currentHp: 75
   maxHp: 75
+  debugOutput: 1
   animator: {fileID: 0}
   applyDamageAnimTrigger: Take Damage
   dieAnimTrigger: Die
@@ -2468,6 +2469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d821ef289d0582b4ba2ab9c19c2a7ad0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugOutput: 1
   hpPerSecond: 2
   healParticlePrefab: {fileID: 1819198237917253673, guid: 38633e7e9ae8aea4f861cee1e5c7a830, type: 3}
 --- !u!1 &4090586578371015841
@@ -2759,7 +2761,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9283f827d31adf4f828b945d2ce21f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackDamage: 5
+  baseAttackDamage: 10
+  currentAttackDamage: 10
   TargetTags:
   - Player
 --- !u!1001 &9180019909833744401
