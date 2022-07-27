@@ -68,3 +68,8 @@ MonoBehaviour:
   - 1
   - 1
   - 1
+  appleHitGrass: {fileID: 8300000, guid: 8fa9a5597337bc642b758515f12c485a, type: 3}
+  swordHitSound: {fileID: 0}
+  appleHitGrassStartOffsetPCMs: 10000
+  playerEatApple: {fileID: 8300000, guid: 671f0322476a35142b0f5c1c7a030905, type: 3}
+  playerEatAppleOffsetPCMs: 10000

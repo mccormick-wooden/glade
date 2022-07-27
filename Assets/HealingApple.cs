@@ -27,8 +27,19 @@ public class HealingApple : MonoBehaviour
         {
             Instantiate(healParticleEffect, consumer);
             damageable.Heal(25);
+            EventManager.TriggerEvent<PlayerEatAppleEvent, Vector3>(transform.position);
             Destroy(gameObject);
         }
 
     }
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        const int TERRAIN_LAYER_ID = 7;
+        if (collision.gameObject.layer == TERRAIN_LAYER_ID)
+        {
+            EventManager.TriggerEvent<AppleHitGrassEvent, Vector3>(transform.position);
+        }
+    }
+
 }
