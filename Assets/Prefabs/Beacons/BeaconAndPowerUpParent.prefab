@@ -171,7 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52d474c5aba9406ea0438af19d6b0c18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  beaconToSpawn: {fileID: 6010572465883681626, guid: 98f6dcc3b4eda1f44aa51f7a488ed84c, type: 3}
+  beaconPrefab: {fileID: 2775764871604184902, guid: 7c11c1d845754904a87e6ffef3ec1031, type: 3}
   initialBeaconSpawnTime: 1
   minSpawnWaitTime: 30
   maxSpawnWaitTime: 180

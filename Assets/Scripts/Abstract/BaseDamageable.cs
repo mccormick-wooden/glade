@@ -41,6 +41,7 @@ namespace Assets.Scripts.Abstract
 
         public Action<IDamageable, string, int> Died { get; set; }
 
+        public bool IsImmune { get; set; } = false;
 
         protected virtual void Start()
         {
@@ -105,7 +106,7 @@ namespace Assets.Scripts.Abstract
                 return;
             }
 
-            if (ShouldHandleCollisionAsAttack(attackingWeapon))
+            if (ShouldHandleCollisionAsAttack(attackingWeapon) && !IsImmune)
             {
                 HandleAttack(attackingWeapon);
             }
