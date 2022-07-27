@@ -12,6 +12,7 @@ TagManager:
   - Environment
   - Fire
   - TerrainBridge
+  - PowerUp
   layers:
   - Default
   - TransparentFX
@@ -33,7 +34,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - MinimapIcons
   - 
   - 
   - 

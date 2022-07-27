@@ -169,6 +169,7 @@ each team member contributed to code written
 - Win / Loss conditions
 - Damage / Combat framework
 - Scene Transitions
+- Minimap
 
 #### Daniel Zuniga
 - Camera
@@ -256,6 +257,7 @@ To regenerate tree for new files:
 │   ├── TrainingStateManager.cs - *(mwooden3)*
 │   ├── TriggerPlane.cs - *(mwooden3)*
 │   └── LongClickButton.cs - *(mwooden3)*
+│   └── DialogueController.cs - *(mwooden3)*
 ├── HealthBarController.cs - *(daniel.zuniga, egilligan3, mwooden3, tlagrange3)*
 ├── Helper
 │   └── AnimationEventDispatcher.cs - *(mwooden3, [inspired by StackOverflow](https://gamedev.stackexchange.com/questions/117423/unity-detect-animations-end))*
@@ -272,6 +274,9 @@ To regenerate tree for new files:
 │   ├── IDevCommandResult.cs - *(mwooden3)*
 │   └── IWeapon.cs - *(mwooden3)*
 ├── LockOnIndicatorAnimation.cs - *(tlagrange3)*
+├── Minimap
+│   ├── MinimapCamera.cs *(mwooden3)*
+│   └── MinimapIcon.cs *(mwooden3)*
 ├── NPC
 │   └── TreeSpirit.cs - *(mwooden3)*
 ├── Player.cs - *(cdail7, egilligan3, tlagrange3, mwooden3, Daniel Zuniga)*
@@ -322,6 +327,7 @@ The entirety of the 3rd Party assets that are in use are contained in `Assets/3r
 - [SkythianCat](https://assetstore.unity.com/packages/3d/environments/hand-painted-nature-kit-lite-69220#description) - Used for the training interaction stump the ent stands on
 - [SineVFX - Transluscent Crystals](https://assetstore.unity.com/packages/3d/environments/fantasy/translucent-crystals-106274)
 - [Hovl Studio](https://assetstore.unity.com/packages/vfx/particles/spells/epic-toon-vfx-2-157651) - Used for wind sword tornado particle effect, model, and textures
+- [minicrap](https://github.com/Srfigie/Unity-3d-TopDownMovement) - Some prebuilt art for minimap.
 
 ## Internal Team Documentation
 ### Beacons
