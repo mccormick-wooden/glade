@@ -25,7 +25,7 @@ public class ThoughtBubble : MonoBehaviour
     void Start()
     {
         image = GetComponent<RawImage>();
-        image.enabled = true;
+        image.enabled = false;
         displayTime = DateTime.Now;
     }
 

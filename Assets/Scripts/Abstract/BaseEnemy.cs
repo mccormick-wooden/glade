@@ -967,8 +967,11 @@ public class BaseEnemy : MonoBehaviour
             rigidBody.detectCollisions = false;
             collider.enabled = false;
             transform.Find("Hovering Health Bar").gameObject.SetActive(false);
+            rigidBody.detectCollisions = false;
+            agent.enabled = false;
 
             this.enabled = false;
+            return;
         }
 
         if (currentFade < 1f)
@@ -980,6 +983,9 @@ public class BaseEnemy : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
+        if (damageable.IsDead)
+            return;
+
         ApplyTransforms();
     }
 

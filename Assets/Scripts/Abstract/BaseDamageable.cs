@@ -15,6 +15,8 @@ namespace Assets.Scripts.Abstract
 
         [SerializeField] protected bool debugOutput = true;
 
+        private MinimapIcon minimapIcon;
+
         public bool IsHealable { get; set; }
 
         public float CurrentHp
@@ -36,6 +38,28 @@ namespace Assets.Scripts.Abstract
         public int AttachedInstanceId { get; protected set; }
 
         public virtual bool IsDead { get; protected set; } = false;
+
+        public Action<IDamageable, string, int> Died { get; set; }
+
+        public bool IsImmune { get; set; } = false;
+
+        protected virtual void Start()
+        {
+            CurrentHp = MaxHp;
+
+            InitHealthBarIfExists();
+
+            if (debugOutput)
+            {
+                Debug.Log(
+                    healthBarController == null
+                        ? $"{gameObject.name} HP set to {CurrentHp}/{MaxHp}"
+                        : $"{gameObject.name} HP set to {CurrentHp}/{MaxHp} with health bar at {healthBarController.CurrentHp}/{healthBarController.MaxHp}");
+            }
+
+            AttachedInstanceId = gameObject.GetInstanceID();
+            GetMinimapIcon();
+        }
 
         public virtual void Heal(float healAmount)
         {
@@ -73,26 +97,6 @@ namespace Assets.Scripts.Abstract
                 Die();
         }
 
-        public Action<IDamageable, string, int> Died { get; set; }
-
-        protected virtual void Start()
-        {
-            CurrentHp = MaxHp;
-
-            InitHealthBarIfExists();
-
-            if (debugOutput)
-            {
-                Debug.Log(
-                    healthBarController == null
-                        ? $"{gameObject.name} HP set to {CurrentHp}/{MaxHp}"
-                        : $"{gameObject.name} HP set to {CurrentHp}/{MaxHp} with health bar at {healthBarController.CurrentHp}/{healthBarController.MaxHp}"
-);
-            }
-
-            AttachedInstanceId = gameObject.GetInstanceID();
-        }
-
         protected virtual void OnTriggerEnter(Collider other)
         {
             var attackingWeapon = other.GetComponent<BaseWeapon>();
@@ -102,7 +106,7 @@ namespace Assets.Scripts.Abstract
                 return;
             }
 
-            if (ShouldHandleCollisionAsAttack(attackingWeapon))
+            if (ShouldHandleCollisionAsAttack(attackingWeapon) && !IsImmune)
             {
                 HandleAttack(attackingWeapon);
             }
@@ -184,12 +188,13 @@ namespace Assets.Scripts.Abstract
             if (debugOutput)
                 Debug.Log("Changed Current HP from " + oldCurrentHp + " to " + CurrentHp);
         }
-        
+
         /// <summary>
         /// If overridden, base implementation MUST be called
         /// </summary>
         protected virtual void Die()
         {
+            minimapIcon?.Disable();
             IsDead = true;
             Died?.Invoke(this, name, AttachedInstanceId);
         }
@@ -204,6 +209,14 @@ namespace Assets.Scripts.Abstract
 
             if (healthBarController != null)
                 healthBarController.InitHealthBar(CurrentHp, UseHealthBarText);
+        }
+
+        private void GetMinimapIcon()
+        {
+            minimapIcon = GetComponentInChildren<MinimapIcon>();
+
+            if (minimapIcon == null)
+                gameObject.transform.parent?.GetComponentInChildren<MinimapIcon>();
         }
 
         public virtual void InstantKill()

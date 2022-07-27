@@ -25,7 +25,7 @@ public class AppleTreeScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag != "Weapon")
+        if (other.tag != "Weapon" || !other.gameObject.GetComponent<Sword>().InUse)
             return;
 
         ParticleSystem hit = Instantiate(treeHitParticles);
@@ -37,8 +37,5 @@ public class AppleTreeScript : MonoBehaviour
 
         Debug.Log("Apple fall!");
         apple.isKinematic = false;
-
-
-
     }
 }

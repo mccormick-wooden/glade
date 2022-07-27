@@ -314,7 +314,11 @@ public class Player : MonoBehaviour
         /*
          * While locked on we should expect to always face the lock on target and our movements to be relative to it
          */
-        
+        var animState = animator.GetCurrentAnimatorStateInfo(0);
+
+        if (animState.IsName("Sheathe") || animState.IsName("Picking Up") || animState.IsName("DrawSword"))
+            return;
+
         if (movementMagnitude >= 0.1)
         {
             if (PlayerCombat.isLockingOn)
@@ -398,9 +402,12 @@ public class Player : MonoBehaviour
 
     void AnimatorPickupLogic()
     {
+        if (!tryPickup)
+            return;
+
         var animState = animator.GetCurrentAnimatorStateInfo(0);
 
-        if (!tryPickup || !fruitDetector.FruitNearby() || !animState.IsName("MovementTree"))
+        if (!fruitDetector.FruitNearby() || !animState.IsName("MovementTree") || !fruitDetector.FruitNearby())
         {
             tryPickup = false;
             return;
