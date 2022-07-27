@@ -105,7 +105,7 @@ public class BaseEnemy : MonoBehaviour
     ///  - LocatePlayer - try to find the player, only if lostPlayer == false <br />
     ///
     /// </summary>
-    protected enum Priority {
+    public enum Priority {
         AttackPlayer,
         DefendBeacon,
         HealAtCrystal,
@@ -320,6 +320,11 @@ public class BaseEnemy : MonoBehaviour
     /// </summary>
     private new Collider collider;
 
+    /// <summary>
+    /// Thought bubble so the enemy can display what it's thinking
+    /// </summary>
+    ThoughtBubble thoughtBubble;
+
     public string EnemyId => $"{GetType()}:{gameObject.name}:{gameObject.GetInstanceID()}";
 
     // Start is called before the first frame update
@@ -344,6 +349,8 @@ public class BaseEnemy : MonoBehaviour
             velocityReporter = gameObject.AddComponent<VelocityReporter>();
             velocityReporter.smoothingTimeFactor = 0.5f; // I guess? 
         }
+        
+        thoughtBubble = transform.Find("ThoughtBubble").GetComponent<ThoughtBubble>();
     }
 
     ///////////////////////////////////////////////////////
@@ -677,11 +684,6 @@ public class BaseEnemy : MonoBehaviour
         }
         
 
-
-
-
-
-
         if (attackPlayerWeight > defendBeaconWeight 
             && attackPlayerWeight > runAwayWeight 
             && attackPlayerWeight > healOthersWeight) // if we know where the player is, attack them
@@ -727,6 +729,7 @@ public class BaseEnemy : MonoBehaviour
 
         // record the time change
         nextPriorityChangeTime = DateTime.Now.AddSeconds(secondsToNextChangeTime);
+        thoughtBubble.ShowPriority(priority);
     }
 
 
