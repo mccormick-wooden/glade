@@ -9,6 +9,7 @@ using Assets.Scripts.Abstract;
 public class CrystalController : MonoBehaviour
 {
     public int CrystalID => gameObject.GetInstanceID();
+    public bool debugOutput = false;
 
     [Header("Crystal Effect")]
     public float EffectMultiplier = 1;
@@ -107,7 +108,8 @@ public class CrystalController : MonoBehaviour
 
     private void SelfDestruct(float destructDelay)
     {
-        Debug.Log($"Self destruct in {destructDelay}");
+        if (debugOutput)
+            Debug.Log($"Self destruct in {destructDelay}");
         selfDestruct = true;
         selfDestructTime = Time.time + destructDelay;
     }
@@ -141,10 +143,10 @@ public class CrystalController : MonoBehaviour
 
         anim.SetInteger("ActivatorsClose", activatorsClose);
 
-        Debug.Log($"Self destruct at {selfDestructTime} ({Time.time})");
         if (selfDestruct && Time.time > selfDestructTime)
         {
-            Debug.Log($"Self destructing");
+            if (debugOutput)
+                Debug.Log($"Self destructing");
             Destroy(this.gameObject);
         }
     }
