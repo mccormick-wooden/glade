@@ -71,6 +71,8 @@ public class AudioEventManager : MonoBehaviour
         EventSound3D snd = Instantiate(eventSound3DPrefab, worldPos, Quaternion.identity, null);
         snd.audioSrc.clip = swordSwingAudio[whichSwing];
         snd.audioSrc.pitch = swordSwingPitches[whichSwing];
+        snd.audioSrc.spatialize = true;
+        snd.audioSrc.spatialBlend = 1;
         snd.audioSrc.PlayDelayed(swordSwingSoundDelays[whichSwing]);
     }
 
@@ -83,6 +85,8 @@ public class AudioEventManager : MonoBehaviour
 
         swordHitSound = Instantiate(eventSound3DPrefab, worldPos, Quaternion.identity, null);
 
+        swordHitSound.audioSrc.spatialize = true;
+        swordHitSound.audioSrc.spatialBlend = 1;
         swordHitSound.audioSrc.clip = swordHitAudio[whichSwing];
         swordHitSound.audioSrc.volume = .5f;
         swordHitSound.audioSrc.pitch = swordHitPitches[whichSwing];
@@ -93,6 +97,8 @@ public class AudioEventManager : MonoBehaviour
     void appleHitGrassEventHandler(Vector3 worldPos)
     {
         EventSound3D snd = Instantiate(eventSound3DPrefab, worldPos, Quaternion.identity, null);
+        snd.audioSrc.spatialize = true;
+        snd.audioSrc.spatialBlend = 1;
         snd.audioSrc.clip = appleHitGrass;
         snd.audioSrc.timeSamples = appleHitGrassStartOffsetPCMs;
         snd.audioSrc.Play();
@@ -101,6 +107,8 @@ public class AudioEventManager : MonoBehaviour
     void playerEatAppleEventHandler(Vector3 worldPos)
     {
         EventSound3D snd = Instantiate(eventSound3DPrefab, worldPos, Quaternion.identity, null);
+        snd.audioSrc.spatialize = true;
+        snd.audioSrc.spatialBlend = 1;
         snd.audioSrc.clip = playerEatApple;
         snd.audioSrc.timeSamples = playerEatAppleOffsetPCMs;
         snd.audioSrc.Play();
