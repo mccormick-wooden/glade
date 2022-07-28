@@ -67,7 +67,7 @@ MonoBehaviour:
   rotationSpeed: 40
   hoverFrequency: 0.5
   hoverAmplitude: 0.5
-  detectionRadius: 10
+  detectionRadius: 20
   minTimeToKeepShieldsUp: 10
   minEnemyCount: 10
 --- !u!82 &8588397374441406097
