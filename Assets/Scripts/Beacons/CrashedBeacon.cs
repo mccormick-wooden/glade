@@ -1,4 +1,3 @@
-using Assets.Scripts.Damageable;
 using Assets.Scripts.Interfaces;
 using UnityEngine;
 
@@ -88,8 +87,8 @@ namespace Beacons
                     // CrystalControllers stay active after death so we need to drill down a little further to ensure
                     // the underlying damageable crystal is dead if we are going to lower shields
                     if (crystal != null) {
-                        var animateDamageable = crystal.gameObject.GetComponentInChildren<AnimateDamageable>();
-                        if (!animateDamageable.IsDead) {
+                        var damageable = crystal.gameObject.GetComponentInChildren<IDamageable>();
+                        if (!damageable.IsDead) {
                             return;
                         }
                     }
