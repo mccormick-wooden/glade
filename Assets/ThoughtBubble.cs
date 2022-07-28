@@ -32,7 +32,7 @@ public class ThoughtBubble : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (image.enabled && DateTime.Now > displayTime.AddSeconds(10))
+        if (image.enabled && DateTime.Now > displayTime.AddSeconds(5))
         {
             Hide();
         }
@@ -71,6 +71,7 @@ public class ThoughtBubble : MonoBehaviour
 
     public void ShowPriority(BaseEnemy.Priority priority)
     {
+        Display();
         switch(priority)
         {
             case BaseEnemy.Priority.AttackPlayer:

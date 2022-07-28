@@ -108,8 +108,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9283f827d31adf4f828b945d2ce21f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseAttackDamage: 15
-  currentAttackDamage: 15
+  baseAttackDamage: 10
+  currentAttackDamage: 10
   TargetTags:
   - Player
 --- !u!1 &8967236822692737714
@@ -1777,7 +1777,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7105632826950516923, guid: 932d96311c1a9b443bff883acdae3917, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7369142133607621916, guid: 932d96311c1a9b443bff883acdae3917, type: 3}
       propertyPath: m_PresetInfoIsWorld

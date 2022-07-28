@@ -18,6 +18,7 @@ namespace PlayerBehaviors
         {
             UseHealthBarText = true;
             base.Start();
+            IsHealable = true;
         }
 
         public override void HandleAttack(IWeapon attackingWeapon)

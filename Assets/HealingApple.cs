@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Abstract;
 using Assets.Scripts.Interfaces;
 using UnityEngine;
 
@@ -22,7 +23,7 @@ public class HealingApple : MonoBehaviour
 
     public void BeConsumed(Transform consumer)
     {
-        IDamageable damageable = consumer.GetComponent<IDamageable>();
+        BaseDamageable damageable = consumer.GetComponent<BaseDamageable>();
         if (damageable != null)
         {
             Instantiate(healParticleEffect, consumer);
