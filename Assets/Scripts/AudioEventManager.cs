@@ -83,7 +83,6 @@ public class AudioEventManager : MonoBehaviour
         EventManager.StartListening<PlayerHurtEvent, Vector3>(playerHurtEventListener);
     }
 
-<<<<<<< HEAD
     void OnDisable()
     {
         EventManager.StopListening<SwordSwingEvent, Vector3, int>(swordSwingEventListener);
@@ -92,8 +91,6 @@ public class AudioEventManager : MonoBehaviour
         EventManager.StopListening<AppleHitGrassEvent, Vector3>(appleHitGrassEventListener);
         EventManager.StopListening<PlayerEatAppleEvent, Vector3>(playerEatAppleEventListener);
     }
-=======
->>>>>>> 16ecbdc (Added footsteps)
 
     // Update is called once per frame
     void Update()
