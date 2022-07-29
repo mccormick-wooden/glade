@@ -24,6 +24,7 @@ public abstract class BaseLevelStateManager : BaseStateManager
     /// </summary>
     [SerializeField]
     protected int returnToMainMenuCountdownLength = 10;
+    protected int returnToMainMenuTimer;
 
     protected GameObject player;
     protected IDamageable playerDamageModel;
@@ -34,6 +35,8 @@ public abstract class BaseLevelStateManager : BaseStateManager
 
     protected override void OnSceneLoaded()
     {
+        returnToMainMenuTimer = returnToMainMenuCountdownLength;
+
         #region player objs and subscriptions
 
         player = GameObject.Find(playerGameObjectRootName);
@@ -86,10 +89,10 @@ public abstract class BaseLevelStateManager : BaseStateManager
     private void OnAllBeaconsDiedReturnToMainMenuCountdown()
     {
         HUDMessageText.fontSize = 50;
-        HUDMessageText.text = $"YOU WON!\n\nReturning to Main Menu in {returnToMainMenuCountdownLength} seconds...";
+        HUDMessageText.text = $"YOU WON!\n\nReturning to Main Menu in {returnToMainMenuTimer} seconds...";
 
-        returnToMainMenuCountdownLength -= 1;
-        if (returnToMainMenuCountdownLength < 0)
+        returnToMainMenuTimer -= 1;
+        if (returnToMainMenuTimer < 0)
             ReturnToMainMenu();
     }
 
@@ -111,10 +114,10 @@ public abstract class BaseLevelStateManager : BaseStateManager
     private void OnPlayerDiedReturnToMainMenuCountdown()
     {
         HUDMessageText.fontSize = 50;
-        HUDMessageText.text = $"Ya died, ya dingus.\n\nReturning to Main Menu in {returnToMainMenuCountdownLength} seconds...";
+        HUDMessageText.text = $"Ya died, ya dingus.\n\nReturning to Main Menu in {returnToMainMenuTimer} seconds...";
 
-        returnToMainMenuCountdownLength -= 1;
-        if (returnToMainMenuCountdownLength < 0)
+        returnToMainMenuTimer -= 1;
+        if (returnToMainMenuTimer < 0)
             ReturnToMainMenu();
     }
 
