@@ -17,8 +17,6 @@ public class AudioEventManager : MonoBehaviour
     private UnityAction<Vector3, AudioClip, float> monsterTakeDamageEventListener;
     private UnityAction<Vector3, AudioClip, float, float> monsterDieEventListener;
 
-
-
     public AudioClip[] swordSwingAudio = null;
     public float[] swordSwingSoundDelays = null;
     public float[] swordSwingPitches = null;
@@ -109,7 +107,6 @@ public class AudioEventManager : MonoBehaviour
         EventManager.StartListening<MonsterTakeDamageEvent, Vector3, AudioClip, float>(monsterTakeDamageEventHandler);
         EventManager.StartListening<MonsterDieEvent, Vector3, AudioClip, float, float>(monsterDieEventHandler);
     }
-
 
     void OnDisable()
     {
