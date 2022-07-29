@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Interfaces;
 using Beacons;
+using PowerUps;
 using TMPro;
 using UnityEngine;
 
@@ -83,7 +84,22 @@ public abstract class BaseLevelStateManager : BaseStateManager
         if (debugOutput)
             Debug.Log("All beacons died.");
 
+        DisablePickups();
         InvokeRepeating("OnAllBeaconsDiedReturnToMainMenuCountdown", 0f, 1f);
+    }
+
+    private void DisablePickups()
+    {
+        // Disable all pickups on the ground
+        PowerUpPickup[] pickups = FindObjectsOfType<PowerUpPickup>();
+        foreach (PowerUpPickup pickup in pickups)
+        {
+            pickup.PowerUpEnabled = false;
+        }
+        
+        // Close power up menu if already open
+        PowerUpMenu menu = FindObjectOfType<PowerUpMenu>(true); // Include the inactive menu
+        menu.gameObject.SetActive(false);
     }
 
     private void OnAllBeaconsDiedReturnToMainMenuCountdown()
@@ -108,6 +124,7 @@ public abstract class BaseLevelStateManager : BaseStateManager
         if (debugOutput)
             Debug.Log($"GameObj '{name}:{instanceId}' died.");
 
+        DisablePickups();
         InvokeRepeating("OnPlayerDiedReturnToMainMenuCountdown", 0f, 1f);
     }
 
