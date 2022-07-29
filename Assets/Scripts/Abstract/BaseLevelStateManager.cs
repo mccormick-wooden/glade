@@ -84,6 +84,7 @@ public abstract class BaseLevelStateManager : BaseStateManager
         if (debugOutput)
             Debug.Log("All beacons died.");
 
+        player.GetComponentInChildren<IDamageable>().IsImmune = true;
         DisablePickups();
         InvokeRepeating("OnAllBeaconsDiedReturnToMainMenuCountdown", 0f, 1f);
     }

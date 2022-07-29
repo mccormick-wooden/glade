@@ -99,13 +99,16 @@ namespace Assets.Scripts.Abstract
 
         public virtual void HandleAttack(IWeapon attackingWeapon)
         {
-            ApplyDamage(attackingWeapon);
+            if (!IsImmune) // check again here because CrystalWeapon skips the trigger
+            {
+                ApplyDamage(attackingWeapon);
 
-            if (healthBarController != null)
-                healthBarController.CurrentHp = CurrentHp;
+                if (healthBarController != null)
+                    healthBarController.CurrentHp = CurrentHp;
 
-            if (!HasHp)
-                Die();
+                if (!HasHp)
+                    Die();
+            }
         }
 
         protected virtual void OnTriggerEnter(Collider other)
