@@ -60,9 +60,12 @@ public class AudioEventManager : MonoBehaviour
         playerEatAppleEventListener = new UnityAction<Vector3>(playerEatAppleEventHandler);
         playerFootstepEventListener = new UnityAction<Vector3, int>(playerFootstepEventHandler);
         playerHurtEventListener = new UnityAction<Vector3>(playerHurtEventHandler);
+<<<<<<< HEAD
         fairyAOEAttackEventListener = new UnityAction<Vector3>(fairyAOEAttackEventHandler);
         monsterTakeDamageEventListener = new UnityAction<Vector3, AudioClip, float>(monsterTakeDamageEventHandler);
         monsterDieEventListener = new UnityAction<Vector3, AudioClip, float, float>(monsterDieEventHandler);
+=======
+>>>>>>> f49e30e (Player injured sound effects)
     }
 
 
@@ -106,6 +109,7 @@ public class AudioEventManager : MonoBehaviour
         EventManager.StartListening<PlayerEatAppleEvent, Vector3>(playerEatAppleEventListener);
         EventManager.StartListening<PlayerFootstepEvent, Vector3, int>(playerFootstepEventListener);
         EventManager.StartListening<PlayerHurtEvent, Vector3>(playerHurtEventListener);
+<<<<<<< HEAD
         EventManager.StartListening<FairyAOEAttackEvent, Vector3>(fairyAOEAttackEventHandler);
         EventManager.StartListening<MonsterTakeDamageEvent, Vector3, AudioClip, float>(monsterTakeDamageEventHandler);
         EventManager.StartListening<MonsterDieEvent, Vector3, AudioClip, float, float>(monsterDieEventHandler);
@@ -123,6 +127,8 @@ public class AudioEventManager : MonoBehaviour
         EventManager.StopListening<FairyAOEAttackEvent, Vector3>(fairyAOEAttackEventHandler);
         EventManager.StopListening<MonsterTakeDamageEvent, Vector3, AudioClip, float>(monsterTakeDamageEventHandler);
         EventManager.StopListening<MonsterDieEvent, Vector3, AudioClip, float, float>(monsterDieEventHandler);
+=======
+>>>>>>> f49e30e (Player injured sound effects)
     }
 
 
