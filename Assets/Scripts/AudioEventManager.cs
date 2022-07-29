@@ -11,6 +11,7 @@ public class AudioEventManager : MonoBehaviour
     private UnityAction<Vector3, int> swordHitEventListener;
     private UnityAction<Vector3> appleHitGrassEventListener;
     private UnityAction<Vector3> playerEatAppleEventListener;
+    private UnityAction<Vector3, int> playerFootstepEventListener;
 
     public AudioClip[] swordSwingAudio = null;
     public float[] swordSwingSoundDelays = null;
@@ -33,6 +34,9 @@ public class AudioEventManager : MonoBehaviour
     [Header("Crystal")]
     public AudioClip crystalCollisionAudio = null;
     private UnityAction<Vector3> crystalCollisionEventListener;
+    
+    public AudioClip[] playerFootstep = null;
+    public int[] playerFootstepOffsetPCMs;
 
     // walking 
 
@@ -48,6 +52,7 @@ public class AudioEventManager : MonoBehaviour
         swordHitEventListener = new UnityAction<Vector3, int>(swordHitEventHandler);
         appleHitGrassEventListener = new UnityAction<Vector3>(appleHitGrassEventHandler);
         playerEatAppleEventListener = new UnityAction<Vector3>(playerEatAppleEventHandler);
+        playerFootstepEventListener = new UnityAction<Vector3, int>(playerFootstepEventHandler);
     }
 
 
@@ -65,8 +70,10 @@ public class AudioEventManager : MonoBehaviour
         EventManager.StartListening<SwordHitEvent, Vector3, int>(swordHitEventListener);
         EventManager.StartListening<AppleHitGrassEvent, Vector3>(appleHitGrassEventListener);
         EventManager.StartListening<PlayerEatAppleEvent, Vector3>(playerEatAppleEventListener);
+        EventManager.StartListening<PlayerFootstepEvent, Vector3, int>(playerFootstepEventListener);
     }
 
+<<<<<<< HEAD
     void OnDisable()
     {
         EventManager.StopListening<SwordSwingEvent, Vector3, int>(swordSwingEventListener);
@@ -75,6 +82,8 @@ public class AudioEventManager : MonoBehaviour
         EventManager.StopListening<AppleHitGrassEvent, Vector3>(appleHitGrassEventListener);
         EventManager.StopListening<PlayerEatAppleEvent, Vector3>(playerEatAppleEventListener);
     }
+=======
+>>>>>>> 16ecbdc (Added footsteps)
 
     // Update is called once per frame
     void Update()
@@ -140,6 +149,21 @@ public class AudioEventManager : MonoBehaviour
         snd.audioSrc.spatialBlend = 1;
         snd.audioSrc.clip = playerEatApple;
         snd.audioSrc.timeSamples = playerEatAppleOffsetPCMs;
+        //snd.audioSrc.pitch = 0.8f;
+        snd.audioSrc.volume = 0.6f;
         snd.audioSrc.Play();
     }
+
+    void playerFootstepEventHandler(Vector3 worldPos, int whilchStep)
+    {
+        EventSound3D snd = Instantiate(eventSound3DPrefab, worldPos, Quaternion.identity, null);
+        snd.audioSrc.spatialize = true;
+        snd.audioSrc.spatialBlend = 1;
+        snd.audioSrc.clip = playerFootstep[whilchStep];
+        snd.audioSrc.timeSamples = playerFootstepOffsetPCMs[whilchStep];
+        //snd.audioSrc.pitch = 0.8f;
+        snd.audioSrc.volume = 0.6f;
+        snd.audioSrc.Play();
+    }
+
 }

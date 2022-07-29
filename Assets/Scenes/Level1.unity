@@ -308,6 +308,23 @@ MonoBehaviour:
   debugOutput: 1
   hpPerSecond: 2
   LightningTarget: {fileID: 1712857272}
+--- !u!114 &144319667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144319655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af4624f81d024be478f6fc5fcf9e14f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 128
+  maxDistanceToGroundForFootstep: 0.1
+  player: {fileID: 144319655}
 --- !u!4 &152320657 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4327579053104370224, guid: 731a3315ef125449db8edb7ab6702daf, type: 3}
@@ -919,6 +936,10 @@ PrefabInstance:
       propertyPath: hitEffectPrefabs.Array.data[3]
       value: 
       objectReference: {fileID: 8443315704496310910, guid: c81ea1f86f210d2489f4511b5b981359, type: 3}
+    - target: {fileID: 519062604779179505, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 526934961395860589, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_Layer
       value: 9
