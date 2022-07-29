@@ -42,10 +42,7 @@ public class AudioEventManager : MonoBehaviour
     public AudioClip[] playerInjured = null;
     public int[] playerInjuredOffsetPCMs;
 
-    // walking 
-
-
-    // running
+    public AudioClip campfire = null;
 
 
     void Awake()
@@ -64,7 +61,14 @@ public class AudioEventManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Vector3 campfireWorldPos = GameObject.Find("campfire_lit").transform.position;
 
+        EventSound3D snd = Instantiate(eventSound3DPrefab, campfireWorldPos, Quaternion.identity, null);
+        snd.audioSrc.spatialize = true;
+        snd.audioSrc.spatialBlend = 1;
+        snd.audioSrc.clip = campfire;
+        snd.audioSrc.volume = 0.6f;
+        snd.audioSrc.Play();
 
     }
 
