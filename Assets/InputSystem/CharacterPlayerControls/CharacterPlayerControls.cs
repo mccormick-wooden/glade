@@ -89,6 +89,15 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pickup"",
+                    ""type"": ""Button"",
+                    ""id"": ""0e23ab35-029f-4f26-b782-e49ab770e165"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -281,12 +290,34 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                 },
                 {
                     ""name"": """",
+                    ""id"": ""433f0734-7099-4b67-8aa1-825fb1e96db5"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pickup"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""d8f804aa-ba5d-4f47-9fce-235069f0fd42"",
                     ""path"": ""<Gamepad>/leftStickPress"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Lock On Toggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c5ce7fa9-da66-4d19-91d1-60d85a1ba05a"",
+                    ""path"": ""<XInputController>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pickup"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -331,6 +362,17 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Lock On Cycle Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8cbe1b32-0b4d-47f5-ab62-4bd964fc8347"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pickup"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -493,6 +535,7 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
         m_Gameplay_LockOnToggle = m_Gameplay.FindAction("Lock On Toggle", throwIfNotFound: true);
         m_Gameplay_LockOnCycleLeft = m_Gameplay.FindAction("Lock On Cycle Left", throwIfNotFound: true);
         m_Gameplay_LockOnCycleRight = m_Gameplay.FindAction("Lock On Cycle Right", throwIfNotFound: true);
+        m_Gameplay_Pickup = m_Gameplay.FindAction("Pickup", throwIfNotFound: true);
         // PauseGame
         m_PauseGame = asset.FindActionMap("PauseGame", throwIfNotFound: true);
         m_PauseGame_PauseGameAction = m_PauseGame.FindAction("PauseGameAction", throwIfNotFound: true);
@@ -568,6 +611,7 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
     private readonly InputAction m_Gameplay_LockOnToggle;
     private readonly InputAction m_Gameplay_LockOnCycleLeft;
     private readonly InputAction m_Gameplay_LockOnCycleRight;
+    private readonly InputAction m_Gameplay_Pickup;
     public struct GameplayActions
     {
         private @CharacterPlayerControls m_Wrapper;
@@ -579,6 +623,7 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
         public InputAction @LockOnToggle => m_Wrapper.m_Gameplay_LockOnToggle;
         public InputAction @LockOnCycleLeft => m_Wrapper.m_Gameplay_LockOnCycleLeft;
         public InputAction @LockOnCycleRight => m_Wrapper.m_Gameplay_LockOnCycleRight;
+        public InputAction @Pickup => m_Wrapper.m_Gameplay_Pickup;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -609,6 +654,9 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                 @LockOnCycleRight.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLockOnCycleRight;
                 @LockOnCycleRight.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLockOnCycleRight;
                 @LockOnCycleRight.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLockOnCycleRight;
+                @Pickup.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPickup;
+                @Pickup.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPickup;
+                @Pickup.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPickup;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -634,6 +682,9 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                 @LockOnCycleRight.started += instance.OnLockOnCycleRight;
                 @LockOnCycleRight.performed += instance.OnLockOnCycleRight;
                 @LockOnCycleRight.canceled += instance.OnLockOnCycleRight;
+                @Pickup.started += instance.OnPickup;
+                @Pickup.performed += instance.OnPickup;
+                @Pickup.canceled += instance.OnPickup;
             }
         }
     }
@@ -764,6 +815,7 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
         void OnLockOnToggle(InputAction.CallbackContext context);
         void OnLockOnCycleLeft(InputAction.CallbackContext context);
         void OnLockOnCycleRight(InputAction.CallbackContext context);
+        void OnPickup(InputAction.CallbackContext context);
     }
     public interface IPauseGameActions
     {
