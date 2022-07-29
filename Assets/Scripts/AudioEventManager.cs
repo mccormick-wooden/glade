@@ -70,7 +70,6 @@ public class AudioEventManager : MonoBehaviour
     void Start()
     {
         Vector3 campfireWorldPos = GameObject.Find("campfire_lit").transform.position;
-<<<<<<< HEAD
 
         EventSound3D fireSnd = Instantiate(eventSound3DPrefab, campfireWorldPos, Quaternion.identity, null);
         fireSnd.audioSrc.spatialize = true;
@@ -79,8 +78,6 @@ public class AudioEventManager : MonoBehaviour
         fireSnd.audioSrc.volume = .5f;
         fireSnd.audioSrc.loop = true;
         fireSnd.audioSrc.Play();
-=======
->>>>>>> 64c0cea (Campfire sounds)
 
         EventSound3D snd = Instantiate(eventSound3DPrefab, campfireWorldPos, Quaternion.identity, null);
         snd.audioSrc.spatialize = true;
@@ -127,6 +124,7 @@ public class AudioEventManager : MonoBehaviour
         EventManager.StopListening<MonsterTakeDamageEvent, Vector3, AudioClip, float>(monsterTakeDamageEventHandler);
         EventManager.StopListening<MonsterDieEvent, Vector3, AudioClip, float, float>(monsterDieEventHandler);
     }
+
 
     // Update is called once per frame
     void Update()
