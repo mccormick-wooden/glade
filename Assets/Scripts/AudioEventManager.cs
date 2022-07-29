@@ -43,7 +43,6 @@ public class AudioEventManager : MonoBehaviour
     public int[] playerFootstepOffsetPCMs;
 
     public EventSound3D playerInjuredSound;
-
     public AudioClip[] playerInjured = null;
     public int[] playerInjuredOffsetPCMs;
 
@@ -55,7 +54,6 @@ public class AudioEventManager : MonoBehaviour
 
     void Awake()
     {
-        // sword 
         swordSwingEventListener = new UnityAction<Vector3, int>(swordSwingEventHandler);
         crystalCollisionEventListener = new UnityAction<Vector3>(crystalCollisionEventHandler);
         swordHitEventListener = new UnityAction<Vector3, int>(swordHitEventHandler);
