@@ -51,7 +51,6 @@ public class AudioEventManager : MonoBehaviour
     public AudioClip fairyAOEAttack = null;
     public int fairyAOEAttackOffsetPCMs;
 
-
     void Awake()
     {
         swordSwingEventListener = new UnityAction<Vector3, int>(swordSwingEventHandler);
@@ -71,6 +70,7 @@ public class AudioEventManager : MonoBehaviour
     void Start()
     {
         Vector3 campfireWorldPos = GameObject.Find("campfire_lit").transform.position;
+<<<<<<< HEAD
 
         EventSound3D fireSnd = Instantiate(eventSound3DPrefab, campfireWorldPos, Quaternion.identity, null);
         fireSnd.audioSrc.spatialize = true;
@@ -79,7 +79,15 @@ public class AudioEventManager : MonoBehaviour
         fireSnd.audioSrc.volume = .5f;
         fireSnd.audioSrc.loop = true;
         fireSnd.audioSrc.Play();
+=======
+>>>>>>> 64c0cea (Campfire sounds)
 
+        EventSound3D snd = Instantiate(eventSound3DPrefab, campfireWorldPos, Quaternion.identity, null);
+        snd.audioSrc.spatialize = true;
+        snd.audioSrc.spatialBlend = 1;
+        snd.audioSrc.clip = campfire;
+        snd.audioSrc.volume = 0.6f;
+        snd.audioSrc.Play();
 
         Vector3 campfireCampWorldPos = GameObject.Find("campfire_lit_camp").transform.position;
 
