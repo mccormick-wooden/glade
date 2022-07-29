@@ -84,8 +84,13 @@ namespace Beacons
                     var enemy = hitCollider.gameObject.GetComponent<BaseEnemy>();
                     var crystal = hitCollider.gameObject.GetComponent<CrystalController>();
 
+                    // CrystalControllers stay active after death so we need to drill down a little further to ensure
+                    // the underlying damageable crystal is dead if we are going to lower shields
                     if (crystal != null) {
-                        return;
+                        var damageable = crystal.gameObject.GetComponentInChildren<IDamageable>();
+                        if (!damageable.IsDead) {
+                            return;
+                        }
                     }
 
                     if (enemy != null) {
