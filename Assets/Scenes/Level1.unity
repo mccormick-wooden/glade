@@ -1096,6 +1096,10 @@ PrefabInstance:
       propertyPath: m_CullingMask.m_Bits
       value: 2147487743
       objectReference: {fileID: 0}
+    - target: {fileID: 683423952098063514, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
+      propertyPath: near clip plane
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 683423952098063515, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -1119,6 +1123,10 @@ PrefabInstance:
     - target: {fileID: 683423952174336692, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 683423952471677776, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
+      propertyPath: m_Lens.NearClipPlane
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 683423952471677777, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalPosition.x
