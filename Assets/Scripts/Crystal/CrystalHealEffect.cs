@@ -39,12 +39,12 @@ public class CrystalHealEffect : BaseCrystalEffect
         {
             if (!aura.Active)
             {
-                if (isActiveAndEnabled && EffectActive && health.CurrentHp < health.MaxHp)
+                if (!health.IsDead && isActiveAndEnabled && EffectActive && health.CurrentHp < health.MaxHp)
                     aura.EffectStart();
             }
             else
             {
-                if (!isActiveAndEnabled || !EffectActive || health.CurrentHp >= health.MaxHp)
+                if (!isActiveAndEnabled || !EffectActive || health.IsDead || health.CurrentHp >= health.MaxHp)
                     aura.EffectStop();
             }
         }

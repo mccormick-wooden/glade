@@ -306,6 +306,7 @@ public class TrainingStateManager : BaseStateManager
         currentTrainingState = TrainingState.Invalid;
         UpdateControlStateGracefully(enableControlState: false); // Don't allow control on scene start
         dialogueCanvas.enabled = false;
+        playerCrystalDamageEffect.enabled = false;
         DisableVirtualCameras();
         Invoke(methodName: "NextTrainingState", time: 2);
         #endregion
@@ -551,7 +552,6 @@ public class TrainingStateManager : BaseStateManager
             if (NextStateKillList.All(d => d.IsDead))
             {
                 playerCrystalDamageEffect.enabled = false;
-                Destroy(crystal); // it can still zap even after its dead, idk why
                 Invoke("NextTrainingState", postCombatWait);
             }
         };
@@ -694,12 +694,14 @@ public class TrainingStateManager : BaseStateManager
     #region helpers
     private void NextTrainingState()
     {
+        playerCrystalDamageEffect.enabled = true;
         trainingStateChanged.Invoke(currentTrainingState = currentTrainingState.Next());
     }
 
     private void StartDialogueState(CinemachineVirtualCamera dialogueCamera)
     {
         dialogueCamera.enabled = true;
+        playerCrystalDamageEffect.enabled = false;
     }
 
     private void UpdateControlStateGracefully(bool enableControlState)

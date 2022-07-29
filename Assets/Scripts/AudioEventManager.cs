@@ -6,7 +6,7 @@ public class AudioEventManager : MonoBehaviour
 {
     public EventSound3D eventSound3DPrefab;
 
-    // sword 
+    [Header("Sword")]
     private UnityAction<Vector3, int> swordSwingEventListener;
     private UnityAction<Vector3, int> swordHitEventListener;
     private UnityAction<Vector3> appleHitGrassEventListener;
@@ -20,14 +20,19 @@ public class AudioEventManager : MonoBehaviour
     public float[] swordHitSoundDelays = null;
     public float[] swordHitPitches = null;
 
-    public AudioClip appleHitGrass = null;
-
     public EventSound3D swordHitSound;
+
+    [Header("Apple")]
+    public AudioClip appleHitGrass = null;
 
     public int appleHitGrassStartOffsetPCMs;
 
     public AudioClip playerEatApple = null;
     public int playerEatAppleOffsetPCMs;
+
+    [Header("Crystal")]
+    public AudioClip crystalCollisionAudio = null;
+    private UnityAction<Vector3> crystalCollisionEventListener;
 
     // walking 
 
@@ -39,6 +44,7 @@ public class AudioEventManager : MonoBehaviour
     {
         // sword 
         swordSwingEventListener = new UnityAction<Vector3, int>(swordSwingEventHandler);
+        crystalCollisionEventListener = new UnityAction<Vector3>(crystalCollisionEventHandler);
         swordHitEventListener = new UnityAction<Vector3, int>(swordHitEventHandler);
         appleHitGrassEventListener = new UnityAction<Vector3>(appleHitGrassEventHandler);
         playerEatAppleEventListener = new UnityAction<Vector3>(playerEatAppleEventHandler);
@@ -55,15 +61,38 @@ public class AudioEventManager : MonoBehaviour
     void OnEnable()
     {
         EventManager.StartListening<SwordSwingEvent, Vector3, int>(swordSwingEventListener);
+        EventManager.StartListening<CrystalCollisionEvent, Vector3>(crystalCollisionEventListener);
         EventManager.StartListening<SwordHitEvent, Vector3, int>(swordHitEventListener);
         EventManager.StartListening<AppleHitGrassEvent, Vector3>(appleHitGrassEventListener);
         EventManager.StartListening<PlayerEatAppleEvent, Vector3>(playerEatAppleEventListener);
+    }
+
+    void OnDisable()
+    {
+        EventManager.StopListening<SwordSwingEvent, Vector3, int>(swordSwingEventListener);
+        EventManager.StopListening<CrystalCollisionEvent, Vector3>(crystalCollisionEventListener);
+        EventManager.StopListening<SwordHitEvent, Vector3, int>(swordHitEventListener);
+        EventManager.StopListening<AppleHitGrassEvent, Vector3>(appleHitGrassEventListener);
+        EventManager.StopListening<PlayerEatAppleEvent, Vector3>(playerEatAppleEventListener);
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    void crystalCollisionEventHandler(Vector3 worldPos)
+    {
+        EventSound3D snd = Instantiate(eventSound3DPrefab, worldPos, Quaternion.identity, null);
+
+        snd.audioSrc.minDistance = 1f;
+        snd.audioSrc.maxDistance = 500f;
+        snd.audioSrc.spatialize = true;
+        snd.audioSrc.spatialBlend = 1f;
+        snd.audioSrc.pitch = 1f;
+        snd.audioSrc.volume = 0.5f;
+        snd.audioSrc.PlayOneShot(crystalCollisionAudio);
     }
 
     void swordSwingEventHandler(Vector3 worldPos, int whichSwing)
