@@ -24,6 +24,8 @@ namespace PlayerBehaviors
         public override void HandleAttack(IWeapon attackingWeapon)
         {
             animator.CrossFade("Head Back From Hit", 0.2f);
+            EventManager.TriggerEvent<PlayerHurtEvent, Vector3>(transform.position);
+
             base.HandleAttack(attackingWeapon);
         }
 

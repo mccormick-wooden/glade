@@ -77,3 +77,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7dca835d58618374c8e7a37888d17824, type: 3}
   - {fileID: 8300000, guid: 7dca835d58618374c8e7a37888d17824, type: 3}
   playerFootstepOffsetPCMs: 6400000064000000
+  playerInjured:
+  - {fileID: 8300000, guid: ebf680c0a1690c54c80498c6c7210ed2, type: 3}
+  - {fileID: 8300000, guid: fec3a1587da220f40b7b9d99c9447873, type: 3}
+  - {fileID: 8300000, guid: 203708189e91d8a478ed9751d6988ca6, type: 3}
+  - {fileID: 8300000, guid: c9ce45898238548469f3debaf901ac1e, type: 3}
+  - {fileID: 8300000, guid: 231b595fb6f3846418257e160429b8a4, type: 3}
+  playerInjuredOffsetPCMs: 0000000000000000000000000000000000000000

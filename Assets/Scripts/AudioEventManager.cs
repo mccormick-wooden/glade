@@ -12,6 +12,7 @@ public class AudioEventManager : MonoBehaviour
     private UnityAction<Vector3> appleHitGrassEventListener;
     private UnityAction<Vector3> playerEatAppleEventListener;
     private UnityAction<Vector3, int> playerFootstepEventListener;
+    private UnityAction<Vector3> playerHurtEventListener;
 
     public AudioClip[] swordSwingAudio = null;
     public float[] swordSwingSoundDelays = null;
@@ -38,6 +39,9 @@ public class AudioEventManager : MonoBehaviour
     public AudioClip[] playerFootstep = null;
     public int[] playerFootstepOffsetPCMs;
 
+    public AudioClip[] playerInjured = null;
+    public int[] playerInjuredOffsetPCMs;
+
     // walking 
 
 
@@ -53,6 +57,7 @@ public class AudioEventManager : MonoBehaviour
         appleHitGrassEventListener = new UnityAction<Vector3>(appleHitGrassEventHandler);
         playerEatAppleEventListener = new UnityAction<Vector3>(playerEatAppleEventHandler);
         playerFootstepEventListener = new UnityAction<Vector3, int>(playerFootstepEventHandler);
+        playerHurtEventListener = new UnityAction<Vector3>(playerHurtEventHandler);
     }
 
 
@@ -71,6 +76,7 @@ public class AudioEventManager : MonoBehaviour
         EventManager.StartListening<AppleHitGrassEvent, Vector3>(appleHitGrassEventListener);
         EventManager.StartListening<PlayerEatAppleEvent, Vector3>(playerEatAppleEventListener);
         EventManager.StartListening<PlayerFootstepEvent, Vector3, int>(playerFootstepEventListener);
+        EventManager.StartListening<PlayerHurtEvent, Vector3>(playerHurtEventListener);
     }
 
 <<<<<<< HEAD
@@ -161,6 +167,20 @@ public class AudioEventManager : MonoBehaviour
         snd.audioSrc.spatialBlend = 1;
         snd.audioSrc.clip = playerFootstep[whilchStep];
         snd.audioSrc.timeSamples = playerFootstepOffsetPCMs[whilchStep];
+        //snd.audioSrc.pitch = 0.8f;
+        snd.audioSrc.volume = 0.6f;
+        snd.audioSrc.Play();
+    }
+
+    void playerHurtEventHandler(Vector3 worldPos)
+    {
+        int whichOof = Random.Range(0, playerInjured.Length - 1);
+
+        EventSound3D snd = Instantiate(eventSound3DPrefab, worldPos, Quaternion.identity, null);
+        snd.audioSrc.spatialize = true;
+        snd.audioSrc.spatialBlend = 1;
+        snd.audioSrc.clip = playerInjured[whichOof];
+        snd.audioSrc.timeSamples = playerInjuredOffsetPCMs[whichOof];
         //snd.audioSrc.pitch = 0.8f;
         snd.audioSrc.volume = 0.6f;
         snd.audioSrc.Play();
