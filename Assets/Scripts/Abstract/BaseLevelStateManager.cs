@@ -34,7 +34,7 @@ public abstract class BaseLevelStateManager : BaseStateManager
     /// Higher values result in slower health reduction
     /// </summary>
     [SerializeField]
-    protected float gladeHealthReductionFactor = 25f;
+    protected float gladeHealthReductionFactor = 3f;
 
     protected GameObject player;
     protected IDamageable playerDamageModel;
@@ -59,6 +59,10 @@ public abstract class BaseLevelStateManager : BaseStateManager
     protected Dictionary<GladeHealthState, Image> gladeHealthImageDict = new Dictionary<GladeHealthState, Image>();
 
     protected float GladeHealthReduction => activeEnemies.Count / gladeHealthReductionFactor;
+
+    protected float GladeHealthHealthIncrease => 10f;
+
+    protected bool GladeIsDead => gladeHealthBar != null && gladeHealthBar.value <= gladeHealthBar.minValue;
 
     protected override void OnSceneLoaded()
     {
@@ -91,6 +95,7 @@ public abstract class BaseLevelStateManager : BaseStateManager
         beaconSpawner = beaconParent.GetComponentInChildren<BeaconSpawner>();
         Utility.LogErrorIfNull(beaconSpawner, nameof(beaconSpawner));
 
+        beaconSpawner.BeaconDied += OnBeaconDied;
         beaconSpawner.AllBeaconsDied += OnAllBeaconsDied;
 
         #endregion
@@ -106,19 +111,25 @@ public abstract class BaseLevelStateManager : BaseStateManager
             { GladeHealthState.Low, GameObject.Find("LowGladeHealthFill").GetComponent<Image>() }
         };
 
-        UpdateGladeHealthBar(100);
+        UpdateGladeHealth(health: 100);
 
-        InvokeRepeating("UpdateGladeHealth", 1f, 1f);
+        InvokeRepeating("GladeHealthDecrementer", 1f, 0.5f);
         #endregion
     }
 
     protected override void OnSceneUnloaded()
     {
         playerDamageModel.Died -= OnPlayerDied;
+        beaconSpawner.BeaconDied -= OnBeaconDied;
         beaconSpawner.AllBeaconsDied -= OnAllBeaconsDied;
         enemySpawner.EnemySpawned -= OnEnemySpawned;
 
         CancelInvoke(); // Clean up any active invokes.
+    }
+
+    private void OnBeaconDied()
+    {
+        UpdateGladeHealth(gladeHealthBar.value + GladeHealthHealthIncrease);
     }
 
     /// <summary>
@@ -179,7 +190,18 @@ public abstract class BaseLevelStateManager : BaseStateManager
     {
         HUDMessageText.fontSize = 50;
         HUDMessageText.text = $"Ya died, ya dingus.\n\nReturning to Main Menu in {returnToMainMenuTimer} seconds...";
+        DecrementReturnToMainMenuTimer();
+    }
 
+    private void OnGladeDiedReturnToMainMenuCountdown()
+    {
+        HUDMessageText.fontSize = 50;
+        HUDMessageText.text = $"You foolish child.\n\nYou let the Glade DIE.\n\nReturning to Main Menu in {returnToMainMenuTimer} seconds...";
+        DecrementReturnToMainMenuTimer();
+    }
+
+    private void DecrementReturnToMainMenuTimer()
+    {
         returnToMainMenuTimer -= 1;
         if (returnToMainMenuTimer < 0)
             ReturnToMainMenu();
@@ -200,8 +222,11 @@ public abstract class BaseLevelStateManager : BaseStateManager
         GameManager.instance.UpdateGameState(GameManager.instance.State);
     }
 
-    private void UpdateGladeHealthBar(float health)
+    private void UpdateGladeHealth(float health)
     {
+        if (GladeIsDead)
+            return;
+
         GladeHealthState state;
 
         if (health > 66)
@@ -214,6 +239,9 @@ public abstract class BaseLevelStateManager : BaseStateManager
         UpdateGladeHealthBarFillType(state);
 
         gladeHealthBar.value = health;
+
+        if (GladeIsDead)
+            InvokeRepeating("OnGladeDiedReturnToMainMenuCountdown", 0f, 1f);
     }
 
     private void UpdateGladeHealthBarFillType(GladeHealthState state)
@@ -238,9 +266,9 @@ public abstract class BaseLevelStateManager : BaseStateManager
         activeEnemies.Remove(damageModel);
     }
 
-    private void UpdateGladeHealth()
+    private void GladeHealthDecrementer()
     {
-        UpdateGladeHealthBar(gladeHealthBar.value - GladeHealthReduction);
+        UpdateGladeHealth(gladeHealthBar.value - GladeHealthReduction);
     }
 }
 
