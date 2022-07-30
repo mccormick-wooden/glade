@@ -76,13 +76,24 @@ public class AudioEventManager : MonoBehaviour
     {
         Vector3 campfireWorldPos = GameObject.Find("campfire_lit").transform.position;
 
-        EventSound3D snd = Instantiate(eventSound3DPrefab, campfireWorldPos, Quaternion.identity, null);
-        snd.audioSrc.spatialize = true;
-        snd.audioSrc.spatialBlend = 1;
-        snd.audioSrc.clip = campfire;
-        snd.audioSrc.volume = 0.6f;
-        snd.audioSrc.Play();
+        EventSound3D fireSnd = Instantiate(eventSound3DPrefab, campfireWorldPos, Quaternion.identity, null);
+        fireSnd.audioSrc.spatialize = true;
+        fireSnd.audioSrc.spatialBlend = 1;
+        fireSnd.audioSrc.clip = campfire;
+        fireSnd.audioSrc.volume = .5f;
+        fireSnd.audioSrc.loop = true;
+        fireSnd.audioSrc.Play();
 
+
+        Vector3 campfireCampWorldPos = GameObject.Find("campfire_lit_camp").transform.position;
+
+        EventSound3D campSound = Instantiate(eventSound3DPrefab, campfireCampWorldPos, Quaternion.identity, null);
+        campSound.audioSrc.spatialize = true;
+        campSound.audioSrc.spatialBlend = 1;
+        campSound.audioSrc.clip = campfire;
+        campSound.audioSrc.volume = .5f;
+        fireSnd.audioSrc.loop = true;
+        campSound.audioSrc.Play();
     }
 
     void OnEnable()
