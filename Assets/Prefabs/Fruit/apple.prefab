@@ -136,7 +136,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7611369539551174157}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13423dd78803b5d408650242a8ce7f62, type: 3}
+  m_Script: {fileID: 11500000, guid: ff4f3825fd548ea4db3d17df4102e0fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   healParticleEffect: {fileID: 6416341639873535547, guid: e57efbe26a8630746aff8a4bad1b9aa8, type: 3}

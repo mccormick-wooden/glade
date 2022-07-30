@@ -25,7 +25,7 @@ public class AppleTreeScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag != "Weapon" || !other.gameObject.GetComponent<Sword>().InUse)
+        if (other.tag != "Weapon" || !other.gameObject.GetComponent<Sword>() && !other.gameObject.GetComponent<Sword>().InUse)
             return;
 
         ParticleSystem hit = Instantiate(treeHitParticles);

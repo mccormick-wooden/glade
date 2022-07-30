@@ -14,6 +14,8 @@ public class AudioEventManager : MonoBehaviour
     private UnityAction<Vector3, int> playerFootstepEventListener;
     private UnityAction<Vector3> playerHurtEventListener;
     private UnityAction<Vector3> fairyAOEAttackEventListener;
+    private UnityAction<Vector3> campfireEventListener;
+
     private UnityAction<Vector3, AudioClip, float> monsterTakeDamageEventListener;
     private UnityAction<Vector3, AudioClip, float, float> monsterDieEventListener;
 
@@ -63,31 +65,13 @@ public class AudioEventManager : MonoBehaviour
         fairyAOEAttackEventListener = new UnityAction<Vector3>(fairyAOEAttackEventHandler);
         monsterTakeDamageEventListener = new UnityAction<Vector3, AudioClip, float>(monsterTakeDamageEventHandler);
         monsterDieEventListener = new UnityAction<Vector3, AudioClip, float, float>(monsterDieEventHandler);
+        campfireEventListener = new UnityAction<Vector3>(CampFireSoundEventHandler);
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        Vector3 campfireWorldPos = GameObject.Find("campfire_lit").transform.position;
-
-        EventSound3D fireSnd = Instantiate(eventSound3DPrefab, campfireWorldPos, Quaternion.identity, null);
-        fireSnd.audioSrc.spatialize = true;
-        fireSnd.audioSrc.spatialBlend = 1;
-        fireSnd.audioSrc.clip = campfire;
-        fireSnd.audioSrc.volume = .5f;
-        fireSnd.audioSrc.loop = true;
-        fireSnd.audioSrc.Play();
-
-        Vector3 campfireCampWorldPos = GameObject.Find("campfire_lit_camp").transform.position;
-
-        EventSound3D campSound = Instantiate(eventSound3DPrefab, campfireCampWorldPos, Quaternion.identity, null);
-        campSound.audioSrc.spatialize = true;
-        campSound.audioSrc.spatialBlend = 1;
-        campSound.audioSrc.clip = campfire;
-        campSound.audioSrc.volume = .5f;
-        fireSnd.audioSrc.loop = true;
-        campSound.audioSrc.Play();
     }
 
     void OnEnable()
@@ -102,6 +86,8 @@ public class AudioEventManager : MonoBehaviour
         EventManager.StartListening<FairyAOEAttackEvent, Vector3>(fairyAOEAttackEventHandler);
         EventManager.StartListening<MonsterTakeDamageEvent, Vector3, AudioClip, float>(monsterTakeDamageEventHandler);
         EventManager.StartListening<MonsterDieEvent, Vector3, AudioClip, float, float>(monsterDieEventHandler);
+        EventManager.StartListening<CampfireStartEvent, Vector3>(CampFireSoundEventHandler);
+
     }
 
 
@@ -117,6 +103,8 @@ public class AudioEventManager : MonoBehaviour
         EventManager.StopListening<FairyAOEAttackEvent, Vector3>(fairyAOEAttackEventHandler);
         EventManager.StopListening<MonsterTakeDamageEvent, Vector3, AudioClip, float>(monsterTakeDamageEventHandler);
         EventManager.StopListening<MonsterDieEvent, Vector3, AudioClip, float, float>(monsterDieEventHandler);
+        EventManager.StopListening<CampfireStartEvent, Vector3>(CampFireSoundEventHandler);
+
     }
 
 
@@ -251,4 +239,14 @@ public class AudioEventManager : MonoBehaviour
         snd.audioSrc.Play();
     }
 
+    void CampFireSoundEventHandler(Vector3 worldPos)
+    {
+        EventSound3D fireSnd = Instantiate(eventSound3DPrefab, worldPos, Quaternion.identity, null);
+        fireSnd.audioSrc.spatialize = true;
+        fireSnd.audioSrc.spatialBlend = 1;
+        fireSnd.audioSrc.clip = campfire;
+        fireSnd.audioSrc.volume = .5f;
+        fireSnd.audioSrc.loop = true;
+        fireSnd.audioSrc.Play();
+    }
 }
