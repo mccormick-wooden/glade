@@ -1,8 +1,11 @@
-﻿using Assets.Scripts.Interfaces;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Assets.Scripts.Interfaces;
 using Beacons;
 using PowerUps;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class BaseLevelStateManager : BaseStateManager
 {
@@ -34,6 +37,17 @@ public abstract class BaseLevelStateManager : BaseStateManager
     protected GameObject beaconParent;
     protected BeaconSpawner beaconSpawner;
 
+    protected Slider gladeHealthBar;
+
+    protected enum GladeHealthState
+    {
+        High,
+        Med,
+        Low
+    }
+
+    protected Dictionary<GladeHealthState, Image> gladeHealthImageDict = new Dictionary<GladeHealthState, Image>();
+
     protected override void OnSceneLoaded()
     {
         returnToMainMenuTimer = returnToMainMenuCountdownLength;
@@ -64,7 +78,19 @@ public abstract class BaseLevelStateManager : BaseStateManager
         beaconSpawner.AllBeaconsDied += OnAllBeaconsDied;
 
         #endregion
-    
+
+        #region gladehealth
+        gladeHealthBar = GameObject.Find("HUDGladeHealthBar").GetComponent<Slider>();
+
+        gladeHealthImageDict = new Dictionary<GladeHealthState, Image>
+        {
+            { GladeHealthState.High, GameObject.Find("HighGladeHealthFill").GetComponent<Image>() },
+            { GladeHealthState.Med, GameObject.Find("MedGladeHealthFill").GetComponent<Image>() },
+            { GladeHealthState.Low, GameObject.Find("LowGladeHealthFill").GetComponent<Image>() }
+        };
+
+        UpdateGladeHealthBar(100);
+        #endregion
     }
 
     protected override void OnSceneUnloaded()
@@ -152,6 +178,32 @@ public abstract class BaseLevelStateManager : BaseStateManager
     {
         CancelInvoke();
         GameManager.instance.UpdateGameState(GameManager.instance.State);
+    }
+
+    protected void UpdateGladeHealthBar(float health)
+    {
+        GladeHealthState state;
+
+        if (health > 66)
+            state = GladeHealthState.High;
+        else if (health > 33)
+            state = GladeHealthState.Med;
+        else
+            state = GladeHealthState.Low;
+
+        UpdateGladeHealthBarFillType(state);
+
+        gladeHealthBar.value = health;
+    }
+
+    protected void UpdateGladeHealthBarFillType(GladeHealthState state)
+    {
+        foreach (var kvp in gladeHealthImageDict)
+        {
+            kvp.Value.enabled = kvp.Key == state;
+        }
+
+        gladeHealthBar.fillRect = gladeHealthImageDict[state].rectTransform;
     }
 }
 
