@@ -376,6 +376,15 @@ public class Player : MonoBehaviour
             return;
         }
 
+        if (animState.IsName("Landing"))
+        {
+            UpdateControlState(false);
+        }
+        else
+        {
+            UpdateControlState(true);
+        }
+
         if (movementMagnitude >= 0.1)
         {
             if (PlayerCombat.isLockingOn)
