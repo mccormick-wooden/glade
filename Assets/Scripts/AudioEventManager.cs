@@ -63,9 +63,6 @@ public class AudioEventManager : MonoBehaviour
         fairyAOEAttackEventListener = new UnityAction<Vector3>(fairyAOEAttackEventHandler);
         monsterTakeDamageEventListener = new UnityAction<Vector3, AudioClip, float>(monsterTakeDamageEventHandler);
         monsterDieEventListener = new UnityAction<Vector3, AudioClip, float, float>(monsterDieEventHandler);
-        fairyAOEAttackEventListener = new UnityAction<Vector3>(fairyAOEAttackEventHandler);
-        monsterTakeDamageEventListener = new UnityAction<Vector3, AudioClip>(monsterTakeDamageEventHandler);
-        monsterDieEventListener = new UnityAction<Vector3, AudioClip>(monsterDieEventHandler);
     }
 
 
@@ -105,9 +102,6 @@ public class AudioEventManager : MonoBehaviour
         EventManager.StartListening<FairyAOEAttackEvent, Vector3>(fairyAOEAttackEventHandler);
         EventManager.StartListening<MonsterTakeDamageEvent, Vector3, AudioClip, float>(monsterTakeDamageEventHandler);
         EventManager.StartListening<MonsterDieEvent, Vector3, AudioClip, float, float>(monsterDieEventHandler);
-        EventManager.StartListening<FairyAOEAttackEvent, Vector3>(fairyAOEAttackEventHandler);
-        EventManager.StartListening<MonsterTakeDamageEvent, Vector3, AudioClip>(monsterTakeDamageEventHandler);
-        EventManager.StartListening<MonsterDieEvent, Vector3, AudioClip>(monsterDieEventHandler);
     }
 
 
