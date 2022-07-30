@@ -86,8 +86,5 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 231b595fb6f3846418257e160429b8a4, type: 3}
   playerInjuredOffsetPCMs: 0000000000000000000000000000000000000000
   campfire: {fileID: 8300000, guid: b914603d2332477418ab34d7d4b61055, type: 3}
-<<<<<<< HEAD
   fairyAOEAttack: {fileID: 8300000, guid: 50cfa555aba5d5448991263f92fed007, type: 3}
   fairyAOEAttackOffsetPCMs: 0
-=======
->>>>>>> 262996c (Campfire sounds)

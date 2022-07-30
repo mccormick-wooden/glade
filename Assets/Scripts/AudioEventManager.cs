@@ -60,12 +60,12 @@ public class AudioEventManager : MonoBehaviour
         playerEatAppleEventListener = new UnityAction<Vector3>(playerEatAppleEventHandler);
         playerFootstepEventListener = new UnityAction<Vector3, int>(playerFootstepEventHandler);
         playerHurtEventListener = new UnityAction<Vector3>(playerHurtEventHandler);
-<<<<<<< HEAD
         fairyAOEAttackEventListener = new UnityAction<Vector3>(fairyAOEAttackEventHandler);
         monsterTakeDamageEventListener = new UnityAction<Vector3, AudioClip, float>(monsterTakeDamageEventHandler);
         monsterDieEventListener = new UnityAction<Vector3, AudioClip, float, float>(monsterDieEventHandler);
-=======
->>>>>>> f49e30e (Player injured sound effects)
+        fairyAOEAttackEventListener = new UnityAction<Vector3>(fairyAOEAttackEventHandler);
+        monsterTakeDamageEventListener = new UnityAction<Vector3, AudioClip>(monsterTakeDamageEventHandler);
+        monsterDieEventListener = new UnityAction<Vector3, AudioClip>(monsterDieEventHandler);
     }
 
 
@@ -74,7 +74,6 @@ public class AudioEventManager : MonoBehaviour
     {
         Vector3 campfireWorldPos = GameObject.Find("campfire_lit").transform.position;
 
-<<<<<<< HEAD
         EventSound3D fireSnd = Instantiate(eventSound3DPrefab, campfireWorldPos, Quaternion.identity, null);
         fireSnd.audioSrc.spatialize = true;
         fireSnd.audioSrc.spatialBlend = 1;
@@ -82,22 +81,7 @@ public class AudioEventManager : MonoBehaviour
         fireSnd.audioSrc.volume = .5f;
         fireSnd.audioSrc.loop = true;
         fireSnd.audioSrc.Play();
-=======
-        EventSound3D snd = Instantiate(eventSound3DPrefab, campfireWorldPos, Quaternion.identity, null);
-        snd.audioSrc.spatialize = true;
-        snd.audioSrc.spatialBlend = 1;
-        snd.audioSrc.clip = campfire;
-        snd.audioSrc.volume = 0.6f;
-        snd.audioSrc.Play();
->>>>>>> 262996c (Campfire sounds)
-
-        EventSound3D snd = Instantiate(eventSound3DPrefab, campfireWorldPos, Quaternion.identity, null);
-        snd.audioSrc.spatialize = true;
-        snd.audioSrc.spatialBlend = 1;
-        snd.audioSrc.clip = campfire;
-        snd.audioSrc.volume = 0.6f;
-        snd.audioSrc.Play();
-
+        
         Vector3 campfireCampWorldPos = GameObject.Find("campfire_lit_camp").transform.position;
 
         EventSound3D campSound = Instantiate(eventSound3DPrefab, campfireCampWorldPos, Quaternion.identity, null);
@@ -118,11 +102,14 @@ public class AudioEventManager : MonoBehaviour
         EventManager.StartListening<PlayerEatAppleEvent, Vector3>(playerEatAppleEventListener);
         EventManager.StartListening<PlayerFootstepEvent, Vector3, int>(playerFootstepEventListener);
         EventManager.StartListening<PlayerHurtEvent, Vector3>(playerHurtEventListener);
-<<<<<<< HEAD
         EventManager.StartListening<FairyAOEAttackEvent, Vector3>(fairyAOEAttackEventHandler);
         EventManager.StartListening<MonsterTakeDamageEvent, Vector3, AudioClip, float>(monsterTakeDamageEventHandler);
         EventManager.StartListening<MonsterDieEvent, Vector3, AudioClip, float, float>(monsterDieEventHandler);
+        EventManager.StartListening<FairyAOEAttackEvent, Vector3>(fairyAOEAttackEventHandler);
+        EventManager.StartListening<MonsterTakeDamageEvent, Vector3, AudioClip>(monsterTakeDamageEventHandler);
+        EventManager.StartListening<MonsterDieEvent, Vector3, AudioClip>(monsterDieEventHandler);
     }
+
 
     void OnDisable()
     {
@@ -136,8 +123,6 @@ public class AudioEventManager : MonoBehaviour
         EventManager.StopListening<FairyAOEAttackEvent, Vector3>(fairyAOEAttackEventHandler);
         EventManager.StopListening<MonsterTakeDamageEvent, Vector3, AudioClip, float>(monsterTakeDamageEventHandler);
         EventManager.StopListening<MonsterDieEvent, Vector3, AudioClip, float, float>(monsterDieEventHandler);
-=======
->>>>>>> f49e30e (Player injured sound effects)
     }
 
 
