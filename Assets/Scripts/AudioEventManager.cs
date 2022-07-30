@@ -78,7 +78,7 @@ public class AudioEventManager : MonoBehaviour
         fireSnd.audioSrc.volume = .5f;
         fireSnd.audioSrc.loop = true;
         fireSnd.audioSrc.Play();
-        
+
         Vector3 campfireCampWorldPos = GameObject.Find("campfire_lit_camp").transform.position;
 
         EventSound3D campSound = Instantiate(eventSound3DPrefab, campfireCampWorldPos, Quaternion.identity, null);
