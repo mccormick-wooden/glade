@@ -309,7 +309,7 @@ public class Player : MonoBehaviour
         capsuleCollider = GetComponent<CapsuleCollider>();
         rigidBody = GetComponent<Rigidbody>();
         //sword = GameObject.Find("Sword").GetComponent<Sword>();
-        fruitDetector = GameObject.Find("FruitDetector").GetComponent<FruitDetector>();
+        fruitDetector = GameObject.Find("FruitDetector")?.GetComponent<FruitDetector>();
         leftHand = GameObject.Find("HoldInLeftHand").transform;
         touchToPickup = GameObject.Find("TouchToPickupPosition").transform;
     }
