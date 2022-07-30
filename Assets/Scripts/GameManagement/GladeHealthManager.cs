@@ -23,6 +23,9 @@ public class GladeHealthManager : MonoBehaviour
 
     protected Dictionary<GladeHealthState, Image> gladeHealthImageDict = new Dictionary<GladeHealthState, Image>();
 
+    public float CurrentHP => gladeHealthBar.value;
+    public float MaxHP => gladeHealthBar.maxValue;
+
     /// <summary>
     /// Higher values result in slower health reduction
     /// </summary>
@@ -72,7 +75,7 @@ public class GladeHealthManager : MonoBehaviour
         UpdateGladeHealth(gladeHealthBar.value - GladeHealthReduction);
     }
 
-    private void UpdateGladeHealth(float health)
+    public void UpdateGladeHealth(float health)
     {
         if (GladeIsDead)
             return;

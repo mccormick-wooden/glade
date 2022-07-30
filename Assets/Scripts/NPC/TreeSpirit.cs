@@ -13,6 +13,7 @@ public class TreeSpirit : MonoBehaviour
     private IDamageable playerDamageable;
     private GameObject ent;
     private Animator animator;
+    private GladeHealthManager gladeHealthManager;
     
     private void Awake()
     {
@@ -28,6 +29,9 @@ public class TreeSpirit : MonoBehaviour
 
         animator = GetComponent<Animator>();
         Utility.LogErrorIfNull(animator, nameof(animator));
+
+        gladeHealthManager = GameObject.Find("GladeHealthManager").GetComponent<GladeHealthManager>();
+        Utility.LogErrorIfNull(gladeHealthManager, nameof(gladeHealthManager));
     }
 
     private void Update()
@@ -36,6 +40,9 @@ public class TreeSpirit : MonoBehaviour
 
         if (playerDamageable.CurrentHp <= playerDamageable.MaxHp / 2)
             HealPlayer();
+
+        if (gladeHealthManager.CurrentHP <= gladeHealthManager.MaxHP / 2)
+            HealGlade();
     }
 
     private void OrientTowardsPlayer()
@@ -48,6 +55,12 @@ public class TreeSpirit : MonoBehaviour
     private void HealPlayer()
     {
         playerDamageable.Heal(playerDamageable.MaxHp - playerDamageable.CurrentHp);
+        animator.SetTrigger("Heal");
+    }
+
+    private void HealGlade()
+    {
+        gladeHealthManager.UpdateGladeHealth(100);
         animator.SetTrigger("Heal");
     }
 }
