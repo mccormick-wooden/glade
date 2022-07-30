@@ -109,16 +109,15 @@ MonoBehaviour:
   sceneAudioClipNormalizedMaxVolume: 0.315
   debugOutput: 0
   heartbeatRate: 0
-  skipTraining: 0
-  skipDialogueStates: 0
   trainingHostVirtualCameraName: TrainingHostVirtualCamera
+  enemyVirtualCameraName: EnemyVirtualCamera
+  crystalVirtualCameraName: CrystalVirtualCamera
+  beaconVirtualCameraName: BeaconVirtualCamera
   playerCameraName: 3rdPersonCamera
   playerModelGameObjectRootName: PlayerModel
   triggerPlaneGameObjectName: TriggerPlane
-  dialogueControllerName: DialogueController
   dialogueCanvasName: TreeSpiritDialogueCanvas
-  beaconPrefab: {fileID: 0}
-  enemyPrefab: {fileID: 0}
+  beaconLandAudio: {fileID: 0}
 --- !u!114 &8250716618195528625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,7 +133,7 @@ MonoBehaviour:
   managedState: 30
   managedSceneName: Level1TestGameLoop
   optionalSceneAudioClip: {fileID: 8300000, guid: f07d5ab95b4acd14b9a6847e81667f46, type: 3}
-  sceneAudioClipNormalizedMaxVolume: 0.3
+  sceneAudioClipNormalizedMaxVolume: 0.15
   debugOutput: 0
   heartbeatRate: 0
   playerGameObjectRootName: Player
