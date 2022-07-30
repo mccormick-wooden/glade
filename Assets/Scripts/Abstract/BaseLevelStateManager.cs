@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Interfaces;
 using Beacons;
+using PowerUps;
 using TMPro;
 using UnityEngine;
 
@@ -24,6 +25,7 @@ public abstract class BaseLevelStateManager : BaseStateManager
     /// </summary>
     [SerializeField]
     protected int returnToMainMenuCountdownLength = 10;
+    protected int returnToMainMenuTimer;
 
     protected GameObject player;
     protected IDamageable playerDamageModel;
@@ -34,6 +36,8 @@ public abstract class BaseLevelStateManager : BaseStateManager
 
     protected override void OnSceneLoaded()
     {
+        returnToMainMenuTimer = returnToMainMenuCountdownLength;
+
         #region player objs and subscriptions
 
         player = GameObject.Find(playerGameObjectRootName);
@@ -80,16 +84,32 @@ public abstract class BaseLevelStateManager : BaseStateManager
         if (debugOutput)
             Debug.Log("All beacons died.");
 
+        player.GetComponentInChildren<IDamageable>().IsImmune = true;
+        DisablePickups();
         InvokeRepeating("OnAllBeaconsDiedReturnToMainMenuCountdown", 0f, 1f);
+    }
+
+    private void DisablePickups()
+    {
+        // Disable all pickups on the ground
+        PowerUpPickup[] pickups = FindObjectsOfType<PowerUpPickup>();
+        foreach (PowerUpPickup pickup in pickups)
+        {
+            pickup.PowerUpEnabled = false;
+        }
+        
+        // Close power up menu if already open
+        PowerUpMenu menu = FindObjectOfType<PowerUpMenu>(true); // Include the inactive menu
+        menu.gameObject.SetActive(false);
     }
 
     private void OnAllBeaconsDiedReturnToMainMenuCountdown()
     {
         HUDMessageText.fontSize = 50;
-        HUDMessageText.text = $"YOU WON!\n\nReturning to Main Menu in {returnToMainMenuCountdownLength} seconds...";
+        HUDMessageText.text = $"YOU WON!\n\nReturning to Main Menu in {returnToMainMenuTimer} seconds...";
 
-        returnToMainMenuCountdownLength -= 1;
-        if (returnToMainMenuCountdownLength < 0)
+        returnToMainMenuTimer -= 1;
+        if (returnToMainMenuTimer < 0)
             ReturnToMainMenu();
     }
 
@@ -105,16 +125,17 @@ public abstract class BaseLevelStateManager : BaseStateManager
         if (debugOutput)
             Debug.Log($"GameObj '{name}:{instanceId}' died.");
 
+        DisablePickups();
         InvokeRepeating("OnPlayerDiedReturnToMainMenuCountdown", 0f, 1f);
     }
 
     private void OnPlayerDiedReturnToMainMenuCountdown()
     {
         HUDMessageText.fontSize = 50;
-        HUDMessageText.text = $"Ya died, ya dingus.\n\nReturning to Main Menu in {returnToMainMenuCountdownLength} seconds...";
+        HUDMessageText.text = $"Ya died, ya dingus.\n\nReturning to Main Menu in {returnToMainMenuTimer} seconds...";
 
-        returnToMainMenuCountdownLength -= 1;
-        if (returnToMainMenuCountdownLength < 0)
+        returnToMainMenuTimer -= 1;
+        if (returnToMainMenuTimer < 0)
             ReturnToMainMenu();
     }
 

@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PowerUpPickup : MonoBehaviour
 {
+    public bool PowerUpEnabled = true;
+
     private PowerUpMenu menu;
 
     private void Start()
@@ -14,7 +16,7 @@ public class PowerUpPickup : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         var player = other.gameObject.GetComponent<Player>();
-        if (player != null)
+        if (player != null && PowerUpEnabled)
         {
             Destroy(gameObject);
             menu.gameObject.SetActive(true);
