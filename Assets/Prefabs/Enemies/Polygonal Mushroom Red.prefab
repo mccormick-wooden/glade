@@ -460,7 +460,7 @@ MonoBehaviour:
   applyDamageAnimTrigger: Take Damage
   dieAnimTrigger: Die
   takeDamageSoundEffect: {fileID: 0}
-  dieSoundEffect: {fileID: 8300000, guid: 50cfa555aba5d5448991263f92fed007, type: 3}
+  dieSoundEffect: {fileID: 8300000, guid: 924f7dd8e69238c4a9a6f555b50586a0, type: 3}
   dieSoundEffectPitch: 0.5
   dieSoundEffectVolume: 0.8
 --- !u!114 &7704016587262152862
