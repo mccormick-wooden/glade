@@ -17,6 +17,9 @@ namespace Assets.Scripts.Damageable
 
         [SerializeField] private AudioClip dieSoundEffect;
 
+        [SerializeField] private float dieSoundEffectPitch;
+
+        [SerializeField] private float dieSoundEffectVolume;
 
         protected override void Start()
         {
@@ -44,7 +47,7 @@ namespace Assets.Scripts.Damageable
 
         protected override void Die()
         {
-            EventManager.TriggerEvent<MonsterDieEvent, Vector3, AudioClip>(transform.position, dieSoundEffect);
+            EventManager.TriggerEvent<MonsterDieEvent, Vector3, AudioClip, float, float>(transform.position, dieSoundEffect, dieSoundEffectPitch, dieSoundEffectVolume);
 
             animator.SetTrigger(dieAnimTrigger);
             base.Die();

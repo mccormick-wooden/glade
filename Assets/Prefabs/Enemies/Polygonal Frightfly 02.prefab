@@ -2454,12 +2454,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBarController: {fileID: 0}
+  attachedObject: {fileID: 0}
   currentHp: 75
   maxHp: 75
   debugOutput: 1
   animator: {fileID: 0}
   applyDamageAnimTrigger: Take Damage
   dieAnimTrigger: Die
+  takeDamageSoundEffect: {fileID: 0}
+  dieSoundEffect: {fileID: 8300000, guid: d9298bc0d410fd44e83ccd7f14ac5b77, type: 3}
+  dieSoundEffectPitch: 1
+  dieSoundEffectVolume: 0.25
 --- !u!114 &-7592903125570246469
 MonoBehaviour:
   m_ObjectHideFlags: 0

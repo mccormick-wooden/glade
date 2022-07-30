@@ -14,8 +14,8 @@ public class AudioEventManager : MonoBehaviour
     private UnityAction<Vector3, int> playerFootstepEventListener;
     private UnityAction<Vector3> playerHurtEventListener;
     private UnityAction<Vector3> fairyAOEAttackEventListener;
-    private UnityAction<Vector3, AudioClip> monsterTakeDamageEventListener;
-    private UnityAction<Vector3, AudioClip> monsterDieEventListener;
+    private UnityAction<Vector3, AudioClip, float> monsterTakeDamageEventListener;
+    private UnityAction<Vector3, AudioClip, float, float> monsterDieEventListener;
 
 
 
@@ -66,8 +66,8 @@ public class AudioEventManager : MonoBehaviour
         playerFootstepEventListener = new UnityAction<Vector3, int>(playerFootstepEventHandler);
         playerHurtEventListener = new UnityAction<Vector3>(playerHurtEventHandler);
         fairyAOEAttackEventListener = new UnityAction<Vector3>(fairyAOEAttackEventHandler);
-        monsterTakeDamageEventListener = new UnityAction<Vector3, AudioClip>(monsterTakeDamageEventHandler);
-        monsterDieEventListener = new UnityAction<Vector3, AudioClip>(monsterDieEventHandler);
+        monsterTakeDamageEventListener = new UnityAction<Vector3, AudioClip, float>(monsterTakeDamageEventHandler);
+        monsterDieEventListener = new UnityAction<Vector3, AudioClip, float, float>(monsterDieEventHandler);
     }
 
 
@@ -95,8 +95,8 @@ public class AudioEventManager : MonoBehaviour
         EventManager.StartListening<PlayerFootstepEvent, Vector3, int>(playerFootstepEventListener);
         EventManager.StartListening<PlayerHurtEvent, Vector3>(playerHurtEventListener);
         EventManager.StartListening<FairyAOEAttackEvent, Vector3>(fairyAOEAttackEventHandler);
-        EventManager.StartListening<MonsterTakeDamageEvent, Vector3, AudioClip>(monsterTakeDamageEventHandler);
-        EventManager.StartListening<MonsterDieEvent, Vector3, AudioClip>(monsterDieEventHandler);
+        EventManager.StartListening<MonsterTakeDamageEvent, Vector3, AudioClip, float>(monsterTakeDamageEventHandler);
+        EventManager.StartListening<MonsterDieEvent, Vector3, AudioClip, float, float>(monsterDieEventHandler);
     }
 
 
@@ -110,8 +110,8 @@ public class AudioEventManager : MonoBehaviour
         EventManager.StopListening<PlayerFootstepEvent, Vector3, int>(playerFootstepEventListener);
         EventManager.StopListening<PlayerHurtEvent, Vector3>(playerHurtEventListener);
         EventManager.StopListening<FairyAOEAttackEvent, Vector3>(fairyAOEAttackEventHandler);
-        EventManager.StopListening<MonsterTakeDamageEvent, Vector3, AudioClip>(monsterTakeDamageEventHandler);
-        EventManager.StopListening<MonsterDieEvent, Vector3, AudioClip>(monsterDieEventHandler);
+        EventManager.StopListening<MonsterTakeDamageEvent, Vector3, AudioClip, float>(monsterTakeDamageEventHandler);
+        EventManager.StopListening<MonsterDieEvent, Vector3, AudioClip, float, float>(monsterDieEventHandler);
     }
 
     // Update is called once per frame
@@ -225,7 +225,7 @@ public class AudioEventManager : MonoBehaviour
         snd.audioSrc.Play();
     }
 
-    void monsterTakeDamageEventHandler(Vector3 worldPos, AudioClip clip)
+    void monsterTakeDamageEventHandler(Vector3 worldPos, AudioClip clip, float pitch)
     {
         EventSound3D snd = Instantiate(eventSound3DPrefab, worldPos, Quaternion.identity, null);
         snd.audioSrc.spatialize = true;
@@ -234,11 +234,13 @@ public class AudioEventManager : MonoBehaviour
         snd.audioSrc.Play();
     }
 
-    void monsterDieEventHandler(Vector3 worldPos, AudioClip clip)
+    void monsterDieEventHandler(Vector3 worldPos, AudioClip clip, float pitch, float volume)
     {
         EventSound3D snd = Instantiate(eventSound3DPrefab, worldPos, Quaternion.identity, null);
         snd.audioSrc.spatialize = true;
+        snd.audioSrc.volume = volume;
         snd.audioSrc.spatialBlend = 1;
+        snd.audioSrc.pitch = pitch;
         snd.audioSrc.clip = clip;
         snd.audioSrc.Play();
     }
