@@ -30,12 +30,6 @@ public abstract class BaseLevelStateManager : BaseStateManager
     protected int returnToMainMenuCountdownLength = 10;
     protected int returnToMainMenuTimer;
 
-    /// <summary>
-    /// Higher values result in slower health reduction
-    /// </summary>
-    [SerializeField]
-    protected float gladeHealthReductionFactor = 3f;
-
     protected GameObject player;
     protected IDamageable playerDamageModel;
     protected TextMeshProUGUI HUDMessageText;
@@ -45,24 +39,9 @@ public abstract class BaseLevelStateManager : BaseStateManager
 
     protected EnemySpawner enemySpawner;
 
-    protected Slider gladeHealthBar;
+    protected GladeHealthManager gladeHealthManager;
 
-    protected enum GladeHealthState
-    {
-        High,
-        Med,
-        Low
-    }
-
-    protected List<IDamageable> activeEnemies = new List<IDamageable>(100);
-
-    protected Dictionary<GladeHealthState, Image> gladeHealthImageDict = new Dictionary<GladeHealthState, Image>();
-
-    protected float GladeHealthReduction => activeEnemies.Count / gladeHealthReductionFactor;
-
-    protected float GladeHealthHealthIncrease => 10f;
-
-    protected bool GladeIsDead => gladeHealthBar != null && gladeHealthBar.value <= gladeHealthBar.minValue;
+    private bool stateEnding = false;
 
     protected override void OnSceneLoaded()
     {
@@ -100,20 +79,13 @@ public abstract class BaseLevelStateManager : BaseStateManager
 
         #endregion
 
-        #region gladehealth
-        gladeHealthBar = GameObject.Find("HUDGladeHealthBar").GetComponent<Slider>();
-        Utility.LogErrorIfNull(gladeHealthBar, nameof(gladeHealthBar));
+        #region glade health objs and subscriptions
+        
+        gladeHealthManager = GameObject.Find("GladeHealthManager").GetComponent<GladeHealthManager>();
+        Utility.LogErrorIfNull(gladeHealthManager, nameof(gladeHealthManager));
 
-        gladeHealthImageDict = new Dictionary<GladeHealthState, Image>
-        {
-            { GladeHealthState.High, GameObject.Find("HighGladeHealthFill").GetComponent<Image>() },
-            { GladeHealthState.Med, GameObject.Find("MedGladeHealthFill").GetComponent<Image>() },
-            { GladeHealthState.Low, GameObject.Find("LowGladeHealthFill").GetComponent<Image>() }
-        };
+        gladeHealthManager.GladeDied += OnGladeDied;
 
-        UpdateGladeHealth(health: 100);
-
-        InvokeRepeating("GladeHealthDecrementer", 1f, 0.5f);
         #endregion
     }
 
@@ -123,13 +95,14 @@ public abstract class BaseLevelStateManager : BaseStateManager
         beaconSpawner.BeaconDied -= OnBeaconDied;
         beaconSpawner.AllBeaconsDied -= OnAllBeaconsDied;
         enemySpawner.EnemySpawned -= OnEnemySpawned;
+        gladeHealthManager.GladeDied -= OnGladeDied;
 
         CancelInvoke(); // Clean up any active invokes.
     }
 
     private void OnBeaconDied()
     {
-        UpdateGladeHealth(gladeHealthBar.value + GladeHealthHealthIncrease);
+        gladeHealthManager.BeaconDied();
     }
 
     /// <summary>
@@ -138,26 +111,11 @@ public abstract class BaseLevelStateManager : BaseStateManager
     /// </summary>
     private void OnAllBeaconsDied()
     {
-        if (debugOutput)
-            Debug.Log("All beacons died.");
+        if (stateEnding) return;
 
+        StateEnding();
         player.GetComponentInChildren<IDamageable>().IsImmune = true;
-        DisablePickups();
         InvokeRepeating("OnAllBeaconsDiedReturnToMainMenuCountdown", 0f, 1f);
-    }
-
-    private void DisablePickups()
-    {
-        // Disable all pickups on the ground
-        PowerUpPickup[] pickups = FindObjectsOfType<PowerUpPickup>();
-        foreach (PowerUpPickup pickup in pickups)
-        {
-            pickup.PowerUpEnabled = false;
-        }
-        
-        // Close power up menu if already open
-        PowerUpMenu menu = FindObjectOfType<PowerUpMenu>(true); // Include the inactive menu
-        menu.gameObject.SetActive(false);
     }
 
     private void OnAllBeaconsDiedReturnToMainMenuCountdown()
@@ -179,10 +137,9 @@ public abstract class BaseLevelStateManager : BaseStateManager
     /// <param name="instanceId">Unity InstanceId of the GameObject that IDamageable is attached to</param>
     private void OnPlayerDied(IDamageable damageModel, string name, int instanceId)
     {
-        if (debugOutput)
-            Debug.Log($"GameObj '{name}:{instanceId}' died.");
+        if (stateEnding) return;
 
-        DisablePickups();
+        StateEnding();
         InvokeRepeating("OnPlayerDiedReturnToMainMenuCountdown", 0f, 1f);
     }
 
@@ -191,6 +148,14 @@ public abstract class BaseLevelStateManager : BaseStateManager
         HUDMessageText.fontSize = 50;
         HUDMessageText.text = $"Ya died, ya dingus.\n\nReturning to Main Menu in {returnToMainMenuTimer} seconds...";
         DecrementReturnToMainMenuTimer();
+    }
+
+    private void OnGladeDied()
+    {
+        if (stateEnding) return;
+
+        StateEnding();
+        InvokeRepeating("OnGladeDiedReturnToMainMenuCountdown", 0f, 1f);
     }
 
     private void OnGladeDiedReturnToMainMenuCountdown()
@@ -222,53 +187,36 @@ public abstract class BaseLevelStateManager : BaseStateManager
         GameManager.instance.UpdateGameState(GameManager.instance.State);
     }
 
-    private void UpdateGladeHealth(float health)
-    {
-        if (GladeIsDead)
-            return;
-
-        GladeHealthState state;
-
-        if (health > 66)
-            state = GladeHealthState.High;
-        else if (health > 33)
-            state = GladeHealthState.Med;
-        else
-            state = GladeHealthState.Low;
-
-        UpdateGladeHealthBarFillType(state);
-
-        gladeHealthBar.value = health;
-
-        if (GladeIsDead)
-            InvokeRepeating("OnGladeDiedReturnToMainMenuCountdown", 0f, 1f);
-    }
-
-    private void UpdateGladeHealthBarFillType(GladeHealthState state)
-    {
-        foreach (var kvp in gladeHealthImageDict)
-        {
-            kvp.Value.enabled = kvp.Key == state;
-        }
-
-        gladeHealthBar.fillRect = gladeHealthImageDict[state].rectTransform;
-    }
-
     private void OnEnemySpawned(IDamageable damageModel)
     {
         damageModel.Died += OnEnemyDied;
-        activeEnemies.Add(damageModel);
+        gladeHealthManager.OnEnemySpawned(damageModel);
     }
 
     private void OnEnemyDied(IDamageable damageModel, string name, int instanceId)
     {
         damageModel.Died -= OnEnemyDied;
-        activeEnemies.Remove(damageModel);
+        gladeHealthManager.OnEnemyDied(damageModel);
     }
 
-    private void GladeHealthDecrementer()
+    private void StateEnding()
     {
-        UpdateGladeHealth(gladeHealthBar.value - GladeHealthReduction);
+        stateEnding = true;
+        DisablePickups();
+    }
+
+    private void DisablePickups()
+    {
+        // Disable all pickups on the ground
+        PowerUpPickup[] pickups = FindObjectsOfType<PowerUpPickup>();
+        foreach (PowerUpPickup pickup in pickups)
+        {
+            pickup.PowerUpEnabled = false;
+        }
+
+        // Close power up menu if already open
+        PowerUpMenu menu = FindObjectOfType<PowerUpMenu>(true); // Include the inactive menu
+        menu.gameObject.SetActive(false);
     }
 }
 
