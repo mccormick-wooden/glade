@@ -365,6 +365,17 @@ public class Player : MonoBehaviour
         if (animState.IsName("Sheathe") || animState.IsName("Picking Up") || animState.IsName("DrawSword"))
             return;
 
+        if (animState.IsName("Jump"))
+        {
+            rigidBody.AddForce(
+                new Vector3(
+                    rigidBody.velocity.normalized.x,
+                    0.4f * rigidBody.velocity.normalized.y,
+                    rigidBody.velocity.normalized.z),
+                ForceMode.VelocityChange);
+            return;
+        }
+
         if (movementMagnitude >= 0.1)
         {
             if (PlayerCombat.isLockingOn)

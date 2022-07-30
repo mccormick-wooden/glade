@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: fd436023a19a04b7f9f6e0ecf0f3b3f5
+guid: 50f8e2f4fcf7742579fdaaecf00624da
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: Falling Idle
+    second: Standing Jump Running To Run Forward
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -42,19 +42,19 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Falling Idle
+      name: Standing Jump Running To Run Forward
       takeName: mixamo.com
       internalID: 0
-      firstFrame: 0
-      lastFrame: 21
+      firstFrame: 13.5
+      lastFrame: 27
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
+      loopTime: 0
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -903,5 +903,5 @@ ModelImporter:
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   additionalBone: 0
   userData: 
-  assetBundleName: prefabs
+  assetBundleName: 
   assetBundleVariant: 
