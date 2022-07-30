@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1523681154}
-  m_IndirectSpecularColor: {r: 0.47487414, g: 0.7315689, b: 0.7054312, a: 1}
+  m_IndirectSpecularColor: {r: 0.4748739, g: 0.73156875, b: 0.7054304, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -342,6 +342,14 @@ MonoBehaviour:
   - 1
   - 1.1
   - 0.9
+  swordHitAudio: []
+  swordHitSoundDelays: []
+  swordHitPitches: []
+  swordHitSound: {fileID: 0}
+  appleHitGrass: {fileID: 0}
+  appleHitGrassStartOffsetPCMs: 0
+  playerEatApple: {fileID: 0}
+  playerEatAppleOffsetPCMs: 0
   crystalCollisionAudio: {fileID: 8300000, guid: a47ec7b9ea83dbb44958db63d0dd4830, type: 3}
 --- !u!4 &380244267
 Transform:
@@ -576,7 +584,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 751774112759764924, guid: b28a41d3923aaff4d93794a47ccc5549, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 24.5
+      value: 18.2
       objectReference: {fileID: 0}
     - target: {fileID: 751774112759764924, guid: b28a41d3923aaff4d93794a47ccc5549, type: 3}
       propertyPath: m_LocalPosition.z
@@ -783,11 +791,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 683423951991350864, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.024941001
+      value: -0.024941038
       objectReference: {fileID: 0}
     - target: {fileID: 683423951991350864, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.004522666
+      value: 0.004522673
       objectReference: {fileID: 0}
     - target: {fileID: 683423951991350865, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_Layer

@@ -491,9 +491,16 @@ public class Player : MonoBehaviour
     /// </summary>
     public void StopAnimMotion()
     {
+        //Debug.Log("- StopAnimMotion -");
         animator.SetFloat("Speed", 0f);
+        animator.SetBool("IsFalling", false);
+        animator.SetBool("IsGrounded", true);
+        animator.Play("MovementTree");
         horizontalInput = 0;
         verticalInput = 0;
+        isGrounded = true;
+        isFalling = false;
+        fallingTimeout = 5f;
     }
 
 

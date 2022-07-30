@@ -670,6 +670,7 @@ public class TrainingStateManager : BaseStateManager
     #region general event callbacks
     private void OnOutOfBoundsPlaneTriggered(Collider collider)
     {
+        //Debug.Log("OnOutOfBoundsPlaneTriggered");
         if (collider.gameObject == playerModel)
             GameManager.instance.InvokeTransition(midTransitionAction: () => playerModel.transform.position = playerModelStartingPos);
     }
