@@ -30,12 +30,20 @@ public abstract class BaseLevelStateManager : BaseStateManager
     protected int returnToMainMenuCountdownLength = 10;
     protected int returnToMainMenuTimer;
 
+    /// <summary>
+    /// Higher values result in slower health reduction
+    /// </summary>
+    [SerializeField]
+    protected float gladeHealthReductionFactor = 25f;
+
     protected GameObject player;
     protected IDamageable playerDamageModel;
     protected TextMeshProUGUI HUDMessageText;
 
     protected GameObject beaconParent;
     protected BeaconSpawner beaconSpawner;
+
+    protected EnemySpawner enemySpawner;
 
     protected Slider gladeHealthBar;
 
@@ -46,7 +54,11 @@ public abstract class BaseLevelStateManager : BaseStateManager
         Low
     }
 
+    protected List<IDamageable> activeEnemies = new List<IDamageable>(100);
+
     protected Dictionary<GladeHealthState, Image> gladeHealthImageDict = new Dictionary<GladeHealthState, Image>();
+
+    protected float GladeHealthReduction => activeEnemies.Count / gladeHealthReductionFactor;
 
     protected override void OnSceneLoaded()
     {
@@ -63,7 +75,11 @@ public abstract class BaseLevelStateManager : BaseStateManager
         HUDMessageText = player.GetComponentInChildren<TextMeshProUGUI>();
         Utility.LogErrorIfNull(HUDMessageText, nameof(HUDMessageText));
 
+        enemySpawner = player.GetComponentInChildren<EnemySpawner>();
+        Utility.LogErrorIfNull(enemySpawner, nameof(enemySpawner));
+
         playerDamageModel.Died += OnPlayerDied;
+        enemySpawner.EnemySpawned += OnEnemySpawned;
 
         #endregion
 
@@ -81,6 +97,7 @@ public abstract class BaseLevelStateManager : BaseStateManager
 
         #region gladehealth
         gladeHealthBar = GameObject.Find("HUDGladeHealthBar").GetComponent<Slider>();
+        Utility.LogErrorIfNull(gladeHealthBar, nameof(gladeHealthBar));
 
         gladeHealthImageDict = new Dictionary<GladeHealthState, Image>
         {
@@ -90,6 +107,8 @@ public abstract class BaseLevelStateManager : BaseStateManager
         };
 
         UpdateGladeHealthBar(100);
+
+        InvokeRepeating("UpdateGladeHealth", 1f, 1f);
         #endregion
     }
 
@@ -97,6 +116,7 @@ public abstract class BaseLevelStateManager : BaseStateManager
     {
         playerDamageModel.Died -= OnPlayerDied;
         beaconSpawner.AllBeaconsDied -= OnAllBeaconsDied;
+        enemySpawner.EnemySpawned -= OnEnemySpawned;
 
         CancelInvoke(); // Clean up any active invokes.
     }
@@ -180,7 +200,7 @@ public abstract class BaseLevelStateManager : BaseStateManager
         GameManager.instance.UpdateGameState(GameManager.instance.State);
     }
 
-    protected void UpdateGladeHealthBar(float health)
+    private void UpdateGladeHealthBar(float health)
     {
         GladeHealthState state;
 
@@ -196,7 +216,7 @@ public abstract class BaseLevelStateManager : BaseStateManager
         gladeHealthBar.value = health;
     }
 
-    protected void UpdateGladeHealthBarFillType(GladeHealthState state)
+    private void UpdateGladeHealthBarFillType(GladeHealthState state)
     {
         foreach (var kvp in gladeHealthImageDict)
         {
@@ -204,6 +224,23 @@ public abstract class BaseLevelStateManager : BaseStateManager
         }
 
         gladeHealthBar.fillRect = gladeHealthImageDict[state].rectTransform;
+    }
+
+    private void OnEnemySpawned(IDamageable damageModel)
+    {
+        damageModel.Died += OnEnemyDied;
+        activeEnemies.Add(damageModel);
+    }
+
+    private void OnEnemyDied(IDamageable damageModel, string name, int instanceId)
+    {
+        damageModel.Died -= OnEnemyDied;
+        activeEnemies.Remove(damageModel);
+    }
+
+    private void UpdateGladeHealth()
+    {
+        UpdateGladeHealthBar(gladeHealthBar.value - GladeHealthReduction);
     }
 }
 
