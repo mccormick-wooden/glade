@@ -390,6 +390,15 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseMove"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""b0b76fb7-ee15-40ac-b123-725b34d29082"",
+                    ""expectedControlType"": ""Analog"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -412,6 +421,28 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""PauseGameAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""151a4317-b237-4d05-b88e-aa88fc6daf41"",
+                    ""path"": ""<Mouse>/delta/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3968caa1-b361-4a7f-ab2a-ff3a7e28acc3"",
+                    ""path"": ""<Mouse>/delta/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -539,6 +570,7 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
         // PauseGame
         m_PauseGame = asset.FindActionMap("PauseGame", throwIfNotFound: true);
         m_PauseGame_PauseGameAction = m_PauseGame.FindAction("PauseGameAction", throwIfNotFound: true);
+        m_PauseGame_MouseMove = m_PauseGame.FindAction("MouseMove", throwIfNotFound: true);
         // SkipScene
         m_SkipScene = asset.FindActionMap("SkipScene", throwIfNotFound: true);
         m_SkipScene_SkipSceneAction = m_SkipScene.FindAction("SkipSceneAction", throwIfNotFound: true);
@@ -694,11 +726,13 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
     private readonly InputActionMap m_PauseGame;
     private IPauseGameActions m_PauseGameActionsCallbackInterface;
     private readonly InputAction m_PauseGame_PauseGameAction;
+    private readonly InputAction m_PauseGame_MouseMove;
     public struct PauseGameActions
     {
         private @CharacterPlayerControls m_Wrapper;
         public PauseGameActions(@CharacterPlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @PauseGameAction => m_Wrapper.m_PauseGame_PauseGameAction;
+        public InputAction @MouseMove => m_Wrapper.m_PauseGame_MouseMove;
         public InputActionMap Get() { return m_Wrapper.m_PauseGame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -711,6 +745,9 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                 @PauseGameAction.started -= m_Wrapper.m_PauseGameActionsCallbackInterface.OnPauseGameAction;
                 @PauseGameAction.performed -= m_Wrapper.m_PauseGameActionsCallbackInterface.OnPauseGameAction;
                 @PauseGameAction.canceled -= m_Wrapper.m_PauseGameActionsCallbackInterface.OnPauseGameAction;
+                @MouseMove.started -= m_Wrapper.m_PauseGameActionsCallbackInterface.OnMouseMove;
+                @MouseMove.performed -= m_Wrapper.m_PauseGameActionsCallbackInterface.OnMouseMove;
+                @MouseMove.canceled -= m_Wrapper.m_PauseGameActionsCallbackInterface.OnMouseMove;
             }
             m_Wrapper.m_PauseGameActionsCallbackInterface = instance;
             if (instance != null)
@@ -718,6 +755,9 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
                 @PauseGameAction.started += instance.OnPauseGameAction;
                 @PauseGameAction.performed += instance.OnPauseGameAction;
                 @PauseGameAction.canceled += instance.OnPauseGameAction;
+                @MouseMove.started += instance.OnMouseMove;
+                @MouseMove.performed += instance.OnMouseMove;
+                @MouseMove.canceled += instance.OnMouseMove;
             }
         }
     }
@@ -820,6 +860,7 @@ public partial class @CharacterPlayerControls : IInputActionCollection2, IDispos
     public interface IPauseGameActions
     {
         void OnPauseGameAction(InputAction.CallbackContext context);
+        void OnMouseMove(InputAction.CallbackContext context);
     }
     public interface ISkipSceneActions
     {

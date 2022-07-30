@@ -3,6 +3,7 @@ using Cinemachine;
 using PowerUps;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(CanvasGroup))]
 public class PauseMenuManager : MonoBehaviour
@@ -30,6 +31,9 @@ public class PauseMenuManager : MonoBehaviour
 
     [SerializeField]
     private string sceneSkipperCanvasRootName = "SceneSkipper"; // ugh this was so stupid
+
+    [SerializeField]
+    private string noSelectButtonName = "PauseNoSelect";
 
     private GameState[] unPauseableStates;
 
@@ -78,15 +82,22 @@ public class PauseMenuManager : MonoBehaviour
         Utility.AddButtonCallback(pauseExitGameRootName, () => Quitter.QuitGame());
     }
 
+    private void ShowCursorIfPaused()
+    {
+            if (IsPaused) Utility.ShowCursor();
+    }
+
     private void Start()
     {
         controls.PauseGame.PauseGameAction.performed += _ => TogglePause();
+        controls.PauseGame.MouseMove.performed += _ => ShowCursorIfPaused();
         GameManager.OnStateChanged += GameManagerOnStateChanged;
     }
 
     private void OnDestroy()
     {
         controls.PauseGame.PauseGameAction.performed -= _ => TogglePause();
+        controls.PauseGame.MouseMove.performed -= _ => ShowCursorIfPaused();
         GameManager.OnStateChanged -= GameManagerOnStateChanged;
     }
 
@@ -101,6 +112,10 @@ public class PauseMenuManager : MonoBehaviour
             SetPauseState(true);
         else if (IsPaused)
             SetPauseState(false);
+
+        // Either way, we want to hide the cursor on returning to the game or
+        // on first entering pause menu
+        Utility.HideCursor();
     }
 
     private void OnEnable()
@@ -111,6 +126,20 @@ public class PauseMenuManager : MonoBehaviour
     private void OnDisable()
     {
         controls.PauseGame.Disable();
+    }
+
+    private void SelectButton(string buttonName)
+    {
+        GameObject.Find(buttonName)?.GetComponentInChildren<Button>()?.Select();
+    }
+
+    private void Update()
+    {
+        // If we mouse click on canvas, it deselects all buttons and makes
+        // keyboard/gamepad navigation broken. Select the invisible button
+        // instead.
+        if (EventSystem.current.currentSelectedGameObject == null)
+            SelectButton(noSelectButtonName);
     }
 
     public void SetPauseState(bool areWePausing)
@@ -163,9 +192,7 @@ public class PauseMenuManager : MonoBehaviour
         }
 
         if (areWePausing)
-        {
-            GameObject.Find(pauseResumeRootName).GetComponentInChildren<Button>().Select();
-        }
+            SelectButton(pauseResumeRootName);
     }
 
     private bool InUnPauseableState()

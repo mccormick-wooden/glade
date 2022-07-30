@@ -33,6 +33,9 @@ public abstract class BaseStateManager : MonoBehaviour
     [Range(0f, 1f)]
     protected float sceneAudioClipNormalizedMaxVolume;
 
+    [SerializeField]
+    protected bool hideCursorOnSceneStart = true;
+
     public GameState ManagedState => managedState;
 
     public string ManagedSceneName => managedSceneName;
@@ -117,6 +120,11 @@ public abstract class BaseStateManager : MonoBehaviour
 
             if (debugOutput)
                 Debug.Log($"{GetType().Name}: ENABLED, {ManagedSceneName}: LOADED");
+
+            if (hideCursorOnSceneStart)
+                Utility.HideCursor();
+            else
+                Utility.ShowCursor();
         }
     }
 
