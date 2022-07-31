@@ -210,7 +210,9 @@ To regenerate tree for new files:
 │   ├── BeaconFall.cs - *(tlagrange3)*
 │   ├── BeaconManager.cs - *(tlagrange3, cdail7, egilligan3, mwooden3)*
 │   ├── BeaconOrbiter.cs - *(tlagrange3)*
+│   ├── BeaconOvershield.cs - *(tlagrange3)*
 │   ├── BeaconSpawner.cs - *(tlagrange3, mwooden3, egilligan3)*
+│   ├── BeaconSpawnPoint.cs - *(tlagrange3)*
 │   ├── CrashedBeacon.cs - *(tlagrange3, mwooden3)*
 │   └── dev
 │       └── TriggerBeaconSpawn.cs - *(tlagrange3)*
