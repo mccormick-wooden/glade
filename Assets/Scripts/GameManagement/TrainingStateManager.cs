@@ -688,8 +688,17 @@ public class TrainingStateManager : BaseStateManager
             GameManager.instance.InvokeTransition(midTransitionAction: () => playerModel.transform.position = playerModelStartingPos);
     }
 
+    private bool inPlayableState = false;
+
+    private void FixedUpdate()
+    {
+        if (inPlayableState != playerScript.ControlsEnabled)
+            UpdateControlStateGracefully(inPlayableState);
+    }
+
     private void OnBlendToCameraStarted_DisableControlState(ICinemachineCamera activeCamera)
     {
+        inPlayableState = false;
         if (activeCamera.Name == trainingHostVirtualCameraName)
         {
             UpdateControlStateGracefully(enableControlState: false);
@@ -698,8 +707,10 @@ public class TrainingStateManager : BaseStateManager
 
     private void OnBlendToCameraCompleted_EnableControlState(ICinemachineCamera activeCamera)
     {
+        inPlayableState = false;
         if (activeCamera.Name == playerCameraName)
         {
+            inPlayableState = true;
             UpdateControlStateGracefully(enableControlState: true);
         }
     }

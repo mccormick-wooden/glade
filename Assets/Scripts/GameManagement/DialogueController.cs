@@ -55,6 +55,7 @@ public class DialogueController : MonoBehaviour
         waitUntilNextDialogueItemRequested = new WaitUntil(() => isNextDialogueItemRequested);
 
         controls = new CharacterPlayerControls();
+        controls.Gameplay.Disable();
 
         DialogueStarted += OnDialogueStarted;
         AllDialogueCompleted += OnAllDialogueCompleted;
