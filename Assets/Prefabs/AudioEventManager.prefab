@@ -53,9 +53,10 @@ MonoBehaviour:
   - 0
   - 0
   swordSwingPitches:
-  - 1
-  - 1.1
-  - 0.9
+  - 0.8
+  - 0.88
+  - 0.7
+  swordSwingVolume: 1
   swordHitAudio:
   - {fileID: 8300000, guid: 44cd0f973b1b9834ca32ca79c8cc731b, type: 3}
   - {fileID: 8300000, guid: 9ab61d15e36523e4980da913f1d8684a, type: 3}
@@ -68,10 +69,13 @@ MonoBehaviour:
   - 1
   - 1
   - 1
+  swordHitVolume: 0.5
   swordHitSound: {fileID: 0}
   appleHitGrass: {fileID: 8300000, guid: 8fa9a5597337bc642b758515f12c485a, type: 3}
+  appleHitGrassVolume: 1
   appleHitGrassStartOffsetPCMs: 10000
   playerEatApple: {fileID: 8300000, guid: 671f0322476a35142b0f5c1c7a030905, type: 3}
+  playerEatAppleVolume: 0.6
   playerEatAppleOffsetPCMs: 10000
   crystalCollisionAudio: {fileID: 8300000, guid: a47ec7b9ea83dbb44958db63d0dd4830, type: 3}
   crystalCollisionVolume: 0.5
@@ -80,8 +84,10 @@ MonoBehaviour:
   playerFootstep:
   - {fileID: 8300000, guid: 7dca835d58618374c8e7a37888d17824, type: 3}
   - {fileID: 8300000, guid: 7dca835d58618374c8e7a37888d17824, type: 3}
+  playerFootstepVolume: 0.6
   playerFootstepOffsetPCMs: 6400000064000000
   playerInjuredSound: {fileID: 0}
+  playerHurtVolume: 0.6
   playerInjured:
   - {fileID: 8300000, guid: ebf680c0a1690c54c80498c6c7210ed2, type: 3}
   - {fileID: 8300000, guid: fec3a1587da220f40b7b9d99c9447873, type: 3}
@@ -90,5 +96,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 231b595fb6f3846418257e160429b8a4, type: 3}
   playerInjuredOffsetPCMs: 0000000000000000000000000000000000000000
   campfire: {fileID: 8300000, guid: b914603d2332477418ab34d7d4b61055, type: 3}
+  campfireVolume: 0.5
   fairyAOEAttack: {fileID: 8300000, guid: 50cfa555aba5d5448991263f92fed007, type: 3}
   fairyAOEAttackOffsetPCMs: 0
+  fairyAOEVolume: 1

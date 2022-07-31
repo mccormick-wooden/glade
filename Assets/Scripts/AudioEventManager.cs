@@ -175,8 +175,6 @@ public class AudioEventManager : MonoBehaviour
         snd.audioSrc.clip = swordSwingAudio[whichSwing];
         snd.audioSrc.pitch = swordSwingPitches[whichSwing];
         snd.audioSrc.volume = swordSwingVolume;
-        snd.audioSrc.spatialize = true;
-        snd.audioSrc.spatialBlend = 1;
         snd.audioSrc.PlayDelayed(swordSwingSoundDelays[whichSwing]);
     }
 
@@ -189,8 +187,6 @@ public class AudioEventManager : MonoBehaviour
 
         swordHitSound = Instantiate(eventSound3DPrefab, worldPos, Quaternion.identity, null);
 
-        swordHitSound.audioSrc.spatialize = true;
-        swordHitSound.audioSrc.spatialBlend = 1;
         swordHitSound.audioSrc.clip = swordHitAudio[whichSwing];
         swordHitSound.audioSrc.volume = swordHitVolume;
         swordHitSound.audioSrc.pitch = swordHitPitches[whichSwing];
@@ -212,11 +208,8 @@ public class AudioEventManager : MonoBehaviour
     void playerEatAppleEventHandler(Vector3 worldPos)
     {
         EventSound3D snd = Instantiate(eventSound3DPrefab, worldPos, Quaternion.identity, null);
-        snd.audioSrc.spatialize = true;
-        snd.audioSrc.spatialBlend = 1;
         snd.audioSrc.clip = playerEatApple;
         snd.audioSrc.timeSamples = playerEatAppleOffsetPCMs;
-        //snd.audioSrc.pitch = 0.8f;
         snd.audioSrc.volume = playerEatAppleVolume;
         snd.audioSrc.Play();
     }
@@ -224,11 +217,8 @@ public class AudioEventManager : MonoBehaviour
     void playerFootstepEventHandler(Vector3 worldPos, int whilchStep)
     {
         EventSound3D snd = Instantiate(eventSound3DPrefab, worldPos, Quaternion.identity, null);
-        snd.audioSrc.spatialize = true;
-        snd.audioSrc.spatialBlend = 1;
         snd.audioSrc.clip = playerFootstep[whilchStep];
         snd.audioSrc.timeSamples = playerFootstepOffsetPCMs[whilchStep];
-        //snd.audioSrc.pitch = 0.8f;
         snd.audioSrc.volume = playerFootstepVolume;
         snd.audioSrc.Play();
     }
@@ -244,7 +234,6 @@ public class AudioEventManager : MonoBehaviour
         playerInjuredSound = Instantiate(eventSound3DPrefab, worldPos, Quaternion.identity, null);
         playerInjuredSound.audioSrc.clip = playerInjured[whichOof];
         playerInjuredSound.audioSrc.timeSamples = playerInjuredOffsetPCMs[whichOof];
-        //playerInjuredSound.audioSrc.pitch = 0.8f;
         playerInjuredSound.audioSrc.volume = playerHurtVolume;
         playerInjuredSound.audioSrc.Play();
     }
@@ -257,8 +246,6 @@ public class AudioEventManager : MonoBehaviour
         snd.audioSrc.clip = fairyAOEAttack;
         snd.audioSrc.timeSamples = fairyAOEAttackOffsetPCMs;
         snd.audioSrc.volume = fairyAOEVolume;
-        //snd.audioSrc.pitch = 0.8f;
-        //snd.audioSrc.volume = 0.6f;
         snd.audioSrc.Play();
     }
 
