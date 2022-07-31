@@ -191,9 +191,9 @@ To regenerate tree for new files:
 │   ├── BaseDamageable.cs - *(mwooden3, cdail7, egilligan3, tlagrange3)*
 │   ├── BaseDevCommand.cs - *(mwooden3)*
 │   ├── BaseEnemy.cs - *(cdail7)*
-│   ├── BaseLevelStateManager.cs - *(mwooden3)*
+│   ├── BaseLevelStateManager.cs - *(mwooden3, egilligan3)*
 │   ├── BasePowerUp.cs - *(tlagrange3)*
-│   ├── BaseStateManager.cs - *(mwooden3, cdail7)*
+│   ├── BaseStateManager.cs - *(mwooden3, cdail7, egilligan3)*
 │   └── BaseWeapon.cs - *(mwooden3, cdail7, tlagrange3)*
 ├───Animation
 │   ├── EnterStrafeBlendTree.cs - *(tlagrange3)*
@@ -201,11 +201,13 @@ To regenerate tree for new files:
 │   ├── ExitLockedOnLayer.cs - *(tlagrange3)*
 │   └── StartComboAnimation.cs - *(tlagrange3)*
 ├── AppEvents
+│   ├── CrystalDeathEvent.cs - *(egilligan3)*
+│   ├── CrystalCollisionEvent.cs - *(egilligan3)*
 │   ├── PlayMusicEvent.cs - *(cdail7)*
 │   ├── SwordSwingEvent.cs - *(cdail7)*
 │   └── SwordHitEvent.cs - *(cdail7)*
 ├── Arrow.cs - *(cdail7)*
-├── AudioEventManager.cs - *(cdail7, tlagrange3)*
+├── AudioEventManager.cs - *(cdail7, tlagrange3, egilligan3)*
 ├── Beacons
 │   ├── BeaconFall.cs - *(tlagrange3)*
 │   ├── BeaconManager.cs - *(tlagrange3, cdail7, egilligan3, mwooden3)*
@@ -228,6 +230,7 @@ To regenerate tree for new files:
 ├── Crystal
 │   ├── CrystalController.cs - *(egilligan3)*
 │   ├── CrystalDamageEffect.cs - *(egilligan3)*
+│   ├── CrystalPhsyicsCollision.cs - *(egilligan3)*
 │   ├── CrystalHealEffect.cs - *(egilligan3)*
 │   ├── CrystalManager.cs - *(egilligan3)*
 │   └── CrystalSpawner.cs - *(egilligan3)*
@@ -251,12 +254,12 @@ To regenerate tree for new files:
 ├── EventSound3D.cs - *(cdail7)*
 ├── GameManagement
 │   ├── EventManager.cs - (from course)
-│   ├── GameManager.cs - *(mwooden3)*
+│   ├── GameManager.cs - *(mwooden3, egilligan3)*
 │   ├── Level1StateManager.cs - *(mwooden3)*
-│   ├── MainMenuStateManager.cs - *(mwooden3)*
+│   ├── MainMenuStateManager.cs - *(mwooden3, egilligan3)*
 │   ├── NewGameStateManager.cs - *(mwooden3)*
-│   ├── PauseMenuManager.cs - *(mwooden3, tlagrange3)*
-│   ├── TrainingStateManager.cs - *(mwooden3, daniel.zuniga)*
+│   ├── PauseMenuManager.cs - *(mwooden3, tlagrange3, egilligan3)*
+│   ├── TrainingStateManager.cs - *(mwooden3, daniel.zuniga, egilligan3)*
 │   ├── TriggerPlane.cs - *(mwooden3, daniel.zuniga)*
 │   └── LongClickButton.cs - *(mwooden3)*
 │   └── DialogueController.cs - *(mwooden3)*
@@ -269,7 +272,8 @@ To regenerate tree for new files:
 │   ├── SceneLoader.cs - *(mwooden3)*
 │   ├── TimeScaleToggle.cs - *(mwooden3)*
 │   ├── SyncWithCameraRotation.cs - *(egilligan3)*
-│   └── Utility.cs - *(mwooden3)*
+│   └── Utility.cs - *(mwooden3, egilligan3)*
+│   ├── MouseSelect.cs - *(egilligan3)*
 ├── Interfaces
 │   ├── IDamageable.cs - *(mwooden3, egilligan3)*
 │   ├── IDevCommand.cs - *(mwooden3)*
@@ -277,13 +281,13 @@ To regenerate tree for new files:
 │   └── IWeapon.cs - *(mwooden3)*
 ├── LockOnIndicatorAnimation.cs - *(tlagrange3)*
 ├── Minimap
-│   ├── MinimapCamera.cs *(mwooden3)*
+│   ├── MinimapCamera.cs *(mwooden3, egilligan3)*
 │   └── MinimapIcon.cs *(mwooden3)*
 ├── NPC
 │   └── TreeSpirit.cs - *(mwooden3)*
 ├── Player.cs - *(cdail7, egilligan3, tlagrange3, mwooden3, Daniel Zuniga)*
 ├── PlayerBehaviors
-│   ├── PlayerCombat.cs - *(tlagrange3)*
+│   ├── PlayerCombat.cs - *(tlagrange3, egilligan3)*
 │   ├── PlayerDamageable.cs - *(tlagrange3)*
 |   ├── PlayerStats.cs - *(tlagrange3)*
 │   ├── PlayerWeapon.cs - *(tlagrange3)*
@@ -294,8 +298,8 @@ To regenerate tree for new files:
 │   ├── DamageIncreasePowerUp.cs - *(tlagrange3)*
 │   ├── DamageResistPowerUp.cs - *(tlagrange3)*
 │   ├── MaxHealthPowerUp.cs - *(tlagrange3)*
-│   ├── PowerUpMenu.cs - *(tlagrange3)*
-│   ├── PowerUpPickup.cs - *(tlagrange3)*
+│   ├── PowerUpMenu.cs - *(tlagrange3, egilligan3)*
+│   ├── PowerUpPickup.cs - *(tlagrange3, egilligan3)*
 │   └── dev
 │       └── TogglePowerUpMenu.cs - *(tlagrange3)*
 |── WeaponsAndAttacks
@@ -309,6 +313,7 @@ To regenerate tree for new files:
 ├── SpecialEffectWeapon.cs - *(tlagrange3)*
 ├── PlayerLockOnCamera.cs - *(tlagrange3)*
 ├── ThirdPersonCamera.cs - *(daniel.zuniga, tlagrange3)*
+├── AudioListenerManager.cs - *(egilligan3)*
 └── VelocityReporter.cs - (from course)
 |__ Extensions.cs *(mwooden3)*
 
