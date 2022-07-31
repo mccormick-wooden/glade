@@ -3,6 +3,7 @@ using Assets.Scripts.Interfaces;
 using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using System.Collections.Generic;
 
 namespace Beacons
 {
@@ -16,6 +17,8 @@ namespace Beacons
         /// </summary>
         public Action AllBeaconsDied { get; set; }
 
+        public Action BeaconDied { get; set; }
+
         /// <summary>
         /// Event indicating a new beacon has landed. Provides a reference to the landed beacon GameObject.
         /// </summary>
@@ -25,7 +28,7 @@ namespace Beacons
         /// The type of beacon that will be spawned by this spawner.
         /// </summary>
         [Header("Config Settings")] [SerializeField]
-        public GameObject beaconToSpawn;
+        public GameObject beaconPrefab;
 
         /// <summary>
         /// The time in seconds that will elapse before the first beacon is spawned
@@ -43,9 +46,9 @@ namespace Beacons
         [SerializeField] private float maxConcurrentBeacons;
 
         /// <summary>
-        /// The maximum number of beacons that will be spawned by the spawner.
+        /// The maximum number of beacons that will be spawned by the spawner as calculated by the amount of available spawn points.
         /// </summary>
-        [SerializeField] private float maxTotalBeacons;
+        private float maxTotalBeacons;
 
         /// <summary>
         /// Provide a TMPro GUI object to display the current beacon count.
@@ -73,6 +76,8 @@ namespace Beacons
         /// </summary>
         [SerializeField] private float spawnTimerRemaining;
 
+        private List<BeaconSpawnPoint> beaconSpawnPoints;
+
         private void Awake()
         {
             // Enforced Singleton
@@ -86,6 +91,13 @@ namespace Beacons
             }
 
             spawnTimerRemaining = initialBeaconSpawnTime;
+        }
+
+        private void Start()
+        {
+            beaconSpawnPoints = new List<BeaconSpawnPoint>(FindObjectsOfType<BeaconSpawnPoint>());
+            beaconSpawnPoints.Sort((a, b) => a.spawnOrder.CompareTo(b.spawnOrder));
+            maxTotalBeacons = beaconSpawnPoints.Count;
         }
 
         private void Update()
@@ -104,23 +116,25 @@ namespace Beacons
             if ((currentBeaconCount == maxConcurrentBeacons) || (totalBeaconsSpawnedCount == maxTotalBeacons))
                 return;
 
-            var transformRef = transform;
-            var beaconManager = Instantiate(beaconToSpawn, transformRef.position, transformRef.rotation, transform)
-                ?.GetComponent<BeaconManager>();
+            // When spawning, we take the next spawn-to location and Instantiate the crashed beacon there
+            var beaconSpawnPoint = beaconSpawnPoints[0];
+            beaconSpawnPoints.RemoveAt(0);
 
-            if (beaconManager == null)
-                Utility.LogErrorIfNull(beaconManager, nameof(beaconManager));
+            var transformRef = beaconSpawnPoint.transform;
+            var crashedBeacon = Instantiate(beaconPrefab, transformRef.position, transformRef.rotation, transform)?.GetComponent<CrashedBeacon>();
 
-            beaconManager.BeaconReadyForDamage += OnBeaconReadyForDamage;
+            if (crashedBeacon == null)
+                Utility.LogErrorIfNull(crashedBeacon, nameof(crashedBeacon));
+
+            OnBeaconReadyForDamage(crashedBeacon.gameObject);
 
             IncrementBeaconCount();
 
             Debug.Log("Spawned new beacon!");
         }
 
-        private void OnBeaconReadyForDamage(BeaconManager beaconManager, GameObject beacon)
+        private void OnBeaconReadyForDamage(GameObject beacon)
         {
-            beaconManager.BeaconReadyForDamage -= OnBeaconReadyForDamage;
             NewBeaconLanded?.Invoke(this, beacon);
 
             var beaconDamageModel = beacon.GetComponent<IDamageable>();
@@ -129,6 +143,8 @@ namespace Beacons
 
         public void OnBeaconDeath(IDamageable damageModel, string name, int instanceId)
         {
+            BeaconDied?.Invoke();
+
             damageModel.Died -= OnBeaconDeath;
 
             totalBeaconsDiedCount++;

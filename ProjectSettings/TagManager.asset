@@ -13,6 +13,7 @@ TagManager:
   - Fire
   - TerrainBridge
   - PowerUp
+  - Fruit
   layers:
   - Default
   - TransparentFX
@@ -25,7 +26,7 @@ TagManager:
   - FireLayer
   - Player
   - Enemy
-  - 
+  - Crystal
   - 
   - 
   - 

@@ -4920,6 +4920,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99d2ee1eda8d0ce4d8f6e3cebd9ffc11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackDamage: 10
+  baseAttackDamage: 20
+  currentAttackDamage: 20
   TargetTags:
   - Player

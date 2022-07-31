@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Interfaces;
+﻿﻿using Assets.Scripts.Interfaces;
 using UnityEngine;
 using System.Linq;
 using System;
@@ -8,6 +8,9 @@ namespace Assets.Scripts.Abstract
     public abstract class BaseDamageable : MonoBehaviour, IDamageable
     {
         [SerializeField] protected HealthBarController healthBarController;
+
+        [Tooltip("Optional GameObject to use as name/id for death event invokation.")]
+        [SerializeField] private GameObject attachedObject = null;
 
         [SerializeField] private float currentHp;
 
@@ -37,10 +40,13 @@ namespace Assets.Scripts.Abstract
 
         public int AttachedInstanceId { get; protected set; }
 
+        public string AttachedName { get; protected set; }
+
         public virtual bool IsDead { get; protected set; } = false;
 
         public Action<IDamageable, string, int> Died { get; set; }
 
+        public bool IsImmune { get; set; } = false;
 
         protected virtual void Start()
         {
@@ -57,6 +63,12 @@ namespace Assets.Scripts.Abstract
             }
 
             AttachedInstanceId = gameObject.GetInstanceID();
+            AttachedName = gameObject.name;
+            if (attachedObject != null)
+            {
+                AttachedInstanceId = attachedObject.GetInstanceID();
+                AttachedName = attachedObject.name;
+            }
             GetMinimapIcon();
         }
 
@@ -87,13 +99,16 @@ namespace Assets.Scripts.Abstract
 
         public virtual void HandleAttack(IWeapon attackingWeapon)
         {
-            ApplyDamage(attackingWeapon);
+            if (!IsImmune) // check again here because CrystalWeapon skips the trigger
+            {
+                ApplyDamage(attackingWeapon);
 
-            if (healthBarController != null)
-                healthBarController.CurrentHp = CurrentHp;
+                if (healthBarController != null)
+                    healthBarController.CurrentHp = CurrentHp;
 
-            if (!HasHp)
-                Die();
+                if (!HasHp)
+                    Die();
+            }
         }
 
         protected virtual void OnTriggerEnter(Collider other)
@@ -105,7 +120,7 @@ namespace Assets.Scripts.Abstract
                 return;
             }
 
-            if (ShouldHandleCollisionAsAttack(attackingWeapon))
+            if (ShouldHandleCollisionAsAttack(attackingWeapon) && !IsImmune)
             {
                 HandleAttack(attackingWeapon);
             }
@@ -195,7 +210,7 @@ namespace Assets.Scripts.Abstract
         {
             minimapIcon?.Disable();
             IsDead = true;
-            Died?.Invoke(this, name, AttachedInstanceId);
+            Died?.Invoke(this, AttachedName, AttachedInstanceId);
         }
 
         private void InitHealthBarIfExists()

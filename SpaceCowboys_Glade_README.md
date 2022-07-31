@@ -175,6 +175,7 @@ each team member contributed to code written
 - Camera
 - Player Health Bar
 - Player control/root motion
+- Player Animator: Fall-Landing sequence
 
 ### Scripts
 
@@ -201,7 +202,8 @@ To regenerate tree for new files:
 │   └── StartComboAnimation.cs - *(tlagrange3)*
 ├── AppEvents
 │   ├── PlayMusicEvent.cs - *(cdail7)*
-│   └── SwordSwingEvent.cs - *(cdail7)*
+│   ├── SwordSwingEvent.cs - *(cdail7)*
+│   └── SwordHitEvent.cs - *(cdail7)*
 ├── Arrow.cs - *(cdail7)*
 ├── AudioEventManager.cs - *(cdail7, tlagrange3)*
 ├── Beacons
@@ -254,8 +256,8 @@ To regenerate tree for new files:
 │   ├── MainMenuStateManager.cs - *(mwooden3)*
 │   ├── NewGameStateManager.cs - *(mwooden3)*
 │   ├── PauseMenuManager.cs - *(mwooden3, tlagrange3)*
-│   ├── TrainingStateManager.cs - *(mwooden3)*
-│   ├── TriggerPlane.cs - *(mwooden3)*
+│   ├── TrainingStateManager.cs - *(mwooden3, daniel.zuniga)*
+│   ├── TriggerPlane.cs - *(mwooden3, daniel.zuniga)*
 │   └── LongClickButton.cs - *(mwooden3)*
 │   └── DialogueController.cs - *(mwooden3)*
 ├── HealthBarController.cs - *(daniel.zuniga, egilligan3, mwooden3, tlagrange3)*
@@ -327,7 +329,9 @@ The entirety of the 3rd Party assets that are in use are contained in `Assets/3r
 - [SkythianCat](https://assetstore.unity.com/packages/3d/environments/hand-painted-nature-kit-lite-69220#description) - Used for the training interaction stump the ent stands on
 - [SineVFX - Transluscent Crystals](https://assetstore.unity.com/packages/3d/environments/fantasy/translucent-crystals-106274)
 - [Hovl Studio](https://assetstore.unity.com/packages/vfx/particles/spells/epic-toon-vfx-2-157651) - Used for wind sword tornado particle effect, model, and textures
+- [Hit Impact Effects](https://assetstore.unity.com/packages/vfx/particles/hit-impact-effects-free-218385) - Used for visualizing hit impacts in combat
 - [minicrap](https://github.com/Srfigie/Unity-3d-TopDownMovement) - Some prebuilt art for minimap.
+- [ExplosiveLLC](https://assetstore.unity.com/packages/3d/animations/warrior-pack-bundle-1-free-36405) - Tornado (Wind Sword) attack animation
 
 ## Internal Team Documentation
 ### Beacons

@@ -45,6 +45,10 @@ public class Player : MonoBehaviour
     // Jumping
     private bool isJumping;
     private bool isGrounded;
+    private bool isFalling;
+    private float fallingTimeout = 5f;
+
+    private bool tryPickup;
 
     // Components of the player GameObject we reference
     private Rigidbody rigidBody;
@@ -69,6 +73,12 @@ public class Player : MonoBehaviour
     private static readonly int HorizontalInput = Animator.StringToHash("horizontalInput");
     private static readonly int VerticalInput = Animator.StringToHash("verticalInput");
     private static readonly int IsStrafing = Animator.StringToHash("isStrafing");
+
+    Transform touchToPickup;
+    Transform leftHand;
+    FruitDetector fruitDetector;
+    Transform fruitInHand;
+    Transform targetFruitForPickup;
 
     private void Awake()
     {
@@ -120,6 +130,8 @@ public class Player : MonoBehaviour
         animator.applyRootMotion = true;
         isGrounded = true;
         isJumping = false;
+        isFalling = false;
+        fallingTimeout = 5f;
     }
 
     private void FixedUpdate()
@@ -146,6 +158,48 @@ public class Player : MonoBehaviour
         {
             rigidBody.AddForce(Vector3.up * 5, ForceMode.VelocityChange);
             isJumping = false;
+        }
+
+        // Determine whether the player is going uphill or downhill:
+        // 1. Get the player's position on the map (horizontal plane).
+        float normalizedXposition = (transform.position.x / terrainSize.x);
+        float normalizedZposition = (transform.position.z / terrainSize.z);
+        // 2. Get the terrain's Normal on that point.
+        Vector3 groundNormal = Terrain.activeTerrain.terrainData.GetInterpolatedNormal(
+                normalizedXposition, normalizedZposition);
+        // 3. Get the angular difference between the terrain's Normal
+        // and the player's forward component.
+        // Note: Use an offset of -90 degrees to make a perfect
+        // alignment equal to 0.
+        // Uphill: positive angles.
+        // Downhill: negative angles.
+        float slopeAngle = (
+                Vector3.Angle(groundNormal, transform.forward) - 90f);
+        //Debug.Log("groundNormal: " + groundNormal);
+        //Debug.Log("slopeAngle: " + slopeAngle);
+
+        if (isFalling)
+        {
+            fallingTimeout -= Time.fixedDeltaTime;
+        }
+
+        if (isGrounded || (fallingTimeout < 0f))
+        {
+            //Debug.Log("Grounded!");
+            isFalling = false;
+            fallingTimeout = 5f;
+            animator.SetBool("IsFalling", false);
+            animator.SetBool("IsGrounded", true);
+        }
+        else
+        {
+            if (slopeAngle < -35f)
+            {
+                //Debug.Log("Airborne");
+                isFalling = true;
+                animator.SetBool("IsGrounded", false);
+                animator.SetBool("IsFalling", true);
+            }
         }
     }
 
@@ -208,6 +262,8 @@ public class Player : MonoBehaviour
         controls.Gameplay.LockOnCycleRight.performed += ctx => PlayerCombat.HandleLockOnCycle(false);
         controls.Gameplay.Slash.performed += ctx => PlayerCombat.PerformSlashAttack(primaryWeapon);
         controls.Gameplay.SpecialAttack.performed += ctx => PlayerCombat.PerformSpecialAttack(primaryWeapon);
+
+        controls.Gameplay.Pickup.performed += ctx => { tryPickup = true; };
     }
 
     private void OnEnable()
@@ -242,7 +298,12 @@ public class Player : MonoBehaviour
         animator = GetComponent<Animator>();
         capsuleCollider = GetComponent<CapsuleCollider>();
         rigidBody = GetComponent<Rigidbody>();
+        //sword = GameObject.Find("Sword").GetComponent<Sword>();
+        fruitDetector = GameObject.Find("FruitDetector").GetComponent<FruitDetector>();
+        leftHand = GameObject.Find("HoldInLeftHand").transform;
+        touchToPickup = GameObject.Find("TouchToPickupPosition").transform;
     }
+
 
     public bool CheckGroundNear(
         Vector3 charPos,
@@ -299,7 +360,31 @@ public class Player : MonoBehaviour
         /*
          * While locked on we should expect to always face the lock on target and our movements to be relative to it
          */
-        
+        var animState = animator.GetCurrentAnimatorStateInfo(0);
+
+        if (animState.IsName("Sheathe") || animState.IsName("Picking Up") || animState.IsName("DrawSword"))
+            return;
+
+        if (animState.IsName("Jump"))
+        {
+            rigidBody.AddForce(
+                new Vector3(
+                    rigidBody.velocity.normalized.x,
+                    0.4f * rigidBody.velocity.normalized.y,
+                    rigidBody.velocity.normalized.z),
+                ForceMode.VelocityChange);
+            return;
+        }
+
+        if (animState.IsName("Landing"))
+        {
+            UpdateControlState(false);
+        }
+        else
+        {
+            UpdateControlState(true);
+        }
+
         if (movementMagnitude >= 0.1)
         {
             if (PlayerCombat.isLockingOn)
@@ -376,6 +461,32 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        AnimatorPickupLogic();
+    }
+
+    void AnimatorPickupLogic()
+    {
+        if (!tryPickup)
+            return;
+
+        var animState = animator.GetCurrentAnimatorStateInfo(0);
+
+        if (!fruitDetector.FruitNearby() || !animState.IsName("MovementTree") || !fruitDetector.FruitNearby())
+        {
+            tryPickup = false;
+            return;
+        }
+
+        Debug.Log("Trying pickup!");
+
+        animator.SetTrigger("DoPickup");
+        tryPickup = false;
+        targetFruitForPickup = fruitDetector.GetClosestFruit();
+    }
+
+
     public bool ControlsEnabled => controls.Gameplay.enabled;
 
     /// <summary>
@@ -400,8 +511,64 @@ public class Player : MonoBehaviour
     /// </summary>
     public void StopAnimMotion()
     {
+        //Debug.Log("- StopAnimMotion -");
         animator.SetFloat("Speed", 0f);
+        animator.SetBool("IsFalling", false);
+        animator.SetBool("IsGrounded", true);
+        animator.Play("MovementTree");
         horizontalInput = 0;
         verticalInput = 0;
+        isGrounded = true;
+        isFalling = false;
+        fallingTimeout = 5f;
+    }
+
+
+
+    private void OnAnimatorIK(int layerIndex)
+    {
+        if (!animator)
+            return;
+
+        AnimatorStateInfo astate = animator.GetCurrentAnimatorStateInfo(0);
+        if (astate.IsName("Picking Up") && targetFruitForPickup)
+        {
+            float fruitContactWeight = animator.GetFloat("fruitClose");
+
+
+            Vector3 targetPosition = targetFruitForPickup.GetComponent<SphereCollider>().ClosestPoint(touchToPickup.position);
+
+            if (targetFruitForPickup != null)
+            {
+                animator.SetLookAtWeight(fruitContactWeight);
+                animator.SetLookAtPosition(targetPosition);
+                animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, fruitContactWeight);
+                animator.SetIKPosition(AvatarIKGoal.LeftHand, targetPosition);
+
+                if (fruitContactWeight > 0.95f)
+                {
+                    targetFruitForPickup.SetParent(leftHand);
+                    targetFruitForPickup.position = Vector3.Lerp(leftHand.position, targetFruitForPickup.position, 0.01f);
+                    targetFruitForPickup.GetComponent<Rigidbody>().isKinematic = true;
+                    targetFruitForPickup.GetComponent<BoxCollider>().enabled = false;
+
+                    // we have it now, it's not a nearby fruit anymore
+                    fruitInHand = targetFruitForPickup;
+                    fruitDetector.RemoveFruit(fruitInHand);
+                }
+            }
+        }
+        else
+        {
+            animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0);
+            animator.SetLookAtWeight(0);
+        }
+    }
+
+
+    protected void EatFruit()
+    {
+        fruitInHand.GetComponent<HealingApple>().BeConsumed(transform);
+        fruitInHand = null;
     }
 }

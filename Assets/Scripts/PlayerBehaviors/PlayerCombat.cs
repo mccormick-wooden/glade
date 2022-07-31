@@ -301,13 +301,6 @@ namespace PlayerBehaviors
             SetRightHandInUse();
             animator.CrossFade(animationString, 0.2f);
             lastAttackPerformed = animationString;
-
-            if (weapon.specialAttackPrefab != null)
-            {
-                var specialEffectInstance =
-                    Instantiate(weapon.specialAttackPrefab, transform.position, transform.rotation);
-                StartCoroutine(DestroySpecialEffect(specialEffectInstance));
-            }
         }
 
         private IEnumerator DestroySpecialEffect(GameObject instance)
@@ -338,6 +331,18 @@ namespace PlayerBehaviors
             }
 
             canCombo = animator.GetBool(CanCombo);
+        }
+
+        public void CastWindAttack()
+        {
+            var weapon = player.primaryWeapon;
+
+            if (weapon.specialAttackPrefab != null)
+            {
+                var specialEffectInstance =
+                    Instantiate(weapon.specialAttackPrefab, transform.position, transform.rotation);
+                StartCoroutine(DestroySpecialEffect(specialEffectInstance));
+            }
         }
         
         // Set an animation event calling this function at the keyframe you would like to start accepting a combo attack

@@ -16,6 +16,7 @@ namespace PowerUps
         public GameObject firstOptionButton;
         public GameObject secondOptionButton;
         public GameObject thirdOptionButton;
+        public GameObject noSelectButton;
 
         private BasePowerUp optionOne;
         private BasePowerUp optionTwo;
@@ -24,10 +25,21 @@ namespace PowerUps
         private Player Player => FindObjectOfType<Player>();
         private CinemachineBrain PlayerCamera => FindObjectOfType<CinemachineBrain>();
 
+        private CharacterPlayerControls controls;
+
         private void Awake()
         {
             _canvas = GetComponent<Canvas>();
             Utility.LogErrorIfNull(_canvas, "canvas", "PowerUpMenu could not find its canvas");
+        }
+
+        private void Update()
+        {
+            // If we mouse click on canvas, it deselects all buttons and makes
+            // keyboard/gamepad navigation broken. Select the invisible button
+            // instead.
+            if (EventSystem.current.currentSelectedGameObject == null)
+                EventSystem.current.SetSelectedGameObject(noSelectButton);
         }
 
         private void OnEnable()
@@ -38,12 +50,24 @@ namespace PowerUps
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(firstOptionButton);
 
+            // Heavy-handed way to keep cursor hidden until mouse moves
+            controls = new CharacterPlayerControls();
+            controls.Gameplay.Disable();
+            controls.PauseGame.Enable();
+            controls.PauseGame.MouseMove.performed += _ => {
+                if (isActiveAndEnabled)
+                    Utility.ShowCursor();
+            };
+            Utility.HideCursor();
+
             PrepareOptions();
         }
 
         private void OnDisable()
         {
             SetPauseState(false);
+            Utility.HideCursor();
+            controls.Dispose();
         }
 
         public void OnClick(int buttonNumber)
