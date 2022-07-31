@@ -16,7 +16,6 @@ public class CrystalController : MonoBehaviour
     public bool effectActive { get; private set; }
     public AudioSource crystalAudio;
     public AudioSource growAudio;
-    public AudioSource damagedNoise;
 
     [Header("Lightning Effect")]
     public GameObject LightningPrefab;
@@ -187,6 +186,11 @@ public class CrystalController : MonoBehaviour
     private void OnDisable()
     {
         DestroyAllLightning();
+    }
+
+    public bool IsZappingMe(GameObject target)
+    {
+        return lightningByName.ContainsKey(target.gameObject.name);
     }
 
     private void CreateLightning(GameObject target)

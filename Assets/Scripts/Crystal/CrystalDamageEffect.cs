@@ -30,7 +30,7 @@ public class CrystalDamageEffect : BaseCrystalEffect
         foreach (KeyValuePair<string, float> crystal in nearbyCrystals)
         {
             GameObject thisCrystal = GameObject.Find(crystal.Key);
-            if (thisCrystal != null && thisCrystal.activeInHierarchy)
+            if (thisCrystal != null && thisCrystal.activeInHierarchy && thisCrystal.GetComponent<CrystalController>().IsZappingMe(gameObject))
             {
                 float multiplier = crystal.Value;
                 CrystalWeapon crystalWeapon = new CrystalWeapon(hpPerSecond * multiplier);
