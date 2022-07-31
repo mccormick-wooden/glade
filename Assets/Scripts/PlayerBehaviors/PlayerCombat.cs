@@ -32,6 +32,7 @@ namespace PlayerBehaviors
         public float manaRechargePerSecond = 5;
         public float lastCastTime = 0f;
         public HealthBarController manaBar;
+        public AudioSource castFailSound;
         
         private void Start()
         {
@@ -354,8 +355,6 @@ namespace PlayerBehaviors
         {
             var weapon = player.primaryWeapon;
 
-            Debug.Log($"Current Mana: {manaBar.CurrentHp} // wind attack: {windAttackMana}");
-
             if (weapon.specialAttackPrefab != null)
             {
                 if (manaBar?.CurrentHp >= windAttackMana)
@@ -368,7 +367,7 @@ namespace PlayerBehaviors
                 }
                 else
                 {
-                    // make whiff sound
+                    castFailSound.Play();
                 }
             }
         }
