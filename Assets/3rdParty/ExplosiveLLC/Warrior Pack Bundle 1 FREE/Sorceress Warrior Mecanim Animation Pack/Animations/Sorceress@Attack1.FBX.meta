@@ -472,6 +472,13 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.6942974
+        functionName: EnableAttacking
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: d543112648469e046bfad89a78a78425, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1
