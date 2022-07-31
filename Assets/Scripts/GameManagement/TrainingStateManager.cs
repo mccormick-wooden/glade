@@ -149,6 +149,7 @@ public class TrainingStateManager : BaseStateManager
                 "When you see those pesky ALIENS, just run right up to 'em! Use the LEFT STICK or the W/A/S/D keys to move. Don't be shy!",
                 "Then once you're close, make sure you use RB or LEFT CLICK (on your mouse) to swing that sword until the aliens are good and dead!",
                 "When at range, you can also use your WIND ATTACK - use RT / R key to send a couple deadly twisters at those aliens from a safe distance!",
+                "Keep an eye on your blue MANA bar in the upper left, though! Your WIND ATTACK uses that up!",
                 "If you need a quick second to collect your thoughts, use START or the ESC key to pause! Mental health is important!",
                 "Oh crap, ALIENS INCOMING!!!"
             }
