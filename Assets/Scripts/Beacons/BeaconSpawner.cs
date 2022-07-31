@@ -17,6 +17,8 @@ namespace Beacons
         /// </summary>
         public Action AllBeaconsDied { get; set; }
 
+        public Action BeaconDied { get; set; }
+
         /// <summary>
         /// Event indicating a new beacon has landed. Provides a reference to the landed beacon GameObject.
         /// </summary>
@@ -141,6 +143,8 @@ namespace Beacons
 
         public void OnBeaconDeath(IDamageable damageModel, string name, int instanceId)
         {
+            BeaconDied?.Invoke();
+
             damageModel.Died -= OnBeaconDeath;
 
             totalBeaconsDiedCount++;

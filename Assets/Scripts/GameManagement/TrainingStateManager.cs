@@ -124,6 +124,9 @@ public class TrainingStateManager : BaseStateManager
     private BasePowerUp appliedPowerUp = null;
     private PowerUpMenu powerUpMenu;
 
+    // Glade health
+    private GladeHealthManager gladeHealthManager;
+
     private Dictionary<TrainingState, List<string>> dialogueDictionary = new Dictionary<TrainingState, List<string>>
     {
         //{ TrainingState.IntroDialogue, new List<string>() { "Ah, Warden of The Glades! You've arrived just in time!",
@@ -157,7 +160,10 @@ public class TrainingStateManager : BaseStateManager
                 "Be especially careful around the MUSHROOM BOI - those ones have an explosive spore attack, and it is VERY deadly!",
                 "There are other types of aliens I've seen, too - but don't have intel for ya. Sorry! You're gonna have to figure those out on your own!",
                 "One tip - you can lock on to enemies by clicking the LEFT STICK or F key, and cycle through enemies using LEFT/RIGHT DPAD or Q / E keys!",
-                "Super helpful if you're getting swarmed and you're tryna drop 'em one at a time!"
+                "Super helpful if you're getting swarmed and you're tryna drop 'em one at a time!",
+                "One other thing to keep in mind - the more aliens that are alive, the faster the Health of The Glade will be depleted!",
+                "See that green bar in the top left? That's the Health of The Glade! Don't let it get too low or all is lost!",
+                "I can help ya out if it gets too low up here - but down there, you're on your own, Warden!"
             }
         },
         { TrainingState.CrystalIntroDialogue, new List<string>()
@@ -173,7 +179,8 @@ public class TrainingStateManager : BaseStateManager
                 "Ah, a BEACON! These things are falling from the sky, and that's how the aliens are getting here I reckon.",
                 "Until you kill the BEACON, the aliens will keep flooding the area. I don't get it either. How do they all fit in that thing? It's not even that big.",
                 "Anyway, the aliens will defend the BEACONS with their lives - be careful, Warden!",
-                "Kill the aliens first, and we'll deal with the CRYSTAL and BEACON next."
+                "I almost forgot to mention, killing BEACONS will help restore the Health of The Glade!",
+                "Kill the aliens first to protect the Health of The Glade, and we'll deal with the CRYSTAL and BEACON next."
             }
         },
         { TrainingState.PostEnemyCombatDialogue, new List<string>()
@@ -199,7 +206,7 @@ public class TrainingStateManager : BaseStateManager
                "Huzzah! Great work, Warden.",
                "You'll see a lot more BEACONS soon - killing them is how I (uhh, I mean we) win!",
                "They'll show up as BLUE on your minimap - I'll give you your minimap before I send you off to the frontlines, don't worry!",
-               "Also, you might be wondering what that Purple Thing is - just so happens, it's a present from me to you! Yep!",
+               "Also, you might be wondering what that Green Thing is - just so happens, it's a present from me to you! Yep!",
                "Go on ahead and pick it up - it'll let you enhance your abilities, and the best part is you get to choose how!",
             }
         },
@@ -223,6 +230,9 @@ public class TrainingStateManager : BaseStateManager
     protected override void OnSceneLoaded()
     {
         #region get references
+        gladeHealthManager = GameObject.Find("GladeHealthManager").GetComponent<GladeHealthManager>();
+        Utility.LogErrorIfNull(gladeHealthManager, nameof(gladeHealthManager));
+
         trainingHostVirtualCamera = GameObject.Find(trainingHostVirtualCameraName)?.GetComponent<CinemachineVirtualCamera>();
         Utility.LogErrorIfNull(trainingHostVirtualCamera, nameof(trainingHostVirtualCamera));
 
@@ -529,9 +539,12 @@ public class TrainingStateManager : BaseStateManager
         if (trainingState != TrainingState.EnemyCombat)
             return;
 
+        DynamicEnemies.ForEach(e => gladeHealthManager.OnEnemySpawned(e.GetComponent<IDamageable>()));
+
         onCombatCompleted = (IDamageable damageable, string name, int instanceId) =>
         {
             damageable.Died -= onCombatCompleted;
+            gladeHealthManager.OnEnemyDied(damageable);
 
             if (NextStateKillList.All(d => d.IsDead))
                 Invoke("NextTrainingState", postCombatWait);

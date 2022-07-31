@@ -1186,6 +1186,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 4527364615525688719, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4527364615525688719, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4574485510833592165, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_Layer
       value: 9
@@ -1928,3 +1936,64 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 731a3315ef125449db8edb7ab6702daf, type: 3}
+--- !u!1001 &6988060123453411539
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4446818823316450869, guid: 1bd3da7529820744e97f0421f61c2149, type: 3}
+      propertyPath: m_Name
+      value: GladeHealthManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8018116178960622709, guid: 1bd3da7529820744e97f0421f61c2149, type: 3}
+      propertyPath: gladeHealthReductionFactor
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 9104192423345426185, guid: 1bd3da7529820744e97f0421f61c2149, type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9104192423345426185, guid: 1bd3da7529820744e97f0421f61c2149, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 173.89047
+      objectReference: {fileID: 0}
+    - target: {fileID: 9104192423345426185, guid: 1bd3da7529820744e97f0421f61c2149, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 34.207443
+      objectReference: {fileID: 0}
+    - target: {fileID: 9104192423345426185, guid: 1bd3da7529820744e97f0421f61c2149, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 118.92259
+      objectReference: {fileID: 0}
+    - target: {fileID: 9104192423345426185, guid: 1bd3da7529820744e97f0421f61c2149, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9104192423345426185, guid: 1bd3da7529820744e97f0421f61c2149, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9104192423345426185, guid: 1bd3da7529820744e97f0421f61c2149, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9104192423345426185, guid: 1bd3da7529820744e97f0421f61c2149, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9104192423345426185, guid: 1bd3da7529820744e97f0421f61c2149, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9104192423345426185, guid: 1bd3da7529820744e97f0421f61c2149, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9104192423345426185, guid: 1bd3da7529820744e97f0421f61c2149, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1bd3da7529820744e97f0421f61c2149, type: 3}

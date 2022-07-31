@@ -36,7 +36,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private GameObject enemySpawnParticlePrefab;
 
-    Queue<GameObject> enemiesQueue;
+    public Action<IDamageable> EnemySpawned;
 
     const int MELEE_ENEMY_TYPE = 0;
     const int RANGED_ENEMY_TYPE = 1;
@@ -100,7 +100,6 @@ public class EnemySpawner : MonoBehaviour
     void GenerateEnemy(GameObject enemyPrefab, Vector3 location)
     {
         GameObject enemiesParent = GameObject.Find("EnemiesParent");
-        Debug.Log("Make a bad guy!");
 
         Vector3 newPosition;
         bool FoundValidPosition = FindValidPlacement(location, out newPosition);
@@ -117,6 +116,8 @@ public class EnemySpawner : MonoBehaviour
         particles.transform.position = newPosition;
 
         lastSpawnTime = DateTime.Now;
+
+        EnemySpawned?.Invoke(g.GetComponent<IDamageable>());
     }
 
     bool FindValidPlacement(Vector3 position, out Vector3 newPosition)
@@ -161,7 +162,6 @@ public class EnemySpawner : MonoBehaviour
         for (int i = 0; i < numberOfMeleeEnemies; i++)
         {
             GenerateEnemy(possibleEnemies[MELEE_ENEMY_TYPE], crashedBeacon.transform.position);
-            Debug.Log("Generated melee enemy");
 
             yield return new WaitForSeconds(Random.Range(0.25f, 0.5f));
         }
@@ -169,7 +169,6 @@ public class EnemySpawner : MonoBehaviour
         for (int i = 0; i < numberOfRangedEnemies; i++)
         {
             GenerateEnemy(possibleEnemies[RANGED_ENEMY_TYPE], crashedBeacon.transform.position);
-            Debug.Log("Generated ranged enemy");
 
             yield return new WaitForSeconds(Random.Range(0.25f, 0.5f));
         }
