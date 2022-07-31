@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using Assets.Scripts.Interfaces;
 using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using System.Collections.Generic;
+using DigitalRuby.PyroParticles;
 
 namespace Beacons
 {
@@ -29,6 +31,8 @@ namespace Beacons
         /// </summary>
         [Header("Config Settings")] [SerializeField]
         public GameObject beaconPrefab;
+
+        public GameObject fallingBeaconPrefab;
 
         /// <summary>
         /// The time in seconds that will elapse before the first beacon is spawned
@@ -120,16 +124,40 @@ namespace Beacons
             var beaconSpawnPoint = beaconSpawnPoints[0];
             beaconSpawnPoints.RemoveAt(0);
 
+            // Instantiate the falling beacon prefab and listen for the collision delegate
             var transformRef = beaconSpawnPoint.transform;
-            var crashedBeacon = Instantiate(beaconPrefab, transformRef.position, transformRef.rotation, transform)?.GetComponent<CrashedBeacon>();
+            var transformPositionRef = transformRef.position;
+            var fallingBeaconAdjustedPosition = new Vector3(transformPositionRef.x, transformPositionRef.y + 100,
+                transformPositionRef.z);
+
+            var fallingBeaconRotation = new Vector3(90, 0, 0);
+            var fallingBeacon = Instantiate(fallingBeaconPrefab, fallingBeaconAdjustedPosition,
+                Quaternion.Euler(fallingBeaconRotation),
+                transform)?.GetComponent<FireProjectileScript>();
+
+            Utility.LogErrorIfNull(fallingBeacon, "fallingBeacon");
+
+            if (fallingBeacon != null)
+            {
+                fallingBeacon.CollisionDelegate += OnBeaconLanded;
+            }
+        }
+
+        private void OnBeaconLanded(FireProjectileScript script, Vector3 landingSpot)
+        {
+            script.CollisionDelegate -= OnBeaconLanded;
+
+            var crashedBeacon = Instantiate(beaconPrefab, landingSpot, Quaternion.identity, transform)
+                ?.GetComponent<CrashedBeacon>();
 
             if (crashedBeacon == null)
+            {
                 Utility.LogErrorIfNull(crashedBeacon, nameof(crashedBeacon));
+                return;
+            }
 
             OnBeaconReadyForDamage(crashedBeacon.gameObject);
-
             IncrementBeaconCount();
-
             Debug.Log("Spawned new beacon!");
         }
 
