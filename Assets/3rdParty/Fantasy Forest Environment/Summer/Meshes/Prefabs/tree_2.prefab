@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 33176762718308944}
   - component: {fileID: 23403117361544356}
   - component: {fileID: 64749296920674906}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: tree_2_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 33828334795380638}
   - component: {fileID: 23190961320811630}
   - component: {fileID: 64793277223056336}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: tree_2_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -204,7 +204,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4965796868601814}
   - component: {fileID: 205269496085447992}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: tree_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -277,7 +277,7 @@ GameObject:
   - component: {fileID: 33162777224131880}
   - component: {fileID: 23822808657476892}
   - component: {fileID: 64369648735167324}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: tree_2_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -373,7 +373,7 @@ GameObject:
   - component: {fileID: 5646339002576841384}
   - component: {fileID: 1193732458831357281}
   - component: {fileID: 3255927937384046034}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: navmeshobject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -453,6 +453,10 @@ PrefabInstance:
     - target: {fileID: 8104417264528016802, guid: 10cb3205bccaf98418b9b680667af607, type: 3}
       propertyPath: m_Name
       value: Tree_2_Billboard
+      objectReference: {fileID: 0}
+    - target: {fileID: 8104417264528016802, guid: 10cb3205bccaf98418b9b680667af607, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8877575890721840920, guid: 10cb3205bccaf98418b9b680667af607, type: 3}
       propertyPath: m_RootOrder

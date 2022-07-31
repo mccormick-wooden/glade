@@ -159,7 +159,7 @@ Terrain:
   m_ReflectionProbeUsage: 1
   m_MaterialTemplate: {fileID: 10652, guid: 0000000000000000f000000000000000, type: 0}
   m_BakeLightProbesForTrees: 1
-  m_PreserveTreePrototypeLayers: 0
+  m_PreserveTreePrototypeLayers: 1
   m_DeringLightProbesForTrees: 1
   m_ScaleInLightmap: 0.8
   m_LightmapParameters: {fileID: 15203, guid: 0000000000000000f000000000000000, type: 0}
@@ -3409,7 +3409,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 122354, guid: 6d5a616533624dd47bb2083454658a7a, type: 3}
       propertyPath: m_Name
-      value: campfire_lit
+      value: campfire_lit_camp
       objectReference: {fileID: 0}
     - target: {fileID: 465258, guid: 6d5a616533624dd47bb2083454658a7a, type: 3}
       propertyPath: m_RootOrder

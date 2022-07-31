@@ -609,7 +609,10 @@ public class BaseEnemy : MonoBehaviour
     protected void DeterminePriority()
     {
         if (damageable.IsDead)
+        {
             priority = Priority.Dead;
+            return;
+        }
 
         bool couldSeePlayerLastFrame = canSeePlayer;
 
@@ -969,7 +972,8 @@ public class BaseEnemy : MonoBehaviour
             transform.Find("Hovering Health Bar").gameObject.SetActive(false);
             rigidBody.detectCollisions = false;
             agent.enabled = false;
-
+            thoughtBubble.Hide();
+            thoughtBubble.enabled = false;
             this.enabled = false;
             return;
         }

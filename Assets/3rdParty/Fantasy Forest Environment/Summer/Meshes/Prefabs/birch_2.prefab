@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 448536}
   - component: {fileID: 205379619468188478}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: birch_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 23377470272709050}
   - component: {fileID: 33991268942382478}
   - component: {fileID: 136002102591560464}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: birch_2(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -168,7 +168,7 @@ GameObject:
   - component: {fileID: 3685121876409557856}
   - component: {fileID: 6931173418505094634}
   - component: {fileID: 6692525322412390925}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: navmeshobject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -248,6 +248,10 @@ PrefabInstance:
     - target: {fileID: 3698857011866814875, guid: 578fa06b573f78042afe775781fadf4c, type: 3}
       propertyPath: m_Name
       value: Birch_2_billboard
+      objectReference: {fileID: 0}
+    - target: {fileID: 3698857011866814875, guid: 578fa06b573f78042afe775781fadf4c, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4043997677803311905, guid: 578fa06b573f78042afe775781fadf4c, type: 3}
       propertyPath: m_RootOrder

@@ -16,6 +16,8 @@ public class AOEAttack : BaseWeapon
         creationTime = DateTime.Now;
         InUse = true;
         collider = GetComponent<Collider>();
+
+        EventManager.TriggerEvent<FairyAOEAttackEvent, Vector3>(transform.position);
     }
 
     protected void Update()

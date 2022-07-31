@@ -4924,3 +4924,6 @@ MonoBehaviour:
   currentAttackDamage: 20
   TargetTags:
   - Player
+  explodeSound: {fileID: 8300000, guid: 50cfa555aba5d5448991263f92fed007, type: 3}
+  explodePitch: 0.5
+  explodeVolume: 0.9

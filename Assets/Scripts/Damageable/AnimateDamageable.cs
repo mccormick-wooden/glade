@@ -13,6 +13,14 @@ namespace Assets.Scripts.Damageable
 
         [SerializeField] private string dieAnimTrigger;
 
+        [SerializeField] private AudioClip takeDamageSoundEffect;
+
+        [SerializeField] private AudioClip dieSoundEffect;
+
+        [SerializeField] private float dieSoundEffectPitch;
+
+        [SerializeField] private float dieSoundEffectVolume;
+
         protected override void Start()
         {
             base.Start();
@@ -31,12 +39,16 @@ namespace Assets.Scripts.Damageable
             if (IsDead)
                 return;
 
+            //EventManager.TriggerEvent<MonsterTakeDamageEvent, Vector3, AudioClip>(transform.position, takeDamageSoundEffect);
+
             animator.SetTrigger(applyDamageAnimTrigger);
             base.ApplyDamage(attackingWeapon, modifier);
         }
 
         protected override void Die()
         {
+            EventManager.TriggerEvent<MonsterDieEvent, Vector3, AudioClip, float, float>(transform.position, dieSoundEffect, dieSoundEffectPitch, dieSoundEffectVolume);
+
             animator.SetTrigger(dieAnimTrigger);
             base.Die();
         }

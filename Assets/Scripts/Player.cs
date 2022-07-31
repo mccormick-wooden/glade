@@ -80,6 +80,16 @@ public class Player : MonoBehaviour
     Transform fruitInHand;
     Transform targetFruitForPickup;
 
+    [SerializeField]
+    Transform leftFoot;
+    
+    [SerializeField]
+    Transform rightFoot;
+
+    private bool leftFootDown = false;
+    private bool rightFootDown = false;
+    public float maxDistanceToGroundForFootstep;
+
     private void Awake()
     {
         # region CombatAwake
@@ -299,7 +309,7 @@ public class Player : MonoBehaviour
         capsuleCollider = GetComponent<CapsuleCollider>();
         rigidBody = GetComponent<Rigidbody>();
         //sword = GameObject.Find("Sword").GetComponent<Sword>();
-        fruitDetector = GameObject.Find("FruitDetector").GetComponent<FruitDetector>();
+        fruitDetector = GameObject.Find("FruitDetector")?.GetComponent<FruitDetector>();
         leftHand = GameObject.Find("HoldInLeftHand").transform;
         touchToPickup = GameObject.Find("TouchToPickupPosition").transform;
     }
@@ -387,6 +397,8 @@ public class Player : MonoBehaviour
 
         if (movementMagnitude >= 0.1)
         {
+            CheckFootSounds();
+
             if (PlayerCombat.isLockingOn)
             {
                 // Look at the target
@@ -473,7 +485,7 @@ public class Player : MonoBehaviour
 
         var animState = animator.GetCurrentAnimatorStateInfo(0);
 
-        if (!fruitDetector.FruitNearby() || !animState.IsName("MovementTree") || !fruitDetector.FruitNearby())
+        if (!fruitDetector || !fruitDetector.FruitNearby() || !animState.IsName("MovementTree") || !fruitDetector.FruitNearby())
         {
             tryPickup = false;
             return;
@@ -570,5 +582,69 @@ public class Player : MonoBehaviour
     {
         fruitInHand.GetComponent<HealingApple>().BeConsumed(transform);
         fruitInHand = null;
+    }
+
+    void EmitFootstep1FromAnim()
+    {
+        //EventManager.TriggerEvent<PlayerFootstepEvent, Vector3, int>(transform.position, 0);
+    }
+
+    void EmitFootstep2FromAnim()
+    {
+        //EventManager.TriggerEvent<PlayerFootstepEvent, Vector3, int>(transform.position, 1);
+    }
+
+    public void CheckFootSounds()
+    {
+        if (animator == null)
+        {
+            return;
+        }
+
+        RaycastHit hit;
+        Ray ray;
+
+        ray = new Ray(leftFoot.position + Vector3.up, Vector3.down);
+        bool leftFootDidHit = Physics.Raycast(ray, out hit, maxDistanceToGroundForFootstep + 1f, whatIsGround);
+
+        // if left foot was down, but we no longer hit, left foot is up!
+        if (leftFootDown && !leftFootDidHit)
+        {
+            leftFootDown = false;
+        }
+        else if (!leftFootDown && leftFootDidHit)
+        {
+            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Terrain"))
+            {
+                Vector3 hitPosition = hit.point;
+
+                EventManager.TriggerEvent<PlayerFootstepEvent, Vector3, int>(hitPosition, 0);
+                leftFootDown = true;
+            }
+
+        }
+
+        ray = new Ray(rightFoot.position + Vector3.up, Vector3.down);
+        bool rightFootDidHit = Physics.Raycast(ray, out hit, maxDistanceToGroundForFootstep + 1f, whatIsGround);
+
+        // if left foot was down, but we no longer hit, left foot is up!
+        if (rightFootDown && !rightFootDidHit)
+        {
+            rightFootDown = false;
+        }
+        else if (!rightFootDown && rightFootDidHit)
+        {
+            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Terrain"))
+            {
+                Vector3 hitPosition = hit.point;
+
+                EventManager.TriggerEvent<PlayerFootstepEvent, Vector3, int>(hitPosition, 1);
+                rightFootDown = true;
+            }
+
+        }
+
+
+
     }
 }
