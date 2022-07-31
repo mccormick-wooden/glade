@@ -27,6 +27,7 @@ public class LongClickButton : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     {
         Reset();
         controls = new CharacterPlayerControls();
+        controls.Gameplay.Disable();
         controls.SkipScene.Enable();
     }
 
