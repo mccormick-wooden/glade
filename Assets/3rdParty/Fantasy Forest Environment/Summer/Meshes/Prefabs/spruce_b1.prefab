@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 33550498837834154}
   - component: {fileID: 23750454792005588}
   - component: {fileID: 136321153742087138}
-  m_Layer: 11
+  m_Layer: 12
   m_Name: spruce_b1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4720737043584738}
   - component: {fileID: 205804444380428956}
-  m_Layer: 11
+  m_Layer: 12
   m_Name: spruce_b1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 1375086330985177089}
   - component: {fileID: 4870436496630694474}
   - component: {fileID: 6603551629043284389}
-  m_Layer: 11
+  m_Layer: 12
   m_Name: navmeshobject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -250,7 +250,7 @@ GameObject:
   - component: {fileID: 5264444039163659556}
   - component: {fileID: 393067256629477870}
   - component: {fileID: 7925496557957386590}
-  m_Layer: 11
+  m_Layer: 12
   m_Name: Spruce_b1_billboard(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

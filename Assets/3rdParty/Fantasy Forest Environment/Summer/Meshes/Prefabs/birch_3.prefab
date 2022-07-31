@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 495872}
   - component: {fileID: 205238460090170520}
-  m_Layer: 11
+  m_Layer: 12
   m_Name: birch_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 33986805187970880}
   - component: {fileID: 23377708596289968}
   - component: {fileID: 136555835284548320}
-  m_Layer: 11
+  m_Layer: 12
   m_Name: birch_3(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -168,7 +168,7 @@ GameObject:
   - component: {fileID: 2430318173525834704}
   - component: {fileID: 244897420183440404}
   - component: {fileID: 610198868768867846}
-  m_Layer: 11
+  m_Layer: 12
   m_Name: navmeshobject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,7 +251,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5962358502366368693, guid: 6a6ed4d1079a8a74381baa3c2a49b652, type: 3}
       propertyPath: m_Layer
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6482190435319253263, guid: 6a6ed4d1079a8a74381baa3c2a49b652, type: 3}
       propertyPath: m_RootOrder
