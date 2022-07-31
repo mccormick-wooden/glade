@@ -172,11 +172,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   beaconPrefab: {fileID: 2775764871604184902, guid: 7c11c1d845754904a87e6ffef3ec1031, type: 3}
+  fallingBeaconPrefab: {fileID: 141530, guid: 369eee557c4d41c479225bf744fa6a5f, type: 3}
   initialBeaconSpawnTime: 1
   minSpawnWaitTime: 30
   maxSpawnWaitTime: 180
   maxConcurrentBeacons: 5
-  maxTotalBeacons: 2
   beaconCountText: {fileID: 0}
   currentBeaconCount: 0
   totalBeaconsSpawnedCount: 0

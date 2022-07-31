@@ -568,6 +568,10 @@ MonoBehaviour:
   animator: {fileID: 0}
   applyDamageAnimTrigger: Take Damage
   dieAnimTrigger: Die
+  takeDamageSoundEffect: {fileID: 8300000, guid: f4f24821da6c5584ab9231d789618e99, type: 3}
+  dieSoundEffect: {fileID: 8300000, guid: 3610dd139f4ce3e4cb9398b8d0636c3a, type: 3}
+  dieSoundEffectPitch: 1
+  dieSoundEffectVolume: 0.33
 --- !u!195 &8967193376321235569
 NavMeshAgent:
   m_ObjectHideFlags: 0
