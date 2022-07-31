@@ -15,5 +15,10 @@ public class MinimapCamera : MonoBehaviour
     private void LateUpdate()
     {
         transform.position = new Vector3 { x = trackedTransform.position.x, y = trackedTransform.position.y + 100, z = trackedTransform.position.z };
+
+        // Rotate with camera
+        Vector3 targetRotation = transform.rotation.eulerAngles;
+        targetRotation.y = Camera.main.transform.rotation.eulerAngles.y;
+        transform.rotation = Quaternion.Euler(targetRotation.x, targetRotation.y, targetRotation.z);
     }
 }
