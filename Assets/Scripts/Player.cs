@@ -47,6 +47,7 @@ public class Player : MonoBehaviour
     private bool isGrounded;
     private bool isFalling;
     private float fallingTimeout = 5f;
+    private bool applyInitialFallMomentum = true;
 
     private bool tryPickup;
 
@@ -132,6 +133,7 @@ public class Player : MonoBehaviour
         isJumping = false;
         isFalling = false;
         fallingTimeout = 5f;
+        applyInitialFallMomentum = true;
     }
 
     private void FixedUpdate()
@@ -188,6 +190,7 @@ public class Player : MonoBehaviour
             //Debug.Log("Grounded!");
             isFalling = false;
             fallingTimeout = 5f;
+            applyInitialFallMomentum = true;
             animator.SetBool("IsFalling", false);
             animator.SetBool("IsGrounded", true);
         }
@@ -365,20 +368,22 @@ public class Player : MonoBehaviour
         if (animState.IsName("Sheathe") || animState.IsName("Picking Up") || animState.IsName("DrawSword"))
             return;
 
-        if (animState.IsName("Jump"))
+        if (animState.IsName("Jump") && applyInitialFallMomentum)
         {
             rigidBody.AddForce(
                 new Vector3(
-                    rigidBody.velocity.normalized.x,
-                    0.4f * rigidBody.velocity.normalized.y,
-                    rigidBody.velocity.normalized.z),
+                    1.25f * rigidBody.velocity.x,
+                    rigidBody.velocity.y,
+                    1.25f * rigidBody.velocity.z),
                 ForceMode.VelocityChange);
+            applyInitialFallMomentum = false;
             return;
         }
 
         if (animState.IsName("Landing"))
         {
             UpdateControlState(false);
+            rigidBody.velocity = Vector3.zero;
         }
         else
         {
@@ -521,6 +526,7 @@ public class Player : MonoBehaviour
         isGrounded = true;
         isFalling = false;
         fallingTimeout = 5f;
+        applyInitialFallMomentum = true;
     }
 
 
