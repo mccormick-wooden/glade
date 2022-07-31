@@ -73,6 +73,11 @@ public class EnemySpawner : MonoBehaviour
             beaconSpawner.NewBeaconLanded += NewBeaconEventHandler;
     }
 
+    public uint GetMaximumNumberOfEnemiesPerBeacon()
+    {
+        return maximumNumberOfEnemiesPerBeacon;
+    }
+
     private GameObject GetRandomEnemyPrefabFromList(List<GameObject> enemyPrefabs)
     {
         var randomEnemy = Random.Range(0, enemyPrefabs.Count);
