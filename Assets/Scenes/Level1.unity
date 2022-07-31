@@ -984,11 +984,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 683423952098063494, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 7.5692425e-10
+      value: -7.5692425e-10
       objectReference: {fileID: 0}
     - target: {fileID: 683423952098063494, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 1.1916483e-10
+      value: -1.1916483e-10
       objectReference: {fileID: 0}
     - target: {fileID: 683423952098063495, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_Layer
@@ -1008,11 +1008,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 683423952174336651, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000019067704
+      value: -0.000000019067704
       objectReference: {fileID: 0}
     - target: {fileID: 683423952174336651, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0000000025489073
+      value: 0.0000000025489073
       objectReference: {fileID: 0}
     - target: {fileID: 683423952174336692, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_Layer
@@ -1926,6 +1926,10 @@ PrefabInstance:
     - target: {fileID: 4446818823316450869, guid: 1bd3da7529820744e97f0421f61c2149, type: 3}
       propertyPath: m_Name
       value: GladeHealthManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8018116178960622709, guid: 1bd3da7529820744e97f0421f61c2149, type: 3}
+      propertyPath: gladeHealthReductionFactor
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 9104192423345426185, guid: 1bd3da7529820744e97f0421f61c2149, type: 3}
       propertyPath: m_RootOrder
