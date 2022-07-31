@@ -26,9 +26,17 @@ namespace PlayerBehaviors
         public Transform currentLockedOnTarget;
 
         [SerializeField] private float maxLockOnDistance;
+
+        public float windAttackMana = 10f;
+        public float manaRechargeDelay = 2;
+        public float manaRechargePerSecond = 5;
+        public float lastCastTime = 0f;
+        public HealthBarController manaBar;
         
         private void Start()
         {
+            if (manaBar == null)
+                Debug.LogError("Couldn't find mana bar");
             animator = GetComponent<Animator>();
             player = GetComponent<Player>();
             playerWeaponManager = GetComponent<PlayerWeaponManager>();
@@ -42,8 +50,17 @@ namespace PlayerBehaviors
             }
         }
 
+        private void UpdateMana()
+        {
+            if (Time.time - lastCastTime >= manaRechargeDelay)
+            {
+                manaBar.CurrentHp += manaRechargePerSecond * Time.deltaTime;
+            }
+        }
+
         private void Update()
         {
+            UpdateMana();
             ReadAnimatorParameters();
             DetectLockOnOutOfRange();
             // DetectLockOnOutOfSight(); Reintroduce if we want to break lock-on when losing line of sight
@@ -337,11 +354,22 @@ namespace PlayerBehaviors
         {
             var weapon = player.primaryWeapon;
 
+            Debug.Log($"Current Mana: {manaBar.CurrentHp} // wind attack: {windAttackMana}");
+
             if (weapon.specialAttackPrefab != null)
             {
-                var specialEffectInstance =
-                    Instantiate(weapon.specialAttackPrefab, transform.position, transform.rotation);
-                StartCoroutine(DestroySpecialEffect(specialEffectInstance));
+                if (manaBar?.CurrentHp >= windAttackMana)
+                {
+                    manaBar.CurrentHp -= windAttackMana;
+                    lastCastTime = Time.time;
+                    var specialEffectInstance =
+                        Instantiate(weapon.specialAttackPrefab, transform.position, transform.rotation);
+                    StartCoroutine(DestroySpecialEffect(specialEffectInstance));
+                }
+                else
+                {
+                    // make whiff sound
+                }
             }
         }
         
