@@ -485,7 +485,7 @@ public class Player : MonoBehaviour
 
         var animState = animator.GetCurrentAnimatorStateInfo(0);
 
-        if (!fruitDetector.FruitNearby() || !animState.IsName("MovementTree") || !fruitDetector.FruitNearby())
+        if (!fruitDetector || !fruitDetector.FruitNearby() || !animState.IsName("MovementTree") || !fruitDetector.FruitNearby())
         {
             tryPickup = false;
             return;
