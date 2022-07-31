@@ -19,6 +19,10 @@ public class GameManager : MonoBehaviour
 
     public bool IsMidTransition { get; private set; }
 
+    [Header("Cursor")]
+    public Texture2D cursorTexture;
+    public Vector2 cursorTextureTargetPoint;
+
     private AudioSource backgroundAudioSource;
 
     private Animator transitionCanvasAnimationController;
@@ -52,6 +56,8 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         UpdateGameState(startingState);
+        Cursor.SetCursor(cursorTexture, cursorTextureTargetPoint, CursorMode.Auto);
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     public void UpdateGameState(GameState newState, bool withTransition = true)

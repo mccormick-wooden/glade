@@ -132,4 +132,22 @@ public class Utility : MonoBehaviour
         LogErrorIfNull(button, nameof(button));
         button.onClick.RemoveAllListeners();
     }
+
+    public static void ShowCursor()
+    {
+        if (Cursor.visible == false)
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
+    }
+
+    public static void HideCursor()
+    {
+        if (Cursor.visible == true)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+    }
 }
