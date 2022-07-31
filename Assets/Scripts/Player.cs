@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
     float downpullForce = 0f;
     float horizontalMultiplier = 1f;
     bool hasLanded = true;
+    public float fallMomentumFactor = 1.35f;
 
     // Character movement will be relative to this camera.
     public PlayerLockOnCamera playerLockOnCamera;
@@ -227,9 +228,9 @@ public class Player : MonoBehaviour
         {
             rigidBody.AddForce(
                 new Vector3(
-                    1.35f * rigidBody.velocity.x,
+                    fallMomentumFactor * rigidBody.velocity.x,
                     rigidBody.velocity.y,
-                    1.35f * rigidBody.velocity.z),
+                    fallMomentumFactor * rigidBody.velocity.z),
                 ForceMode.VelocityChange);
             applyInitialFallMomentum = false;
         }
