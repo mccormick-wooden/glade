@@ -225,13 +225,11 @@ public class EnemySpawner : MonoBehaviour
                 if (ratioOfLivingEnemies < criticalEnemyPercentage)
                 {
                     GenerateEnemy(heavyEnemyPrefab, spawnPosition);
-                    Debug.Log("tl - spawn heavy");
                 }
                 else
                 {
                     var randomEnemyPrefab = GetRandomEnemyPrefabFromList(allEnemyPrefabs);
                     GenerateEnemy(randomEnemyPrefab, spawnPosition);
-                    Debug.Log("tl - spawn additional");
                 }
             }
 
