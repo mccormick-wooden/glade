@@ -22,40 +22,67 @@ public class AudioEventManager : MonoBehaviour
     public AudioClip[] swordSwingAudio = null;
     public float[] swordSwingSoundDelays = null;
     public float[] swordSwingPitches = null;
+    [Range(0f,1f)]
+    public float swordSwingVolume = 1f;
 
     public AudioClip[] swordHitAudio = null;
     public float[] swordHitSoundDelays = null;
     public float[] swordHitPitches = null;
+    [Range(0f,1f)]
+    public float swordHitVolume = 0.5f;
 
     public EventSound3D swordHitSound;
 
     [Header("Apple")]
     public AudioClip appleHitGrass = null;
+    [Range(0f,1f)]
+    public float appleHitGrassVolume = 1f;
 
     public int appleHitGrassStartOffsetPCMs;
 
     public AudioClip playerEatApple = null;
+    [Range(0f,1f)]
+    public float playerEatAppleVolume = 0.6f;
     public int playerEatAppleOffsetPCMs;
 
     [Header("Crystal")]
     public AudioClip crystalCollisionAudio = null;
+    [Range(0f,1f)]
+    public float crystalCollisionVolume = 0.5f;
     private UnityAction<Vector3> crystalCollisionEventListener;
+
+    public AudioClip crystalDeathAudio = null;
+    [Range(0f,1f)]
+    public float crystalDeathVolume = 1f;
+    private UnityAction<Vector3> crystalDeathEventListener;
     
+    [Header("Player")]
     public AudioClip[] playerFootstep = null;
+    [Range(0f,1f)]
+    public float playerFootstepVolume = 0.6f;
     public int[] playerFootstepOffsetPCMs;
 
     public EventSound3D playerInjuredSound;
+    [Range(0f,1f)]
+    public float playerHurtVolume = 0.6f;
     public AudioClip[] playerInjured = null;
     public int[] playerInjuredOffsetPCMs;
 
+    [Header("Environment")]
     public AudioClip campfire = null;
+    [Range(0f,1f)]
+    public float campfireVolume = 0.5f;
 
+    [Header("Enemies")]
     public AudioClip fairyAOEAttack = null;
     public int fairyAOEAttackOffsetPCMs;
+    [Range(0f,1f)]
+    public float fairyAOEVolume = 1f;
 
     void Awake()
     {
         swordSwingEventListener = new UnityAction<Vector3, int>(swordSwingEventHandler);
+        crystalDeathEventListener = new UnityAction<Vector3>(crystalDeathEventHandler);
         crystalCollisionEventListener = new UnityAction<Vector3>(crystalCollisionEventHandler);
         swordHitEventListener = new UnityAction<Vector3, int>(swordHitEventHandler);
         appleHitGrassEventListener = new UnityAction<Vector3>(appleHitGrassEventHandler);
@@ -77,6 +104,7 @@ public class AudioEventManager : MonoBehaviour
     void OnEnable()
     {
         EventManager.StartListening<SwordSwingEvent, Vector3, int>(swordSwingEventListener);
+        EventManager.StartListening<CrystalDeathEvent, Vector3>(crystalDeathEventListener);
         EventManager.StartListening<CrystalCollisionEvent, Vector3>(crystalCollisionEventListener);
         EventManager.StartListening<SwordHitEvent, Vector3, int>(swordHitEventListener);
         EventManager.StartListening<AppleHitGrassEvent, Vector3>(appleHitGrassEventListener);
@@ -94,6 +122,7 @@ public class AudioEventManager : MonoBehaviour
     void OnDisable()
     {
         EventManager.StopListening<SwordSwingEvent, Vector3, int>(swordSwingEventListener);
+        EventManager.StopListening<CrystalDeathEvent, Vector3>(crystalDeathEventListener);
         EventManager.StopListening<CrystalCollisionEvent, Vector3>(crystalCollisionEventListener);
         EventManager.StopListening<SwordHitEvent, Vector3, int>(swordHitEventListener);
         EventManager.StopListening<AppleHitGrassEvent, Vector3>(appleHitGrassEventListener);
@@ -114,6 +143,19 @@ public class AudioEventManager : MonoBehaviour
 
     }
 
+    void crystalDeathEventHandler(Vector3 worldPos)
+    {
+        EventSound3D snd = Instantiate(eventSound3DPrefab, worldPos, Quaternion.identity, null);
+
+        snd.audioSrc.minDistance = 1f;
+        snd.audioSrc.maxDistance = 500f;
+        snd.audioSrc.spatialize = true;
+        snd.audioSrc.spatialBlend = 1f;
+        snd.audioSrc.pitch = 1f;
+        snd.audioSrc.volume = crystalDeathVolume;
+        snd.audioSrc.PlayOneShot(crystalDeathAudio);
+    }
+
     void crystalCollisionEventHandler(Vector3 worldPos)
     {
         EventSound3D snd = Instantiate(eventSound3DPrefab, worldPos, Quaternion.identity, null);
@@ -123,7 +165,7 @@ public class AudioEventManager : MonoBehaviour
         snd.audioSrc.spatialize = true;
         snd.audioSrc.spatialBlend = 1f;
         snd.audioSrc.pitch = 1f;
-        snd.audioSrc.volume = 0.5f;
+        snd.audioSrc.volume = crystalCollisionVolume;
         snd.audioSrc.PlayOneShot(crystalCollisionAudio);
     }
 
@@ -132,6 +174,7 @@ public class AudioEventManager : MonoBehaviour
         EventSound3D snd = Instantiate(eventSound3DPrefab, worldPos, Quaternion.identity, null);
         snd.audioSrc.clip = swordSwingAudio[whichSwing];
         snd.audioSrc.pitch = swordSwingPitches[whichSwing];
+        snd.audioSrc.volume = swordSwingVolume;
         snd.audioSrc.spatialize = true;
         snd.audioSrc.spatialBlend = 1;
         snd.audioSrc.PlayDelayed(swordSwingSoundDelays[whichSwing]);
@@ -149,7 +192,7 @@ public class AudioEventManager : MonoBehaviour
         swordHitSound.audioSrc.spatialize = true;
         swordHitSound.audioSrc.spatialBlend = 1;
         swordHitSound.audioSrc.clip = swordHitAudio[whichSwing];
-        swordHitSound.audioSrc.volume = .5f;
+        swordHitSound.audioSrc.volume = swordHitVolume;
         swordHitSound.audioSrc.pitch = swordHitPitches[whichSwing];
         swordHitSound.audioSrc.PlayDelayed(swordHitSoundDelays[whichSwing]);
     }
@@ -162,6 +205,7 @@ public class AudioEventManager : MonoBehaviour
         snd.audioSrc.spatialBlend = 1;
         snd.audioSrc.clip = appleHitGrass;
         snd.audioSrc.timeSamples = appleHitGrassStartOffsetPCMs;
+        snd.audioSrc.volume = appleHitGrassVolume;
         snd.audioSrc.Play();
     }
 
@@ -173,7 +217,7 @@ public class AudioEventManager : MonoBehaviour
         snd.audioSrc.clip = playerEatApple;
         snd.audioSrc.timeSamples = playerEatAppleOffsetPCMs;
         //snd.audioSrc.pitch = 0.8f;
-        snd.audioSrc.volume = 0.6f;
+        snd.audioSrc.volume = playerEatAppleVolume;
         snd.audioSrc.Play();
     }
 
@@ -185,7 +229,7 @@ public class AudioEventManager : MonoBehaviour
         snd.audioSrc.clip = playerFootstep[whilchStep];
         snd.audioSrc.timeSamples = playerFootstepOffsetPCMs[whilchStep];
         //snd.audioSrc.pitch = 0.8f;
-        snd.audioSrc.volume = 0.6f;
+        snd.audioSrc.volume = playerFootstepVolume;
         snd.audioSrc.Play();
     }
 
@@ -198,12 +242,10 @@ public class AudioEventManager : MonoBehaviour
         int whichOof = Random.Range(0, playerInjured.Length - 1);
 
         playerInjuredSound = Instantiate(eventSound3DPrefab, worldPos, Quaternion.identity, null);
-        playerInjuredSound.audioSrc.spatialize = true;
-        playerInjuredSound.audioSrc.spatialBlend = 1;
         playerInjuredSound.audioSrc.clip = playerInjured[whichOof];
         playerInjuredSound.audioSrc.timeSamples = playerInjuredOffsetPCMs[whichOof];
         //playerInjuredSound.audioSrc.pitch = 0.8f;
-        playerInjuredSound.audioSrc.volume = 0.6f;
+        playerInjuredSound.audioSrc.volume = playerHurtVolume;
         playerInjuredSound.audioSrc.Play();
     }
 
@@ -214,6 +256,7 @@ public class AudioEventManager : MonoBehaviour
         snd.audioSrc.spatialBlend = 1;
         snd.audioSrc.clip = fairyAOEAttack;
         snd.audioSrc.timeSamples = fairyAOEAttackOffsetPCMs;
+        snd.audioSrc.volume = fairyAOEVolume;
         //snd.audioSrc.pitch = 0.8f;
         //snd.audioSrc.volume = 0.6f;
         snd.audioSrc.Play();
@@ -245,7 +288,7 @@ public class AudioEventManager : MonoBehaviour
         fireSnd.audioSrc.spatialize = true;
         fireSnd.audioSrc.spatialBlend = 1;
         fireSnd.audioSrc.clip = campfire;
-        fireSnd.audioSrc.volume = .5f;
+        fireSnd.audioSrc.volume = campfireVolume;
         fireSnd.audioSrc.loop = true;
         fireSnd.audioSrc.Play();
     }

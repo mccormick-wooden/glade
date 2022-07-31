@@ -122,6 +122,9 @@ public class CrystalController : MonoBehaviour
         // Set crystal pieces to RB and shoot them off
         ExplodeCrystals();
 
+        // Issue event for death
+        EventManager.TriggerEvent<CrystalDeathEvent, Vector3>(transform.position);
+
         // Self destruct in disableDelay seconds
         SelfDestruct(disableDelay);
     }
