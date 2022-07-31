@@ -54,7 +54,7 @@ public partial class @CharacterCameraControls : IInputActionCollection2, IDispos
                     ""id"": ""aad48917-6d88-4a1d-890e-524f36a19549"",
                     ""path"": ""<Pointer>/delta"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""ScaleVector2(x=0.2,y=0.2)"",
                     ""groups"": ""Mouse&Keyboard"",
                     ""action"": ""Look"",
                     ""isComposite"": false,
