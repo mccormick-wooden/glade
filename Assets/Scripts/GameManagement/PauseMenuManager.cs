@@ -23,7 +23,7 @@ public class PauseMenuManager : MonoBehaviour
     [SerializeField] private string transitionCanvasRootName = "Transitions";
     private Canvas transitionCanvas;
 
-    [SerializeField] 
+    [SerializeField]
     private string newGameCrawlCanvasRootName = "NewGameCrawl";
 
     [SerializeField]
@@ -84,7 +84,7 @@ public class PauseMenuManager : MonoBehaviour
 
     private void ShowCursorIfPaused()
     {
-            if (IsPaused) Utility.ShowCursor();
+        if (IsPaused) Utility.ShowCursor();
     }
 
     private void Start()
@@ -178,7 +178,8 @@ public class PauseMenuManager : MonoBehaviour
                 transitionCanvas,
                 GameObject.Find(newGameCrawlCanvasRootName)?.GetComponentInChildren<Canvas>(),
                 GameObject.Find(treeSpiritDialogueCanvasRootName)?.GetComponentInChildren<Canvas>(),
-                GameObject.Find(sceneSkipperCanvasRootName)?.GetComponentInChildren<Canvas>()
+                GameObject.Find(sceneSkipperCanvasRootName)?.GetComponentInChildren<Canvas>(),
+                GameObject.Find("EndGameMenu")?.GetComponentInChildren<Canvas>()
             });
         }
         else
@@ -187,7 +188,8 @@ public class PauseMenuManager : MonoBehaviour
             {
                 pauseCanvas,
                 GameObject.Find(treeSpiritDialogueCanvasRootName)?.GetComponentInChildren<Canvas>(),
-                GameObject.Find(sceneSkipperCanvasRootName)?.GetComponentInChildren<Canvas>()
+                GameObject.Find(sceneSkipperCanvasRootName)?.GetComponentInChildren<Canvas>(),
+                GameObject.Find("EndGameMenu")?.GetComponentInChildren<Canvas>()
             });
         }
 

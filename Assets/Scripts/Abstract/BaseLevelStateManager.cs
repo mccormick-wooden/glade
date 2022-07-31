@@ -80,7 +80,7 @@ public abstract class BaseLevelStateManager : BaseStateManager
         #endregion
 
         #region glade health objs and subscriptions
-        
+
         gladeHealthManager = GameObject.Find("GladeHealthManager").GetComponent<GladeHealthManager>();
         Utility.LogErrorIfNull(gladeHealthManager, nameof(gladeHealthManager));
 
@@ -100,123 +100,63 @@ public abstract class BaseLevelStateManager : BaseStateManager
         CancelInvoke(); // Clean up any active invokes.
     }
 
-    private void OnBeaconDied()
-    {
-        gladeHealthManager.BeaconDied();
-    }
-
     /// <summary>
     /// Callback that handles the BeaconSpawner.AllBeaconsDied event.
     /// This is effectively the "game won" callback.
     /// </summary>
     private void OnAllBeaconsDied()
     {
-        if (stateEnding) return;
-
-        StateEnding();
-        player.GetComponentInChildren<IDamageable>().IsImmune = true;
-        InvokeRepeating("OnAllBeaconsDiedReturnToMainMenuCountdown", 0f, 1f);
-    }
-
-    private void OnAllBeaconsDiedReturnToMainMenuCountdown()
-    {
-        HUDMessageText.fontSize = 50;
-        HUDMessageText.text = $"YOU WON!\n\nReturning to Main Menu in {returnToMainMenuTimer} seconds...";
-
-        returnToMainMenuTimer -= 1;
-        if (returnToMainMenuTimer < 0)
-            ReturnToMainMenu();
+        endGameMenu.SetText($"YOU WON!\nThe invasion is over!");
+        endGameMenu.SetActive(true);
     }
 
     /// <summary>
     /// Callback that handles the IDamageable.Died event for the player model.
-    /// This is effectively the "game lost" callback.
     /// </summary>
     /// <param name="damageModel">A reference to the object emitting the event</param>
     /// <param name="name">Name of the GameObject that IDamageable is attached to.</param>
     /// <param name="instanceId">Unity InstanceId of the GameObject that IDamageable is attached to</param>
     private void OnPlayerDied(IDamageable damageModel, string name, int instanceId)
     {
-        if (stateEnding) return;
-
-        StateEnding();
-        InvokeRepeating("OnPlayerDiedReturnToMainMenuCountdown", 0f, 1f);
-    }
-
-    private void OnPlayerDiedReturnToMainMenuCountdown()
-    {
-        HUDMessageText.fontSize = 50;
-        HUDMessageText.text = $"Ya died, ya dingus.\n\nReturning to Main Menu in {returnToMainMenuTimer} seconds...";
-        DecrementReturnToMainMenuTimer();
-    }
-
-    private void OnGladeDied()
-    {
-        if (stateEnding) return;
-
-        StateEnding();
-        InvokeRepeating("OnGladeDiedReturnToMainMenuCountdown", 0f, 1f);
-    }
-
-    private void OnGladeDiedReturnToMainMenuCountdown()
-    {
-        HUDMessageText.fontSize = 50;
-        HUDMessageText.text = $"You foolish child.\n\nYou let the Glade DIE.\n\nReturning to Main Menu in {returnToMainMenuTimer} seconds...";
-        DecrementReturnToMainMenuTimer();
-    }
-
-    private void DecrementReturnToMainMenuTimer()
-    {
-        returnToMainMenuTimer -= 1;
-        if (returnToMainMenuTimer < 0)
-            ReturnToMainMenu();
+        endGameMenu.SetText($"Ya died, ya dingus.\nRestart, if you're not a quitter!");
+        endGameMenu.SetActive(true);
     }
 
     /// <summary>
-    /// TODO: Add a button to the canvas wired to this method that allows the player to return to menu early.
+    /// Callback that handles the GladeDied event for the GladeHealthManager.
     /// </summary>
-    private void ReturnToMainMenu()
+    private void OnGladeDied()
     {
-        CancelInvoke(); // YOLO
-        UpdateNextGameState();
+
+        endGameMenu.SetText($"You FOOLISH CHILD! You let the Glade DIE!\nRestart, if you're not a quitter!");
+        endGameMenu.SetActive(true);
     }
 
-    private void Respawn()
-    {
-        CancelInvoke();
-        GameManager.instance.UpdateGameState(GameManager.instance.State);
-    }
-
+    /// <summary>
+    /// Passes info to GladeHealthManager about active enemies in level
+    /// </summary>
+    /// <param name="damageModel"></param>
     private void OnEnemySpawned(IDamageable damageModel)
     {
         damageModel.Died += OnEnemyDied;
         gladeHealthManager.OnEnemySpawned(damageModel);
     }
 
+    /// <summary>
+    /// Passes info to GladeHealthManager about active enemies in level
+    /// </summary>
+    /// <param name="damageModel"></param>
     private void OnEnemyDied(IDamageable damageModel, string name, int instanceId)
     {
         damageModel.Died -= OnEnemyDied;
         gladeHealthManager.OnEnemyDied(damageModel);
     }
 
-    private void StateEnding()
+    /// <summary>
+    /// Passes info to GladeHealthManager about beacon deaths
+    /// </summary>
+    private void OnBeaconDied()
     {
-        stateEnding = true;
-        DisablePickups();
-    }
-
-    private void DisablePickups()
-    {
-        // Disable all pickups on the ground
-        PowerUpPickup[] pickups = FindObjectsOfType<PowerUpPickup>();
-        foreach (PowerUpPickup pickup in pickups)
-        {
-            pickup.PowerUpEnabled = false;
-        }
-
-        // Close power up menu if already open
-        PowerUpMenu menu = FindObjectOfType<PowerUpMenu>(true); // Include the inactive menu
-        menu.gameObject.SetActive(false);
+        gladeHealthManager.BeaconDied();
     }
 }
-
