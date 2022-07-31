@@ -5,19 +5,32 @@ public class TriggerPlane : MonoBehaviour
 {
     public Action<Collider> PlaneTriggered;
 
-    private bool isTriggered;
+    [SerializeField]
+    private string playerModelGameObjectRootName = "PlayerModel";
+    private GameObject playerModel;
+    private Player playerScript;
+
+    //private bool isTriggered;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (isTriggered) 
-            return;
+        //Debug.Log("Player is Out of Bounds!");
+        //if (isTriggered) 
+        //    return;
 
-        isTriggered = true;
+        //isTriggered = true;
+        //Debug.Log("Invoke");
         PlaneTriggered?.Invoke(other);
     }
 
     private void OnTriggerExit()
     {
-        isTriggered = false;
+        //Debug.Log("Teleported to starting position");
+        playerModel = GameObject.Find(playerModelGameObjectRootName);
+        Utility.LogErrorIfNull(playerModel, nameof(playerModel));
+        playerScript = playerModel.GetComponent<Player>();
+        Utility.LogErrorIfNull(playerScript, nameof(playerScript));
+        playerScript.StopAnimMotion();
+        //isTriggered = false;
     }
 }

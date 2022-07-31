@@ -45,6 +45,8 @@ public class Player : MonoBehaviour
     // Jumping
     private bool isJumping;
     private bool isGrounded;
+    private bool isFalling;
+    private float fallingTimeout = 5f;
 
     private bool tryPickup;
 
@@ -128,6 +130,8 @@ public class Player : MonoBehaviour
         animator.applyRootMotion = true;
         isGrounded = true;
         isJumping = false;
+        isFalling = false;
+        fallingTimeout = 5f;
     }
 
     private void FixedUpdate()
@@ -154,6 +158,48 @@ public class Player : MonoBehaviour
         {
             rigidBody.AddForce(Vector3.up * 5, ForceMode.VelocityChange);
             isJumping = false;
+        }
+
+        // Determine whether the player is going uphill or downhill:
+        // 1. Get the player's position on the map (horizontal plane).
+        float normalizedXposition = (transform.position.x / terrainSize.x);
+        float normalizedZposition = (transform.position.z / terrainSize.z);
+        // 2. Get the terrain's Normal on that point.
+        Vector3 groundNormal = Terrain.activeTerrain.terrainData.GetInterpolatedNormal(
+                normalizedXposition, normalizedZposition);
+        // 3. Get the angular difference between the terrain's Normal
+        // and the player's forward component.
+        // Note: Use an offset of -90 degrees to make a perfect
+        // alignment equal to 0.
+        // Uphill: positive angles.
+        // Downhill: negative angles.
+        float slopeAngle = (
+                Vector3.Angle(groundNormal, transform.forward) - 90f);
+        //Debug.Log("groundNormal: " + groundNormal);
+        //Debug.Log("slopeAngle: " + slopeAngle);
+
+        if (isFalling)
+        {
+            fallingTimeout -= Time.fixedDeltaTime;
+        }
+
+        if (isGrounded || (fallingTimeout < 0f))
+        {
+            //Debug.Log("Grounded!");
+            isFalling = false;
+            fallingTimeout = 5f;
+            animator.SetBool("IsFalling", false);
+            animator.SetBool("IsGrounded", true);
+        }
+        else
+        {
+            if (slopeAngle < -35f)
+            {
+                //Debug.Log("Airborne");
+                isFalling = true;
+                animator.SetBool("IsGrounded", false);
+                animator.SetBool("IsFalling", true);
+            }
         }
     }
 
@@ -319,6 +365,26 @@ public class Player : MonoBehaviour
         if (animState.IsName("Sheathe") || animState.IsName("Picking Up") || animState.IsName("DrawSword"))
             return;
 
+        if (animState.IsName("Jump"))
+        {
+            rigidBody.AddForce(
+                new Vector3(
+                    rigidBody.velocity.normalized.x,
+                    0.4f * rigidBody.velocity.normalized.y,
+                    rigidBody.velocity.normalized.z),
+                ForceMode.VelocityChange);
+            return;
+        }
+
+        if (animState.IsName("Landing"))
+        {
+            UpdateControlState(false);
+        }
+        else
+        {
+            UpdateControlState(true);
+        }
+
         if (movementMagnitude >= 0.1)
         {
             if (PlayerCombat.isLockingOn)
@@ -445,9 +511,16 @@ public class Player : MonoBehaviour
     /// </summary>
     public void StopAnimMotion()
     {
+        //Debug.Log("- StopAnimMotion -");
         animator.SetFloat("Speed", 0f);
+        animator.SetBool("IsFalling", false);
+        animator.SetBool("IsGrounded", true);
+        animator.Play("MovementTree");
         horizontalInput = 0;
         verticalInput = 0;
+        isGrounded = true;
+        isFalling = false;
+        fallingTimeout = 5f;
     }
 
 

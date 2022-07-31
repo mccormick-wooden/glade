@@ -175,6 +175,7 @@ each team member contributed to code written
 - Camera
 - Player Health Bar
 - Player control/root motion
+- Player Animator: Fall-Landing sequence
 
 ### Scripts
 
@@ -255,8 +256,8 @@ To regenerate tree for new files:
 │   ├── MainMenuStateManager.cs - *(mwooden3)*
 │   ├── NewGameStateManager.cs - *(mwooden3)*
 │   ├── PauseMenuManager.cs - *(mwooden3, tlagrange3)*
-│   ├── TrainingStateManager.cs - *(mwooden3)*
-│   ├── TriggerPlane.cs - *(mwooden3)*
+│   ├── TrainingStateManager.cs - *(mwooden3, daniel.zuniga)*
+│   ├── TriggerPlane.cs - *(mwooden3, daniel.zuniga)*
 │   └── LongClickButton.cs - *(mwooden3)*
 │   └── DialogueController.cs - *(mwooden3)*
 ├── HealthBarController.cs - *(daniel.zuniga, egilligan3, mwooden3, tlagrange3)*
