@@ -1,103 +1,92 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using UnityEngine.AI;
 using Beacons;
 using Assets.Scripts.Interfaces;
+using UnityEngine.Serialization;
 
 
 public class EnemySpawner : MonoBehaviour
 {
-    // Let other things maybe turn this on and off (maybe terrain triggers)
-    public bool spawnActive;
+    #region Possible Enemy Parameters
 
+    [Header("Enemy Prefab Parameters")]
+    /*
+     * The list of possible enemies is assumed to look like this:
+     * - Flower Fairy  - (infantry)
+     * - Plant Dionaea - (infantry)
+     * - Frightfly     - (flying infantry)
+     * - Mushroom      - (aoe)
+     * - Pea Shooter   - (ranged)
+     * - Plant Venus   - (heavy)
+     */
     [SerializeField]
-    private List<GameObject> beacons;
+    private List<GameObject> infantryEnemyPrefabs;
 
-    [SerializeField]
-    private List<GameObject> possibleEnemies;
-
-    [SerializeField]
-    private LayerMask whatIsGround;
-
-    private DateTime lastSpawnTime;
-
-    [SerializeField]
-    private float nominalSpawnTime;
-
-    [SerializeField]
-    private float minTimeBetweenSpawnsSeconds;
-
-    [SerializeField]
-    private BeaconSpawner beaconSpawner;
+    [SerializeField] private GameObject aoeEnemyPrefab;
+    [SerializeField] private GameObject rangedEnemyPrefab;
+    [SerializeField] private GameObject heavyEnemyPrefab;
 
     [SerializeField]
     private GameObject enemySpawnParticlePrefab;
 
+    [FormerlySerializedAs("possibleEnemies")] [SerializeField]
+    private List<GameObject> allEnemyPrefabs;
+
+    #endregion
+
+    #region Spawn Parameters
+
+    [Header("Enemy Spawn Parameters")] [SerializeField]
+    private float minimumTimeBetweenSpawns;
+
+    [SerializeField] private float maximumTimeBetweenSpawns;
+
+    [SerializeField] private float beaconEnemyDetectionRange;
+
+    [SerializeField] private uint startingNumberOfEnemiesPerBeacon;
+    [SerializeField] private uint maximumNumberOfEnemiesPerBeacon;
+
+    [SerializeField] private float startingRatioOfInfantryEnemies;
+    [SerializeField] private float startingRatioOfRangedEnemies;
+    [SerializeField] private float startingRatioOfAoeEnemies;
+    [SerializeField] private float startingRatioOfHeavyEnemies;
+
+    // When the ratio of enemies:max enemies is lower than this we spawn heavy enemies
+    [SerializeField] private float criticalEnemyPercentage;
+
+    #endregion
+
+    [SerializeField] private List<GameObject> beacons;
+
+    [SerializeField] private BeaconSpawner beaconSpawner;
+
     public Action<IDamageable> EnemySpawned;
-
-    const int MELEE_ENEMY_TYPE = 0;
-    const int RANGED_ENEMY_TYPE = 1;
-    const int AOE_ENEMY_TYPE = 2;
-
-    // Start is called before the first frame update
+    
     void Start()
     {
-        spawnActive = true;
-        lastSpawnTime = DateTime.Now;
         if (beaconSpawner != null)
             beaconSpawner.NewBeaconLanded += NewBeaconEventHandler;
     }
 
-    // Update is called once per frame
-    void Update()
+    private GameObject GetRandomEnemyPrefabFromList(List<GameObject> enemyPrefabs)
     {
+        var randomEnemy = Random.Range(0, enemyPrefabs.Count);
 
+        return enemyPrefabs[randomEnemy];
     }
 
-    private void FixedUpdate()
+    private GameObject GetRandomEnemyInfantryPrefab()
     {
-        if (DateTime.Now > lastSpawnTime.AddSeconds(minTimeBetweenSpawnsSeconds))
-        {
-            float weight = CalculateSpawnWeight();
-
-            float r = Random.Range(0.0f, 1.0f);
-            if (weight > r)
-            {
-                GenerateRandomEnemy();
-            }
-        }
+        return GetRandomEnemyPrefabFromList(infantryEnemyPrefabs);
     }
 
-    float CalculateSpawnWeight()
-    {
-        float totalWeight = 0;
-
-        for (int i = 0; i < beacons.Count; i++)
-        {
-            // make weight fall off as a square of distance?
-            // this will probably ramp things way too high too fast,
-            // we can adjust later
-            float distance = Vector3.Distance(beacons[i].transform.position, transform.position);
-            float weight = 1f / (distance * distance) * (float)(DateTime.Now - lastSpawnTime).TotalSeconds;
-            totalWeight += weight;
-            totalWeight *= nominalSpawnTime;
-        }
-
-        return totalWeight;
-    }
-
-    void GenerateRandomEnemy()
-    {
-        int randomEnemy = Random.Range(0, possibleEnemies.Count);
-
-        GameObject enemyPrefab = possibleEnemies[randomEnemy];
-        GenerateEnemy(enemyPrefab, transform.position);
-    }
-
-    void GenerateEnemy(GameObject enemyPrefab, Vector3 location)
+    // Instantiates an Enemy Prefab in a given location
+    private void GenerateEnemy(GameObject enemyPrefab, Vector3 location)
     {
         GameObject enemiesParent = GameObject.Find("EnemiesParent");
 
@@ -115,12 +104,11 @@ public class EnemySpawner : MonoBehaviour
         GameObject particles = Instantiate(enemySpawnParticlePrefab, new Vector3(0, 0, 0), Quaternion.identity, enemiesParent.transform);
         particles.transform.position = newPosition;
 
-        lastSpawnTime = DateTime.Now;
-
         EnemySpawned?.Invoke(g.GetComponent<IDamageable>());
     }
 
-    bool FindValidPlacement(Vector3 position, out Vector3 newPosition)
+    // Finds a precise position around a given position where an enemy can be spawned
+    private bool FindValidPlacement(Vector3 position, out Vector3 newPosition)
     {
         int attempts = 0;
         const int maxAttempts = 5;
@@ -152,49 +140,108 @@ public class EnemySpawner : MonoBehaviour
         return false;
     }
 
-    IEnumerator GenerateBeaconEnemies(GameObject crashedBeacon)
-    {
-        const int numberOfMeleeEnemies = 2;
-        const int numberOfRangedEnemies = 2;
-        const int numberOfAOEEnemies = 1;
-        
-
-        for (int i = 0; i < numberOfMeleeEnemies; i++)
-        {
-            GenerateEnemy(possibleEnemies[MELEE_ENEMY_TYPE], crashedBeacon.transform.position);
-
-            yield return new WaitForSeconds(Random.Range(0.25f, 0.5f));
-        }
-
-        for (int i = 0; i < numberOfRangedEnemies; i++)
-        {
-            GenerateEnemy(possibleEnemies[RANGED_ENEMY_TYPE], crashedBeacon.transform.position);
-
-            yield return new WaitForSeconds(Random.Range(0.25f, 0.5f));
-        }
-
-        for (int i = 0; i < numberOfAOEEnemies; i++)
-        {
-            GenerateEnemy(possibleEnemies[AOE_ENEMY_TYPE], crashedBeacon.transform.position);
-            yield return new WaitForSeconds(Random.Range(0.25f, 0.5f));
-        }
-
-    }
-
-    public void NewBeaconEventHandler(Beacons.BeaconSpawner beaconSpawner, GameObject crashedBeacon)
+    // Adds a spawn co-routine for a Beacon anytime a new one appears
+    public void NewBeaconEventHandler(BeaconSpawner beaconSpawner, GameObject crashedBeacon)
     {
         beacons.Add(crashedBeacon);
-        IDamageable beaconDamageModel = crashedBeacon.GetComponent<IDamageable>();
+        var beaconDamageModel = crashedBeacon.GetComponent<IDamageable>();
         if (beaconDamageModel != null)
+        {
             beaconDamageModel.Died += BeaconDeathEventHandler;
-
-        // spawn some enemies directly from the beacon
-        // temp variables for now, maybe make this random later?
+        }
 
         StartCoroutine(GenerateBeaconEnemies(crashedBeacon));
     }
 
-    public void BeaconDeathEventHandler(IDamageable damageModel, string name, int instanceId)
+    // Co-Routine run per Beacon that manages spawning enemies around it
+    IEnumerator GenerateBeaconEnemies(GameObject crashedBeacon)
+    {
+        /* Start by spawning a lump sum of enemies */
+        var numberOfInfantryEnemiesToSpawn =
+            Mathf.Ceil(startingRatioOfInfantryEnemies * startingNumberOfEnemiesPerBeacon);
+        var numberOfAoeEnemiesToSpawn =
+            Mathf.Ceil(startingRatioOfAoeEnemies * startingNumberOfEnemiesPerBeacon);
+        var numberOfRangedEnemiesToSpawn =
+            Mathf.Ceil(startingRatioOfRangedEnemies * startingNumberOfEnemiesPerBeacon);
+        var numberOfHeavyEnemiesToSpawn =
+            Mathf.Ceil(startingRatioOfHeavyEnemies * startingNumberOfEnemiesPerBeacon);
+
+        var spawnPosition = crashedBeacon.transform.position;
+
+        uint numberOfStartingEnemiesSpawned = 0;
+        for (var i = 0;
+             i < numberOfInfantryEnemiesToSpawn && numberOfStartingEnemiesSpawned < maximumNumberOfEnemiesPerBeacon;
+             i++)
+        {
+            var infantryPrefab = GetRandomEnemyInfantryPrefab();
+            GenerateEnemy(infantryPrefab, spawnPosition);
+            numberOfStartingEnemiesSpawned++;
+        }
+
+        for (var i = 0;
+             i < numberOfAoeEnemiesToSpawn && numberOfStartingEnemiesSpawned < maximumNumberOfEnemiesPerBeacon;
+             i++)
+        {
+            GenerateEnemy(aoeEnemyPrefab, spawnPosition);
+            numberOfStartingEnemiesSpawned++;
+        }
+
+        for (var i = 0;
+             i < numberOfRangedEnemiesToSpawn && numberOfStartingEnemiesSpawned < maximumNumberOfEnemiesPerBeacon;
+             i++)
+        {
+            GenerateEnemy(rangedEnemyPrefab, spawnPosition);
+            numberOfStartingEnemiesSpawned++;
+        }
+
+        for (var i = 0;
+             i < numberOfHeavyEnemiesToSpawn && numberOfStartingEnemiesSpawned < maximumNumberOfEnemiesPerBeacon;
+             i++)
+        {
+            GenerateEnemy(heavyEnemyPrefab, spawnPosition);
+            numberOfStartingEnemiesSpawned++;
+        }
+
+        var beaconDamageable = crashedBeacon.GetComponent<IDamageable>();
+        if (beaconDamageable == null || beaconDamageable.IsDead)
+        {
+            yield break;
+        }
+
+        /* Spawn enemies as long as the beacon lives, spawn heavy enemies if the number of enemies is critically low */
+        while (!beaconDamageable.IsDead)
+        {
+            // Check for the number of enemies around the beacon
+            var numberOfEnemies = Physics
+                .OverlapSphere(spawnPosition, beaconEnemyDetectionRange)
+                .Aggregate(
+                    0,
+                    (acc, collider) => collider.gameObject.GetComponent<BaseEnemy>() == null ? acc : ++acc
+                );
+
+            if (numberOfEnemies < maximumNumberOfEnemiesPerBeacon)
+            {
+                var ratioOfLivingEnemies = numberOfEnemies / maximumNumberOfEnemiesPerBeacon;
+                if (ratioOfLivingEnemies < criticalEnemyPercentage)
+                {
+                    GenerateEnemy(heavyEnemyPrefab, spawnPosition);
+                    Debug.Log("tl - spawn heavy");
+                }
+                else
+                {
+                    var randomEnemyPrefab = GetRandomEnemyPrefabFromList(allEnemyPrefabs);
+                    GenerateEnemy(randomEnemyPrefab, spawnPosition);
+                    Debug.Log("tl - spawn additional");
+                }
+            }
+
+            var spawnWaitTime = Random.Range(minimumTimeBetweenSpawns, maximumTimeBetweenSpawns);
+            yield return new WaitForSeconds(spawnWaitTime);
+        }
+    }
+
+    // Unregister the callback when a beacon dies
+    public void BeaconDeathEventHandler(IDamageable damageModel, string _name, int instanceId)
     {
         damageModel.Died -= BeaconDeathEventHandler;
         GameObject deadBeacon = beacons.Find(delegate (GameObject beacon)
