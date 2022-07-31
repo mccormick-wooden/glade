@@ -19,8 +19,6 @@ public class EndGameMenu : MonoBehaviour
 
     private TextMeshProUGUI textBox;
 
-    public bool Active => gameObject.activeSelf;
-
     public void SetActive(bool active)
     {
         _canvas.enabled = active;
