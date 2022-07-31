@@ -221,6 +221,7 @@ namespace PlayerBehaviors
 
             if (newTarget != null)
             {
+                StopListeningToTargetDeath();
                 SwitchTargets(newTarget);
             }
         }
