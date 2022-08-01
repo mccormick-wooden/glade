@@ -434,13 +434,13 @@ public class BaseEnemy : MonoBehaviour
                     continue;
                 }
 
-                try
-                {
-                    Color c = m.color;
+                 Color c;
+                 if (m.HasProperty(Shader.PropertyToID("color")))
+                 {
+                    c = m.color;
                     c.a = currentFade;
                     m.color = c;
-                }
-                catch { } // TODO: was added to get to the bottom of weird enemy console errors but we don't think this helps, leaving it anyway
+                 }
             }
         }
     }
