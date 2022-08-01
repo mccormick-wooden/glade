@@ -153,8 +153,10 @@ each team member contributed to code written
 - Audio framework
 
 #### Eric Gilligan - egilligan3
-- Crystals and related logic
-- Enemy health bars
+- Crystals - anything and everything related to crystals
+- Mana bar / mana mechanic
+- Environment design
+- Bunch of bug fixes across all parts
 
 #### Thomas Lagrange - tlagrange3
 - Combat animation and implementation
