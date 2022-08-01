@@ -145,6 +145,7 @@ each team member contributed to code written
 - Mana bar / mana mechanic
 - Environment design
 - Bunch of bug fixes across all parts
+- Project Icon
 
 #### Thomas Lagrange - tlagrange3
 - Combat animation and implementation
