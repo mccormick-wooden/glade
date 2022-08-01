@@ -150,7 +150,9 @@ each team member contributed to code written
 - Player control / animations
 - Enemy AI
 - Enemy Spawning
+- Enemy Animation
 - Audio framework
+- IK apple pickup / healing
 
 #### Eric Gilligan - egilligan3
 - Crystals and related logic
