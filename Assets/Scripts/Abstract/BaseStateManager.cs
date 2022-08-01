@@ -42,6 +42,8 @@ public abstract class BaseStateManager : MonoBehaviour
 
     public bool ManagedSceneIsActive => SceneLoader.GetCurrentSceneName() == ManagedSceneName;
 
+    protected EndGameMenu endGameMenu;
+
     /// <summary>
     /// Awake has the following purposes:
     /// - Ensure that the state being managed is set and valid.
@@ -68,10 +70,16 @@ public abstract class BaseStateManager : MonoBehaviour
 
         enabled = false;
 
-        GameManager.OnStateChanged += GameManagerOnStateChanged; 
+        GameManager.OnStateChanged += GameManagerOnStateChanged;
         SceneManager.sceneLoaded += SceneManagerOnSceneLoaded;
         SceneManager.sceneUnloaded += SceneManagerOnSceneUnloaded;
+    }
 
+    protected void Start()
+    {
+        if (endGameMenu == null)
+            endGameMenu = GameObject.Find("EndGameMenu").GetComponent<EndGameMenu>();
+        endGameMenu.SetActive(false);
     }
 
     /// <summary>
@@ -110,6 +118,8 @@ public abstract class BaseStateManager : MonoBehaviour
     /// <param name="loadSceneMode"></param>
     private void SceneManagerOnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
+        endGameMenu?.SetActive(false);
+
         if (!enabled && scene.name == ManagedSceneName)
         {
             enabled = true;

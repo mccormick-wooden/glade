@@ -20,11 +20,16 @@ namespace Beacons
         // The radius of the sphere used to look for enemies and crystals around the beacons
         [SerializeField] private float detectionRadius;
         [SerializeField] private float minTimeToKeepShieldsUp;
-        
-        // The minimum amount of enemies around the beacon to keep the shield up
-        [SerializeField] private int minEnemyCount;
 
+        // The minimum ratio of enemies:max enemies around the beacon to keep the shield up
+        [SerializeField] private float minEnemyRatio;
+        private uint maxPossibleEnemiesPerBeacon;
+        
         private IDamageable _damageable;
+
+        // Keep a reference to this so we can keep our shields up based on the ratio of living enemies as a function
+        // of the maximum that can spawn around the beacon
+        private EnemySpawner playerEnemySpawner;
 
         private void Awake()
         {
@@ -42,6 +47,11 @@ namespace Beacons
                 "The CrashedBeacon will not turn into a powerUpPickup without a prefab to Instantiate");
 
             overShield = GetComponentInChildren<BeaconOvershield>();
+            playerEnemySpawner = FindObjectOfType<Player>()?.GetComponent<EnemySpawner>();
+
+            maxPossibleEnemiesPerBeacon = playerEnemySpawner != null
+                ? playerEnemySpawner.GetMaximumNumberOfEnemiesPerBeacon()
+                : (uint)10; // Arbitrary default, shouldn't happen
         }
 
         private void OnDied(IDamageable damageable, string name, int id)
@@ -97,8 +107,9 @@ namespace Beacons
                         enemyCount++;
                     }
                 }
-                
-                if (enemyCount < minEnemyCount)
+
+                var minEnemyCount = Mathf.FloorToInt(minEnemyRatio * maxPossibleEnemiesPerBeacon);
+                if (enemyCount < minEnemyCount || enemyCount == 0)
                 {
                     DisableOverShield();
                 }

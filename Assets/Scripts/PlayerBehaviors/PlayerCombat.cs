@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace PlayerBehaviors
 
         private Player player;
         private PlayerWeaponManager playerWeaponManager;
+        private LayerMask playerLayerMask;
 
         private Animator animator;
         private static readonly int IsAttacking = Animator.StringToHash("isAttacking");
@@ -26,9 +28,23 @@ namespace PlayerBehaviors
         public Transform currentLockedOnTarget;
 
         [SerializeField] private float maxLockOnDistance;
+
+        public float windAttackMana = 10f;
+        public float manaRechargeDelay = 2;
+        public float manaRechargePerSecond = 5;
+        public float lastCastTime = 0f;
+        public HealthBarController manaBar;
+        public AudioSource castFailSound;
         
+        private void Awake()
+        {
+            playerLayerMask = LayerMask.GetMask("Player");
+        }
+
         private void Start()
         {
+            if (manaBar == null)
+                Debug.LogError("Couldn't find mana bar");
             animator = GetComponent<Animator>();
             player = GetComponent<Player>();
             playerWeaponManager = GetComponent<PlayerWeaponManager>();
@@ -42,8 +58,17 @@ namespace PlayerBehaviors
             }
         }
 
+        private void UpdateMana()
+        {
+            if (Time.time - lastCastTime >= manaRechargeDelay)
+            {
+                manaBar.CurrentHp += manaRechargePerSecond * Time.deltaTime;
+            }
+        }
+
         private void Update()
         {
+            UpdateMana();
             ReadAnimatorParameters();
             DetectLockOnOutOfRange();
             // DetectLockOnOutOfSight(); Reintroduce if we want to break lock-on when losing line of sight
@@ -70,11 +95,6 @@ namespace PlayerBehaviors
 
         private void AttemptLockOn()
         {
-            if (isLockingOn)
-            {
-                return;
-            }
-
             // Get the closest
             var target = GetClosestLockOnTarget();
 
@@ -100,13 +120,17 @@ namespace PlayerBehaviors
             var minDistance = Mathf.Infinity;
             Transform closestTarget = null;
 
-            var hits = Physics.SphereCastAll(transform.position, 10, transform.forward, 30f);
+            var hits = Physics.SphereCastAll(transform.position, 10, transform.forward, 30f, ~playerLayerMask);
             foreach (var hit in hits)
             {
-                // Maybe switch to damageable to include beacons, crystals?
-                var enemy = hit.collider.transform.GetComponent<BaseEnemy>();
+                var enemy = hit.collider.transform.GetComponent<BaseDamageable>();
                 if (enemy != null)
                 {
+                    if (enemy.IsDead)
+                    {
+                        continue;
+                    }
+                    
                     // Handle finding a potential target
                     var distance = Vector3.Distance(transform.position, enemy.transform.position);
                     if (distance < minDistance)
@@ -172,7 +196,17 @@ namespace PlayerBehaviors
         {
             if (isLockingOn)
             {
-                ToggleLockOn();
+                // If we were locking on and the target died let's re-lock to a new target
+                var newTarget = GetClosestLockOnTarget();
+                if (newTarget == null)
+                {
+                    // Turn off lock-on if we couldn't find a new target
+                    ToggleLockOn();
+                }
+                else
+                {
+                    SwitchTargets(newTarget);
+                }
             }
         }
 
@@ -206,17 +240,21 @@ namespace PlayerBehaviors
             if (newTarget != null)
             {
                 StopListeningToTargetDeath();
-                currentLockedOnTarget = newTarget;
-                var damageable = currentLockedOnTarget.GetComponent<BaseDamageable>();
-                if (damageable != null)
-                {
-                    damageable.Died += HandleDeadLockOnTarget;
-                }
-
-                // This rotation should be smoothed at a minimum, animated would be even better
-                player.transform.LookAt(currentLockedOnTarget);
-                player.playerLockOnCamera.UpdateLockOnCameraLookAt(currentLockedOnTarget);
+                SwitchTargets(newTarget);
             }
+        }
+
+        private void SwitchTargets(Transform newTarget)
+        {
+            currentLockedOnTarget = newTarget;
+            var damageable = currentLockedOnTarget.GetComponent<BaseDamageable>();
+            if (damageable != null)
+            {
+                damageable.Died += HandleDeadLockOnTarget;
+            }
+
+            player.transform.LookAt(currentLockedOnTarget);
+            player.playerLockOnCamera.UpdateLockOnCameraLookAt(currentLockedOnTarget);
         }
 
         // We should stop locking on if the lock on target gets to far away
@@ -339,9 +377,18 @@ namespace PlayerBehaviors
 
             if (weapon.specialAttackPrefab != null)
             {
-                var specialEffectInstance =
-                    Instantiate(weapon.specialAttackPrefab, transform.position, transform.rotation);
-                StartCoroutine(DestroySpecialEffect(specialEffectInstance));
+                if (manaBar?.CurrentHp >= windAttackMana)
+                {
+                    manaBar.CurrentHp -= windAttackMana;
+                    lastCastTime = Time.time;
+                    var specialEffectInstance =
+                        Instantiate(weapon.specialAttackPrefab, transform.position, transform.rotation);
+                    StartCoroutine(DestroySpecialEffect(specialEffectInstance));
+                }
+                else
+                {
+                    castFailSound.Play();
+                }
             }
         }
         

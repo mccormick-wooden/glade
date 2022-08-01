@@ -85,17 +85,20 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: IsGrounded
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7191945680422452124}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.2
   m_TransitionOffset: 0
-  m_ExitTime: 0.75
-  m_HasExitTime: 1
+  m_ExitTime: 0.5
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -114,7 +117,8 @@ AnimatorState:
   - {fileID: 6210325466291757388}
   - {fileID: -2407458395932011195}
   - {fileID: 2629330237568341755}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 6885988442579896339}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 1
   m_WriteDefaultValues: 1
@@ -625,67 +629,67 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: TurningSpeed
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isAttacking
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: canCombo
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: horizontalInput
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: verticalInput
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isStrafing
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: DoPickup
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: fruitClose
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: IsFalling
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: IsGrounded
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -844,7 +848,7 @@ BlendTree:
     m_Motion: {fileID: -203655887218126122, guid: a59e28d2a2d8b64478722e9ad7236fc3, type: 3}
     m_Threshold: 0
     m_Position: {x: -0.129, y: -0.083}
-    m_TimeScale: 1.5
+    m_TimeScale: 1
     m_CycleOffset: 0.5
     m_DirectBlendParameter: Speed
     m_Mirror: 1
@@ -852,7 +856,7 @@ BlendTree:
     m_Motion: {fileID: -203655887218126122, guid: a59e28d2a2d8b64478722e9ad7236fc3, type: 3}
     m_Threshold: 0.063802086
     m_Position: {x: -0.135, y: 0.072}
-    m_TimeScale: 1.5
+    m_TimeScale: 1
     m_CycleOffset: 0.5
     m_DirectBlendParameter: Speed
     m_Mirror: 1
@@ -860,7 +864,7 @@ BlendTree:
     m_Motion: {fileID: -203655887218126122, guid: a59e28d2a2d8b64478722e9ad7236fc3, type: 3}
     m_Threshold: 0.12760417
     m_Position: {x: 0.146, y: -0.083}
-    m_TimeScale: 1.5
+    m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
     m_Mirror: 0
@@ -868,7 +872,7 @@ BlendTree:
     m_Motion: {fileID: -203655887218126122, guid: a59e28d2a2d8b64478722e9ad7236fc3, type: 3}
     m_Threshold: 0.19140625
     m_Position: {x: 0.152, y: 0.089}
-    m_TimeScale: 1.5
+    m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
     m_Mirror: 0
@@ -876,7 +880,7 @@ BlendTree:
     m_Motion: {fileID: -203655887218126122, guid: 67ff5bf600814e741b49f45f3ce84575, type: 3}
     m_Threshold: 0.25520834
     m_Position: {x: -0.436, y: -0.403}
-    m_TimeScale: 1.5
+    m_TimeScale: 1
     m_CycleOffset: 0.5
     m_DirectBlendParameter: Speed
     m_Mirror: 1
@@ -884,7 +888,7 @@ BlendTree:
     m_Motion: {fileID: -203655887218126122, guid: 67ff5bf600814e741b49f45f3ce84575, type: 3}
     m_Threshold: 0.3190104
     m_Position: {x: -0.45, y: 0.47}
-    m_TimeScale: 1.5
+    m_TimeScale: 1
     m_CycleOffset: 0.5
     m_DirectBlendParameter: Speed
     m_Mirror: 1
@@ -892,7 +896,7 @@ BlendTree:
     m_Motion: {fileID: -203655887218126122, guid: 67ff5bf600814e741b49f45f3ce84575, type: 3}
     m_Threshold: 0.3828125
     m_Position: {x: 0.457, y: -0.389}
-    m_TimeScale: 1.5
+    m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
     m_Mirror: 0
@@ -900,7 +904,7 @@ BlendTree:
     m_Motion: {fileID: -203655887218126122, guid: 67ff5bf600814e741b49f45f3ce84575, type: 3}
     m_Threshold: 0.44661456
     m_Position: {x: 0.477, y: 0.484}
-    m_TimeScale: 1.5
+    m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
     m_Mirror: 0
@@ -976,6 +980,18 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &2837841766279664798
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dc02d5bac618774f8d07efeb4ed6429, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3142116145432599970
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1233,7 +1249,8 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -1893699546408503123}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 2837841766279664798}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -1256,7 +1273,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Spin Attack
-  m_Speed: 1
+  m_Speed: 2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 3294645090324932077}
@@ -1381,6 +1398,18 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &6885988442579896339
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b363bf8d476e99e40937fac55f2989a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!206 &7178556261313934555
 BlendTree:
   m_ObjectHideFlags: 1

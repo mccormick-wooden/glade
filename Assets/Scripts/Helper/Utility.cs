@@ -127,6 +127,11 @@ public class Utility : MonoBehaviour
         transform.localScale = Vector3.one;
     }
 
+    public static void ClearButtonAllCallbacks(string buttonRootName)
+    {
+        ClearButtonAllCallbacks(GameObject.Find(buttonRootName)?.GetComponentInChildren<Button>());
+    }
+
     public static void ClearButtonAllCallbacks(Button button)
     {
         LogErrorIfNull(button, nameof(button));

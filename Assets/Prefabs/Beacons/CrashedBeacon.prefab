@@ -69,7 +69,7 @@ MonoBehaviour:
   hoverAmplitude: 0.5
   detectionRadius: 20
   minTimeToKeepShieldsUp: 10
-  minEnemyCount: 10
+  minEnemyRatio: 0.5
 --- !u!82 &8588397374441406097
 AudioSource:
   m_ObjectHideFlags: 0
@@ -179,6 +179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBarController: {fileID: 4383631140296088618}
+  attachedObject: {fileID: 0}
   currentHp: 0
   maxHp: 100
   debugOutput: 1

@@ -662,8 +662,8 @@ MonoBehaviour:
   m_UpdateMethod: 2
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
-    m_Style: 2
-    m_Time: 2
+    m_Style: 6
+    m_Time: 0.1
     m_CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -1586,6 +1586,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 9075297421484407199, guid: dbd6fce6d4ef9c24896a17c9c3ad65b4, type: 3}
   m_PrefabInstance: {fileID: 683423951529893820}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7199285576496273466 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7680047351331391366, guid: dbd6fce6d4ef9c24896a17c9c3ad65b4, type: 3}
+  m_PrefabInstance: {fileID: 683423951529893820}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adce6d5766e4d4c3986bbb32bb954198, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6067665533583041178
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1671,6 +1682,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4837675e0934b24e8594980e2773da6, type: 3}
+--- !u!4 &6648892828845573350 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 608321761475470972, guid: a4837675e0934b24e8594980e2773da6, type: 3}
+  m_PrefabInstance: {fileID: 6067665533583041178}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8407160689630084267 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -6874584590210671055, guid: a4837675e0934b24e8594980e2773da6, type: 3}
+  m_PrefabInstance: {fileID: 6067665533583041178}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6034283480876336497 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a4837675e0934b24e8594980e2773da6, type: 3}
@@ -1681,19 +1702,9 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a4837675e0934b24e8594980e2773da6, type: 3}
   m_PrefabInstance: {fileID: 6067665533583041178}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1011279599708649305 stripped
+--- !u!4 &5584746584344812882 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 6502182839619065283, guid: a4837675e0934b24e8594980e2773da6, type: 3}
-  m_PrefabInstance: {fileID: 6067665533583041178}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &6648892828845573350 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 608321761475470972, guid: a4837675e0934b24e8594980e2773da6, type: 3}
-  m_PrefabInstance: {fileID: 6067665533583041178}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &7662290454786059094 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -4728426434207774260, guid: a4837675e0934b24e8594980e2773da6, type: 3}
+  m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: a4837675e0934b24e8594980e2773da6, type: 3}
   m_PrefabInstance: {fileID: 6067665533583041178}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &8186150931359797147 stripped
@@ -1701,14 +1712,14 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2715566404302941441, guid: a4837675e0934b24e8594980e2773da6, type: 3}
   m_PrefabInstance: {fileID: 6067665533583041178}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &8407160689630084267 stripped
+--- !u!4 &1011279599708649305 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: -6874584590210671055, guid: a4837675e0934b24e8594980e2773da6, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6502182839619065283, guid: a4837675e0934b24e8594980e2773da6, type: 3}
   m_PrefabInstance: {fileID: 6067665533583041178}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &5584746584344812882 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: a4837675e0934b24e8594980e2773da6, type: 3}
+--- !u!1 &7662290454786059094 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -4728426434207774260, guid: a4837675e0934b24e8594980e2773da6, type: 3}
   m_PrefabInstance: {fileID: 6067665533583041178}
   m_PrefabAsset: {fileID: 0}
 --- !u!54 &2229708642065474294
@@ -1741,6 +1752,102 @@ CapsuleCollider:
   m_Height: 1.79
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!82 &4116857610839824152
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6410245657010118603}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: c6070dc9db212054b9ba5e4d2d3e81aa, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.5
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &853225848788648966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1759,6 +1866,12 @@ MonoBehaviour:
   isLockingOn: 1
   currentLockedOnTarget: {fileID: 0}
   maxLockOnDistance: 0
+  windAttackMana: 10
+  manaRechargeDelay: 2
+  manaRechargePerSecond: 5
+  lastCastTime: 0
+  manaBar: {fileID: 7199285576496273466}
+  castFailSound: {fileID: 4116857610839824152}
 --- !u!114 &1155908435136971191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1853,18 +1966,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abdb184cde9dff04784e124dc843828c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnActive: 0
+  infantryEnemyPrefabs:
+  - {fileID: 5944348617465899581, guid: ff8047649a45c2d448a8df496776b0be, type: 3}
+  - {fileID: 4381904912918590675, guid: dfa7fb9b66468a741b51fe6c45d4f959, type: 3}
+  - {fileID: 4090566570449785547, guid: fa465fa3d0d9d694cad1a441023b26a3, type: 3}
+  aoeEnemyPrefab: {fileID: 7704693247559123115, guid: 27eb6e80ee2136f418a62865ed2fea71, type: 3}
+  rangedEnemyPrefab: {fileID: 311366642087818606, guid: 16c877b432007ff45a13655df56d6115, type: 3}
+  heavyEnemyPrefab: {fileID: 8967351374491941148, guid: 01cb2c96bf8beef4d8743e9589ddc33e, type: 3}
+  enemySpawnParticlePrefab: {fileID: 6580212678852061256, guid: a9e0c416e588f014a880017e036105ca, type: 3}
+  allEnemyPrefabs:
+  - {fileID: 5944348617465899581, guid: ff8047649a45c2d448a8df496776b0be, type: 3}
+  - {fileID: 4381904912918590675, guid: dfa7fb9b66468a741b51fe6c45d4f959, type: 3}
+  - {fileID: 4090566570449785547, guid: fa465fa3d0d9d694cad1a441023b26a3, type: 3}
+  - {fileID: 7704693247559123115, guid: 27eb6e80ee2136f418a62865ed2fea71, type: 3}
+  - {fileID: 311366642087818606, guid: 16c877b432007ff45a13655df56d6115, type: 3}
+  - {fileID: 8967351374491941148, guid: 01cb2c96bf8beef4d8743e9589ddc33e, type: 3}
+  minimumTimeBetweenSpawns: 10
+  maximumTimeBetweenSpawns: 30
+  beaconEnemyDetectionRange: 30
+  startingNumberOfEnemiesPerBeacon: 6
+  maximumNumberOfEnemiesPerBeacon: 10
+  startingRatioOfInfantryEnemies: 0.7
+  startingRatioOfRangedEnemies: 0.1
+  startingRatioOfAoeEnemies: 0.2
+  startingRatioOfHeavyEnemies: 0
+  criticalEnemyPercentage: 0.2
   beacons: []
-  possibleEnemies:
-  - {fileID: 3054070596095771740, guid: 215c6dd64c448a24082f00cdf1a71f39, type: 3}
-  - {fileID: 3054070596095771740, guid: 7a4ef9c0599154a418f02d4787dc8642, type: 3}
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 128
-  nominalSpawnTime: 1
-  minTimeBetweenSpawnsSeconds: 2
   beaconSpawner: {fileID: 0}
-  enemySpawnParticlePrefab: {fileID: 0}
 --- !u!114 &5921222295050640521
 MonoBehaviour:
   m_ObjectHideFlags: 0

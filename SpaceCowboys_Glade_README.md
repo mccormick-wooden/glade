@@ -191,9 +191,9 @@ To regenerate tree for new files:
 │   ├── BaseDamageable.cs - *(mwooden3, cdail7, egilligan3, tlagrange3)*
 │   ├── BaseDevCommand.cs - *(mwooden3)*
 │   ├── BaseEnemy.cs - *(cdail7)*
-│   ├── BaseLevelStateManager.cs - *(mwooden3)*
+│   ├── BaseLevelStateManager.cs - *(mwooden3, egilligan3)*
 │   ├── BasePowerUp.cs - *(tlagrange3)*
-│   ├── BaseStateManager.cs - *(mwooden3, cdail7)*
+│   ├── BaseStateManager.cs - *(mwooden3, cdail7, egilligan3)*
 │   └── BaseWeapon.cs - *(mwooden3, cdail7, tlagrange3)*
 ├───Animation
 │   ├── EnterStrafeBlendTree.cs - *(tlagrange3)*
@@ -216,8 +216,8 @@ To regenerate tree for new files:
 │   ├── SwordHitEvent.cs - *(cdail7)*
 │   └── SwordSwingEvent.cs - *(cdail7)*
 ├── Arrow.cs - *(cdail7)*
-├── AudioEventManager.cs - *(cdail7, tlagrange3)*
 ├── AudioListenerManager.cs - *(egilligan3)*
+├── AudioEventManager.cs - *(cdail7, tlagrange3, egilligan3)*
 ├── Beacons
 │   ├── BeaconFall.cs - *(tlagrange3)*
 │   ├── BeaconManager.cs - *(tlagrange3, cdail7, egilligan3, mwooden3)*
@@ -242,6 +242,7 @@ To regenerate tree for new files:
 ├── Crystal
 │   ├── CrystalController.cs - *(egilligan3)*
 │   ├── CrystalDamageEffect.cs - *(egilligan3)*
+│   ├── CrystalPhsyicsCollision.cs - *(egilligan3)*
 │   ├── CrystalHealEffect.cs - *(egilligan3)*
 │   ├── CrystalManager.cs - *(egilligan3)*
 │   ├── CrystalPhysicsCollision.cs - *(egilligan3)*
@@ -262,9 +263,9 @@ To regenerate tree for new files:
 │   ├── PlantEnemy.cs - *(cdail7)*
 │   ├── SwordEnemy.cs - *(mwooden3)*
 │   └── VenusScript.cs - *(cdail7)*
-├── EnemySpawner.cs - *(cdail7)*
 ├── EventSound3D.cs - (from course)
 ├── FruitDetector.cs - *(cdail7)*
+├── EnemySpawner.cs - *(cdail7, tlagrange3)*
 ├── GameManagement
 │   ├── DialogueController.cs - *(mwooden3)*
 │   ├── EventManager.cs - (from course)
@@ -281,7 +282,7 @@ To regenerate tree for new files:
 ├── HealthBarController.cs - *(daniel.zuniga, egilligan3, mwooden3, tlagrange3)*
 ├── Helper
 │   ├── AnimationEventDispatcher.cs - *(mwooden3, [inspired by StackOverflow](https://gamedev.stackexchange.com/questions/117423/unity-detect-animations-end))*
-│   ├-─ CameraBlendEventDispatcher.cs *(mwooden3, [inspired by thread](https://forum.unity.com/threads/oncameratransition-onblendcomplete-event.520056/))*
+│   ├── CameraBlendEventDispatcher.cs *(mwooden3, [inspired by thread](https://forum.unity.com/threads/oncameratransition-onblendcomplete-event.520056/))*
 │   ├── DontDestroyThisOnLoad.cs - *(mwooden3)*
 │   ├── Extensions.cs - *(mwooden3)*
 │   ├── MouseSelect.cs - *(egilligan3)*
@@ -289,7 +290,8 @@ To regenerate tree for new files:
 │   ├── SceneLoader.cs - *(mwooden3)*
 │   ├── TimeScaleToggle.cs - *(mwooden3)*
 │   ├── SyncWithCameraRotation.cs - *(egilligan3)*
-│   └── Utility.cs - *(mwooden3)*
+│   └── Utility.cs - *(mwooden3, egilligan3)*
+│   ├── MouseSelect.cs - *(egilligan3)*
 ├── Interfaces
 │   ├── IDamageable.cs - *(mwooden3, egilligan3)*
 │   ├── IDevCommand.cs - *(mwooden3)*
@@ -297,7 +299,7 @@ To regenerate tree for new files:
 │   └── IWeapon.cs - *(mwooden3)*
 ├── LockOnIndicatorAnimation.cs - *(tlagrange3)*
 ├── Minimap
-│   ├── MinimapCamera.cs *(mwooden3)*
+│   ├── MinimapCamera.cs *(mwooden3, egilligan3)*
 │   └── MinimapIcon.cs *(mwooden3)*
 ├── Movement
 │   └── CameraRelativeRootMovement.cs *(daniel.zuniga)*
@@ -305,7 +307,7 @@ To regenerate tree for new files:
 │   └── TreeSpirit.cs - *(mwooden3)*
 ├── Player.cs - *(cdail7, egilligan3, tlagrange3, mwooden3, Daniel Zuniga)*
 ├── PlayerBehaviors
-│   ├── PlayerCombat.cs - *(tlagrange3)*
+│   ├── PlayerCombat.cs - *(tlagrange3, egilligan3)*
 │   ├── PlayerDamageable.cs - *(tlagrange3)*
 |   ├── PlayerStats.cs - *(tlagrange3)*
 │   ├── PlayerWeapon.cs - *(tlagrange3)*
@@ -317,8 +319,8 @@ To regenerate tree for new files:
 │   ├── DamageIncreasePowerUp.cs - *(tlagrange3)*
 │   ├── DamageResistPowerUp.cs - *(tlagrange3)*
 │   ├── MaxHealthPowerUp.cs - *(tlagrange3)*
-│   ├── PowerUpMenu.cs - *(tlagrange3)*
-│   ├── PowerUpPickup.cs - *(tlagrange3)*
+│   ├── PowerUpMenu.cs - *(tlagrange3, egilligan3)*
+│   ├── PowerUpPickup.cs - *(tlagrange3, egilligan3)*
 │   └── dev
 │       └── TogglePowerUpMenu.cs - *(tlagrange3)*
 |── WeaponsAndAttacks
@@ -333,7 +335,9 @@ To regenerate tree for new files:
 ├── PlayerLockOnCamera.cs - *(tlagrange3)*
 ├── ThirdPersonCamera.cs - *(daniel.zuniga, tlagrange3)*
 ├── VelocityReporter.cs - (from course)
-└── Extensions.cs *(mwooden3)*
+├── Extensions.cs *(mwooden3)*
+└── VelocityReporter.cs - (from course)
+
 
 ```
 
