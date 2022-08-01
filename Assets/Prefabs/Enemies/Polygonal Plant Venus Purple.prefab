@@ -108,8 +108,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9283f827d31adf4f828b945d2ce21f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseAttackDamage: 10
-  currentAttackDamage: 10
+  baseAttackDamage: 5
+  currentAttackDamage: 5
   TargetTags:
   - Player
 --- !u!1 &8967236822692737714

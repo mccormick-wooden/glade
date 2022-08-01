@@ -30,7 +30,7 @@ public class HealingApple : MonoBehaviour
         if (damageable != null)
         {
             Instantiate(healParticleEffect, consumer);
-            damageable.Heal(25);
+            damageable.Heal(100);
             EventManager.TriggerEvent<PlayerEatAppleEvent, Vector3>(transform.position);
             AppleEaten?.Invoke(this);
             Destroy(gameObject);
