@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
     float downpullForce = 0f;
     float horizontalMultiplier = 1f;
     bool hasLanded = true;
+    public float fallMomentumFactor = 1.35f;
 
     // Character movement will be relative to this camera.
     public PlayerLockOnCamera playerLockOnCamera;
@@ -47,6 +48,7 @@ public class Player : MonoBehaviour
     private bool isGrounded;
     private bool isFalling;
     private float fallingTimeout = 5f;
+    private bool applyInitialFallMomentum = true;
 
     private bool tryPickup;
 
@@ -142,6 +144,7 @@ public class Player : MonoBehaviour
         isJumping = false;
         isFalling = false;
         fallingTimeout = 5f;
+        applyInitialFallMomentum = true;
     }
 
     private void FixedUpdate()
@@ -155,10 +158,6 @@ public class Player : MonoBehaviour
 
     private void ApplyForcesAndDrag()
     {
-        var halfHeight = capsuleCollider.height / 2f;
-        var groundInterceptRayStart = transform.position + new Vector3(0, halfHeight, 0);
-        var groundInterceptRayLength = halfHeight + 0.25f;
-
         // just a dummy thing for now because we don't have jump
 
         var isJumpable = false;
@@ -170,46 +169,90 @@ public class Player : MonoBehaviour
             isJumping = false;
         }
 
-        // Determine whether the player is going uphill or downhill:
-        // 1. Get the player's position on the map (horizontal plane).
-        float normalizedXposition = (transform.position.x / terrainSize.x);
-        float normalizedZposition = (transform.position.z / terrainSize.z);
-        // 2. Get the terrain's Normal on that point.
-        Vector3 groundNormal = Terrain.activeTerrain.terrainData.GetInterpolatedNormal(
-                normalizedXposition, normalizedZposition);
-        // 3. Get the angular difference between the terrain's Normal
-        // and the player's forward component.
-        // Note: Use an offset of -90 degrees to make a perfect
-        // alignment equal to 0.
-        // Uphill: positive angles.
-        // Downhill: negative angles.
-        float slopeAngle = (
-                Vector3.Angle(groundNormal, transform.forward) - 90f);
-        //Debug.Log("groundNormal: " + groundNormal);
-        //Debug.Log("slopeAngle: " + slopeAngle);
+        // ---
+        var animState = animator.GetCurrentAnimatorStateInfo(0);
 
         if (isFalling)
         {
+            // Keep track of how long we've been falling for.
             fallingTimeout -= Time.fixedDeltaTime;
         }
 
-        if (isGrounded || (fallingTimeout < 0f))
+        // Transition to landing if:
+        //  1) We're falling and near ground check yields true. OR
+        //  2) Falling state times out.
+        if ((animState.IsName("Falling") && isGrounded) || (fallingTimeout <= 0f))
         {
-            //Debug.Log("Grounded!");
             isFalling = false;
             fallingTimeout = 5f;
+            applyInitialFallMomentum = true;
             animator.SetBool("IsFalling", false);
             animator.SetBool("IsGrounded", true);
         }
-        else
+
+        if (animState.IsName("MovementTree"))
         {
-            if (slopeAngle < -35f)
+            // Laxer ground check. Hopefully this will only get trigger when on
+            // actual cliffs.
+            var halfHeight = capsuleCollider.height / 2f;
+            var groundInterceptRayStart = transform.position + new Vector3(0, halfHeight, 0);
+            var groundInterceptRayLength = capsuleCollider.height * 1.8f;
+
+            var myIsGrounded = Physics.Raycast(
+                    groundInterceptRayStart,
+                    Vector3.down,
+                    groundInterceptRayLength,
+                    whatIsGround);
+
+            // Determine whether the player is going uphill or downhill:
+            // 1. Get the player's position on the map (horizontal plane).
+            float normalizedXposition = (transform.position.x / terrainSize.x);
+            float normalizedZposition = (transform.position.z / terrainSize.z);
+            // 2. Get the terrain's Normal on that point.
+            Vector3 groundNormal = Terrain.activeTerrain.terrainData.GetInterpolatedNormal(
+                    normalizedXposition, normalizedZposition);
+            // 3. Get the angular difference between the terrain's Normal
+            // and the player's forward component.
+            // Note: Use an offset of -90 degrees to make a perfect
+            // alignment equal to 0.
+            // Uphill: positive angles.
+            // Downhill: negative angles.
+            float slopeAngle = (
+                    Vector3.Angle(groundNormal, transform.forward) - 90f);
+            //Debug.Log("groundNormal: " + groundNormal);
+            //Debug.Log("slopeAngle: " + slopeAngle);
+
+            // Transition to falling state when off ground and very steep
+            // downward slopes.
+            if (!myIsGrounded && (slopeAngle < -40f))
             {
                 //Debug.Log("Airborne");
                 isFalling = true;
                 animator.SetBool("IsGrounded", false);
                 animator.SetBool("IsFalling", true);
             }
+        }
+
+        // Apply momentum only the first time.
+        if (animState.IsName("Jump") && applyInitialFallMomentum)
+        {
+            rigidBody.AddForce(
+                new Vector3(
+                    fallMomentumFactor * rigidBody.velocity.x,
+                    rigidBody.velocity.y,
+                    fallMomentumFactor * rigidBody.velocity.z),
+                ForceMode.VelocityChange);
+            applyInitialFallMomentum = false;
+        }
+
+        if (animState.IsName("Landing"))
+        {
+            UpdateControlState(false);
+            rigidBody.velocity = Vector3.zero;
+        }
+        else
+        {
+            UpdateControlState(true);
         }
     }
 
@@ -375,26 +418,6 @@ public class Player : MonoBehaviour
         if (animState.IsName("Sheathe") || animState.IsName("Picking Up") || animState.IsName("DrawSword"))
             return;
 
-        if (animState.IsName("Jump"))
-        {
-            rigidBody.AddForce(
-                new Vector3(
-                    rigidBody.velocity.normalized.x,
-                    0.4f * rigidBody.velocity.normalized.y,
-                    rigidBody.velocity.normalized.z),
-                ForceMode.VelocityChange);
-            return;
-        }
-
-        if (animState.IsName("Landing"))
-        {
-            UpdateControlState(false);
-        }
-        else
-        {
-            UpdateControlState(true);
-        }
-
         if (movementMagnitude >= 0.1)
         {
             CheckFootSounds();
@@ -533,6 +556,7 @@ public class Player : MonoBehaviour
         isGrounded = true;
         isFalling = false;
         fallingTimeout = 5f;
+        applyInitialFallMomentum = true;
     }
 
 
