@@ -717,6 +717,7 @@ GameObject:
   m_Component:
   - component: {fileID: 835098337}
   - component: {fileID: 835098338}
+  - component: {fileID: 835098339}
   m_Layer: 0
   m_Name: AudioListener
   m_TagString: Untagged
@@ -751,6 +752,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PositionSync: {fileID: 849979781}
+--- !u!81 &835098339
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835098336}
+  m_Enabled: 1
 --- !u!1001 &849979778
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -796,11 +805,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 683423951842939091, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.025039634
+      value: -0.025039596
       objectReference: {fileID: 0}
     - target: {fileID: 683423951842939091, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.003940408
+      value: 0.0039404025
       objectReference: {fileID: 0}
     - target: {fileID: 683423951842939100, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_Layer
@@ -912,11 +921,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 683423952098063494, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.025039632
+      value: -0.025039595
       objectReference: {fileID: 0}
     - target: {fileID: 683423952098063494, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0039404086
+      value: 0.003940403
       objectReference: {fileID: 0}
     - target: {fileID: 683423952098063495, guid: dec4855be44e4419d928ce457dc1ff18, type: 3}
       propertyPath: m_Layer
