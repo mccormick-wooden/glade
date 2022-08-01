@@ -29,6 +29,13 @@ namespace PlayerBehaviors
 
         [SerializeField] private float maxLockOnDistance;
 
+        public float windAttackMana = 10f;
+        public float manaRechargeDelay = 2;
+        public float manaRechargePerSecond = 5;
+        public float lastCastTime = 0f;
+        public HealthBarController manaBar;
+        public AudioSource castFailSound;
+        
         private void Awake()
         {
             playerLayerMask = LayerMask.GetMask("Player");
@@ -36,6 +43,8 @@ namespace PlayerBehaviors
 
         private void Start()
         {
+            if (manaBar == null)
+                Debug.LogError("Couldn't find mana bar");
             animator = GetComponent<Animator>();
             player = GetComponent<Player>();
             playerWeaponManager = GetComponent<PlayerWeaponManager>();
@@ -49,8 +58,17 @@ namespace PlayerBehaviors
             }
         }
 
+        private void UpdateMana()
+        {
+            if (Time.time - lastCastTime >= manaRechargeDelay)
+            {
+                manaBar.CurrentHp += manaRechargePerSecond * Time.deltaTime;
+            }
+        }
+
         private void Update()
         {
+            UpdateMana();
             ReadAnimatorParameters();
             DetectLockOnOutOfRange();
             // DetectLockOnOutOfSight(); Reintroduce if we want to break lock-on when losing line of sight
@@ -359,9 +377,18 @@ namespace PlayerBehaviors
 
             if (weapon.specialAttackPrefab != null)
             {
-                var specialEffectInstance =
-                    Instantiate(weapon.specialAttackPrefab, transform.position, transform.rotation);
-                StartCoroutine(DestroySpecialEffect(specialEffectInstance));
+                if (manaBar?.CurrentHp >= windAttackMana)
+                {
+                    manaBar.CurrentHp -= windAttackMana;
+                    lastCastTime = Time.time;
+                    var specialEffectInstance =
+                        Instantiate(weapon.specialAttackPrefab, transform.position, transform.rotation);
+                    StartCoroutine(DestroySpecialEffect(specialEffectInstance));
+                }
+                else
+                {
+                    castFailSound.Play();
+                }
             }
         }
         
