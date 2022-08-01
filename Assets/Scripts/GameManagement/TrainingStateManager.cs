@@ -25,6 +25,9 @@ public class TrainingStateManager : BaseStateManager
         PostBeaconCombatDialogue = 50,
         PowerUp = 51,
         PostPowerUpDialogue = 52,
+        AppleDialogue = 53,
+        EatApple = 54,
+        PostEatAppleDialoge = 55,
         End = 60
     }
 
@@ -59,6 +62,10 @@ public class TrainingStateManager : BaseStateManager
     [SerializeField]
     private string beaconVirtualCameraName = "BeaconVirtualCamera";
     private CinemachineVirtualCamera beaconVirtualCamera;
+
+    [SerializeField]
+    private string appleTreeVirtualCameraName = "AppleTreeVirtualCamera";
+    private CinemachineVirtualCamera appleTreeVirtualCamera;
 
     /// <summary>
     /// The playerCameraName must be the name of the main camera that follows the player
@@ -109,6 +116,7 @@ public class TrainingStateManager : BaseStateManager
     private float postCombatWait = 1f; // let combat animations finish before blending camera
     private Action<IDamageable, string, int> onCombatCompleted = null;
     private List<IDamageable> NextStateKillList = null;
+    private Action<HealingApple> onEatAppleCompleted = null;
 
     private GameObject beacon;
     private GameObject crystal;
@@ -129,21 +137,11 @@ public class TrainingStateManager : BaseStateManager
 
     private Dictionary<TrainingState, List<string>> dialogueDictionary = new Dictionary<TrainingState, List<string>>
     {
-        //{ TrainingState.IntroDialogue, new List<string>() { "Ah, Warden of The Glades! You've arrived just in time!",
-        //                                                    "These gosh darn aliens are just causing the BIGGEST ruckus!",
-        //                                                    "I really need you to do me a solid and clear them out of here. Couldya do that for me?",
-        //                                                    "It looks like you brought your SWORD... Good! Do you remember how to use it? I guess it has been awhile.",
-        //                                                    "When you see on of those pesky ALIENS, just run right up to it! Use the left stick or WASD to move. Don't be shy!",
-        //                                                    "Then once you're close, make sure you use RB/Left Click to swing that sucker until the alien is good and dead!",
-        //                                                    "Same with the BEACONS! That's how the aliens are getting here I reckon.",
-        //                                                    "Oh crap, here comes a Beacon now! Kill any aliens before you go for the Beacon, or I think you might open yourself to serious danger!",
-        //                                                    "But don't worry too much - I'll heal you if your health gets too low! That's what Ancient Tree Spirit friends are for!",
-        //                                                    "Oh, one more thing... Please try not to fall off this very tall and unnecessarily dangerous mesa. Teleporting Wardens back to safety is SO tacky ya know?"}
-        //},
         { TrainingState.GeneralIntroDialogue, new List<string>()
             {
                 "Ah, Warden of The Glades! You've arrived just in time!",
-                "These gosh darn aliens are just causing the BIGGEST ruckus!",
+                "You're looking... blue? Did you just come back from Blue Man Group tryouts? HA! Just kidding of course, Warden. We all know you're terrible at the drums.",
+                "Anyway, these gosh darn aliens are just causing the BIGGEST ruckus!",
                 "I really need you to do me a solid and clear them out of here. Couldya do that for me?",
                 "It looks like you brought your SWORD... Good! Do you remember how to use it? I guess it has been awhile.",
                 "When you see those pesky ALIENS, just run right up to 'em! Use the LEFT STICK or the W/A/S/D keys to move. Don't be shy!",
@@ -161,8 +159,8 @@ public class TrainingStateManager : BaseStateManager
                 "There are other types of aliens I've seen, too - but don't have intel for ya. Sorry! You're gonna have to figure those out on your own!",
                 "One tip - you can lock on to enemies by clicking the LEFT STICK or F key, and cycle through enemies using LEFT/RIGHT DPAD or Q / E keys!",
                 "Super helpful if you're getting swarmed and you're tryna drop 'em one at a time!",
-                "One other thing to keep in mind - the more aliens that are alive, the faster the Health of The Glade will be depleted!",
-                "See that green bar in the top left? That's the Health of The Glade! Don't let it get too low or all is lost!",
+                "One other thing to keep in mind - the more aliens that are alive, the faster the HEALTH OF THE GLADE will be depleted!",
+                "See that green bar in the top left? That's the HEALTH OF THE GLADE! Don't let it get too low or all is lost!",
                 "I can help ya out if it gets too low up here - but down there, you're on your own, Warden!"
             }
         },
@@ -178,9 +176,10 @@ public class TrainingStateManager : BaseStateManager
             {
                 "Ah, a BEACON! These things are falling from the sky, and that's how the aliens are getting here I reckon.",
                 "Until you kill the BEACON, the aliens will keep flooding the area. I don't get it either. How do they all fit in that thing? It's not even that big.",
+                "Even worse, the BEACON has an OVERSHIELD that persists as long as there are nearby enemies! These guys really thought of everything!",
                 "Anyway, the aliens will defend the BEACONS with their lives - be careful, Warden!",
-                "I almost forgot to mention, killing BEACONS will help restore the Health of The Glade!",
-                "Kill the aliens first to protect the Health of The Glade, and we'll deal with the CRYSTAL and BEACON next."
+                "I almost forgot to mention, killing BEACONS will help restore the HEALTH OF THE GLADE!",
+                "Kill the aliens first to protect the HEALTH OF THE GLADE, and we'll deal with the CRYSTAL and BEACON next."
             }
         },
         { TrainingState.PostEnemyCombatDialogue, new List<string>()
@@ -188,7 +187,8 @@ public class TrainingStateManager : BaseStateManager
                 "Wow, you schmacked those fools!",
                 "I doubt those are the last aliens we'll see - we need to kill the BEACON to stop them, but that CRYSTAL needs to go first.",
                 "Remember, the CRYSTAL can hurt you at range, so this might be a good opportunity to use your WIND ATTACK with RT / R key!",
-                "Of course, you can use your SWORD again too - remember, it's RB/Left Click to swing!",
+                "Keep an eye on your blue MANA bar in the upper left, though! Your WIND ATTACK uses that up!",
+                "Of course, if your MANA runs out, you can use your SWORD again too - remember, it's RB/Left Click to swing!",
                 "But I'm sure you know that by now, otherwise we're probably in trouble....",
                 "However you decide to do it, destroy the CRYSTAL now!"
             }
@@ -212,11 +212,26 @@ public class TrainingStateManager : BaseStateManager
         },
         { TrainingState.PostPowerUpDialogue, new List<string>()
             {
+                "There's one more thing I wanna tell you about before sending you on your way..."
+            }
+        },
+        { TrainingState.AppleDialogue, new List<string>()
+            {
+                "Sprinkled though out the Glade, you'll find special trees like this, upon which the glorious GIFTS OF THE GLADE grow!",
+                "And NO, they are NOT apples. I am SO sick of explaining this to people. We are on an ALIEN PLANET. Ever heard of convergent evolution? Gosh.",
+                "Anyway, use your sword on the tree to knock the GIFT free! Then once it drops, get close to it and use the A button / G key to eat it for a health boost!",
+                "Whatever you do, just please don't accidentally kick the GIFT off the mesa. You'll have to restart the game. We didn't have time to fix that!",
+                "Just eat the GIFT, and then we'll talk!"
+            }
+        },
+        { TrainingState.PostEatAppleDialoge, new List<string>()
+            {
+                "There now, wasn't that a tasty treat?",
                 "Dang, it looks like the invasion is really getting started down there. You ready to get going? Think 2 minutes of combat training was enough?",
                 "Don't answer that. Anyway, I'll go ahead and teleport you down to the invasion site so you can start clapping more aliens.",
                 "Help me Obi-Warden Kenobi! You're my only hope! Good luck!!!"
             }
-        }
+         }
     };
 
     private void DisableVirtualCameras()
@@ -225,6 +240,7 @@ public class TrainingStateManager : BaseStateManager
         enemyVirtualCamera.enabled = false;
         crystalVirtualCamera.enabled = false;
         beaconVirtualCamera.enabled = false;
+        appleTreeVirtualCamera.enabled = false;
     }
 
     protected override void OnSceneLoaded()
@@ -244,6 +260,9 @@ public class TrainingStateManager : BaseStateManager
 
         beaconVirtualCamera = GameObject.Find(beaconVirtualCameraName)?.GetComponent<CinemachineVirtualCamera>();
         Utility.LogErrorIfNull(beaconVirtualCamera, nameof(beaconVirtualCamera));
+
+        appleTreeVirtualCamera = GameObject.Find(appleTreeVirtualCameraName)?.GetComponent<CinemachineVirtualCamera>();
+        Utility.LogErrorIfNull(appleTreeVirtualCameraName, nameof(appleTreeVirtualCameraName));
 
         playerModel = GameObject.Find(playerModelGameObjectRootName);
         Utility.LogErrorIfNull(playerModel, nameof(playerModel));
@@ -309,6 +328,9 @@ public class TrainingStateManager : BaseStateManager
         trainingStateChanged += OnTrainingStateChanged_BeaconCombat;
         trainingStateChanged += OnTrainingStateChanged_PowerUp;
         trainingStateChanged += OnTrainingStateChanged_PostPowerUpDialogue;
+        trainingStateChanged += OnTrainingStateChanged_AppleDialogueState;
+        trainingStateChanged += OnTrainingStateChanged_EatAppleState;
+        trainingStateChanged += OnTrainingStateChanged_PostEatAppleDialogueState;
         trainingStateChanged += OnTrainingStateChanged_End;
         #endregion
 
@@ -339,6 +361,9 @@ public class TrainingStateManager : BaseStateManager
         trainingStateChanged -= OnTrainingStateChanged_BeaconCombat;
         trainingStateChanged -= OnTrainingStateChanged_PowerUp;
         trainingStateChanged -= OnTrainingStateChanged_PostPowerUpDialogue;
+        trainingStateChanged -= OnTrainingStateChanged_AppleDialogueState;
+        trainingStateChanged -= OnTrainingStateChanged_EatAppleState;
+        trainingStateChanged -= OnTrainingStateChanged_PostEatAppleDialogueState;
         trainingStateChanged -= OnTrainingStateChanged_End;
     }
 
@@ -347,13 +372,25 @@ public class TrainingStateManager : BaseStateManager
         GameManager.instance.UpdateGameState(GameState.Level1); // TODO: I'd like the tree spirit to open a portal that the warden can walk through to end the scene
     }
 
+    private List<string> GetDialogueForState(TrainingState state)
+    {
+        try
+        {
+            return dialogueDictionary[state];
+        }
+        catch
+        {
+            return new List<string> { "missing dialogue for state" };
+        }
+    }
+
     #region training state callbacks
     private void OnTrainingStateChanged_IntroDialogueState(TrainingState trainingState)
     {
         if (!trainingState.Equals(TrainingState.GeneralIntroDialogue))
             return;
 
-        List<string> dialogueList = dialogueDictionary[trainingState] ?? new List<string> { "missing dialogue for state" };
+        List<string> dialogueList = GetDialogueForState(trainingState);
 
         onCurrentStateCameraBlendComplete = (ICinemachineCamera camera) =>
         {
@@ -400,7 +437,7 @@ public class TrainingStateManager : BaseStateManager
         if (!trainingState.Equals(TrainingState.EnemyIntroDialogue))
             return;
 
-        List<string> dialogueList = dialogueDictionary[trainingState] ?? new List<string> { "missing dialogue for state" };
+        List<string> dialogueList = GetDialogueForState(trainingState);
 
         dialogueCanvas.enabled = true;
         dialogueController.BeginDialogue(dialogueList);
@@ -432,7 +469,7 @@ public class TrainingStateManager : BaseStateManager
         if (!trainingState.Equals(TrainingState.CrystalIntroDialogue))
             return;
 
-        List<string> dialogueList = dialogueDictionary[trainingState] ?? new List<string> { "missing dialogue for state" };
+        List<string> dialogueList = GetDialogueForState(trainingState);
 
         dialogueCanvas.enabled = true;
         dialogueController.BeginDialogue(dialogueList);
@@ -464,7 +501,7 @@ public class TrainingStateManager : BaseStateManager
         if (!trainingState.Equals(TrainingState.BeaconIntroDialogue))
             return;
 
-        List<string> dialogueList = dialogueDictionary[trainingState] ?? new List<string> { "missing dialogue for state" };
+        List<string> dialogueList = GetDialogueForState(trainingState);
 
         dialogueCanvas.enabled = true;
         dialogueController.BeginDialogue(dialogueList);
@@ -496,7 +533,7 @@ public class TrainingStateManager : BaseStateManager
         if (!genericDialogueStates.Contains(trainingState))
             return;
 
-        List<string> dialogueList = dialogueDictionary[trainingState] ?? new List<string> { "missing dialogue for state" };
+        List<string> dialogueList = GetDialogueForState(trainingState);
 
         onCurrentStateCameraBlendComplete = (ICinemachineCamera camera) =>
         {
@@ -614,7 +651,7 @@ public class TrainingStateManager : BaseStateManager
         if (trainingState != TrainingState.PostPowerUpDialogue)
             return;
 
-        List<string> dialogueList = dialogueDictionary[trainingState] ?? new List<string> { "missing dialogue for state" };
+        List<string> dialogueList = GetDialogueForState(trainingState);
 
         string specialDialogue = string.Empty;
         switch (appliedPowerUp)
@@ -634,6 +671,114 @@ public class TrainingStateManager : BaseStateManager
         }
 
         dialogueList.Insert(0, specialDialogue);
+
+        onCurrentStateCameraBlendComplete = (ICinemachineCamera camera) =>
+        {
+            if (camera.Name == trainingHostVirtualCameraName)
+            {
+                cameraBlendEventDispatcher.CameraBlendCompleted -= onCurrentStateCameraBlendComplete;
+
+                dialogueCanvas.enabled = true;
+                dialogueController.BeginDialogue(dialogueList);
+            }
+        };
+
+        onAllDialogueCompleted = () =>
+        {
+            dialogueController.AllDialogueCompleted -= onAllDialogueCompleted;
+
+            DisableVirtualCameras();
+            appleTreeVirtualCamera.enabled = true;
+            dialogueCanvas.enabled = false;
+        };
+
+        onNextStateCameraBlendComplete = (ICinemachineCamera camera) =>
+        {
+            if (camera.Name == appleTreeVirtualCameraName)
+            {
+                cameraBlendEventDispatcher.CameraBlendCompleted -= onNextStateCameraBlendComplete;
+
+                NextTrainingState();
+            }
+        };
+
+        cameraBlendEventDispatcher.CameraBlendCompleted += onCurrentStateCameraBlendComplete;
+        dialogueController.AllDialogueCompleted += onAllDialogueCompleted;
+        cameraBlendEventDispatcher.CameraBlendCompleted += onNextStateCameraBlendComplete;
+
+        StartDialogueState(trainingHostVirtualCamera);
+    }
+
+    private void OnTrainingStateChanged_AppleDialogueState(TrainingState trainingState)
+    {
+        if (!trainingState.Equals(TrainingState.AppleDialogue))
+            return;
+
+        List<string> dialogueList = GetDialogueForState(trainingState);
+
+        dialogueCanvas.enabled = true;
+        dialogueController.BeginDialogue(dialogueList);
+
+        onAllDialogueCompleted = () =>
+        {
+            dialogueController.AllDialogueCompleted -= onAllDialogueCompleted;
+
+            DisableVirtualCameras();
+            dialogueCanvas.enabled = false;
+        };
+
+        onNextStateCameraBlendComplete = (ICinemachineCamera camera) =>
+        {
+            if (camera.Name == playerCameraName)
+            {
+                cameraBlendEventDispatcher.CameraBlendCompleted -= onNextStateCameraBlendComplete;
+                NextTrainingState();
+            }
+        };
+
+        dialogueController.AllDialogueCompleted += onAllDialogueCompleted;
+        cameraBlendEventDispatcher.CameraBlendCompleted += onNextStateCameraBlendComplete;
+    }
+
+    private void OnTrainingStateChanged_EatAppleState(TrainingState trainingState)
+    {
+        if (!trainingState.Equals(TrainingState.EatApple))
+            return;
+
+        onEatAppleCompleted = (healingApple) =>
+        {
+            healingApple.AppleEaten -= onEatAppleCompleted;
+            Invoke("NextTrainingState", postCombatWait);
+        };
+
+        GameObject.Find("tree_1 (2)").GetComponentInChildren<HealingApple>().AppleEaten += onEatAppleCompleted;
+    }
+
+    private void OnTrainingStateChanged_PostEatAppleDialogueState(TrainingState trainingState)
+    {
+        if (trainingState != TrainingState.PostEatAppleDialoge)
+            return;
+
+        List<string> dialogueList = GetDialogueForState(trainingState);
+
+        //string specialDialogue = string.Empty;
+        //switch (appliedPowerUp)
+        //{
+        //    case DamageIncreasePowerUp t1:
+        //        specialDialogue = "Wow, Warden you look JACKED now! That damage increase should definitely help.";
+        //        break;
+        //    case DamageResistPowerUp t2:
+        //        specialDialogue = "Ooooo damage resistance! Get all damage spongey and whatnot, I like it!";
+        //        break;
+        //    case MaxHealthPowerUp t3:
+        //        specialDialogue = "Increasing health is a good choice! Your skin looks healthier already!";
+        //        break;
+        //    default:
+        //        specialDialogue = "Hmmm... That's a weird choice! Whatever, your funeral!";
+        //        break;
+        //}
+
+        //dialogueList.Insert(0, specialDialogue);
 
         onCurrentStateCameraBlendComplete = (ICinemachineCamera camera) =>
         {
@@ -688,24 +833,20 @@ public class TrainingStateManager : BaseStateManager
             GameManager.instance.InvokeTransition(midTransitionAction: () => playerModel.transform.position = playerModelStartingPos);
     }
 
-    private bool inPlayableState = false;
-
-    private string lockOnCameraName = "LockOnCamera";
-
-    private void FixedUpdate()
-    {
-        if (inPlayableState != playerScript.ControlsEnabled)
-            UpdateControlStateGracefully(inPlayableState);
-    }
-
     private void OnBlendToCameraStarted_DisableControlState(ICinemachineCamera activeCamera)
     {
-        inPlayableState = activeCamera.Name == lockOnCameraName;
+        if (activeCamera.Name == trainingHostVirtualCameraName)
+        {
+            UpdateControlStateGracefully(enableControlState: false);
+        }
     }
 
     private void OnBlendToCameraCompleted_EnableControlState(ICinemachineCamera activeCamera)
     {
-        inPlayableState = activeCamera.Name == playerCameraName || activeCamera.Name == lockOnCameraName;
+        if (activeCamera.Name == playerCameraName)
+        {
+            UpdateControlStateGracefully(enableControlState: true);
+        }
     }
     #endregion
 
@@ -714,6 +855,8 @@ public class TrainingStateManager : BaseStateManager
     {
         playerCrystalDamageEffect.enabled = true;
         trainingStateChanged.Invoke(currentTrainingState = currentTrainingState.Next());
+
+        Debug.Log($"TrainingStateChanged To: {currentTrainingState}");
     }
 
     private void StartDialogueState(CinemachineVirtualCamera dialogueCamera)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Abstract;
@@ -9,16 +10,18 @@ public class HealingApple : MonoBehaviour
     [SerializeField]
     ParticleSystem healParticleEffect;
 
+    public Action<HealingApple> AppleEaten;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void BeConsumed(Transform consumer)
@@ -29,6 +32,7 @@ public class HealingApple : MonoBehaviour
             Instantiate(healParticleEffect, consumer);
             damageable.Heal(25);
             EventManager.TriggerEvent<PlayerEatAppleEvent, Vector3>(transform.position);
+            AppleEaten?.Invoke(this);
             Destroy(gameObject);
         }
 
@@ -42,5 +46,4 @@ public class HealingApple : MonoBehaviour
             EventManager.TriggerEvent<AppleHitGrassEvent, Vector3>(transform.position);
         }
     }
-
 }
