@@ -1853,18 +1853,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abdb184cde9dff04784e124dc843828c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnActive: 0
+  infantryEnemyPrefabs:
+  - {fileID: 5944348617465899581, guid: ff8047649a45c2d448a8df496776b0be, type: 3}
+  - {fileID: 4381904912918590675, guid: dfa7fb9b66468a741b51fe6c45d4f959, type: 3}
+  - {fileID: 4090566570449785547, guid: fa465fa3d0d9d694cad1a441023b26a3, type: 3}
+  aoeEnemyPrefab: {fileID: 7704693247559123115, guid: 27eb6e80ee2136f418a62865ed2fea71, type: 3}
+  rangedEnemyPrefab: {fileID: 311366642087818606, guid: 16c877b432007ff45a13655df56d6115, type: 3}
+  heavyEnemyPrefab: {fileID: 8967351374491941148, guid: 01cb2c96bf8beef4d8743e9589ddc33e, type: 3}
+  enemySpawnParticlePrefab: {fileID: 6580212678852061256, guid: a9e0c416e588f014a880017e036105ca, type: 3}
+  allEnemyPrefabs:
+  - {fileID: 5944348617465899581, guid: ff8047649a45c2d448a8df496776b0be, type: 3}
+  - {fileID: 4381904912918590675, guid: dfa7fb9b66468a741b51fe6c45d4f959, type: 3}
+  - {fileID: 4090566570449785547, guid: fa465fa3d0d9d694cad1a441023b26a3, type: 3}
+  - {fileID: 7704693247559123115, guid: 27eb6e80ee2136f418a62865ed2fea71, type: 3}
+  - {fileID: 311366642087818606, guid: 16c877b432007ff45a13655df56d6115, type: 3}
+  - {fileID: 8967351374491941148, guid: 01cb2c96bf8beef4d8743e9589ddc33e, type: 3}
+  minimumTimeBetweenSpawns: 10
+  maximumTimeBetweenSpawns: 30
+  beaconEnemyDetectionRange: 30
+  startingNumberOfEnemiesPerBeacon: 6
+  maximumNumberOfEnemiesPerBeacon: 10
+  startingRatioOfInfantryEnemies: 0.7
+  startingRatioOfRangedEnemies: 0.1
+  startingRatioOfAoeEnemies: 0.2
+  startingRatioOfHeavyEnemies: 0
+  criticalEnemyPercentage: 0.2
   beacons: []
-  possibleEnemies:
-  - {fileID: 3054070596095771740, guid: 215c6dd64c448a24082f00cdf1a71f39, type: 3}
-  - {fileID: 3054070596095771740, guid: 7a4ef9c0599154a418f02d4787dc8642, type: 3}
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 128
-  nominalSpawnTime: 1
-  minTimeBetweenSpawnsSeconds: 2
   beaconSpawner: {fileID: 0}
-  enemySpawnParticlePrefab: {fileID: 0}
 --- !u!114 &5921222295050640521
 MonoBehaviour:
   m_ObjectHideFlags: 0

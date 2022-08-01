@@ -249,7 +249,7 @@ To regenerate tree for new files:
 │   ├── PlantEnemy.cs - *(cdail7)*
 │   ├── SwordEnemy.cs - *(mwooden3)*
 │   └── VenusScript.cs - *(cdail7)*
-├── EnemySpawner.cs - *(cdail7)*
+├── EnemySpawner.cs - *(cdail7, tlagrange3)*
 ├── EventSound3D.cs - *(cdail7)*
 ├── GameManagement
 │   ├── EventManager.cs - (from course)
