@@ -18,9 +18,6 @@ Team Members
     - [Controls](#controls)
     - [Game Requirements Achieved](#game-requirements-achieved)
   - [Known Problem Areas](#known-problem-areas)
-    - [General](#general)
-    - [Training Scene](#training-scene)
-    - [Level 1 Scene](#level-1-scene)
   - [Manifest](#manifest)
     - [Features / Non-Script Assets](#features--non-script-assets)
       - [Chris Dail - cdail7](#chris-dail---cdail7)
@@ -118,18 +115,7 @@ ii. How to play and what parts of the level to observe technology requirements
 ```
 iii. Known problem areas
 ```
-### General
-- Player slides around, no root motion
-- Defending (LB) doesn't do anything
-- Incidental sword collisions cause damage even if player hasn't attacked.
-
-### Training Scene
-- SwordEnemy can't do damage to player
-- SwordEnemy doesn't track the player
-
-### Level 1 Scene
-- Bridges connecting the mesas in the terrain cannot be traversed by walking/running
-- Bridges can be crossed by spamming the attack button (RB)
+- If you continue running directly into the beacon, it can push you through the floor in some cases
 
 ## Manifest
 
@@ -174,6 +160,7 @@ each team member contributed to code written
 - Damage / Combat framework
 - Scene Transitions
 - Minimap
+- Glade Health System
 
 #### Daniel Zuniga
 - Camera
@@ -261,6 +248,7 @@ To regenerate tree for new files:
 ├── GameManagement
 │   ├── EventManager.cs - (from course)
 │   ├── GameManager.cs - *(mwooden3, egilligan3)*
+│   ├── GladeHealthManager.cs - *(mwooden3)*
 │   ├── Level1StateManager.cs - *(mwooden3)*
 │   ├── MainMenuStateManager.cs - *(mwooden3, egilligan3)*
 │   ├── NewGameStateManager.cs - *(mwooden3)*
@@ -268,6 +256,7 @@ To regenerate tree for new files:
 │   ├── TrainingStateManager.cs - *(mwooden3, daniel.zuniga, egilligan3)*
 │   ├── TriggerPlane.cs - *(mwooden3, daniel.zuniga)*
 │   └── LongClickButton.cs - *(mwooden3)*
+│   ├── EndGameMenu.cs - *(mwooden3)*
 │   └── DialogueController.cs - *(mwooden3)*
 ├── HealthBarController.cs - *(daniel.zuniga, egilligan3, mwooden3, tlagrange3)*
 ├── Helper
