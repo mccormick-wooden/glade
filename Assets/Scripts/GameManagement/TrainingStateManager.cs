@@ -833,20 +833,24 @@ public class TrainingStateManager : BaseStateManager
             GameManager.instance.InvokeTransition(midTransitionAction: () => playerModel.transform.position = playerModelStartingPos);
     }
 
+    private bool inPlayableState = false;
+
+    private string lockOnCameraName = "LockOnCamera";
+
+    private void FixedUpdate()
+    {
+        if (inPlayableState != playerScript.ControlsEnabled)
+            UpdateControlStateGracefully(inPlayableState);
+    }
+
     private void OnBlendToCameraStarted_DisableControlState(ICinemachineCamera activeCamera)
     {
-        if (activeCamera.Name == trainingHostVirtualCameraName)
-        {
-            UpdateControlStateGracefully(enableControlState: false);
-        }
+        inPlayableState = activeCamera.Name == lockOnCameraName;
     }
 
     private void OnBlendToCameraCompleted_EnableControlState(ICinemachineCamera activeCamera)
     {
-        if (activeCamera.Name == playerCameraName)
-        {
-            UpdateControlStateGracefully(enableControlState: true);
-        }
+        inPlayableState = activeCamera.Name == playerCameraName || activeCamera.Name == lockOnCameraName;
     }
     #endregion
 
