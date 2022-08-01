@@ -157,6 +157,10 @@ each team member contributed to code written
 - Enemy health bars
 
 #### Thomas Lagrange - tlagrange3
+- Combat animation and implementation
+- Special attack mechanic
+- Lock on and Strafe Mechanics
+- Powerup Mechanic
 - Beacon spawning / flying / management
 - Level / terrain design
 - Boss design / logic
