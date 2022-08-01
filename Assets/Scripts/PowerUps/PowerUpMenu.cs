@@ -112,7 +112,9 @@ namespace PowerUps
                 _canvas.enabled = true;
             }
             else
-                Utility.EnableAllOf(except: new Canvas[] { _canvas, GameObject.Find("TreeSpiritDialogueCanvas")?.GetComponentInChildren<Canvas>() });
+                Utility.EnableAllOf(except: new Canvas[] { _canvas,
+                    GameObject.Find("TreeSpiritDialogueCanvas")?.GetComponentInChildren<Canvas>(),
+                    GameObject.Find("EndGameMenu")?.GetComponentInChildren<Canvas>() });
         }
     }
 }
