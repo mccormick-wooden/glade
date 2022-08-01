@@ -34,6 +34,8 @@ public class EndGameMenu : MonoBehaviour
     {
         textBox = GetComponentInChildren<TextMeshProUGUI>();
         _canvas = GetComponentInChildren<Canvas>();
+        _canvas.enabled = false;
+        enabled = false;
     }
 
     private void Update()
