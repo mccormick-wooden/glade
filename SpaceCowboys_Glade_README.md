@@ -200,12 +200,24 @@ To regenerate tree for new files:
 │   ├── ExitCombatLayerAnimation.cs - *(tlagrange3)*
 │   ├── ExitLockedOnLayer.cs - *(tlagrange3)*
 │   └── StartComboAnimation.cs - *(tlagrange3)*
+├── AppleTreeScript.cs - *(cdail7)*
 ├── AppEvents
+│   ├── AppleHitGrassEvent.cs - *(cdail7)*
+│   ├── CampfireStartEvent.cs - *(cdail7)*
+│   ├── CrystalCollisionEvent.cs - *(egilligan3)*
+│   ├── CrystalDeathEvent.cs - *(egilligan3)*
+│   ├── FairyAOEAttackEvent.cs - *(cdail7)*
+│   ├── MonsterDieEvent.cs - *(cdail7)*
+│   ├── MonsterTakeDamageEvent.cs - *(cdail7)*
+│   ├── PlayerEatAppleEvent.cs - *(cdail7)*
+│   ├── PlayerFootstepEvent.cs - *(cdail7)*
+│   ├── PlayerHurtEvent.cs - *(cdail7)*
 │   ├── PlayMusicEvent.cs - *(cdail7)*
-│   ├── SwordSwingEvent.cs - *(cdail7)*
-│   └── SwordHitEvent.cs - *(cdail7)*
+│   ├── SwordHitEvent.cs - *(cdail7)*
+│   └── SwordSwingEvent.cs - *(cdail7)*
 ├── Arrow.cs - *(cdail7)*
 ├── AudioEventManager.cs - *(cdail7, tlagrange3)*
+├── AudioListenerManager.cs - *(egilligan3)*
 ├── Beacons
 │   ├── BeaconFall.cs - *(tlagrange3)*
 │   ├── BeaconManager.cs - *(tlagrange3, cdail7, egilligan3, mwooden3)*
@@ -232,6 +244,7 @@ To regenerate tree for new files:
 │   ├── CrystalDamageEffect.cs - *(egilligan3)*
 │   ├── CrystalHealEffect.cs - *(egilligan3)*
 │   ├── CrystalManager.cs - *(egilligan3)*
+│   ├── CrystalPhysicsCollision.cs - *(egilligan3)*
 │   └── CrystalSpawner.cs - *(egilligan3)*
 │   └── CrystalWeapon.cs - *(egilligan3)*
 ├── Damageable
@@ -250,23 +263,28 @@ To regenerate tree for new files:
 │   ├── SwordEnemy.cs - *(mwooden3)*
 │   └── VenusScript.cs - *(cdail7)*
 ├── EnemySpawner.cs - *(cdail7)*
-├── EventSound3D.cs - *(cdail7)*
+├── EventSound3D.cs - (from course)
+├── FruitDetector.cs - *(cdail7)*
 ├── GameManagement
+│   ├── DialogueController.cs - *(mwooden3)*
 │   ├── EventManager.cs - (from course)
 │   ├── GameManager.cs - *(mwooden3)*
+│   ├── GladeHealthManager.cs - *(mwooden3)*
 │   ├── Level1StateManager.cs - *(mwooden3)*
+│   ├── LongClickButton.cs - *(mwooden3)*
 │   ├── MainMenuStateManager.cs - *(mwooden3)*
 │   ├── NewGameStateManager.cs - *(mwooden3)*
 │   ├── PauseMenuManager.cs - *(mwooden3, tlagrange3)*
 │   ├── TrainingStateManager.cs - *(mwooden3, daniel.zuniga)*
-│   ├── TriggerPlane.cs - *(mwooden3, daniel.zuniga)*
-│   └── LongClickButton.cs - *(mwooden3)*
-│   └── DialogueController.cs - *(mwooden3)*
+│   └── TriggerPlane.cs - *(mwooden3, daniel.zuniga)*
+├── HealingApple.cs - *(cdail7)*
 ├── HealthBarController.cs - *(daniel.zuniga, egilligan3, mwooden3, tlagrange3)*
 ├── Helper
-│   └── AnimationEventDispatcher.cs - *(mwooden3, [inspired by StackOverflow](https://gamedev.stackexchange.com/questions/117423/unity-detect-animations-end))*
-│   └── CameraBlendEventDispatcher.cs *(mwooden3, [inspired by thread](https://forum.unity.com/threads/oncameratransition-onblendcomplete-event.520056/))*
+│   ├── AnimationEventDispatcher.cs - *(mwooden3, [inspired by StackOverflow](https://gamedev.stackexchange.com/questions/117423/unity-detect-animations-end))*
+│   ├-─ CameraBlendEventDispatcher.cs *(mwooden3, [inspired by thread](https://forum.unity.com/threads/oncameratransition-onblendcomplete-event.520056/))*
 │   ├── DontDestroyThisOnLoad.cs - *(mwooden3)*
+│   ├── Extensions.cs - *(mwooden3)*
+│   ├── MouseSelect.cs - *(egilligan3)*
 │   ├── Quitter.cs - *(mwooden3)*
 │   ├── SceneLoader.cs - *(mwooden3)*
 │   ├── TimeScaleToggle.cs - *(mwooden3)*
@@ -281,6 +299,8 @@ To regenerate tree for new files:
 ├── Minimap
 │   ├── MinimapCamera.cs *(mwooden3)*
 │   └── MinimapIcon.cs *(mwooden3)*
+├── Movement
+│   └── CameraRelativeRootMovement.cs *(daniel.zuniga)*
 ├── NPC
 │   └── TreeSpirit.cs - *(mwooden3)*
 ├── Player.cs - *(cdail7, egilligan3, tlagrange3, mwooden3, Daniel Zuniga)*
@@ -292,6 +312,7 @@ To regenerate tree for new files:
 │   ├── PlayerWeaponManager.cs - *(tlagrange3)*
 │   └── PlayerWeaponSlot.cs - *(tlagrange3)*
 ├── PlayerControls.cs - *(cdail7)*
+├── PlayerLockOnCamera.cs - *(cdail7)*
 ├── PowerUps
 │   ├── DamageIncreasePowerUp.cs - *(tlagrange3)*
 │   ├── DamageResistPowerUp.cs - *(tlagrange3)*
@@ -301,7 +322,7 @@ To regenerate tree for new files:
 │   └── dev
 │       └── TogglePowerUpMenu.cs - *(tlagrange3)*
 |── WeaponsAndAttacks
-|   ├── AngryChestBump.cs - *(mwooden3)*
+│   ├── AngryChestBump.cs - *(mwooden3)*
 |   ├── AOEAttack.cs - *(cdail7)*
 |   ├── BiteAttack.cs - *(cdail7)*
 |   ├── MushroomExplosion.cs - *(cdail7)*
@@ -311,15 +332,15 @@ To regenerate tree for new files:
 ├── SpecialEffectWeapon.cs - *(tlagrange3)*
 ├── PlayerLockOnCamera.cs - *(tlagrange3)*
 ├── ThirdPersonCamera.cs - *(daniel.zuniga, tlagrange3)*
-└── VelocityReporter.cs - (from course)
-|__ Extensions.cs *(mwooden3)*
+├── VelocityReporter.cs - (from course)
+└── Extensions.cs *(mwooden3)*
 
 ```
 
 
 ### 3rd Party Assets
 
-The entirety of the 3rd Party assets that are in use are contained in `Assets/3rdParty/`:
+The majority of the 3rd Party assets that are in use are contained in `Assets/3rdParty/`:
 
 - [UI Button Pack 2](https://assetstore.unity.com/packages/2d/gui/icons/ui-button-pack-2-1200-button-130422) - Used for main menu and pause menu buttons.
 - [Pyro Particles](https://assetstore.unity.com/packages/vfx/particles/fire-explosions/fire-spell-effects-36825) - Used for Beacon meteorite effect.
@@ -334,6 +355,7 @@ The entirety of the 3rd Party assets that are in use are contained in `Assets/3r
 - [Hit Impact Effects](https://assetstore.unity.com/packages/vfx/particles/hit-impact-effects-free-218385) - Used for visualizing hit impacts in combat
 - [minicrap](https://github.com/Srfigie/Unity-3d-TopDownMovement) - Some prebuilt art for minimap.
 - [ExplosiveLLC](https://assetstore.unity.com/packages/3d/animations/warrior-pack-bundle-1-free-36405) - Tornado (Wind Sword) attack animation
+
 
 ## Internal Team Documentation
 ### Beacons
