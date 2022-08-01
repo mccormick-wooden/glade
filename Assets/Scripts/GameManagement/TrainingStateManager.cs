@@ -176,7 +176,7 @@ public class TrainingStateManager : BaseStateManager
             {
                 "Ah, a BEACON! These things are falling from the sky, and that's how the aliens are getting here I reckon.",
                 "Until you kill the BEACON, the aliens will keep flooding the area. I don't get it either. How do they all fit in that thing? It's not even that big.",
-                "Even worse, the BEACON has an OVERSHIELD that persists as long as there are nearby enemies! These guys really thought of everything!",
+                "Even worse, the BEACON has an OVERSHIELD that persists as long as there are nearby ALIENS and CRYSTALS! These guys really thought of everything!",
                 "Anyway, the aliens will defend the BEACONS with their lives - be careful, Warden!",
                 "I almost forgot to mention, killing BEACONS will help restore the HEALTH OF THE GLADE!",
                 "Kill the aliens first to protect the HEALTH OF THE GLADE, and we'll deal with the CRYSTAL and BEACON next."
