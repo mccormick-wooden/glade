@@ -9,6 +9,9 @@ public class VenusScript : BaseEnemy
     {
         base.Start();
 
+        //weapon = base.gameObject.transform.Find("RigHead").Find("Bite")?.GetComponent<BiteAttack>();
+        weapon = GetComponentInChildren<BiteAttack>();
+
         isAttacking = false;
     }
 
@@ -22,7 +25,12 @@ public class VenusScript : BaseEnemy
     protected override void UpdateAnimations()
     {
         if (IsInAttackAnimation())
+        {
+            weapon.InUse = true;
             return;
+        }
+
+        weapon.InUse = false;
 
         Vector3 velocity = agent.velocity;
         float speed = agent.velocity.magnitude;

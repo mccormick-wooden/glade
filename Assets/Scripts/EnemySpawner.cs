@@ -169,7 +169,7 @@ public class EnemySpawner : MonoBehaviour
         var numberOfRangedEnemiesToSpawn =
             Mathf.Ceil(startingRatioOfRangedEnemies * startingNumberOfEnemiesPerBeacon);
         var numberOfHeavyEnemiesToSpawn =
-            Mathf.Ceil(startingRatioOfHeavyEnemies * startingNumberOfEnemiesPerBeacon);
+            Mathf.FloorToInt(startingRatioOfHeavyEnemies * startingNumberOfEnemiesPerBeacon);
 
         var spawnPosition = crashedBeacon.transform.position;
 

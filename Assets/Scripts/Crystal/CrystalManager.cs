@@ -15,12 +15,16 @@ public class CrystalManager : MonoBehaviour
     [SerializeField]
     private BeaconSpawner beaconSpawner;
 
+    [SerializeField]
+    private GameObject[] CrystalSpawnPoints;
+
     [Tooltip("Max attempts to spawn crystal at crashed beacon before giving up.")]
     [SerializeField]
     private int maxSpawnAttempts = 5;
 
+    private int railsSpawnId = 0;
+
     private static float nextCrystalId = 0;
-    private bool firstCrystalSpawned = false;
     private CrystalSpawner spawner;
 
     /// <summary>
@@ -84,22 +88,19 @@ public class CrystalManager : MonoBehaviour
     {
         spawner = Instantiate(crystalSpawnerPrefab, beacon.transform.position, beacon.transform.rotation, beacon.transform).GetComponent<CrystalSpawner>();
         spawner.name = "BeaconCrystalSpawner";
-        spawner.spawnActive = false; // We don't want this continually spawning crystals
+        spawner.spawnActive = true; //YES WE DO --> We don't want this continually spawning crystals
         int numAttempts = 0;
-        bool spawned = false;
-        while (!spawned & numAttempts < maxSpawnAttempts)
-        {
-            spawned = spawner.Spawn();
-            numAttempts++;
-        }
+
+        Vector3 spawnPoint = CrystalSpawnPoints[railsSpawnId].transform.position;
+        Debug.Log($"Spawning at Crystal Spawn Point {CrystalSpawnPoints[railsSpawnId].name}: {spawnPoint}");
+        bool spawned = spawner.SpawnAt(spawnPoint);
+        railsSpawnId++;
+
+        if(railsSpawnId >= CrystalSpawnPoints.Length)
+            railsSpawnId = 0;
 
         if (!spawned)
-        {
-            spawner.spawnActive = true;
             Debug.Log($"Attempt to spawn crystal near {beacon.name} failed. after {numAttempts} attempts.");
-        }
-        else
-            firstCrystalSpawned = true;
     }
 
     private void removeCrystal(IDamageable damageable, string name, int instanceId)
@@ -120,14 +121,6 @@ public class CrystalManager : MonoBehaviour
         // add to list of crystals and subscribe to its death event to remove it
         crystals.Add(crystal.GetInstanceID(), crystal.GetComponent<CrystalController>());
         crystal.GetComponentInChildren<IDamageable>().Died += removeCrystal;
-    }
-    private void Update()
-    {
-        if (firstCrystalSpawned && spawner.spawnActive)
-        {
-            // new crystal will have its own spawner
-            spawner.spawnActive = false;
-        }
     }
 
 

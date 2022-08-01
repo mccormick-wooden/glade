@@ -31,6 +31,9 @@ namespace Beacons
         // of the maximum that can spawn around the beacon
         private EnemySpawner playerEnemySpawner;
 
+        private float minY = float.MaxValue;
+        private float maxY = float.MinValue;
+
         private void Awake()
         {
             _damageable = GetComponent<IDamageable>();
@@ -63,8 +66,13 @@ namespace Beacons
         private void DropPowerUp()
         {
             if (powerUpPrefab == null) return;
+
+            var pos = transform.position;
+
+            pos.y = (minY + maxY) / 2;
+
             Instantiate(powerUpPrefab,
-                transform.position,
+                pos,
                 Quaternion.identity, transform.parent);
         }
 
@@ -128,6 +136,9 @@ namespace Beacons
 
             var newPosition = position;
             newPosition.y += Mathf.Sin(Time.fixedTime * Mathf.PI * hoverFrequency) * hoverAmplitude;
+
+            minY = newPosition.y < minY ? newPosition.y : minY;
+            maxY = newPosition.y > maxY ? newPosition.y : maxY;
 
             transform.position = newPosition;
         }

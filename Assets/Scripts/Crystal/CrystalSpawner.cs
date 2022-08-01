@@ -38,6 +38,16 @@ public class CrystalSpawner : MonoBehaviour
         timeSinceSpawn = 0f;
     }
 
+    private Vector3 ClampToTerrainHeight(Vector3 position)
+    {
+        Vector3 modifiedPosition = position;
+        // clamp to terrain height
+        if (null != Terrain.activeTerrain)
+            modifiedPosition.y = Terrain.activeTerrain.SampleHeight(position);
+
+        return modifiedPosition;
+    }
+
 
     private Vector3 generateRandomSpawnPoint()
     {
@@ -47,9 +57,7 @@ public class CrystalSpawner : MonoBehaviour
         // get a random rotation at that the given distance
         Vector3 spawnPoint = Quaternion.Euler(0, Random.Range(-180, 180), 0) * (r * Vector3.right) + transform.position;
 
-        // clamp to terrain height
-        if (null != Terrain.activeTerrain)
-            spawnPoint.y = Terrain.activeTerrain.SampleHeight(spawnPoint);
+        spawnPoint = ClampToTerrainHeight(spawnPoint);
 
         return spawnPoint;
     }
@@ -99,6 +107,16 @@ public class CrystalSpawner : MonoBehaviour
             return position;
         else
             return Vector3.zero;
+    }
+
+    public bool SpawnAt(Vector3 spawnPoint)
+    {
+        spawnPoint = ClampToTerrainHeight(spawnPoint);
+        if (!Mathf.Approximately(spawnPoint.magnitude, 0f))
+        {
+            crystalManager.SpawnCrystal(spawnPoint);
+        }
+        return true;
     }
 
     public bool Spawn()

@@ -215,7 +215,6 @@ MonoBehaviour:
   EffectMultiplier: 1
   crystalAudio: {fileID: 7592135391557725058}
   growAudio: {fileID: 6428958513974186328}
-  damagedNoise: {fileID: 0}
   LightningPrefab: {fileID: 106988, guid: a9892f6a83fd8d4468ce0c8a3d09d3cd, type: 3}
   LightningSource: {fileID: 9155045854319602569}
   lightningAudio: {fileID: 6325348495379813592}
@@ -254,7 +253,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 79277b50f3c23b74aa1833db5ccb1496, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.25
+  m_Volume: 0.33
   m_Pitch: 1
   Loop: 1
   Mute: 0
