@@ -212,7 +212,9 @@ To regenerate tree for new files:
 │   ├── BeaconFall.cs - *(tlagrange3)*
 │   ├── BeaconManager.cs - *(tlagrange3, cdail7, egilligan3, mwooden3)*
 │   ├── BeaconOrbiter.cs - *(tlagrange3)*
+│   ├── BeaconOvershield.cs - *(tlagrange3)*
 │   ├── BeaconSpawner.cs - *(tlagrange3, mwooden3, egilligan3)*
+│   ├── BeaconSpawnPoint.cs - *(tlagrange3)*
 │   ├── CrashedBeacon.cs - *(tlagrange3, mwooden3)*
 │   └── dev
 │       └── TriggerBeaconSpawn.cs - *(tlagrange3)*
@@ -250,7 +252,7 @@ To regenerate tree for new files:
 │   ├── PlantEnemy.cs - *(cdail7)*
 │   ├── SwordEnemy.cs - *(mwooden3)*
 │   └── VenusScript.cs - *(cdail7)*
-├── EnemySpawner.cs - *(cdail7)*
+├── EnemySpawner.cs - *(cdail7, tlagrange3)*
 ├── EventSound3D.cs - *(cdail7)*
 ├── GameManagement
 │   ├── EventManager.cs - (from course)
