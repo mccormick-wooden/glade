@@ -1,5 +1,7 @@
-name: Glade Build
+name: Glade - Build
+
 on: [pull_request]
+
 jobs:
   buildForAllSupportedPlatforms:
     name: Build for ${{ matrix.targetPlatform }}
@@ -26,3 +28,7 @@ jobs:
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
           unityVersion: auto
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Glade-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
