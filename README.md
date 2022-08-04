@@ -2,14 +2,27 @@
 
 ![image](https://user-images.githubusercontent.com/60236744/178626491-22030cd6-4e1c-4e34-b48a-cbdade6d27ab.png)
 
-## Team
-- Chris
-- Eric
-- Thomas
-- McCormick
-- Daniel
+*The forests of a distant world have a secret: tucked away GLADES designated by the ANCIENT TREE SPIRITS as a neutral space to meet, broker peace, and foster relations between the disparate TREE TRIBES.*
+
+*Now, the BEACONS of an ALIEN CIVILIZATION are falling from meteorites to colonize the Glades for their rich resources.*
+
+*Imbued with the powers of the Ancient Tree Spirits, the WARDEN OF THE GLADES is the only force standing in between the aliens and the utter destruction of the Glades.*
+
+*The Warden must find and destory each BEACON before the alien forces dominate the Glades, fighting off waves of alien enemies in the process. Along the way, the Warden may use POWERUPS provided by the Ancient Tree Spirits to assist in the grand mission.*
+
+*Will the Warden succeed in repelling the alien invasion? Or will the Warden succumb to overwhelming alien numbers?*
+
+*Only time will tell...*
+
+## What is this?
+
+Glade is a 3D, 3rd person, hack n' slash video game built in Unity for Windows and MacOS!
+
+## [Latest Release](https://github.com/mccormick-wooden/glade/releases/tag/latest)
 
 ## Build instructions
+
+If you'd prefer to build Glade yourself:
 
 1. [Download Unity for your operating system.](https://unity.com/download)
    - Unity Version should be 2020.3.34F1 LTS
