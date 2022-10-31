@@ -16,7 +16,7 @@
 
 ## What is this?
 
-Glade is a 3D, 3rd person, hack n' slash video game built in Unity for Windows and MacOS!
+Glade is a 3D, 3rd person, hack n' slash video game built in Unity for Windows and MacOS! [Check out the trailer!](https://www.youtube.com/watch?v=kh6KTAF7tVc)
 
 ## [Latest Release](https://github.com/mccormick-wooden/glade/releases/tag/latest)
 
