@@ -48,41 +48,35 @@ git clone https://github.com/mccormick-wooden/glade-mirror.git
 - Enemy Spawning
 - Enemy Animation
 - Audio framework
-- IK apple pickup / healing
+- IK mechanics
 
 #### Eric
 - Crystals - anything and everything related to crystals
-- Mana bar / mana mechanic
-- Environment design
-- Bunch of bug fixes across all parts
-- Project Icon
+- Mana mechanic
+- Environment design :chefs_kiss:
+- Bug-fixes all over the place
 
 #### Thomas
 - **Original game concept!**
 - Combat animation and implementation
-- Special attack mechanic
+- Special ttack mechanics
 - Lock on and Strafe Mechanics
-- Powerup Mechanic
-- Beacon spawning / flying / management
-- Level / terrain design
-- Boss design / logic
+- Powerup mechanic
+- Beacon mechanic
 
 #### McCormick
-- Menus - Main Menu + Pause Menu
-- Story introduction crawl
-- Tutorial / Training scene
 - Game state management
+- Tutorial mechanics (story introduction, player training)
 - Win / Loss conditions
 - Damage / Combat framework
 - Scene Transitions
-- Minimap
-- Glade Health System
+- Minimap mechanic
+- Menus
 
 #### Daniel Zuniga
 - Camera
-- Player Health Bar
-- Player control/root motion
-- Player Animator: Fall-Landing sequence
+- Health bar
+- Player animations
 
 
 ## 3rd party assets
