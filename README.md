@@ -59,7 +59,7 @@ git clone https://github.com/mccormick-wooden/glade-mirror.git
 #### Thomas
 - **Original game concept!**
 - Combat animation and implementation
-- Special ttack mechanics
+- Special attack mechanics
 - Lock on and Strafe Mechanics
 - Powerup mechanic
 - Beacon mechanic
